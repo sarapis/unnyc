@@ -114,9 +114,27 @@
     gap: 1.5rem;
   }
 
-  .unnyc-nav__logo {
+  /* ---- Wordmark: ONE source of truth for header + footer ------------------
+     The two used to drift (header: regular weight, open tracking, blue/white;
+     footer: bold, tight tracking, blue/gold). Unified here on the header's
+     lighter display treatment plus the footer's colour split — UN in UN-blue,
+     NYC in gold. Both sit on dark navy (--unnyc-navy in the header,
+     --unnyc-navy-deep in the footer), so the pair reads the same in both.
+
+     This block styles the FOOTER wordmark too, which is why it must stay in
+     @layer site: the footer's own rules live in @layer unnyc and would
+     otherwise win. Don't re-add colours to .unnyc-footer__logo-* in unnyc.css. */
+  .unnyc-nav__logo,
+  .unnyc-page .unnyc-footer__logo {
+    display: flex;
+    align-items: baseline;
+    gap: 1px;
     flex-shrink: 0;
+    /* Hug the glyphs so the wordmark box is the same in both places (the
+       footer one would otherwise stretch to fill its column). */
+    width: fit-content;
     font-family: var(--unnyc-font-display, 'DM Serif Display', Georgia, serif);
+    font-weight: 400;
     font-size: 1.45rem;
     letter-spacing: 0.5px;
     text-decoration: none;
@@ -126,12 +144,14 @@
     text-decoration: none;
   }
 
-  .unnyc-nav__logo-un {
-    color: var(--un-blue-light, #7bb4e8);
+  .unnyc-nav__logo-un,
+  .unnyc-page .unnyc-footer__logo-un {
+    color: var(--un-blue, #4b92db);
   }
 
-  .unnyc-nav__logo-nyc {
-    color: #ffffff;
+  .unnyc-nav__logo-nyc,
+  .unnyc-page .unnyc-footer__logo-nyc {
+    color: var(--unnyc-gold, #d4a843);
   }
 
   .unnyc-nav__menu {
