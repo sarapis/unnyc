@@ -12,8 +12,8 @@ import { useEffect, useState } from 'react';
  * hamburger drawer below 820px.
  */
 const LINKS = [
-    { href: '/start', label: 'Start Here' },
-    { href: '/crosswalk', label: 'Why It Matters' },
+    { href: '/start', label: 'The Global Movement' },
+    { href: '/crosswalk', label: 'Open Source for NYC' },
     { href: '/success', label: 'What Success Looks Like' },
     { href: '/resources', label: 'Resources' },
 ];

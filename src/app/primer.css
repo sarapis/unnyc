@@ -21,7 +21,9 @@
      the display size down from the hub hero's clamp and cap the measure. */
   .unnyc-pr-hero .unnyc-hero__title {
     font-size: clamp(var(--unnyc-fs-2xl), 3.4vw, var(--unnyc-fs-4xl));
-    max-width: 20ch;
+    /* Wide measure: the headline is two full sentences, and a narrow column
+       (it was 20ch) stacked it into five cramped lines. */
+    max-width: 34ch;
     margin-left: auto;
     margin-right: auto;
   }

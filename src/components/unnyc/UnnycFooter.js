@@ -28,8 +28,8 @@ export default function UnnycFooter() {
                         <div className="unnyc-footer__column">
                             <h4 className="unnyc-footer__column-title">Explore</h4>
                             <ul className="unnyc-footer__links">
-                                <li><Link href="/start">New to Government Open Source</Link></li>
-                                <li><Link href="/crosswalk">Why It Matters</Link></li>
+                                <li><Link href="/start">The Global Movement</Link></li>
+                                <li><Link href="/crosswalk">Open Source for NYC</Link></li>
                                 <li><Link href="/success">What Success Looks Like</Link></li>
                                 <li><Link href="/campaign">Sign the Letter</Link></li>
                                 <li><Link href="/resources">Resources</Link></li>

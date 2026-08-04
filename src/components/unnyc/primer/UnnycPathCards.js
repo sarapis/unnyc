@@ -3,23 +3,23 @@ import Link from 'next/link';
 const PATHS = [
     {
         href: '/start',
-        question: 'I am new to government open source.',
-        answer: 'Let’s walk you through it. You’ll get familiar with key terms and the history of the movement.',
+        question: 'I’m new to the open source government movement.',
+        answer: 'Start with the vocabulary and the arc: how the UN system united around eight Open Source Principles, and who is already behind them.',
     },
     {
         href: '/crosswalk',
-        question: 'I want to know why open source matters to NYC.',
-        answer: 'We’ll show you exactly how open source principles can make NYC work better for you.',
+        question: 'Why should NYC government make “open source by default” a core pillar of its technology strategy?',
+        answer: 'The case for New York, concept by concept — mapped against what the city already has on the books.',
     },
     {
         href: '/success',
-        question: 'Show me global cities leading the way.',
-        answer: 'See how the first city to endorse the Principles did it, and what NYC could gain by following.',
+        question: 'Which cities have already made open source core to their technology strategy?',
+        answer: 'Barcelona, Paris, Munich and more — what each one actually committed to, and what it got back.',
     },
     {
         href: '/resources',
-        question: 'I’m looking for related resources.',
-        answer: 'Let’s see if we have what you’re looking for. If not, we’ll direct you to someone who does.',
+        question: 'I want more information: people, places, projects — and maybe some bumper stickers?',
+        answer: 'The directories, the frameworks, and the outward-facing organizations whose job is helping cities do this.',
     },
 ];
 
