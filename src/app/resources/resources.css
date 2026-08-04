@@ -1,0 +1,59 @@
+/* ============================================
+   /resources — "I'm looking for related resources"
+   Lives in @layer unnyc; inherits --unnyc-* tokens from .unnyc-page
+   and reuses ../primer.css for the shared section components
+   (PrimerCases, PrimerResources, PrimerContacts, PrimerNewsEvents).
+   ============================================ */
+
+@layer unnyc {
+
+  .unnyc-resources__header {
+    padding: var(--unnyc-sp-12) 0 var(--unnyc-sp-10);
+    background:
+      radial-gradient(ellipse at 80% -20%, rgba(75, 146, 219, 0.12), transparent 55%),
+      var(--unnyc-warm-white);
+    border-bottom: 1px solid var(--unnyc-border);
+    text-align: center;
+  }
+
+  .unnyc-resources__title {
+    font-family: var(--unnyc-font-display);
+    font-weight: 400;
+    font-size: var(--unnyc-fs-4xl);
+    line-height: 1.15;
+    color: var(--unnyc-navy);
+    margin: 0 0 var(--unnyc-sp-5);
+  }
+
+  .unnyc-resources__lede {
+    font-size: var(--unnyc-fs-lg);
+    color: var(--unnyc-text-secondary);
+    line-height: 1.7;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .unnyc-resources__foot {
+    padding: var(--unnyc-sp-16) 0;
+    text-align: center;
+  }
+
+  .unnyc-resources__foot p {
+    font-size: var(--unnyc-fs-xl);
+    font-family: var(--unnyc-font-display);
+    color: var(--unnyc-navy);
+    margin: 0 0 var(--unnyc-sp-6);
+  }
+
+  .unnyc-resources__foot-links {
+    display: flex;
+    justify-content: center;
+    gap: var(--unnyc-sp-4);
+    flex-wrap: wrap;
+  }
+
+  .unnyc-resources__foot-links .unnyc-btn--outline {
+    color: var(--unnyc-navy);
+    border-color: var(--unnyc-border);
+  }
+}

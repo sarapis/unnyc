@@ -1,0 +1,1436 @@
+/* ============================================
+   UNNYC — Styles for wegov.nyc/unnyc
+
+   All rules live in `@layer unnyc`, declared LAST in the app cascade order
+   (see src/app/base.css: reset < theme < components < unnyc). Later layers
+   win regardless of specificity, so these plain `.unnyc-page …` selectors
+   beat the global WeGov theme's element rules
+   (`:root[data-theme='wegov'] h1/h2/h3/a`) with no `:root`/`!important`
+   hacks. `.unnyc-page` is kept only to scope styles to the UNNYC subtree.
+   The palette is aliased onto the shared token core
+   (src/styles/wegov-tokens.css). Class names match components/.
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer unnyc {
+
+/* --- Design Tokens + page base (scoped) --- */
+.unnyc-page {
+  /* Palette — consumed from the shared WeGovNYC token core (src/styles/wegov-tokens.css).
+     Navy converges on the canonical Databook navy (#162e51); UN-blue and gold
+     come from the shared Civic reference tokens. Warm editorial values unique to
+     UNNYC (warm-white, surface-alt) are kept local. */
+  --un-blue: var(--wg-un-blue);
+  --un-blue-dark: var(--wg-un-blue-dark);
+  --un-blue-light: var(--wg-un-blue-light);
+  --unnyc-navy: var(--db-primary);
+  --unnyc-navy-deep: var(--db-navy-900);
+  --unnyc-navy-light: var(--db-navy-500);
+  --unnyc-gold: var(--wg-gold);
+  --unnyc-gold-light: var(--wg-gold-light);
+  --unnyc-gold-dark: var(--wg-gold-dark);
+  --unnyc-warm-white: #F8F6F0;
+  --unnyc-warm-gray: #E8E4DC;
+  --unnyc-text-primary: var(--db-primary);
+  --unnyc-text-secondary: #5A6A82;
+  --unnyc-text-muted: #8A96A8;
+  --unnyc-surface: var(--db-white);
+  --unnyc-surface-alt: #F4F1EB;
+  --unnyc-surface-glass: rgba(255, 255, 255, 0.72);
+  --unnyc-border: rgba(22, 46, 81, 0.1);
+  --unnyc-shadow-sm: 0 1px 3px rgba(27, 42, 74, 0.08);
+  --unnyc-shadow-md: 0 4px 16px rgba(27, 42, 74, 0.1);
+  --unnyc-shadow-lg: 0 12px 40px rgba(27, 42, 74, 0.12);
+  --unnyc-shadow-xl: 0 20px 60px rgba(27, 42, 74, 0.15);
+
+  /* Spacing — aliased onto the shared 8px USWDS ramp (--db-space-*).
+     The UNNYC 4px ramp maps 1:1 except sp-5 (20px) and sp-24 (96px),
+     which have no db step and stay literal (rendered values unchanged). */
+  --unnyc-sp-1: var(--db-space-05);   /* 4px */
+  --unnyc-sp-2: var(--db-space-1);    /* 8px */
+  --unnyc-sp-3: var(--db-space-15);   /* 12px */
+  --unnyc-sp-4: var(--db-space-2);    /* 16px */
+  --unnyc-sp-5: 20px;                 /* no db equivalent */
+  --unnyc-sp-6: var(--db-space-3);    /* 24px */
+  --unnyc-sp-8: var(--db-space-4);    /* 32px */
+  --unnyc-sp-10: var(--db-space-5);   /* 40px */
+  --unnyc-sp-12: var(--db-space-6);   /* 48px */
+  --unnyc-sp-16: var(--db-space-7);   /* 64px */
+  --unnyc-sp-20: var(--db-space-8);   /* 80px */
+  --unnyc-sp-24: 96px;                /* no db equivalent */
+
+  /* Typography — type scale aliased onto the shared core (--db-text-*).
+     Steps whose rem values match db map directly; fs-lg (1.125), fs-3xl (2),
+     fs-4xl (2.75), fs-5xl (3.5), fs-6xl (4.5) have no db step and stay
+     literal (rendered values unchanged). Font families kept local. */
+  --unnyc-font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --unnyc-font-display: 'DM Serif Display', Georgia, serif;
+  --unnyc-fs-xs: var(--db-text-3xs);   /* 0.75rem */
+  --unnyc-fs-sm: var(--db-text-xs);    /* 0.875rem */
+  --unnyc-fs-base: var(--db-text-base);/* 1rem */
+  --unnyc-fs-lg: 1.125rem;             /* no db equivalent */
+  --unnyc-fs-xl: var(--db-text-lg);    /* 1.25rem */
+  --unnyc-fs-2xl: var(--db-text-xl);   /* 1.5rem */
+  --unnyc-fs-3xl: 2rem;                /* no db equivalent */
+  --unnyc-fs-4xl: 2.75rem;             /* no db equivalent */
+  --unnyc-fs-5xl: 3.5rem;              /* no db equivalent */
+  --unnyc-fs-6xl: 4.5rem;              /* no db equivalent */
+
+  /* Radius */
+  --unnyc-radius-sm: 6px;
+  --unnyc-radius-md: 10px;
+  --unnyc-radius-lg: 16px;
+  --unnyc-radius-xl: 24px;
+
+  /* Transitions */
+  --unnyc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --unnyc-duration: 0.4s;
+
+  /* Base */
+  font-family: var(--unnyc-font-body);
+  font-size: var(--unnyc-fs-base);
+  line-height: 1.6;
+  color: var(--unnyc-text-primary);
+  background: var(--unnyc-surface);
+}
+
+/* --- Scoped resets (the standalone site set these globally) --- */
+.unnyc-page ul,
+.unnyc-page ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.unnyc-page img {
+  max-width: 100%;
+  display: block;
+}
+
+.unnyc-page a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.unnyc-page button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+/* --- Container --- */
+.unnyc-page .unnyc-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--unnyc-sp-6);
+}
+
+/* --- Hero --- */
+.unnyc-page .unnyc-hero {
+  position: relative;
+  z-index: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: var(--unnyc-sp-24) var(--unnyc-sp-6);
+}
+
+.unnyc-page .unnyc-hero__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(75, 146, 219, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(212, 168, 67, 0.08) 0%, transparent 50%),
+    linear-gradient(175deg, var(--unnyc-navy-deep) 0%, var(--unnyc-navy) 40%, var(--unnyc-navy-light) 100%);
+  z-index: -1;
+}
+
+.unnyc-page .unnyc-hero__bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(75, 146, 219, 0.05) 1px, transparent 1px),
+    radial-gradient(circle at 80% 30%, rgba(212, 168, 67, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px, 80px 80px;
+  animation: unnyc-drift 30s linear infinite;
+}
+
+@keyframes unnyc-drift {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-60px, -60px); }
+}
+
+.unnyc-page .unnyc-hero__content {
+  position: relative;
+  text-align: center;
+  max-width: 800px;
+  animation: unnyc-fadeUp 1s var(--unnyc-ease) forwards;
+}
+
+@keyframes unnyc-fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.unnyc-page .unnyc-hero__title {
+  font-family: var(--unnyc-font-display);
+  font-weight: 400;
+  font-size: clamp(var(--unnyc-fs-4xl), 6vw, var(--unnyc-fs-6xl));
+  line-height: 1.1;
+  color: #FFFFFF;
+  margin-bottom: var(--unnyc-sp-6);
+}
+
+.unnyc-page .unnyc-hero__title em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--un-blue-light), var(--unnyc-gold-light));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.unnyc-page .unnyc-hero__subtitle {
+  font-size: var(--unnyc-fs-lg);
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 600px;
+  margin: 0 auto var(--unnyc-sp-10);
+  line-height: 1.7;
+}
+
+.unnyc-page .unnyc-hero__cta {
+  display: flex;
+  gap: var(--unnyc-sp-4);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--unnyc-sp-16);
+}
+
+.unnyc-page .unnyc-hero__stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--unnyc-sp-12);
+}
+
+.unnyc-page .unnyc-hero__stat {
+  text-align: center;
+}
+
+.unnyc-page .unnyc-hero__stat-number {
+  display: block;
+  font-family: var(--unnyc-font-display);
+  font-size: var(--unnyc-fs-4xl);
+  color: #FFFFFF;
+  line-height: 1;
+}
+
+.unnyc-page .unnyc-hero__stat-label {
+  font-size: var(--unnyc-fs-xs);
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: var(--unnyc-sp-2);
+  display: block;
+}
+
+.unnyc-page .unnyc-hero__scroll-indicator {
+  position: absolute;
+  bottom: var(--unnyc-sp-8);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--unnyc-sp-2);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: var(--unnyc-fs-xs);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.unnyc-page .unnyc-hero__scroll-text {
+  font-size: var(--unnyc-fs-xs);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.unnyc-page .unnyc-hero__scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), transparent);
+  animation: unnyc-scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes unnyc-scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* --- Buttons --- */
+.unnyc-page .unnyc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--unnyc-sp-2);
+  padding: var(--unnyc-sp-3) var(--unnyc-sp-8);
+  font-size: var(--unnyc-fs-sm);
+  font-weight: 600;
+  border-radius: 100px;
+  transition: all 0.3s var(--unnyc-ease);
+  letter-spacing: 0.3px;
+  text-decoration: none;
+}
+
+.unnyc-page .unnyc-btn--primary {
+  background: linear-gradient(135deg, var(--un-blue), var(--un-blue-dark));
+  color: #FFFFFF;
+  box-shadow: 0 4px 20px rgba(75, 146, 219, 0.3);
+}
+
+.unnyc-page .unnyc-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(75, 146, 219, 0.4);
+}
+
+.unnyc-page .unnyc-btn--outline {
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  color: #FFFFFF;
+}
+
+.unnyc-page .unnyc-btn--outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.unnyc-page .unnyc-btn--outline-dark {
+  border: 1.5px solid var(--unnyc-navy);
+  color: var(--unnyc-navy);
+}
+
+.unnyc-page .unnyc-btn--outline-dark:hover {
+  background: var(--unnyc-navy);
+  color: #FFFFFF;
+}
+
+/* --- Sections --- */
+.unnyc-page .unnyc-section {
+  padding: var(--unnyc-sp-24) 0;
+  background: var(--unnyc-surface);
+}
+
+.unnyc-page .unnyc-section--alt {
+  background: var(--unnyc-surface-alt);
+}
+
+.unnyc-page .unnyc-section__header {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto var(--unnyc-sp-16);
+}
+
+.unnyc-page .unnyc-section__title {
+  font-family: var(--unnyc-font-display);
+  font-weight: 400;
+  font-size: clamp(var(--unnyc-fs-3xl), 4vw, var(--unnyc-fs-4xl));
+  color: var(--unnyc-text-primary);
+  margin-bottom: var(--unnyc-sp-4);
+}
+
+.unnyc-page .unnyc-section__desc {
+  font-size: var(--unnyc-fs-lg);
+  color: var(--unnyc-text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* --- About --- */
+.unnyc-page .unnyc-about__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--unnyc-sp-12);
+  align-items: start;
+}
+
+.unnyc-page .unnyc-about__text {
+  font-size: var(--unnyc-fs-lg);
+  color: var(--unnyc-text-secondary);
+  line-height: 1.8;
+}
+
+.unnyc-page .unnyc-about__text p {
+  margin-bottom: var(--unnyc-sp-6);
+}
+
+.unnyc-page .unnyc-about__text a {
+  color: var(--un-blue);
+  font-weight: 500;
+}
+
+.unnyc-page .unnyc-about__lead {
+  font-size: var(--unnyc-fs-xl);
+  color: var(--unnyc-text-primary);
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.unnyc-page .unnyc-about__cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unnyc-sp-6);
+}
+
+.unnyc-page .unnyc-about__card {
+  background: var(--unnyc-surface);
+  border: 1px solid var(--unnyc-border);
+  border-radius: var(--unnyc-radius-lg);
+  padding: var(--unnyc-sp-6);
+  transition: all 0.3s var(--unnyc-ease);
+}
+
+.unnyc-page .unnyc-about__card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--unnyc-shadow-lg);
+}
+
+.unnyc-page .unnyc-about__card-icon {
+  display: block;
+  font-size: var(--unnyc-fs-3xl);
+  margin-bottom: var(--unnyc-sp-3);
+}
+
+.unnyc-page .unnyc-about__card h3 {
+  font-family: var(--unnyc-font-body);
+  font-size: var(--unnyc-fs-lg);
+  font-weight: 600;
+  margin-bottom: var(--unnyc-sp-2);
+  color: var(--unnyc-text-primary);
+}
+
+.unnyc-page .unnyc-about__card p {
+  font-size: var(--unnyc-fs-sm);
+  color: var(--unnyc-text-secondary);
+  line-height: 1.6;
+}
+
+/* --- Events --- */
+.unnyc-page .unnyc-events__filter {
+  display: flex;
+  justify-content: center;
+  gap: var(--unnyc-sp-3);
+  margin-bottom: var(--unnyc-sp-10);
+  flex-wrap: wrap;
+}
+
+.unnyc-page .unnyc-events__filter-btn {
+  padding: var(--unnyc-sp-2) var(--unnyc-sp-5);
+  font-size: var(--unnyc-fs-sm);
+  font-weight: 500;
+  color: var(--unnyc-text-secondary);
+  border-radius: 100px;
+  border: 1px solid var(--unnyc-border);
+  transition: all 0.25s var(--unnyc-ease);
+  cursor: pointer;
+  background: none;
+  font-family: inherit;
+}
+
+.unnyc-page .unnyc-events__filter-btn:hover {
+  border-color: var(--un-blue);
+  color: var(--un-blue);
+}
+
+.unnyc-page .unnyc-events__filter-btn--active {
+  background: var(--un-blue);
+  color: #FFFFFF;
+  border-color: var(--un-blue);
+}
+
+.unnyc-page .unnyc-events__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: var(--unnyc-sp-6);
+}
+
+.unnyc-page .unnyc-event-card {
+  background: var(--unnyc-surface);
+  border: 1px solid var(--unnyc-border);
+  border-radius: var(--unnyc-radius-lg);
+  padding: var(--unnyc-sp-8);
+  transition: all 0.35s var(--unnyc-ease);
+  position: relative;
+  overflow: hidden;
+}
+
+.unnyc-page .unnyc-event-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--un-blue), var(--unnyc-gold));
+  opacity: 0;
+  transition: opacity 0.3s var(--unnyc-ease);
+}
+
+.unnyc-page .unnyc-event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--unnyc-shadow-lg);
+}
+
+.unnyc-page .unnyc-event-card:hover::before {
+  opacity: 1;
+}
+
+.unnyc-page .unnyc-event-card__badge {
+  display: inline-block;
+  padding: var(--unnyc-sp-1) var(--unnyc-sp-3);
+  font-size: var(--unnyc-fs-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 100px;
+  margin-bottom: var(--unnyc-sp-4);
+}
+
+.unnyc-page .unnyc-event-card__badge--un {
+  background: rgba(75, 146, 219, 0.12);
+  color: var(--un-blue-dark);
+}
+
+.unnyc-page .unnyc-event-card__badge--nyc {
+  background: rgba(212, 168, 67, 0.15);
+  color: var(--unnyc-gold-dark);
+}
+
+.unnyc-page .unnyc-event-card__badge--joint {
+  background: rgba(75, 146, 219, 0.08);
+  color: var(--unnyc-navy);
+  border: 1px solid var(--unnyc-border);
+}
+
+.unnyc-page .unnyc-event-card__date {
+  font-size: var(--unnyc-fs-sm);
+  color: var(--un-blue);
+  font-weight: 600;
+  margin-bottom: var(--unnyc-sp-2);
+}
+
+.unnyc-page .unnyc-event-card__title {
+  font-family: var(--unnyc-font-body);
+  font-size: var(--unnyc-fs-xl);
+  font-weight: 600;
+  margin-bottom: var(--unnyc-sp-3);
+  color: var(--unnyc-text-primary);
+  line-height: 1.3;
+}
+
+.unnyc-page .unnyc-event-card__location {
+  font-size: var(--unnyc-fs-sm);
+  color: var(--unnyc-text-muted);
+  margin-bottom: var(--unnyc-sp-3);
+  display: flex;
+  align-items: center;
+  gap: var(--unnyc-sp-2);
+}
+
+.unnyc-page .unnyc-event-card__location::before {
+  content: '📍';
+  font-size: var(--unnyc-fs-xs);
+}
+
+.unnyc-page .unnyc-event-card__desc {
+  font-size: var(--unnyc-fs-sm);
+  color: var(--unnyc-text-secondary);
+  line-height: 1.6;
+}
+
+.unnyc-page .unnyc-event-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--unnyc-sp-2);
+  margin-top: var(--unnyc-sp-4);
+  font-size: var(--unnyc-fs-sm);
+  font-weight: 600;
+  color: var(--un-blue);
+  transition: gap 0.25s var(--unnyc-ease);
+  text-decoration: none;
+}
+
+.unnyc-page .unnyc-event-card__link:hover {
+  gap: var(--unnyc-sp-3);
+}
+
+/* --- Policy --- */
+.unnyc-page .unnyc-policy__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--unnyc-sp-6);
+}
+
+.unnyc-page .unnyc-policy__card {
+  background: var(--unnyc-surface);
+  border: 1px solid var(--unnyc-border);
+  border-radius: var(--unnyc-radius-lg);
+  padding: var(--unnyc-sp-8);
+  transition: all 0.35s var(--unnyc-ease);
+}
+
+.unnyc-page .unnyc-policy__card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--unnyc-shadow-lg);
+}
+
+.unnyc-page .unnyc-policy__card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--unnyc-sp-4);
+  margin-bottom: var(--unnyc-sp-4);
+}
+
+.unnyc-page .unnyc-policy__card-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--unnyc-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--unnyc-fs-2xl);
+  background: var(--unnyc-surface-alt);
+}
+
+.unnyc-page .unnyc-policy__card-title {
+  font-family: var(--unnyc-font-body);
+  font-size: var(--unnyc-fs-lg);
+  font-weight: 600;
+  color: var(--unnyc-text-primary);
+  margin: 0;
+}
+
+.unnyc-page .unnyc-policy__card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unnyc-sp-4);
+}
+
+.unnyc-page .unnyc-policy__framework {
+  line-height: 1.5;
+}
+
+.unnyc-page .unnyc-policy__framework-label {
+  font-family: var(--unnyc-font-body);
+  color: var(--unnyc-text-primary);
+  font-weight: 600;
+  font-size: var(--unnyc-fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 var(--unnyc-sp-1);
+}
+
+.unnyc-page .unnyc-policy__framework p {
+  font-size: var(--unnyc-fs-sm);
+  color: var(--unnyc-text-secondary);
+  line-height: 1.5;
+}
+
+/* --- Resources --- */
+.unnyc-page .unnyc-resources__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--unnyc-sp-6);
+}
+
+.unnyc-page .unnyc-resources__card {
+  background: var(--unnyc-surface);
+  border: 1px solid var(--unnyc-border);
+  border-radius: var(--unnyc-radius-lg);
+  padding: var(--unnyc-sp-6);
+  transition: all 0.35s var(--unnyc-ease);
+}
+
+.unnyc-page .unnyc-resources__card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--unnyc-shadow-lg);
+}
+
+.unnyc-page .unnyc-resources__card-icon {
+  display: block;
+  font-size: var(--unnyc-fs-3xl);
+  margin-bottom: var(--unnyc-sp-3);
+}
+
+.unnyc-page .unnyc-resources__card-title {
+  font-family: var(--unnyc-font-body);
+  font-size: var(--unnyc-fs-lg);
+  font-weight: 600;
+  color: var(--unnyc-text-primary);
+  margin-bottom: var(--unnyc-sp-2);
+}
+
+.unnyc-page .unnyc-resources__card-desc {
+  font-size: var(--unnyc-fs-sm);
+  color: var(--unnyc-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--unnyc-sp-4);
+}
+
+.unnyc-page .unnyc-resources__links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unnyc-sp-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.unnyc-page .unnyc-resources__link {
+  font-size: var(--unnyc-fs-sm);
+  font-weight: 500;
+  color: var(--un-blue);
+  transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--unnyc-sp-2);
+  text-decoration: none;
+}
+
+.unnyc-page .unnyc-resources__link::before {
+  content: '→';
+  font-size: var(--unnyc-fs-xs);
+}
+
+.unnyc-page .unnyc-resources__link:hover {
+  color: var(--un-blue-dark);
+}
+
+/* --- Directory --- */
+.unnyc-page .unnyc-directory__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--unnyc-sp-8);
+}
+
+.unnyc-page .unnyc-directory__column {
+  background: var(--unnyc-surface);
+  border: 1px solid var(--unnyc-border);
+  border-radius: var(--unnyc-radius-lg);
+  overflow: hidden;
+}
+
+.unnyc-page .unnyc-directory__header {
+  font-family: var(--unnyc-font-body);
+  padding: var(--unnyc-sp-5) var(--unnyc-sp-6);
+  font-size: var(--unnyc-fs-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-bottom: 1px solid var(--unnyc-border);
+  margin: 0;
+}
+
+.unnyc-page .unnyc-directory__header--un {
+  background: rgba(75, 146, 219, 0.08);
+  color: var(--un-blue-dark);
+}
+
+.unnyc-page .unnyc-directory__header--nyc {
+  background: rgba(212, 168, 67, 0.08);
+  color: var(--unnyc-gold-dark);
+}
+
+.unnyc-page .unnyc-directory__header--nys {
+  background: rgba(27, 42, 74, 0.06);
+  color: var(--unnyc-navy);
+}
+
+.unnyc-page .unnyc-directory__list {
+  padding: var(--unnyc-sp-4);
+  list-style: none;
+  margin: 0;
+}
+
+.unnyc-page .unnyc-directory__item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--unnyc-sp-3) var(--unnyc-sp-4);
+  border-radius: var(--unnyc-radius-sm);
+  transition: background 0.2s var(--unnyc-ease);
+  margin-bottom: var(--unnyc-sp-1);
+}
+
+.unnyc-page .unnyc-directory__item:hover {
+  background: var(--unnyc-surface-alt);
+}
+
+.unnyc-page .unnyc-directory__name {
+  font-size: var(--unnyc-fs-sm);
+  font-weight: 600;
+  color: var(--unnyc-text-primary);
+}
+
+.unnyc-page .unnyc-directory__address {
+  font-size: var(--unnyc-fs-xs);
+  color: var(--unnyc-text-muted);
+}
+
+.unnyc-page .unnyc-directory__link {
+  font-size: var(--unnyc-fs-xs);
+  color: var(--un-blue);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.unnyc-page .unnyc-directory__link:hover {
+  color: var(--un-blue-dark);
+}
+
+/* --- Map --- */
+.unnyc-page .unnyc-section--map {
+  padding-bottom: var(--unnyc-sp-12);
+}
+
+.unnyc-page .unnyc-map-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: var(--unnyc-sp-6);
+  min-height: 480px;
+}
+
+.unnyc-page .unnyc-map-container {
+  border-radius: var(--unnyc-radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--unnyc-border);
+  min-height: 480px;
+}
+
+.unnyc-page .unnyc-map-legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unnyc-sp-3);
+  padding: var(--unnyc-sp-4);
+  background: var(--unnyc-surface);
+  border: 1px solid var(--unnyc-border);
+  border-radius: var(--unnyc-radius-lg);
+  align-self: start;
+}
+
+.unnyc-page .unnyc-map-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--unnyc-sp-3);
+  font-size: var(--unnyc-fs-sm);
+  color: var(--unnyc-text-secondary);
+  padding: var(--unnyc-sp-2);
+  border-radius: var(--unnyc-radius-sm);
+  transition: background 0.2s;
+}
+
+.unnyc-page .unnyc-map-legend-item:hover {
+  background: var(--unnyc-surface-alt);
+}
+
+.unnyc-page .unnyc-map-legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.unnyc-page .unnyc-map-legend-label {
+  font-size: var(--unnyc-fs-sm);
+  color: var(--unnyc-text-secondary);
+}
+
+/* --- News --- */
+.unnyc-page .unnyc-news__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: var(--unnyc-sp-6);
+}
+
+.unnyc-page .unnyc-news__card {
+  display: flex;
+  flex-direction: column;
+  background: var(--unnyc-surface);
+  border: 1px solid var(--unnyc-border);
+  border-radius: var(--unnyc-radius-lg);
+  padding: var(--unnyc-sp-6);
+  transition: all 0.35s var(--unnyc-ease);
+}
+
+.unnyc-page .unnyc-news__card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--unnyc-shadow-lg);
+}
+
+.unnyc-page .unnyc-news__source {
+  font-size: var(--unnyc-fs-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--un-blue);
+  margin-bottom: var(--unnyc-sp-3);
+}
+
+.unnyc-page .unnyc-news__title {
+  font-family: var(--unnyc-font-body);
+  font-size: var(--unnyc-fs-lg);
+  font-weight: 600;
+  color: var(--unnyc-text-primary);
+  margin-bottom: var(--unnyc-sp-3);
+  line-height: 1.4;
+}
+
+.unnyc-page .unnyc-news__excerpt {
+  font-size: var(--unnyc-fs-sm);
+  color: var(--unnyc-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--unnyc-sp-4);
+  flex: 1;
+}
+
+.unnyc-page .unnyc-news__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--unnyc-sp-3);
+  margin-top: auto;
+}
+
+.unnyc-page .unnyc-news__date {
+  font-size: var(--unnyc-fs-xs);
+  color: var(--unnyc-text-muted);
+}
+
+.unnyc-page .unnyc-news__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--unnyc-sp-2);
+  font-size: var(--unnyc-fs-sm);
+  font-weight: 600;
+  color: var(--un-blue);
+  transition: gap 0.25s var(--unnyc-ease);
+  text-decoration: none;
+}
+
+.unnyc-page .unnyc-news__link::after {
+  content: '→';
+}
+
+.unnyc-page .unnyc-news__link:hover {
+  gap: var(--unnyc-sp-3);
+}
+
+/* --- Footer --- */
+.unnyc-page .unnyc-footer {
+  background: var(--unnyc-navy-deep);
+  color: rgba(255, 255, 255, 0.7);
+  padding: var(--unnyc-sp-16) 0 var(--unnyc-sp-8);
+}
+
+.unnyc-page .unnyc-footer__grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--unnyc-sp-12);
+  margin-bottom: var(--unnyc-sp-12);
+}
+
+.unnyc-page .unnyc-footer__logo {
+  display: flex;
+  align-items: baseline;
+  gap: 1px;
+  font-family: var(--unnyc-font-display);
+  font-size: var(--unnyc-fs-2xl);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.unnyc-page .unnyc-footer__logo-un {
+  color: var(--un-blue);
+  font-family: var(--unnyc-font-display);
+}
+
+.unnyc-page .unnyc-footer__logo-nyc {
+  color: var(--unnyc-gold);
+  font-family: var(--unnyc-font-display);
+}
+
+.unnyc-page .unnyc-footer__tagline {
+  font-size: var(--unnyc-fs-sm);
+  margin-top: var(--unnyc-sp-3);
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.6;
+  max-width: 320px;
+}
+
+.unnyc-page .unnyc-footer__nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--unnyc-sp-6);
+}
+
+.unnyc-page .unnyc-footer__column-title {
+  font-family: var(--unnyc-font-body);
+  color: #FFFFFF;
+  font-size: var(--unnyc-fs-sm);
+  font-weight: 600;
+  margin: 0 0 var(--unnyc-sp-4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.unnyc-page .unnyc-footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unnyc-sp-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.unnyc-page .unnyc-footer__links a {
+  display: block;
+  font-size: var(--unnyc-fs-sm);
+  color: rgba(255, 255, 255, 0.5);
+  padding: var(--unnyc-sp-1) 0;
+  transition: color 0.2s;
+  text-decoration: none;
+}
+
+.unnyc-page .unnyc-footer__links a:hover {
+  color: var(--unnyc-gold-light);
+}
+
+.unnyc-page .unnyc-footer__bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: var(--unnyc-sp-6);
+  text-align: center;
+  font-size: var(--unnyc-fs-xs);
+  color: rgba(255, 255, 255, 0.3);
+  line-height: 1.6;
+}
+
+.unnyc-page .unnyc-footer__bottom a {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.unnyc-page .unnyc-footer__bottom a:hover {
+  color: var(--unnyc-gold-light);
+}
+
+/* --- Reveal Animation --- */
+.unnyc-page .unnyc-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--unnyc-ease), transform 0.7s var(--unnyc-ease);
+}
+
+.unnyc-page .unnyc-reveal.unnyc-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+  .unnyc-page .unnyc-about__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .unnyc-page .unnyc-directory__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .unnyc-page .unnyc-map-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .unnyc-page .unnyc-map-legend {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .unnyc-page .unnyc-hero__stats {
+    flex-direction: column;
+    gap: var(--unnyc-sp-6);
+  }
+
+  .unnyc-page .unnyc-hero__stat-number {
+    font-size: var(--unnyc-fs-3xl);
+  }
+
+  .unnyc-page .unnyc-events__grid,
+  .unnyc-page .unnyc-news__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .unnyc-page .unnyc-footer__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .unnyc-page .unnyc-footer__nav {
+    gap: var(--unnyc-sp-8);
+  }
+
+  .unnyc-page .unnyc-section {
+    padding: var(--unnyc-sp-16) 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .unnyc-page .unnyc-policy__grid,
+  .unnyc-page .unnyc-resources__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .unnyc-page .unnyc-footer__nav {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Leaflet Overrides (scoped) --- */
+.unnyc-page .leaflet-popup-content-wrapper {
+  border-radius: var(--unnyc-radius-md) !important;
+  box-shadow: var(--unnyc-shadow-lg) !important;
+  font-family: var(--unnyc-font-body) !important;
+}
+
+.unnyc-page .leaflet-popup-content {
+  margin: var(--unnyc-sp-4) !important;
+  font-size: var(--unnyc-fs-sm) !important;
+  line-height: 1.5 !important;
+}
+
+.unnyc-page .unnyc-map-popup strong {
+  display: block;
+  font-size: var(--unnyc-fs-base);
+  color: var(--unnyc-text-primary);
+  margin-bottom: var(--unnyc-sp-1);
+}
+
+.unnyc-page .unnyc-map-popup p {
+  font-size: var(--unnyc-fs-xs);
+  color: var(--unnyc-text-muted);
+  margin: 0;
+}
+
+/* --- Hero campaign banner --- */
+.unnyc-page .unnyc-hero__banner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--unnyc-sp-3);
+  margin-bottom: var(--unnyc-sp-8);
+  padding: var(--unnyc-sp-2) var(--unnyc-sp-5) var(--unnyc-sp-2) var(--unnyc-sp-2);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: var(--unnyc-fs-sm);
+  text-decoration: none;
+  transition: all 0.3s var(--unnyc-ease);
+}
+
+.unnyc-page .unnyc-hero__banner:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.unnyc-page .unnyc-hero__banner-tag {
+  flex-shrink: 0;
+  padding: 2px var(--unnyc-sp-3);
+  border-radius: 100px;
+  background: var(--unnyc-gold);
+  color: var(--unnyc-navy-deep);
+  font-size: var(--unnyc-fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* --- Campaign section (dark band) --- */
+.unnyc-page .unnyc-campaign {
+  background:
+    radial-gradient(ellipse at 20% -10%, rgba(75, 146, 219, 0.25), transparent 55%),
+    linear-gradient(175deg, var(--unnyc-navy-deep) 0%, var(--unnyc-navy) 100%);
+}
+
+.unnyc-page .unnyc-campaign__title {
+  color: #FFFFFF;
+}
+
+.unnyc-page .unnyc-campaign__lede {
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 720px;
+}
+
+.unnyc-page .unnyc-campaign__columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--unnyc-sp-6);
+  margin-bottom: var(--unnyc-sp-16);
+}
+
+.unnyc-page .unnyc-campaign__panel {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--unnyc-radius-lg);
+  padding: var(--unnyc-sp-8);
+}
+
+.unnyc-page .unnyc-campaign__panel-title {
+  font-family: var(--unnyc-font-display);
+  font-weight: 400;
+  font-size: var(--unnyc-fs-2xl);
+  color: var(--unnyc-gold);
+  margin: 0 0 var(--unnyc-sp-3);
+}
+
+.unnyc-page .unnyc-campaign__panel-intro {
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: var(--unnyc-sp-4);
+}
+
+.unnyc-page .unnyc-campaign__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unnyc-sp-3);
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+}
+
+.unnyc-page .unnyc-campaign__list li {
+  padding-left: var(--unnyc-sp-6);
+  position: relative;
+}
+
+.unnyc-page .unnyc-campaign__list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--unnyc-gold);
+}
+
+.unnyc-page .unnyc-campaign__panel-link {
+  display: inline-block;
+  margin-top: var(--unnyc-sp-5);
+  color: var(--unnyc-gold);
+  font-size: var(--unnyc-fs-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.unnyc-page .unnyc-campaign__panel-link:hover {
+  text-decoration: underline;
+}
+
+.unnyc-page .unnyc-campaign__principles {
+  margin-bottom: var(--unnyc-sp-16);
+}
+
+.unnyc-page .unnyc-campaign__principles-title {
+  font-family: var(--unnyc-font-body);
+  font-size: var(--unnyc-fs-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  margin-bottom: var(--unnyc-sp-8);
+}
+
+.unnyc-page .unnyc-campaign__principles-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--unnyc-sp-4);
+}
+
+.unnyc-page .unnyc-campaign__principle {
+  display: flex;
+  gap: var(--unnyc-sp-3);
+  padding: var(--unnyc-sp-4);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--unnyc-radius-md);
+}
+
+.unnyc-page .unnyc-campaign__principle-num {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--unnyc-gold);
+  color: var(--unnyc-navy-deep);
+  font-size: var(--unnyc-fs-xs);
+  font-weight: 700;
+}
+
+.unnyc-page .unnyc-campaign__principle-title {
+  font-family: var(--unnyc-font-body);
+  font-size: var(--unnyc-fs-sm);
+  font-weight: 600;
+  color: #FFFFFF;
+  margin: 0 0 var(--unnyc-sp-1);
+}
+
+.unnyc-page .unnyc-campaign__principle-desc {
+  font-size: var(--unnyc-fs-xs);
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.unnyc-page .unnyc-campaign__ask {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.unnyc-page .unnyc-campaign__ask-heading {
+  font-family: var(--unnyc-font-display);
+  font-weight: 400;
+  font-size: var(--unnyc-fs-3xl);
+  color: #FFFFFF;
+  margin-bottom: var(--unnyc-sp-4);
+}
+
+.unnyc-page .unnyc-campaign__ask-text {
+  font-size: var(--unnyc-fs-lg);
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.7;
+  margin-bottom: var(--unnyc-sp-8);
+}
+
+.unnyc-page .unnyc-campaign__ask-ctas {
+  display: flex;
+  justify-content: center;
+  gap: var(--unnyc-sp-4);
+  flex-wrap: wrap;
+}
+
+/* --- Campaign "Get Updates" signup --- */
+.unnyc-page .unnyc-campaign__signup {
+  max-width: 560px;
+  margin: var(--unnyc-sp-16) auto 0;
+  padding: var(--unnyc-sp-8);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--unnyc-radius-lg);
+}
+
+.unnyc-page .unnyc-campaign__signup-heading {
+  font-family: var(--unnyc-font-display);
+  font-weight: 400;
+  font-size: var(--unnyc-fs-2xl);
+  color: var(--unnyc-gold);
+  margin: 0 0 var(--unnyc-sp-3);
+}
+
+.unnyc-page .unnyc-campaign__signup-text {
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+  margin: 0 auto var(--unnyc-sp-6);
+  max-width: 440px;
+}
+
+.unnyc-page .unnyc-campaign__signup-form {
+  display: flex;
+  gap: var(--unnyc-sp-3);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.unnyc-page .unnyc-campaign__signup-input {
+  flex: 1 1 260px;
+  min-width: 0;
+  padding: var(--unnyc-sp-3) var(--unnyc-sp-5);
+  font-size: var(--unnyc-fs-sm);
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 100px;
+  transition: border-color 0.2s var(--unnyc-ease), background 0.2s var(--unnyc-ease);
+}
+
+.unnyc-page .unnyc-campaign__signup-input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.unnyc-page .unnyc-campaign__signup-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--unnyc-gold);
+}
+
+.unnyc-page .unnyc-campaign__signup-input[aria-invalid="true"] {
+  border-color: #ff8f8f;
+}
+
+.unnyc-page .unnyc-campaign__signup-btn {
+  flex: 0 0 auto;
+  border: none;
+  cursor: pointer;
+}
+
+.unnyc-page .unnyc-campaign__signup-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+}
+
+.unnyc-page .unnyc-campaign__signup-success {
+  color: var(--unnyc-gold);
+  font-weight: 600;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.unnyc-page .unnyc-campaign__signup-error {
+  color: #ff8f8f;
+  font-size: var(--unnyc-fs-sm);
+  margin: var(--unnyc-sp-4) 0 0;
+}
+
+.unnyc-page .unnyc-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  .unnyc-page .unnyc-campaign__columns {
+    grid-template-columns: 1fr;
+  }
+
+  .unnyc-page .unnyc-campaign__principles-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .unnyc-page .unnyc-campaign__principles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .unnyc-page .unnyc-hero__banner {
+    font-size: var(--unnyc-fs-xs);
+  }
+}
