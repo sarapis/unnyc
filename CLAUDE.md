@@ -64,10 +64,18 @@ row mid-case-study) and `{{principles}}` (sign.md, the eight-principles list).
   `src/lib/content.js` reads them so a `[term](gloss:slug)` link anywhere gets a
   hover definition. The old `GlossaryTerm` React component was deleted; re-adding a
   component-based tooltip means parsing HTML→React, not just re-importing data.
-- `src/data/unnyc-primer.js` is **superseded** by `content/*.md` and partly
-  orphaned. Safe to delete once you're confident, but check first —
-  `src/data/unnyc.js`'s `openSource` export IS still used (the eight principles,
-  shared by the letter and the printable document, so listings stay identical).
+- `src/data/unnyc-primer.js` is **superseded** by `content/*.md` and **confirmed
+  orphaned** — zero code imports as of 2026-08-04 (the only `@/data` import
+  anywhere is `openSource`; the remaining "unnyc-primer" hits are JSDoc comments
+  and docs prose). Kept as a migration reference; safe to delete.
+- **The eight Principles are NOT single-sourced, whatever the docs used to say.**
+  Three independent hardcoded listings exist and have already drifted in wording:
+  `openSource.principles` in `src/data/unnyc.js` → `/campaign/sign`; `const GROUPS`
+  in `src/app/campaign/endorse/document/page.js` → the printable declaration;
+  `content/principles.md` → `/start` + `/start/principles`. Editing the markdown
+  updates only the third. Consolidating is deferred — it needs an editorial call on
+  which phrasing wins (the gerunds in `principles.md` match the UN's own one-pager;
+  the imperatives read better as a flat list). **Until then, change all three.**
 - `src/lib/api.js` is intentionally larger than this site needs (inherited whole
   from the marketing site). `fetchAPI` *is* used by the endorser wall on
   `/campaign/sign` — don't prune it casually.
@@ -98,6 +106,6 @@ the lost glossary tooltip was found by inspection, not by diff.
 
 | | |
 |---|---|
-| `wegov.nyc/unnyc` | Still serves a stale copy of this campaign. 301 to here is **pending**. |
+| `wegov.nyc/unnyc` | Now 308s to this site (`wegovnyc_front` @ `84a83de`). `/unnyc/guide` → `/resources`. |
 | `old-unnyc.wegov.nyc` | The original Vite "UN meets NYC" hub. Live, untouched. |
 | Vault workspace | `~/vault/workspaces/unnyc.md` (Hub reads this) |

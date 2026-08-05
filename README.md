@@ -142,12 +142,27 @@ GitHub App for the `sarapis` org.
 - **`/campaign/endorse` returns 503 on submit** — `ENDORSEMENT_SHEET_WEBHOOK_URL`
   is not set in Vercel. Individual signing on `/campaign/sign` works (it goes to
   Payload).
-- **`wegov.nyc/unnyc` still serves an older copy of this campaign.** The 301 to
-  this site hasn't been added to `wegovnyc_front` yet, so two copies are live.
-- **Footer tagline** still uses the pre-campaign framing ("Where the United Nations
-  meets New York City…").
-- **Page H1s on `/start` and `/crosswalk`** don't match their renamed nav labels
-  ("The Global Movement", "Open Source for NYC").
+- **The eight Principles are listed in three places and have already drifted.**
+  Despite what the "Shared content" notes elsewhere imply, there is **no single
+  source**: `src/data/unnyc.js`'s `openSource.principles` drives `/campaign/sign`,
+  `const GROUPS` in `src/app/campaign/endorse/document/page.js` drives the
+  printable declaration, and `content/principles.md` drives `/start` +
+  `/start/principles`. The wordings differ ("Provide documentation" / "Well
+  documented"; "Contribute back" / "Contributing back") and so do the
+  descriptions. **Editing `content/principles.md` does not update the letter or
+  the declaration.** Consolidating needs an editorial call on which phrasing wins.
+
+### Resolved
+
+- `wegov.nyc/unnyc/*` now 308s to this site (`wegovnyc_front` @ `84a83de`), so the
+  duplicate no longer competes in search. `/unnyc/guide` → `/resources`, since that
+  article was never carried over here.
+- Footer tagline is the campaign framing, reusing `content/home.md`'s own
+  `ogDescription` so the two can't drift.
+- **Page H1s on `/start` and `/crosswalk` deliberately do not match their nav
+  labels.** Editorial headlines and short wayfinding labels are different jobs, and
+  the H1s are the stronger copy. Only the `<title>`/`ogTitle` were aligned, so a
+  search result matches the label a visitor sees on arrival. Don't "fix" this.
 
 ## History
 

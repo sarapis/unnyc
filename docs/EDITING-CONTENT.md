@@ -134,10 +134,26 @@ Some pages place a structured block mid-prose. Write the marker on its own line:
 
 ## Shared content
 
-- **The eight Principles** live once in `content/principles.md` and are read by
-  both `/start` and `/start/principles`.
+- **The eight Principles** in `content/principles.md` are read by both `/start`
+  and `/start/principles` — but **that file is not the only listing on the site.**
+  See the warning below.
 - **Glossary definitions** live in `content/start.md` under `concepts.terms`.
   A `[term](gloss:slug)` link anywhere on the site picks up its definition from
   there as a hover tooltip, so there's one place to edit a definition.
-- **`openSource.principles`** (short titles + one-line descriptions) is still in
-  `src/data/unnyc.js`, shared with the letter. Left there deliberately.
+### ⚠️ The eight Principles are listed THREE times and have drifted
+
+This page used to claim they were single-sourced. They are not. Verified
+2026-08-04:
+
+| Listing | Drives | Phrasing style |
+|---|---|---|
+| `content/principles.md` | `/start`, `/start/principles` | gerunds — "Well documented", "Contributing back" |
+| `openSource.principles` in `src/data/unnyc.js` | `/campaign/sign` (the open letter) | imperatives — "Provide documentation", "Contribute back" |
+| `const GROUPS` in `src/app/campaign/endorse/document/page.js` | `/campaign/endorse/document` (the printable declaration) | imperatives, but its own descriptions ("Making security a priority…" vs "Security as a priority…") |
+
+**Editing `content/principles.md` changes only `/start` and `/start/principles`.**
+The letter and the declaration will silently keep their old wording.
+
+Consolidating onto one source is deferred — it needs an editorial decision about
+which phrasing wins. Until then, **if you change a principle's wording, change it
+in all three places.**
