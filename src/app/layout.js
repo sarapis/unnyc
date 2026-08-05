@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <body>
-                <div className="unnyc-page">
+                <div className="unnyc-page wg-unnyc" data-brand="unnyc">
                     <UnnycNav />
                     <main>{children}</main>
                     <UnnycFooter />

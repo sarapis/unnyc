@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@wegovnyc/design-tokens": "github:sarapis/wegovnyc-design-tokens",
     "gray-matter": "^4.0.3",
     "leaflet": "^1.9.4",
     "marked": "^18.0.9",

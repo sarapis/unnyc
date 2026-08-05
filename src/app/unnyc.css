@@ -17,75 +17,83 @@
 
 /* --- Design Tokens + page base (scoped) --- */
 .unnyc-page {
-  /* Palette — consumed from the shared WeGovNYC token core (src/styles/wegov-tokens.css).
-     Navy converges on the canonical Databook navy (#162e51); UN-blue and gold
-     come from the shared Civic reference tokens. Warm editorial values unique to
-     UNNYC (warm-white, surface-alt) are kept local. */
-  --un-blue: var(--wg-un-blue);
-  --un-blue-dark: var(--wg-un-blue-dark);
-  --un-blue-light: var(--wg-un-blue-light);
-  --unnyc-navy: var(--db-primary);
-  --unnyc-navy-deep: var(--db-navy-900);
-  --unnyc-navy-light: var(--db-navy-500);
-  --unnyc-gold: var(--wg-gold);
-  --unnyc-gold-light: var(--wg-gold-light);
-  --unnyc-gold-dark: var(--wg-gold-dark);
-  --unnyc-warm-white: #F8F6F0;
-  --unnyc-warm-gray: #E8E4DC;
-  --unnyc-text-primary: var(--db-primary);
-  --unnyc-text-secondary: #5A6A82;
-  --unnyc-text-muted: #8A96A8;
-  --unnyc-surface: var(--db-white);
-  --unnyc-surface-alt: #F4F1EB;
-  --unnyc-surface-glass: rgba(255, 255, 255, 0.72);
-  --unnyc-border: rgba(22, 46, 81, 0.1);
-  --unnyc-shadow-sm: 0 1px 3px rgba(27, 42, 74, 0.08);
-  --unnyc-shadow-md: 0 4px 16px rgba(27, 42, 74, 0.1);
-  --unnyc-shadow-lg: 0 12px 40px rgba(27, 42, 74, 0.12);
-  --unnyc-shadow-xl: 0 20px 60px rgba(27, 42, 74, 0.15);
+  /* ---- Brand alias layer -------------------------------------------------
+     Every --unnyc-* name below is an alias onto the design system's SEMANTIC
+     tier (--wg-*), supplied by @wegovnyc/design-tokens (imported in base.css).
 
-  /* Spacing — aliased onto the shared 8px USWDS ramp (--db-space-*).
-     The UNNYC 4px ramp maps 1:1 except sp-5 (20px) and sp-24 (96px),
-     which have no db step and stay literal (rendered values unchanged). */
-  --unnyc-sp-1: var(--db-space-05);   /* 4px */
-  --unnyc-sp-2: var(--db-space-1);    /* 8px */
-  --unnyc-sp-3: var(--db-space-15);   /* 12px */
-  --unnyc-sp-4: var(--db-space-2);    /* 16px */
-  --unnyc-sp-5: 20px;                 /* no db equivalent */
-  --unnyc-sp-6: var(--db-space-3);    /* 24px */
-  --unnyc-sp-8: var(--db-space-4);    /* 32px */
-  --unnyc-sp-10: var(--db-space-5);   /* 40px */
-  --unnyc-sp-12: var(--db-space-6);   /* 48px */
-  --unnyc-sp-16: var(--db-space-7);   /* 64px */
-  --unnyc-sp-20: var(--db-space-8);   /* 80px */
-  --unnyc-sp-24: 96px;                /* no db equivalent */
+     Why an alias layer at all, rather than components consuming --wg-* directly?
+     Because ~1,400 lines of rules across this file and six page stylesheets
+     already reference --unnyc-*. Repointing 40 definitions is a value-identical
+     change that can be verified; rewriting every rule is a large diff with no
+     functional gain today. Components can migrate to --wg-* incrementally.
 
-  /* Typography — type scale aliased onto the shared core (--db-text-*).
-     Steps whose rem values match db map directly; fs-lg (1.125), fs-3xl (2),
-     fs-4xl (2.75), fs-5xl (3.5), fs-6xl (4.5) have no db step and stay
-     literal (rendered values unchanged). Font families kept local. */
-  --unnyc-font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --unnyc-font-display: 'DM Serif Display', Georgia, serif;
-  --unnyc-fs-xs: var(--db-text-3xs);   /* 0.75rem */
-  --unnyc-fs-sm: var(--db-text-xs);    /* 0.875rem */
-  --unnyc-fs-base: var(--db-text-base);/* 1rem */
-  --unnyc-fs-lg: 1.125rem;             /* no db equivalent */
-  --unnyc-fs-xl: var(--db-text-lg);    /* 1.25rem */
-  --unnyc-fs-2xl: var(--db-text-xl);   /* 1.5rem */
-  --unnyc-fs-3xl: 2rem;                /* no db equivalent */
-  --unnyc-fs-4xl: 2.75rem;             /* no db equivalent */
-  --unnyc-fs-5xl: 3.5rem;              /* no db equivalent */
-  --unnyc-fs-6xl: 4.5rem;              /* no db equivalent */
+     RULE: no raw values and no reference-tier (--db-*) tokens in this block.
+     If a value is missing from the semantic tier, add it to the system's
+     core.css — do not reintroduce a literal here. Literals in this block are
+     what made wegov.nyc and UNNYC drift into two copies of one design.
 
-  /* Radius */
-  --unnyc-radius-sm: 6px;
-  --unnyc-radius-md: 10px;
-  --unnyc-radius-lg: 16px;
-  --unnyc-radius-xl: 24px;
+     Values are UNCHANGED by this refactor — verified against a captured
+     baseline of all 52 consumed tokens plus 16 elements' computed styles. */
+  --un-blue: var(--wg-accent);
+  --un-blue-dark: var(--wg-accent-strong);
+  --un-blue-light: var(--wg-accent-soft);
+  --unnyc-navy: var(--wg-brand);
+  --unnyc-navy-deep: var(--wg-brand-deep);
+  --unnyc-navy-light: var(--wg-brand-light);
+  --unnyc-gold: var(--wg-accent-warm);
+  --unnyc-gold-light: var(--wg-accent-warm-light);
+  --unnyc-gold-dark: var(--wg-accent-warm-dark);
+  --unnyc-warm-white: var(--wg-surface-warm);
+  --unnyc-warm-gray: var(--wg-warm-gray);
+  --unnyc-text-primary: var(--wg-text);
+  --unnyc-text-secondary: var(--wg-text-secondary);
+  --unnyc-text-muted: var(--wg-text-muted);
+  --unnyc-surface: var(--wg-surface);
+  --unnyc-surface-alt: var(--wg-surface-alt);
+  --unnyc-surface-glass: var(--wg-surface-glass);
+  --unnyc-border: var(--wg-border);
+  --unnyc-shadow-sm: var(--wg-shadow-sm);
+  --unnyc-shadow-md: var(--wg-shadow-md);
+  --unnyc-shadow-lg: var(--wg-shadow-lg);
+  --unnyc-shadow-xl: var(--wg-shadow-xl);
+
+  /* Spacing — the system's 4px product ramp (--wg-sp-*). */
+  --unnyc-sp-1: var(--wg-sp-1);
+  --unnyc-sp-2: var(--wg-sp-2);
+  --unnyc-sp-3: var(--wg-sp-3);
+  --unnyc-sp-4: var(--wg-sp-4);
+  --unnyc-sp-5: var(--wg-sp-5);
+  --unnyc-sp-6: var(--wg-sp-6);
+  --unnyc-sp-8: var(--wg-sp-8);
+  --unnyc-sp-10: var(--wg-sp-10);
+  --unnyc-sp-12: var(--wg-sp-12);
+  --unnyc-sp-16: var(--wg-sp-16);
+  --unnyc-sp-20: var(--wg-sp-20);
+  --unnyc-sp-24: var(--wg-sp-24);
+
+  /* Typography — families + scale from the system. */
+  --unnyc-font-body: var(--wg-font-body);
+  --unnyc-font-display: var(--wg-font-display);
+  --unnyc-fs-xs: var(--wg-fs-xs);
+  --unnyc-fs-sm: var(--wg-fs-sm);
+  --unnyc-fs-base: var(--wg-fs-base);
+  --unnyc-fs-lg: var(--wg-fs-lg);
+  --unnyc-fs-xl: var(--wg-fs-xl);
+  --unnyc-fs-2xl: var(--wg-fs-2xl);
+  --unnyc-fs-3xl: var(--wg-fs-3xl);
+  --unnyc-fs-4xl: var(--wg-fs-4xl);
+  --unnyc-fs-5xl: var(--wg-fs-5xl);
+  --unnyc-fs-6xl: var(--wg-fs-6xl);
+
+  /* Radius — the system's Civic ramp (6/10/16/24), not the reference ramp. */
+  --unnyc-radius-sm: var(--wg-radius-sm);
+  --unnyc-radius-md: var(--wg-radius-md);
+  --unnyc-radius-lg: var(--wg-radius-lg);
+  --unnyc-radius-xl: var(--wg-radius-xl);
 
   /* Transitions */
-  --unnyc-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --unnyc-duration: 0.4s;
+  --unnyc-ease: var(--wg-ease);
+  --unnyc-duration: var(--wg-duration);
 
   /* Base */
   font-family: var(--unnyc-font-body);

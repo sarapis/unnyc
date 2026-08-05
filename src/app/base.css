@@ -20,10 +20,22 @@
 
 @layer reset, components, unnyc, site;
 
-/* Shared WeGovNYC design-system token core — unlayered custom properties
-   (definitions only; they don't participate in layer priority conflicts).
-   Supplies the --wg-* and --db-* values the UNNYC palette aliases. */
-@import url('../styles/wegov-tokens.css');
+/* WeGovNYC design system — @wegovnyc/design-tokens: the shared core plus the
+   `unnyc` brand variant. Unlayered custom-property definitions, so they don't
+   participate in layer priority conflicts and can load anywhere in the stack.
+
+   Core supplies the two token tiers (reference --db-*, semantic --wg-*); the
+   variant is the seam for UNNYC-specific divergence and is applied by the
+   `wg-unnyc` class on .unnyc-page in app/layout.js. The `.unnyc-page` block in
+   unnyc.css aliases its own --unnyc-* names onto the SEMANTIC tier.
+
+   Installed from github:sarapis/wegovnyc-design-tokens. To change a token,
+   change it THERE and bump the dependency — never patch node_modules, and
+   never re-introduce a local copy, or the fork this package deleted comes
+   straight back. Only the `unnyc` variant is imported: this app is one brand,
+   and shipping the wegov variant too would be dead CSS. */
+@import '@wegovnyc/design-tokens/core.css';
+@import '@wegovnyc/design-tokens/unnyc.css';
 
 @layer reset {
   *,
