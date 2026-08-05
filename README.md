@@ -123,19 +123,35 @@ reset < components < unnyc < site
 
 ## Deploying
 
-⚠️ **Pushing to `main` does NOT deploy.** Vercel's GitHub App isn't installed on the
-`sarapis` org, so git integration is not connected. Deploy manually:
+**Pushing to `main` deploys to production.** Git integration was connected on
+2026-08-04, so a merge to `main` goes live at <https://unnyc.wegov.nyc> with no
+manual step. PRs get preview deployments.
+
+To force a deploy without a commit:
 
 ```bash
 vercel deploy --prod
+```
+
+A fresh clone must be linked first (`.vercel/` is gitignored):
+
+```bash
+vercel link --yes --project unnyc-campaign
 ```
 
 Vercel project: `devins-projects-1baf43f0/unnyc-campaign` (named `unnyc-campaign`
 because the project name `unnyc` was already taken by the older Vite site, now at
 `old-unnyc.wegov.nyc`).
 
-To fix auto-deploy: Vercel → project → Settings → Git → Connect, approving the
-GitHub App for the `sarapis` org.
+### Why this repo is public
+
+Vercel's Hobby plan rejects git integration for **private org-owned** repos
+(409, "Upgrade to Pro"); public org-owned repos are fine, which is why the sibling
+`wegovnyc_front` has always auto-deployed. Rather than pay for Pro or maintain a
+GitHub Actions workaround, the repo was made public — after auditing the history
+for secrets (none: no `.pem`/`.key`/`.env` file has ever been committed, and
+`.env.example` holds placeholders with an empty webhook value). Secret scanning
+and push protection are enabled. **Real secrets belong in Vercel env vars.**
 
 ## Known gaps
 

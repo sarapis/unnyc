@@ -12,14 +12,23 @@ This file is the agent-specific delta.
 Next app is at the **repo root** (no `frontend/` subdirectory — unlike its parent
 repo `wegovnyc_front`). Vercel's defaults work unchanged.
 
-## ⚠️ Deploys are manual
+## ⚠️ Pushing to `main` deploys to production
 
-**Pushing to `main` does NOT deploy.** Vercel's GitHub App isn't installed on the
-`sarapis` org, so git integration is disconnected. After pushing, run:
+Git integration was connected 2026-08-04. **A push to `main` goes live at
+unnyc.wegov.nyc immediately** — there is no manual gate. Push deliberately.
 
-```bash
-vercel deploy --prod
-```
+`vercel deploy --prod` still works if you need to force a deploy without a commit
+(e.g. after a CMS change), but it's no longer required.
+
+**A fresh clone can't deploy manually until it's linked** — `.vercel/` is
+gitignored, so run `vercel link --yes --project unnyc-campaign` first.
+
+**This repo is PUBLIC**, and had to be: Vercel's Hobby plan refuses git
+integration for *private* org-owned repos (409, "Upgrade to Pro"). Public
+org-owned is fine — which is why the sibling `wegovnyc_front` always worked. Its
+history was audited clean before flipping (no secret-shaped file has ever existed
+in it; `.env.example` is placeholders only). Secret scanning + push protection are
+ON. **Keep real secrets in Vercel env vars, never in a commit.**
 
 Vercel project is `unnyc-campaign` (not `unnyc` — that name belongs to the older
 Vite site, now at `old-unnyc.wegov.nyc`). Don't "fix" the name by taking `unnyc`;
