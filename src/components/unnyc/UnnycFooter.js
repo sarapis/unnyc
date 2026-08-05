@@ -18,9 +18,8 @@ export default function UnnycFooter() {
                             <span className="unnyc-footer__logo-nyc">NYC</span>
                         </div>
                         <p className="unnyc-footer__tagline">
-                            Where the United Nations meets New York City.
-                            A free civic resource connecting global frameworks
-                            with local governance.
+                            The campaign to make New York the first city in the
+                            Americas to endorse the UN Open Source Principles.
                         </p>
                     </div>
 

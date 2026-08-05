@@ -2,9 +2,9 @@
 title: "New York Runs on Software It Doesn’t Control"
 lede: "Who pays for vendor reliance today, what endorsing the UN Open Source Principles would actually cost, and what [closing the gap](#open-by-default) on each of the eight principles would mean for the city."
 meta:
-  title: "Why Open Source Matters to NYC — UNNYC"
+  title: "Open Source for NYC: Why It Matters — UNNYC"
   description: "Why NYC’s reliance on proprietary vendor software costs the city, what endorsing the UN Open Source Principles would actually cost and fund, and how each of the eight principles lines up with the Mamdani administration’s own tech agenda."
-  ogTitle: "Why Open Source Matters to NYC — UNNYC"
+  ogTitle: "Open Source for NYC: Why It Matters — UNNYC"
   ogDescription: "What vendor reliance costs the city, what endorsement would cost and fund, and how the UN Open Source Principles line up with the Mamdani administration’s own stated tech priorities — principle by principle."
 principles:
   - slug: open-by-default

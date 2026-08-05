@@ -5,9 +5,9 @@ next:
   href: /crosswalk
   label: "Why does this matter to NYC? →"
 meta:
-  title: "New to Government Open Source? Start Here — UNNYC"
+  title: "The Global Movement in Government Open Source — UNNYC"
   description: "New to government open source? Learn the key vocabulary, the eight UN Open Source Principles, how the movement reached the UN, and who has already signed on."
-  ogTitle: "New to Government Open Source? Start Here — UNNYC"
+  ogTitle: "The Global Movement in Government Open Source — UNNYC"
   ogDescription: "The vocabulary, the principles, the history, and the map — everything you need to follow the UNNYC campaign from the beginning."
 title: "Let’s Get You Oriented"
 basicsLink: "Are you entirely new to open source? [Start with the basics ↗](https://en.wikipedia.org/wiki/Open-source_software)"
