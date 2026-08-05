@@ -83,11 +83,15 @@ function renderer() {
             return `<a href="/start#${slug}" class="unnyc-gloss__link" data-gloss="${slug}"${attr}>${text}</a>`;
         }
         // In-page and internal links stay in the tab; external ones open out.
+        // Both get `unnyc-inline-link` so a reader can actually tell prose
+        // text is clickable — the site-wide `.unnyc-page a` reset strips
+        // text-decoration and color from a bare <a>, same as gloss links
+        // needed their own class for the same reason.
         if (href?.startsWith('#') || href?.startsWith('/')) {
-            return `<a href="${href}"${title ? ` title="${title}"` : ''}>${text}</a>`;
+            return `<a href="${href}" class="unnyc-inline-link"${title ? ` title="${title}"` : ''}>${text}</a>`;
         }
         return baseLink({ href, title, tokens })
-            .replace('<a ', '<a target="_blank" rel="noopener noreferrer" ');
+            .replace('<a ', '<a class="unnyc-inline-link" target="_blank" rel="noopener noreferrer" ');
     };
 
     return r;

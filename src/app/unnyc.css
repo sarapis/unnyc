@@ -113,6 +113,24 @@
   text-decoration: none;
 }
 
+/* Links rendered from markdown prose (content.js's `unnyc-inline-link` class) —
+   in-page section jumps and external citation links both need this, since the
+   reset above otherwise makes them indistinguishable from plain text. Same
+   treatment as .unnyc-gloss__link, for one consistent "this is a link" cue
+   across the site. */
+.unnyc-page .unnyc-inline-link {
+  color: inherit;
+  text-decoration: underline solid;
+  text-decoration-color: var(--unnyc-gold-dark);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.unnyc-page .unnyc-inline-link:hover,
+.unnyc-page .unnyc-inline-link:focus {
+  color: var(--un-blue-dark);
+}
+
 .unnyc-page button {
   cursor: pointer;
   border: none;
