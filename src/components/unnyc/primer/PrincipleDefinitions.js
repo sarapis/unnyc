@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { principlesDoc } from '@/data/unnyc-primer';
 
 /**
  * PrincipleDefinitions — plain-English definitions of the eight UN Open
@@ -11,7 +10,8 @@ import { principlesDoc } from '@/data/unnyc-primer';
  * for provenance) — also viewable as a standalone printable page at
  * /start/principles.
  */
-export default function PrincipleDefinitions() {
+export default function PrincipleDefinitions({ principlesDoc }) {
+    if (!principlesDoc) return null;
     const { lead, groups } = principlesDoc;
 
     return (

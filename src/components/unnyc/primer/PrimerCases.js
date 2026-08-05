@@ -1,6 +1,5 @@
 "use client";
 
-import { cases } from '@/data/unnyc-primer';
 
 /**
  * A single case-study card. `hidden` marks cards in the duplicated set used
@@ -51,7 +50,8 @@ function CaseCard({ c, hidden }) {
  * linked site's own Open Graph tag (Munich has none, so its city-crest logo
  * is used instead).
  */
-export default function PrimerCases() {
+export default function PrimerCases({ cases }) {
+    if (!cases) return null;
     return (
         <section id="cases" className="unnyc-section">
             <div className="unnyc-container">

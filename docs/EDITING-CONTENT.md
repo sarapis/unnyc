@@ -2,16 +2,30 @@
 
 ## TL;DR
 
-Open **`content/crosswalk.md`**, change the words, commit. That's the live page.
+Open the file in **`content/`** for the page you want to change, edit the words,
+commit. That's the live page.
+
+| Page | File |
+|---|---|
+| `/` | `content/home.md` |
+| `/start` | `content/start.md` |
+| `/start/principles` | `content/principles.md` |
+| `/crosswalk` | `content/crosswalk.md` |
+| `/success` | `content/success.md` |
+| `/campaign` | `content/campaign.md` |
+| `/campaign/sign` | `content/sign.md` |
+| `/campaign/endorse` | `content/endorse.md` |
+| `/campaign/endorse/document` | `content/principles.md` (shares the principles) |
+| `/resources` | `content/resources.md` |
+
+Site chrome (nav labels, footer) is still in components — see
+[CONTENT-MAP.md](CONTENT-MAP.md).
 
 No build step to run, no CMS to log into, nothing to keep in sync — the site
 reads that file directly. If you'd rather hand it to an agent: edit the file (or
 just describe what you want) and point at `content/crosswalk.md`.
 
-> **Status:** `/crosswalk` is the first page converted, as a sample. Every other
-> page still has its copy in `src/data/unnyc-primer.js` or hardcoded in JSX —
-> see [CONTENT-MAP.md](CONTENT-MAP.md). If this pattern works for you, the rest
-> can follow.
+> **Status:** every page is converted. `content/` is the whole site's copy.
 
 ## How a content file is laid out
 
@@ -108,3 +122,22 @@ The original prose was lifted out of the JSX mechanically (not retyped), and the
 result was diffed against the previously deployed page: same words, same
 structure, same links. The only change is that one paragraph the old JSX split
 into two text nodes is now a single clean paragraph.
+
+## Markers
+
+Some pages place a structured block mid-prose. Write the marker on its own line:
+
+| Marker | Page | Renders |
+|---|---|---|
+| `{{stats}}` | `success.md` | The three-stat row inside a case study |
+| `{{principles}}` | `sign.md` | The eight principles list (from shared data, so every listing matches) |
+
+## Shared content
+
+- **The eight Principles** live once in `content/principles.md` and are read by
+  both `/start` and `/start/principles`.
+- **Glossary definitions** live in `content/start.md` under `concepts.terms`.
+  A `[term](gloss:slug)` link anywhere on the site picks up its definition from
+  there as a hover tooltip, so there's one place to edit a definition.
+- **`openSource.principles`** (short titles + one-line descriptions) is still in
+  `src/data/unnyc.js`, shared with the letter. Left there deliberately.

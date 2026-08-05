@@ -1,12 +1,15 @@
 import '../../printable-doc.css';
 import PrintButton from '@/components/unnyc/PrintButton';
-import { principlesDoc } from '@/data/unnyc-primer';
+import { getContent } from '@/lib/content';
 
-export const metadata = {
-    title: 'The Eight UN Open Source Principles — UNNYC',
-    description:
-        'A standalone, printable reference to the eight UN Open Source Principles, structured around the UN’s own principle groupings.',
-};
+export async function generateMetadata() {
+    const { meta } = getContent('principles');
+    return {
+        title: meta.title,
+        description: meta.description,
+        openGraph: { title: meta.ogTitle, description: meta.ogDescription, type: 'article' },
+    };
+}
 
 /**
  * /start/principles — a standalone, linkable/printable version of the
@@ -16,6 +19,7 @@ export const metadata = {
  * campaign's printable endorsement declaration.
  */
 export default function PrinciplesDocumentPage() {
+    const { principlesDoc } = getContent('principles');
     const { lead, groups } = principlesDoc;
 
     return (

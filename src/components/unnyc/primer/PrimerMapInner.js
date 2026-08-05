@@ -3,7 +3,6 @@
 import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { primerMapMarkers, primerMapLegend } from '@/data/unnyc-primer';
 
 /**
  * World map of governments advancing public-sector open source.
@@ -18,7 +17,7 @@ const COLORS = {
     ask: '#C0453C',    // NYC, the ask — crimson
 };
 
-export default function PrimerMapInner() {
+export default function PrimerMapInner({ markers = [], legend = [] }) {
     const containerRef = useRef(null);
     const mapRef = useRef(null);
 
@@ -42,7 +41,7 @@ export default function PrimerMapInner() {
             maxZoom: 19,
         }).addTo(map);
 
-        primerMapMarkers.forEach((m) => {
+        markers.forEach((m) => {
             const color = COLORS[m.type] || COLORS.nation;
             const isAsk = m.type === 'ask';
             const size = isAsk ? 20 : 14;
@@ -83,7 +82,7 @@ export default function PrimerMapInner() {
             <div ref={containerRef} className="unnyc-map-container" style={{ height: 480 }} />
 
             <div className="unnyc-map-legend">
-                {primerMapLegend.map((item) => (
+                {legend.map((item) => (
                     <div key={item.type} className="unnyc-map-legend-item">
                         <span
                             className="unnyc-map-legend-swatch"

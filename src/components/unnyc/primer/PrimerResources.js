@@ -1,12 +1,13 @@
 import Link from 'next/link';
-import { primerResources } from '@/data/unnyc-primer';
 
 /**
  * PrimerResources — grouped directory of primary sources: frameworks,
  * registries, communities of practice, and funding models.
  * Reuses the hub's resource-card CSS classes.
  */
-export default function PrimerResources() {
+export default function PrimerResources({ groups }) {
+    if (!groups) return null;
+    const primerResources = groups;
     return (
         <section id="resources" className="unnyc-section">
             <div className="unnyc-container">

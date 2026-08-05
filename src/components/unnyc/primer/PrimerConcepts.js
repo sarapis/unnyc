@@ -1,11 +1,11 @@
-import { concepts } from '@/data/unnyc-primer';
 
 /**
  * PrimerConcepts — the glossary of key terms (DPI, DPGs, OSPO, digital
  * sovereignty…). Each card: term, plain-English definition, and a
  * "why NYC should care" line that lands the concept locally.
  */
-export default function PrimerConcepts() {
+export default function PrimerConcepts({ concepts }) {
+    if (!concepts) return null;
     return (
         <section id="concepts" className="unnyc-section">
             <div className="unnyc-container">

@@ -102,7 +102,7 @@ export default function SuccessPage() {
                 );
             })}
 
-            <PrimerCases />
+            <PrimerCases cases={doc.caseGrid} />
 
             <section className="unnyc-success__foot">
                 <div className="unnyc-container unnyc-container--narrow">

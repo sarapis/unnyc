@@ -1,7 +1,6 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { endorsers } from '@/data/unnyc-primer';
 
 /**
  * PrimerMovementNow — combined "who's already in" section. Merges the former
@@ -15,7 +14,8 @@ import { endorsers } from '@/data/unnyc-primer';
  */
 const PrimerMapInner = dynamic(() => import('./PrimerMapInner'), { ssr: false });
 
-export default function PrimerMovementNow() {
+export default function PrimerMovementNow({ endorsers, mapMarkers, mapLegend }) {
+    if (!endorsers) return null;
     return (
         <section id="going-open-source" className="unnyc-section unnyc-section--alt unnyc-section--map">
             <div className="unnyc-container">
@@ -30,7 +30,7 @@ export default function PrimerMovementNow() {
                     </p>
                 </header>
 
-                <PrimerMapInner />
+                <PrimerMapInner markers={mapMarkers} legend={mapLegend} />
 
                 <p className="unnyc-pr-map__source">
                     This map is illustrative. For the full global picture, explore the{' '}

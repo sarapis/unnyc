@@ -1,11 +1,11 @@
-import { movement } from '@/data/unnyc-primer';
 
 /**
  * PrimerMovement — "how the UN got here" narrative + timeline.
  * The educational spine of the primer: shows open source at the UN is
  * adopted policy with institutional momentum, not a fringe conversation.
  */
-export default function PrimerMovement() {
+export default function PrimerMovement({ movement }) {
+    if (!movement) return null;
     return (
         <section id="movement" className="unnyc-section">
             <div className="unnyc-container">

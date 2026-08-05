@@ -1,4 +1,3 @@
-import { ospoDirectory } from '@/data/unnyc-primer';
 
 /**
  * PrimerOspoDirectory — "Find an OSPO": public-sector Open Source Program
@@ -11,7 +10,8 @@ import { ospoDirectory } from '@/data/unnyc-primer';
  * instead, so cards still read grouped (data is listed country by country)
  * without leaving gaps.
  */
-export default function PrimerOspoDirectory() {
+export default function PrimerOspoDirectory({ ospoDirectory }) {
+    if (!ospoDirectory) return null;
     const items = ospoDirectory.groups.flatMap((group) =>
         group.items.map((item) => ({ ...item, country: group.country }))
     );

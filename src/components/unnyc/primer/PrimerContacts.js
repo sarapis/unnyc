@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { contacts } from '@/data/unnyc-primer';
 
 /**
  * PrimerContacts — "the people to call": outward-facing organizations
@@ -8,7 +7,8 @@ import { contacts } from '@/data/unnyc-primer';
  * offices the campaign addresses. Orgs + public channels only; named
  * individuals appear only where the org itself puts them forward.
  */
-export default function PrimerContacts() {
+export default function PrimerContacts({ contacts }) {
+    if (!contacts) return null;
     return (
         <section id="contacts" className="unnyc-section unnyc-section--alt">
             <div className="unnyc-container">

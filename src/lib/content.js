@@ -19,12 +19,35 @@ import { marked } from 'marked';
  *   ### Some Heading      -> a sub-block. Its text becomes the block's `label`
  *                            and everything under it becomes that block's html.
  *   [text](gloss:ospo)    -> renders as a glossary term (class + data-slug),
- *                            matching <GlossaryTerm slug="ospo">.
+ *                            definition as a hover title, from content/start.md.
  *   normal [links](url)   -> external links get target=_blank + rel, in-page
  *                            (#anchor) and internal (/path) links do not.
  */
 
 const CONTENT_DIR = path.join(process.cwd(), 'content');
+
+/**
+ * Glossary definitions, read from content/start.md (`concepts.terms`) so a
+ * `gloss:` link can carry its definition as a hover tooltip. Cached per process;
+ * read lazily so a page that uses no glossary links never touches the file.
+ */
+let _glossary;
+function glossary() {
+    if (_glossary) return _glossary;
+    _glossary = {};
+    try {
+        const f = path.join(CONTENT_DIR, 'start.md');
+        if (fs.existsSync(f)) {
+            const { data } = matter(fs.readFileSync(f, 'utf8'));
+            for (const t of data?.concepts?.terms ?? []) {
+                if (t.slug) _glossary[t.slug] = t.def ?? '';
+            }
+        }
+    } catch {
+        /* a missing/!parseable glossary must not break an unrelated page */
+    }
+    return _glossary;
+}
 
 /** Renderer tweaks shared by every page. */
 function renderer() {
@@ -49,10 +72,15 @@ function renderer() {
     r.link = function ({ href, title, tokens }) {
         const text = this.parser.parseInline(tokens);
 
-        // `gloss:slug` -> the site's glossary-term treatment.
+        // `gloss:slug` -> the site's glossary-term treatment. The definition
+        // rides along as a title attribute so hovering still explains the term
+        // (the old <GlossaryTerm> React tooltip can't be used here, because this
+        // renders to an HTML string, not components).
         if (href?.startsWith('gloss:')) {
             const slug = href.slice('gloss:'.length);
-            return `<a href="/start#${slug}" class="unnyc-gloss__link" data-gloss="${slug}">${text}</a>`;
+            const def = glossary()[slug];
+            const attr = def ? ` title="${def.replace(/"/g, '&quot;')}"` : '';
+            return `<a href="/start#${slug}" class="unnyc-gloss__link" data-gloss="${slug}"${attr}>${text}</a>`;
         }
         // In-page and internal links stay in the tab; external ones open out.
         if (href?.startsWith('#') || href?.startsWith('/')) {
