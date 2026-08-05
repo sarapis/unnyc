@@ -10,7 +10,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "gray-matter": "^4.0.3",
     "leaflet": "^1.9.4",
+    "marked": "^18.0.9",
     "next": "16.1.1",
     "react": "19.2.3",
     "react-dom": "19.2.3"
