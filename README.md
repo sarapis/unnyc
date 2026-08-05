@@ -3,6 +3,8 @@
 The campaign to make **New York the first city in the Americas to endorse the
 [UN Open Source Principles](https://unite.un.org/en/news/sixteen-organizations-endorse-un-open-source-principles)**.
 
+**Live: <https://unnyc.wegov.nyc>**
+
 Built by [WeGov.NYC](https://wegov.nyc) and [Sarapis](https://sarapis.org). Not
 affiliated with the United Nations or any government agency.
 
@@ -43,12 +45,34 @@ this order, so it reads as a funnel *or* as a pick-your-entry-point.
 | `/campaign/endorse/document` | Printable declaration for City officials |
 | `/resources` | Reference directory |
 
-## Content lives in the repo, not the CMS
+## Editing the words
 
-Page copy is **static**: most of it is in [`src/data/unnyc-primer.js`](src/data/unnyc-primer.js)
-(glossary, case studies, crosswalk write-ups, endorsers, resources, contacts,
-map markers) and the rest is in the page components. **Edit those files to change
-the site** — there is no CMS page to edit.
+**Every page's copy is one markdown file in [`content/`](content/).** Frontmatter
+holds the structure (titles, card lists, the eight principles), the body holds the
+prose. The site renders these at build time, so **the file is the source of truth** —
+no CMS, no sync step.
+
+| Route | File |
+|---|---|
+| `/` | `content/home.md` |
+| `/start` | `content/start.md` |
+| `/start/principles` | `content/principles.md` (shared with `/start`) |
+| `/crosswalk` | `content/crosswalk.md` |
+| `/success` | `content/success.md` |
+| `/campaign` | `content/campaign.md` |
+| `/campaign/sign` | `content/sign.md` |
+| `/campaign/endorse` | `content/endorse.md` |
+| `/resources` | `content/resources.md` |
+
+Full conventions, markers and gotchas: **[docs/EDITING-CONTENT.md](docs/EDITING-CONTENT.md)**.
+What's still in components (nav labels, footer, form messages):
+[docs/CONTENT-MAP.md](docs/CONTENT-MAP.md).
+
+`src/lib/content.js` does the parsing (`gray-matter` + `marked`) and applies three
+conventions so plain markdown keeps the design: `[text](gloss:ospo)` renders a
+glossary term with its definition as a hover tooltip, external links open in a new
+tab while internal ones don't, and a blockquote whose last line starts with an
+em-dash becomes a pull-quote with a `<cite>`.
 
 ## Where form submissions go — two paths, on purpose
 
@@ -97,10 +121,41 @@ reset < components < unnyc < site
   (`--wg-*`, `--db-*`); the UNNYC palette aliases them onto `--unnyc-*` in
   `unnyc.css`.
 
+## Deploying
+
+⚠️ **Pushing to `main` does NOT deploy.** Vercel's GitHub App isn't installed on the
+`sarapis` org, so git integration is not connected. Deploy manually:
+
+```bash
+vercel deploy --prod
+```
+
+Vercel project: `devins-projects-1baf43f0/unnyc-campaign` (named `unnyc-campaign`
+because the project name `unnyc` was already taken by the older Vite site, now at
+`old-unnyc.wegov.nyc`).
+
+To fix auto-deploy: Vercel → project → Settings → Git → Connect, approving the
+GitHub App for the `sarapis` org.
+
+## Known gaps
+
+- **`/campaign/endorse` returns 503 on submit** — `ENDORSEMENT_SHEET_WEBHOOK_URL`
+  is not set in Vercel. Individual signing on `/campaign/sign` works (it goes to
+  Payload).
+- **`wegov.nyc/unnyc` still serves an older copy of this campaign.** The 301 to
+  this site hasn't been added to `wegovnyc_front` yet, so two copies are live.
+- **Footer tagline** still uses the pre-campaign framing ("Where the United Nations
+  meets New York City…").
+- **Page H1s on `/start` and `/crosswalk`** don't match their renamed nav labels
+  ("The Global Movement", "Open Source for NYC").
+
 ## History
 
 Extracted from the [wegov.nyc marketing site](https://github.com/wegovnyc/wegovnyc_front),
 where this lived at `/unnyc`. All routes moved up one level (`/unnyc/start` →
 `/start`), the CMS-driven marketing navbar was replaced with a static UNNYC nav,
 and the theme switcher, blog, and frozen marketing pages were left behind.
-`wegov.nyc/unnyc/*` now redirects here.
+Git history starts fresh here on purpose: the parent repo has two private SSH keys
+in its public history, and rebasing onto it would have replicated that exposure.
+Olivia Croteau's four-path restructure is credited via `Co-Authored-By` on the
+initial commit.
