@@ -60,11 +60,19 @@ row mid-case-study) and `{{principles}}` (sign.md, the eight-principles list).
   `Unexpected token Delim('*')`.
 - **Don't add a `title.template`** in `src/app/layout.js` — page titles already end
   in "— UNNYC" and a template double-suffixes them.
-- **Two endorsement destinations by design** (Payload for individuals, Google Sheet
-  for formal org commitments). Read the README table before "fixing" the apparent
-  duplication.
-- **`ENDORSEMENT_SHEET_WEBHOOK_URL` must be set in Vercel** or `/campaign/endorse`
-  503s on submit. Server-side only — never `NEXT_PUBLIC_`.
+- **One endorsement destination**, separated by `kind`. Individuals and formal
+  organizations both land in Payload's `campaign-endorsements`. They used to be
+  split, with orgs going to a Google Sheet via an Apps Script webhook — that is
+  gone; do not reintroduce it.
+- **The endorser wall needs published entries.** Payload read is `publishedOnly`
+  and `published` defaults to false, so a submission is invisible until someone
+  ticks it in the admin. If the wall looks broken, check that first — it read
+  `authenticated` until CMS r42, which made every anonymous read 403 while the
+  page silently fell back to an empty list.
+- **No secrets are required.** `ENDORSEMENT_SHEET_WEBHOOK_URL` and the Google
+  Sheet path were removed 2026-08-06 — formal organization endorsements post to
+  Payload's `campaign-endorsements` with `kind: 'organization'`, the same
+  collection and review step as an individual signature.
 - **Leaflet is client-only.** The map loads via `dynamic(..., { ssr: false })` from
   `PrimerMovementNow.js`, which now receives `mapMarkers`/`mapLegend` as props from
   `content/start.md`. That relative dynamic import is invisible to `@/`-prefixed

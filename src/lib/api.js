@@ -21,9 +21,11 @@
  *   - `fetchAPI('/campaign-endorsements')` — the published endorser wall on
  *     /campaign/sign.
  *
- * Note: formal ORGANIZATION endorsements do NOT go through Payload — they post
- * to /api/formal-endorsement, which forwards to a Google Sheet. Two paths by
- * design; see the README.
+ * Formal ORGANIZATION endorsements also go through `createSubmission(
+ * 'campaign-endorsements', { kind: 'organization', … })` as of 2026-08-06 —
+ * from components/unnyc/EndorseForm.js. They previously posted to
+ * /api/formal-endorsement, which forwarded to a Google Sheet; that route is
+ * gone and both endorsement flows now share one collection and one review step.
  */
 
 const PAYLOAD_URL = (

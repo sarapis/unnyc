@@ -56,7 +56,8 @@ Tracked as Hub task **`ad097da4`** (workspace `unnyc`).
 1. **Connect Vercel git auto-deploy** — needs a click in the Vercel dashboard →
    `unnyc-campaign` → Settings → Git → Connect, approving the GitHub App for the
    `sarapis` org. Until then every deploy is manual.
-2. **Set `ENDORSEMENT_SHEET_WEBHOOK_URL` in Vercel** — without it
+2. ~~**Set `ENDORSEMENT_SHEET_WEBHOOK_URL` in Vercel**~~ — RESOLVED 2026-08-06 by
+   deleting the Google Sheet path entirely; endorsements go to Payload. Originally: without it
    `/campaign/endorse` returns 503 on submit. It's the Google Apps Script Web App
    URL that appends formal organization endorsements to a Google Sheet. Server-side
    only; must **not** be `NEXT_PUBLIC_`. (Individual signing on `/campaign/sign`

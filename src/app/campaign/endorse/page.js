@@ -15,7 +15,7 @@ export async function generateMetadata() {
 /**
  * /campaign/endorse — the formal-commitment path, distinct from the public open
  * letter at /campaign/sign. Organizations record a formal commitment
- * (EndorseForm -> /api/formal-endorsement -> Google Sheet), and anyone can open
+ * (EndorseForm -> Payload `campaign-endorsements`, kind: organization), and anyone can open
  * the printable declaration prepared for the City to sign.
  *
  * ALL COPY LIVES IN content/endorse.md. See docs/EDITING-CONTENT.md.

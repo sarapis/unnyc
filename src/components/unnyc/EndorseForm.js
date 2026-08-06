@@ -1,15 +1,10 @@
 "use client";
 import { useState } from 'react';
-
-const ORG_TYPES = ['Academia', 'Civil Society', 'Private Sector', 'Technical Community', 'International Organisation'];
-const EMPLOYEE_BANDS = ['1-10', '11-50', '51-250', '251-1000', 'Over 1000'];
+import { createSubmission } from '@/lib/api';
 
 const EMPTY = {
-    orgType: '',
     orgName: '',
-    country: '',
     website: '',
-    employees: '',
     firstName: '',
     jobTitle: '',
     workEmail: '',
@@ -19,14 +14,25 @@ const EMPTY = {
 };
 
 /**
- * EndorseForm — mirrors the fields of "The United Nations Open Source
- * Principles Endorsement" form (the reference CryptPad form provided for
- * this page), so the same information organizations already expect to give
- * the UN directly maps onto NYC's own formal-endorsement record. Posts to
- * /api/formal-endorsement, which forwards to a Google Sheet via an Apps
- * Script Web App endpoint.
+ * EndorseForm — formal endorsement on behalf of an organization.
+ *
+ * Modelled on "The United Nations Open Source Principles Endorsement" form, so
+ * the information organizations already expect to give the UN maps onto NYC's
+ * own record. Posts straight to Payload's `campaign-endorsements` with
+ * kind: 'organization' — the SAME collection and review flow as the individual
+ * signatures on /campaign/sign, so approved endorsements appear on the public
+ * endorser wall.
+ *
+ * It used to POST to /api/formal-endorsement, which forwarded to a Google Sheet
+ * via an Apps Script webhook. That route is gone: the Sheet needed a deployed
+ * Apps Script and a bearer-capability URL held as a Vercel secret, to reach a
+ * destination Payload already modelled (`kind: organization`, `website`,
+ * `contactName`) and that the endorser wall already renders.
+ *
+ * Three fields from the UN form were dropped as unmodelled segmentation data:
+ * organisation type, country, and employee count.
  */
-export default function EndorseForm() {
+export default function EndorseForm({ campaign = 'un-open-source' }) {
     const [fields, setFields] = useState(EMPTY);
     // 'idle' | 'submitting' | 'success' | 'error'
     const [status, setStatus] = useState('idle');
@@ -38,24 +44,9 @@ export default function EndorseForm() {
         e.preventDefault();
         if (status === 'submitting') return;
 
-        if (!fields.orgType) {
-            setStatus('error');
-            setMessage('Please select an organisation / association type.');
-            return;
-        }
         if (!fields.orgName.trim()) {
             setStatus('error');
             setMessage('Please enter the name of your organisation / association.');
-            return;
-        }
-        if (!fields.country.trim()) {
-            setStatus('error');
-            setMessage('Please enter the country of your organisation / association.');
-            return;
-        }
-        if (!fields.employees) {
-            setStatus('error');
-            setMessage('Please select the number of employees.');
             return;
         }
         if (!fields.firstName.trim()) {
@@ -88,27 +79,23 @@ export default function EndorseForm() {
         setMessage('');
 
         try {
-            const res = await fetch('/api/formal-endorsement', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    orgType: fields.orgType,
-                    orgName: fields.orgName.trim(),
-                    country: fields.country.trim(),
-                    website: fields.website.trim() || undefined,
-                    employees: fields.employees,
-                    firstName: fields.firstName.trim(),
-                    jobTitle: fields.jobTitle.trim(),
-                    workEmail: fields.workEmail.trim(),
-                    endorses: fields.endorses,
-                    activity: fields.activity.trim() || undefined,
-                    consent: fields.consent,
-                }),
+            // Field names are the collection's, not the form's: `name` is the
+            // organisation, `contactName`/`title` the contact point. See
+            // CampaignEndorsements in the Sarapis CMS.
+            await createSubmission('campaign-endorsements', {
+                kind: 'organization',
+                campaign,
+                name: fields.orgName.trim(),
+                email: fields.workEmail.trim(),
+                contactName: fields.firstName.trim(),
+                title: fields.jobTitle.trim(),
+                website: fields.website.trim() || undefined,
+                activity: fields.activity.trim() || undefined,
+                activityConsent: fields.consent === 'Yes',
             });
-            if (!res.ok) throw new Error('Request failed');
 
             setStatus('success');
-            setMessage('Thank you. Your organisation’s formal endorsement has been recorded.');
+            setMessage('Thank you. Your organisation’s endorsement has been recorded and will appear on the endorser wall once reviewed.');
             setFields(EMPTY);
         } catch (err) {
             setStatus('error');
@@ -131,33 +118,9 @@ export default function EndorseForm() {
 
                 <div className="unnyc-cmp-form__row">
                     <label className="unnyc-cmp-form__field">
-                        <span>Organisation / Association type *</span>
-                        <select value={fields.orgType} onChange={set('orgType')} required>
-                            <option value="" disabled>Select one</option>
-                            {ORG_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
-                        </select>
-                    </label>
-                    <label className="unnyc-cmp-form__field">
-                        <span>Number of employees *</span>
-                        <select value={fields.employees} onChange={set('employees')} required>
-                            <option value="" disabled>Select one</option>
-                            {EMPLOYEE_BANDS.map((b) => <option key={b} value={b}>{b}</option>)}
-                        </select>
-                    </label>
-                </div>
-
-                <div className="unnyc-cmp-form__row">
-                    <label className="unnyc-cmp-form__field">
                         <span>Name of Organisation / Association *</span>
                         <input type="text" autoComplete="organization" value={fields.orgName} onChange={set('orgName')} required />
                     </label>
-                    <label className="unnyc-cmp-form__field">
-                        <span>Country of Organisation / Association *</span>
-                        <input type="text" autoComplete="country-name" value={fields.country} onChange={set('country')} required />
-                    </label>
-                </div>
-
-                <div className="unnyc-cmp-form__row">
                     <label className="unnyc-cmp-form__field">
                         <span>Website of Organisation / Association <em>(optional)</em></span>
                         <input type="url" inputMode="url" placeholder="https://" value={fields.website} onChange={set('website')} />

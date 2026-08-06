@@ -43,18 +43,23 @@ async function getEndorsements() {
     }
 }
 
-async function getStats() {
-    try {
-        const res = await fetchAPI('/campaign-endorsements/stats', { campaign: CAMPAIGN });
-        return res?.data || null;
-    } catch (e) {
-        console.error('Campaign: stats fetch failed —', e.message);
-        return null;
-    }
+/**
+ * Tally, derived from the rows we already fetched.
+ *
+ * There used to be a second request to `/campaign-endorsements/stats`. That is
+ * not a Payload endpoint — Payload read `stats` as a document id, so it 403'd on
+ * every render and the tally never once appeared. Counting the list we already
+ * have is one fewer request and cannot drift from what the wall shows.
+ */
+function tally(endorsements) {
+    const organizations = endorsements.filter((e) => e.kind === 'organization').length;
+    const individuals = endorsements.filter((e) => e.kind === 'individual').length;
+    return { organizations, individuals, total: organizations + individuals };
 }
 
 export default async function CampaignSignPage() {
-    const [endorsements, stats] = await Promise.all([getEndorsements(), getStats()]);
+    const endorsements = await getEndorsements();
+    const stats = tally(endorsements);
     const doc = getContent('sign');
     const orgs = endorsements.filter((e) => e.kind === 'organization');
     const people = endorsements.filter((e) => e.kind === 'individual');

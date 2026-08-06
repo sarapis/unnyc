@@ -74,17 +74,23 @@ glossary term with its definition as a hover tooltip, external links open in a n
 tab while internal ones don't, and a blockquote whose last line starts with an
 em-dash becomes a pull-quote with a `<cite>`.
 
-## Where form submissions go — two paths, on purpose
+## Where form submissions go
 
 | Flow | Destination | Notes |
 |---|---|---|
 | **Individual signature** (`/campaign/sign`) | Payload CMS → `campaign-endorsements` | Arrives unpublished. **Publishing an entry in the Payload admin is the review step** that puts a name on the public endorser wall. Email is never exposed publicly. |
 | **"Get updates" email** | Payload CMS → `campaign-signups` | Best-effort; never blocks a signature. |
-| **Formal org endorsement** (`/campaign/endorse`) | Google Sheet via Apps Script | Posts to `/api/formal-endorsement`, which forwards server-side so the webhook URL never reaches the browser. |
+| **Formal org endorsement** (`/campaign/endorse`) | Payload CMS → `campaign-endorsements` (`kind: organization`) | Same collection and review step as an individual signature. Approved entries appear on the public endorser wall. |
 
-This split is deliberate — the two flows have different review processes and
-audiences. If you consolidate them later, `src/lib/api.js` and
-`src/app/api/formal-endorsement/route.js` are the only places to change.
+Both endorsement flows now land in the **same** Payload collection, separated by
+`kind`. They used to be split — org endorsements went to a Google Sheet via an
+Apps Script webhook — which meant a second place to look, a bearer-capability URL
+held as a Vercel secret, and a destination Payload had already modelled
+(`kind: organization`, `website`, `contactName`) and the endorser wall already
+rendered. Consolidated 2026-08-06; `/api/formal-endorsement` is deleted.
+
+Three fields from the UN's reference form were dropped as unmodelled
+segmentation data: organisation type, country, and employee count.
 
 ### Payload CMS
 
@@ -102,7 +108,10 @@ audiences. If you consolidate them later, `src/lib/api.js` and
 |---|---|---|---|
 | `NEXT_PUBLIC_PAYLOAD_URL` | no | `https://next.sarapis.org` | CMS origin |
 | `NEXT_PUBLIC_SITE_KEY` | no | `wegovnyc` | Brand scope in Payload |
-| `ENDORSEMENT_SHEET_WEBHOOK_URL` | **yes, in prod** | — | Apps Script Web App URL for formal endorsements. Server-side only. Without it `/api/formal-endorsement` returns `503` and the endorse form shows an error. |
+
+There are **no required secrets**. `ENDORSEMENT_SHEET_WEBHOOK_URL` was removed on
+2026-08-06 with the Google Sheet path — endorsements go to Payload, which needs no
+credential beyond the public brand key.
 
 ## CSS architecture
 
@@ -114,12 +123,15 @@ reset < components < unnyc < site
 
 - `unnyc.css` and `primer.css` wrap their rules in `@layer unnyc`.
 - **`site` sits above `unnyc` on purpose.** The nav lives inside `.unnyc-page`
-  so it inherits the `--unnyc-*` design tokens — which also means
+  so it inherits that scope's tokens — which also means
   `.unnyc-page a { color: inherit }` would otherwise paint the nav links
   navy-on-navy. A later layer beats it with no specificity hacks.
-- Shared tokens: [`src/styles/wegov-tokens.css`](src/styles/wegov-tokens.css)
-  (`--wg-*`, `--db-*`); the UNNYC palette aliases them onto `--unnyc-*` in
-  `unnyc.css`.
+- **Tokens come from [`@wegovnyc/design-tokens`](https://github.com/sarapis/wegovnyc-design-tokens)**,
+  imported in `base.css` along with the `unnyc` brand variant. Rules read the
+  SEMANTIC tier (`--wg-*`) directly — the local `--unnyc-*` alias layer and the
+  hand-copied `wegov-tokens.css` were both deleted on 2026-08-05. Never write a
+  colour literal or read a reference token (`--db-*`) in a rule: both are
+  invisible to the brand variant. `npm run lint:tokens` warns if you do.
 
 ## Deploying
 
@@ -155,16 +167,12 @@ and push protection are enabled. **Real secrets belong in Vercel env vars.**
 
 ## Known gaps
 
-- **`/campaign/endorse` returns 503 on submit** — `ENDORSEMENT_SHEET_WEBHOOK_URL`
-  is not set in Vercel, and the Apps Script it points at does not appear to exist
-  yet. Individual signing on `/campaign/sign` works (it goes to Payload).
-  **The receiving end is written and the setup is documented:**
-  [`docs/ENDORSEMENT-INTAKE.md`](docs/ENDORSEMENT-INTAKE.md) +
-  [`docs/endorsement-apps-script.gs`](docs/endorsement-apps-script.gs). It needs a
-  person: the webhook URL is a bearer capability, so it is entered in the Vercel
-  dashboard, not committed. Two things bite here — "Who has access" must be
-  **Anyone** (not "Anyone with a Google account", which returns a login page and
-  surfaces as 502), and Vercel env vars need a **redeploy** to take effect.
+- **The endorser wall needs the CMS deployed.** `/campaign/endorse` no longer
+  503s — it posts to Payload — but the wall on `/campaign/sign` stays empty until
+  the CMS ships `r42`, which makes reads public (they currently 403) and adds the
+  `activity` / `activityConsent` fields. **Deploy the CMS before this front-end**,
+  or Payload silently drops those two fields on submission. Existing signatures
+  also need a moderator pass: `published` defaults to false.
 - **The eight Principles are listed in three places and have already drifted.**
   Despite what the "Shared content" notes elsewhere imply, there is **no single
   source**: `src/data/unnyc.js`'s `openSource.principles` drives `/campaign/sign`,
