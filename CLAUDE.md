@@ -43,6 +43,13 @@ the JSX.** Page components are layout only.
 Markers an editor can place on their own line: `{{stats}}` (success.md, the stats
 row mid-case-study) and `{{principles}}` (sign.md, the eight-principles list).
 
+`scripts/validate-content.mjs` (`npm run lint:content`) guards these files. It
+runs in `prebuild` **and** as the `Validate content` GitHub Action on every push
+and PR — the PR run is the one that matters, since a push to `main` deploys with
+no gate. It checks YAML validity, unterminated quotes, frontmatter slugs missing
+their `## slug` section, duplicate `### Label` keys, and unknown `gloss:` refs
+(that last one warns only). Errors exit 1.
+
 ## Non-obvious things that will bite you
 
 - **`getContent()` must be called inside the component or `generateMetadata`, not
@@ -55,6 +62,12 @@ row mid-case-study) and `{{principles}}` (sign.md, the eight-principles list).
   nav sits inside `.unnyc-page` to inherit its tokens, so `.unnyc-page a { color:
   inherit }` in `@layer unnyc` will paint nav links navy-on-navy if `site` stops
   being last.
+- **An unterminated `"` in frontmatter is the failure mode to know.** YAML reads
+  on into the following lines hunting for the closing quote. Sometimes that
+  fails the build pointing several lines *below* the real mistake (this is what
+  broke `cab57e1`); sometimes it parses cleanly and silently eats a key or
+  renders a stray `"`. `lint:content` catches both — don't weaken the
+  odd-quote-count check, it is the only one that sees the silent variant.
 - **Never write `*/` inside a CSS comment** (e.g. listing `--unnyc-*` families as
   `--unnyc-*/--un-*`). It closes the comment; Turbopack fails with a confusing
   `Unexpected token Delim('*')`.

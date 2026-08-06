@@ -1,0 +1,31 @@
+# Validates content/*.md on every push and pull request.
+#
+# The point is the pull-request run: a push to `main` deploys to production
+# immediately, so the useful place to catch a malformed content file is before
+# the merge. Content edits should go through a PR for that reason.
+#
+# It duplicates the `prebuild` check on purpose — this reports in seconds
+# against the commit, rather than as a failed deploy several minutes later.
+name: Validate content
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # Only gray-matter is needed, but installing the real lockfile keeps this
+      # honest about the version the build actually parses with.
+      - run: npm ci
+
+      - run: npm run lint:content

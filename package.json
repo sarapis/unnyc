@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "lint:tokens": "wg-lint-tokens",
-    "prebuild": "wg-lint-tokens || true"
+    "lint:content": "node scripts/validate-content.mjs",
+    "prebuild": "wg-lint-tokens || true; node scripts/validate-content.mjs"
   },
   "dependencies": {
     "@wegovnyc/design-tokens": "github:sarapis/wegovnyc-design-tokens",

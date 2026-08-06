@@ -25,6 +25,11 @@ No build step to run, no CMS to log into, nothing to keep in sync — the site
 reads that file directly. If you'd rather hand it to an agent: edit the file (or
 just describe what you want) and point at `content/crosswalk.md`.
 
+> **Edit through a pull request, not straight into `main`.** A push to `main`
+> deploys to production immediately. On a PR, the `Validate content` check runs
+> in seconds and tells you if the frontmatter is malformed *before* it can take
+> the build down. Run it yourself with `npm run lint:content`.
+
 > **Status:** every page is converted. `content/` is the whole site's copy.
 
 ## How a content file is laid out
@@ -109,6 +114,12 @@ The visible `<h1>` is `title:`, which is separate on purpose.
   inside one section.
 - **`getContent()` is server-only** (it reads the filesystem). Import it in
   Server Components only — never in a `"use client"` file.
+- **Mind your quotes.** Every `"` needs its partner. Leave one off and YAML
+  keeps reading into the lines below, swallowing whatever follows into the
+  string — sometimes failing the build with an error pointing at the *wrong*
+  line, sometimes parsing "fine" and quietly dropping a whole key. This broke a
+  deploy on 2026-08-06. `npm run lint:content` now catches both shapes and names
+  the real line; it runs before every build, and on every push and pull request.
 
 ## How it works, in three files
 
