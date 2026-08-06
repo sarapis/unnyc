@@ -13,30 +13,30 @@
 @layer unnyc {
 
   .unnyc-doc-wrap {
-    background: var(--unnyc-surface-alt, #f2efe9);
-    padding: var(--unnyc-sp-10) var(--unnyc-sp-4) var(--unnyc-sp-20);
+    background: var(--wg-surface-alt, #f2efe9);
+    padding: var(--wg-sp-10) var(--wg-sp-4) var(--wg-sp-20);
     min-height: 100vh;
   }
 
   .unnyc-doc-toolbar {
     max-width: 800px;
-    margin: 0 auto var(--unnyc-sp-6);
+    margin: 0 auto var(--wg-sp-6);
     display: flex;
     align-items: center;
-    gap: var(--unnyc-sp-4);
+    gap: var(--wg-sp-4);
     flex-wrap: wrap;
   }
 
   .unnyc-doc-toolbar__btn {
     appearance: none;
-    background: var(--unnyc-warm-white, #FFFFFF);
-    font-family: var(--unnyc-font-body);
+    background: var(--wg-surface-warm, #FFFFFF);
+    font-family: var(--wg-font-body);
     cursor: pointer;
   }
 
   .unnyc-doc-toolbar__note {
-    font-size: var(--unnyc-fs-xs);
-    color: var(--unnyc-text-muted);
+    font-size: var(--wg-fs-xs);
+    color: var(--wg-text-muted);
     margin: 0;
   }
 
@@ -53,13 +53,13 @@
 
   .unnyc-doc-page__letterhead {
     text-align: center;
-    margin-bottom: var(--unnyc-sp-8);
+    margin-bottom: var(--wg-sp-8);
   }
 
   .unnyc-doc-page__seal {
     width: 96px;
     height: 96px;
-    margin: 0 auto var(--unnyc-sp-4);
+    margin: 0 auto var(--wg-sp-4);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -86,7 +86,7 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     color: #555;
-    margin: var(--unnyc-sp-1) 0 0;
+    margin: var(--wg-sp-1) 0 0;
   }
 
   .unnyc-doc-page__title {
@@ -95,24 +95,24 @@
     font-size: 1.4rem;
     text-align: center;
     line-height: 1.4;
-    margin: 0 0 var(--unnyc-sp-8);
+    margin: 0 0 var(--wg-sp-8);
   }
 
   .unnyc-doc-page__witness {
     font-size: 0.98rem;
     text-align: justify;
-    margin: var(--unnyc-sp-6) 0 var(--unnyc-sp-10);
+    margin: var(--wg-sp-6) 0 var(--wg-sp-10);
   }
 
   .unnyc-doc-page__sigblock {
     display: flex;
     flex-direction: column;
-    gap: var(--unnyc-sp-8);
-    margin-bottom: var(--unnyc-sp-10);
+    gap: var(--wg-sp-8);
+    margin-bottom: var(--wg-sp-10);
   }
 
   .unnyc-doc-page__sigline p {
-    margin: var(--unnyc-sp-1) 0 0;
+    margin: var(--wg-sp-1) 0 0;
     font-size: 0.85rem;
     color: #555;
   }
@@ -128,36 +128,36 @@
   .unnyc-doc-page__intro {
     font-size: 1rem;
     text-align: justify;
-    margin: 0 0 var(--unnyc-sp-6);
+    margin: 0 0 var(--wg-sp-6);
   }
 
   .unnyc-doc-page__lead-in {
     font-size: 0.95rem;
     font-weight: 700;
-    margin: 0 0 var(--unnyc-sp-5);
+    margin: 0 0 var(--wg-sp-5);
   }
 
   .unnyc-doc-page__primary {
     border: 1.5px solid #1a1a1a;
     border-left: 6px solid #1a1a1a;
-    padding: var(--unnyc-sp-5) var(--unnyc-sp-6);
-    margin: 0 0 var(--unnyc-sp-8);
+    padding: var(--wg-sp-5) var(--wg-sp-6);
+    margin: 0 0 var(--wg-sp-8);
   }
 
   .unnyc-doc-page__primary-label {
-    font-family: var(--unnyc-font-body);
+    font-family: var(--wg-font-body);
     font-size: 0.68rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 2px;
     color: #777;
-    margin: 0 0 var(--unnyc-sp-2);
+    margin: 0 0 var(--wg-sp-2);
   }
 
   .unnyc-doc-page__primary-title {
     font-size: 1.15rem;
     font-weight: 700;
-    margin: 0 0 var(--unnyc-sp-2);
+    margin: 0 0 var(--wg-sp-2);
   }
 
   .unnyc-doc-page__primary-desc {
@@ -166,7 +166,7 @@
   }
 
   .unnyc-doc-page__group {
-    margin: 0 0 var(--unnyc-sp-6);
+    margin: 0 0 var(--wg-sp-6);
   }
 
   .unnyc-doc-page__group-title {
@@ -174,8 +174,8 @@
     font-size: 1rem;
     font-weight: 700;
     border-bottom: 1px solid #ccc;
-    padding-bottom: var(--unnyc-sp-2);
-    margin: 0 0 var(--unnyc-sp-3);
+    padding-bottom: var(--wg-sp-2);
+    margin: 0 0 var(--wg-sp-3);
   }
 
   .unnyc-doc-page__group-list {
@@ -184,13 +184,13 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: var(--unnyc-sp-2);
+    gap: var(--wg-sp-2);
   }
 
   .unnyc-doc-page__group-list li {
     display: flex;
     align-items: flex-start;
-    gap: var(--unnyc-sp-3);
+    gap: var(--wg-sp-3);
     font-size: 0.94rem;
   }
 
@@ -205,8 +205,8 @@
   .unnyc-doc-page__primary-header {
     display: flex;
     align-items: center;
-    gap: var(--unnyc-sp-3);
-    margin-bottom: var(--unnyc-sp-2);
+    gap: var(--wg-sp-3);
+    margin-bottom: var(--wg-sp-2);
   }
 
   .unnyc-doc-page__primary-header .unnyc-doc-page__primary-title {
@@ -214,17 +214,17 @@
   }
 
   .unnyc-doc-page__footnote {
-    font-family: var(--unnyc-font-body);
+    font-family: var(--wg-font-body);
     font-size: 0.72rem;
     color: #888;
     line-height: 1.5;
     border-top: 1px solid #ddd;
-    padding-top: var(--unnyc-sp-4);
+    padding-top: var(--wg-sp-4);
   }
 
   @media (max-width: 640px) {
     .unnyc-doc-page {
-      padding: var(--unnyc-sp-8) var(--unnyc-sp-5);
+      padding: var(--wg-sp-8) var(--wg-sp-5);
     }
   }
 

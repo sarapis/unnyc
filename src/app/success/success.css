@@ -8,26 +8,26 @@
 @layer unnyc {
 
   .unnyc-success__header {
-    padding: var(--unnyc-sp-12) 0 var(--unnyc-sp-10);
+    padding: var(--wg-sp-12) 0 var(--wg-sp-10);
     background:
       radial-gradient(ellipse at 80% -20%, rgba(75, 146, 219, 0.12), transparent 55%),
-      var(--unnyc-warm-white);
-    border-bottom: 1px solid var(--unnyc-border);
+      var(--wg-surface-warm);
+    border-bottom: 1px solid var(--wg-border);
     text-align: center;
   }
 
   .unnyc-success__title {
-    font-family: var(--unnyc-font-display);
+    font-family: var(--wg-font-display);
     font-weight: 400;
-    font-size: var(--unnyc-fs-4xl);
+    font-size: var(--wg-fs-4xl);
     line-height: 1.15;
-    color: var(--unnyc-navy);
-    margin: 0 0 var(--unnyc-sp-5);
+    color: var(--wg-brand);
+    margin: 0 0 var(--wg-sp-5);
   }
 
   .unnyc-success__lede {
-    font-size: var(--unnyc-fs-lg);
-    color: var(--unnyc-text-secondary);
+    font-size: var(--wg-fs-lg);
+    color: var(--wg-text-secondary);
     line-height: 1.7;
     max-width: 680px;
     margin: 0 auto;
@@ -37,8 +37,8 @@
      Linked from the header lede — land below the sticky site-header
      rather than flush against it (same pattern as the hub's hash jumps). */
   .unnyc-success__case {
-    padding: 0 0 var(--unnyc-sp-16);
-    border-bottom: 1px solid var(--unnyc-border);
+    padding: 0 0 var(--wg-sp-16);
+    border-bottom: 1px solid var(--wg-border);
   }
 
   .unnyc-pr .unnyc-success__case[id] {
@@ -46,7 +46,7 @@
   }
 
   .unnyc-success__case--alt {
-    background: var(--unnyc-surface-alt);
+    background: var(--wg-surface-alt);
   }
 
   .unnyc-success__case-banner {
@@ -54,7 +54,7 @@
     height: 360px;
     overflow: hidden;
     position: relative;
-    margin-bottom: var(--unnyc-sp-10);
+    margin-bottom: var(--wg-sp-10);
   }
 
   .unnyc-success__case-banner img {
@@ -66,13 +66,13 @@
 
   .unnyc-success__case-banner-credit {
     position: absolute;
-    right: var(--unnyc-sp-3);
-    bottom: var(--unnyc-sp-2);
+    right: var(--wg-sp-3);
+    bottom: var(--wg-sp-2);
     font-size: 0.7rem;
     color: rgba(255, 255, 255, 0.85);
     background: rgba(0, 0, 0, 0.35);
     padding: 2px 8px;
-    border-radius: var(--unnyc-radius-sm);
+    border-radius: var(--wg-radius-sm);
     text-decoration: none;
   }
 
@@ -87,18 +87,18 @@
   }
 
   .unnyc-success__case-title {
-    font-family: var(--unnyc-font-display);
+    font-family: var(--wg-font-display);
     font-weight: 400;
-    font-size: var(--unnyc-fs-3xl);
-    color: var(--unnyc-navy);
-    margin: 0 0 var(--unnyc-sp-6);
+    font-size: var(--wg-fs-3xl);
+    color: var(--wg-brand);
+    margin: 0 0 var(--wg-sp-6);
   }
 
   .unnyc-success__case p {
-    font-size: var(--unnyc-fs-lg);
+    font-size: var(--wg-fs-lg);
     line-height: 1.75;
-    color: var(--unnyc-text-primary);
-    margin: 0 0 var(--unnyc-sp-5);
+    color: var(--wg-text);
+    margin: 0 0 var(--wg-sp-5);
   }
 
   .unnyc-success__case p:last-of-type {
@@ -109,67 +109,67 @@
   .unnyc-success__stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--unnyc-sp-5);
-    margin: var(--unnyc-sp-8) 0;
+    gap: var(--wg-sp-5);
+    margin: var(--wg-sp-8) 0;
   }
 
   .unnyc-success__stat {
     text-align: center;
-    padding: var(--unnyc-sp-5) var(--unnyc-sp-4);
-    background: var(--unnyc-surface);
-    border: 1px solid var(--unnyc-border);
-    border-radius: var(--unnyc-radius-md);
-    box-shadow: var(--unnyc-shadow-sm);
+    padding: var(--wg-sp-5) var(--wg-sp-4);
+    background: var(--wg-surface);
+    border: 1px solid var(--wg-border);
+    border-radius: var(--wg-radius-md);
+    box-shadow: var(--wg-shadow-sm);
   }
 
   .unnyc-success__stat-number {
     display: block;
-    font-family: var(--unnyc-font-display);
+    font-family: var(--wg-font-display);
     font-weight: 400;
-    font-size: var(--unnyc-fs-3xl);
-    color: var(--unnyc-navy);
+    font-size: var(--wg-fs-3xl);
+    color: var(--wg-brand);
   }
 
   .unnyc-success__stat-label {
     display: block;
-    font-size: var(--unnyc-fs-xs);
-    color: var(--unnyc-text-muted);
-    margin-top: var(--unnyc-sp-1);
+    font-size: var(--wg-fs-xs);
+    color: var(--wg-text-muted);
+    margin-top: var(--wg-sp-1);
   }
 
   .unnyc-success__sources {
-    margin-top: var(--unnyc-sp-6);
-    font-size: var(--unnyc-fs-sm);
-    color: var(--unnyc-text-muted);
+    margin-top: var(--wg-sp-6);
+    font-size: var(--wg-fs-sm);
+    color: var(--wg-text-muted);
   }
 
   .unnyc-success__sources a {
-    color: var(--un-blue-dark);
+    color: var(--wg-accent-strong);
     font-weight: 600;
   }
 
   .unnyc-success__foot {
-    padding: var(--unnyc-sp-16) 0;
+    padding: var(--wg-sp-16) 0;
     text-align: center;
   }
 
   .unnyc-success__foot p {
-    font-size: var(--unnyc-fs-xl);
-    font-family: var(--unnyc-font-display);
-    color: var(--unnyc-navy);
-    margin: 0 0 var(--unnyc-sp-6);
+    font-size: var(--wg-fs-xl);
+    font-family: var(--wg-font-display);
+    color: var(--wg-brand);
+    margin: 0 0 var(--wg-sp-6);
   }
 
   .unnyc-success__foot-ctas {
     display: flex;
     justify-content: center;
-    gap: var(--unnyc-sp-4);
+    gap: var(--wg-sp-4);
     flex-wrap: wrap;
   }
 
   .unnyc-success__foot-ctas .unnyc-btn--outline {
-    color: var(--unnyc-navy);
-    border-color: var(--unnyc-border);
+    color: var(--wg-brand);
+    border-color: var(--wg-border);
   }
 
   @media (max-width: 900px) {
