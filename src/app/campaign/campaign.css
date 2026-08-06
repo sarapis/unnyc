@@ -376,6 +376,9 @@
     font-family: inherit;
   }
 
+  /* wg-lint-ok: native <option> is drawn by the OS in its own popup, on a
+     system-white background this stylesheet does not control. Near-black is
+     for legibility there and is brand-independent by nature. */
   .unnyc-cmp-form__field select option {
     color: #1a1a1a;
   }
@@ -502,6 +505,11 @@
     margin: var(--wg-sp-4) 0;
   }
 
+  /* wg-lint-ok: NO SEMANTIC EXISTS YET for an error colour. The system
+     carries state colours only in the REFERENCE tier (--db-danger etc.), and
+     this is a light red for a DARK surface, not --db-danger (#b50909).
+     Naming and valuing that token is an editorial call — tracked, not
+     forgotten. Until it lands this is unreachable by the brand variant. */
   .unnyc-cmp-form__error {
     color: #ff8f8f;
     font-size: var(--wg-fs-sm);

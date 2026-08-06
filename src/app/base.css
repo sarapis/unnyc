@@ -52,6 +52,9 @@
     margin: 0;
     padding: 0;
     line-height: 1.6;
+    /* wg-lint-ok: reset baseline, not brand. This is the unthemed <body>
+       default beneath .unnyc-page, which sets color: var(--wg-text) for all
+       real content. Nothing renders outside .unnyc-page today. */
     color: #171717;
     background: var(--wg-surface);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, Arial, Helvetica, sans-serif;
