@@ -2,8 +2,7 @@ import '../campaign.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import CampaignSignForm from '@/components/unnyc/CampaignSignForm';
 import { fetchAPI } from '@/lib/api';
-import { openSource } from '@/data/unnyc';
-import { getContent, inlineMd } from '@/lib/content';
+import { getContent, inlineMd, principlesFlat } from '@/lib/content';
 
 export async function generateMetadata() {
     const { meta } = getContent('sign');
@@ -20,10 +19,10 @@ export async function generateMetadata() {
  * `campaign-endorsements` collection and appear on the endorser wall below
  * once published (vetting = publishing in the Sarapis admin).
  *
- * ALL COPY LIVES IN content/sign.md, except the eight principles, which are
- * still pulled from data (openSource.principles) so they stay identical to
- * every other place the site lists them. `{{principles}}` in the markdown marks
- * where that list is injected. See docs/EDITING-CONTENT.md.
+ * ALL COPY LIVES IN content/sign.md, except the eight principles, which come
+ * from content/principles.md — the single source shared with /start and the
+ * printable declaration. `{{principles}}` in the markdown marks where that list
+ * is injected. See docs/EDITING-CONTENT.md.
  *
  * Revalidated every 5 minutes so newly published endorsements and the live
  * tally appear without a rebuild.
@@ -65,6 +64,7 @@ export default async function CampaignSignPage() {
     const endorsements = await getEndorsements();
     const stats = tally(endorsements);
     const doc = getContent('sign');
+    const principles = principlesFlat(getContent('principles').principlesDoc);
     const orgs = endorsements.filter((e) => e.kind === 'organization');
     const people = endorsements.filter((e) => e.kind === 'individual');
 
@@ -115,7 +115,7 @@ export default async function CampaignSignPage() {
                             {c.after !== null && (
                                 <>
                                     <ol className="unnyc-cmp-letter__principles">
-                                        {openSource.principles.map((p, j) => (
+                                        {principles.map((p, j) => (
                                             <li key={j}>
                                                 <strong>{p.title}</strong> —{' '}
                                                 {p.desc.charAt(0).toLowerCase() + p.desc.slice(1)}.

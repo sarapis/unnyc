@@ -133,6 +133,53 @@ export function getContent(name) {
     return { ...data, sections: splitSections(content) };
 }
 
+/* ---------------------------------------------------------------------------
+   The eight principles, derived
+   ---------------------------------------------------------------------------
+   content/principles.md is the single source (see its header). These two
+   helpers reshape it for the surfaces that do NOT want the grouped, gerund
+   form that /start renders. Deriving beats duplicating: the three listings
+   used to be three hand-maintained copies and had drifted.
+--------------------------------------------------------------------------- */
+
+/**
+ * All eight in the UN's own order, named canonically, with the terse
+ * descriptions — for the open letter's numbered list.
+ */
+export function principlesFlat(principlesDoc) {
+  const { lead, groups = [] } = principlesDoc || {};
+  const items = [lead, ...groups.flatMap((g) => g.items || [])].filter(Boolean);
+  return items
+    .slice()
+    .sort((a, b) => (a.n ?? 99) - (b.n ?? 99))
+    .map((p) => ({
+      n: p.n,
+      title: p.titleCanonical || p.title,
+      desc: p.descShort || p.desc || '',
+    }));
+}
+
+/**
+ * Grouped for the printable declaration: the declaration's own group headings,
+ * canonical principle names, and the City-facing description where one exists.
+ */
+export function principlesDeclaration(principlesDoc) {
+  const { lead, groups = [] } = principlesDoc || {};
+  return {
+    lead: lead && {
+      title: lead.titleCanonical || lead.title,
+      desc: lead.descCity || lead.desc || (lead.body || []).join(' '),
+    },
+    groups: groups.map((g) => ({
+      title: g.titleDeclaration || g.title,
+      items: (g.items || []).map((p) => ({
+        title: p.titleCanonical || p.title,
+        desc: p.descCity || p.desc || '',
+      })),
+    })),
+  };
+}
+
 /** Inline markdown (bold/links) with no wrapping <p> — for ledes and labels. */
 export function inlineMd(src) {
     if (!src?.trim()) return '';

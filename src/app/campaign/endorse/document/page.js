@@ -1,5 +1,6 @@
 import '../../../printable-doc.css';
 import PrintButton from '@/components/unnyc/PrintButton';
+import { getContent, principlesDeclaration } from '@/lib/content';
 
 export const metadata = {
     title: 'Declaration of Endorsement — UN Open Source Principles',
@@ -8,30 +9,6 @@ export const metadata = {
     robots: { index: false },
 };
 
-const GROUPS = [
-    {
-        title: 'We Build Good Software',
-        items: [
-            { title: 'Secure by design', desc: 'Making security a priority in all software projects.' },
-            { title: 'Design for reusability', desc: 'Designing projects to be interoperable across various platforms and ecosystems.' },
-            { title: 'Provide documentation', desc: 'Providing thorough documentation for end-users, integrators, and developers.' },
-        ],
-    },
-    {
-        title: 'Our Solutions are Cocreated with our Users',
-        items: [
-            { title: 'Foster inclusive participation and community building', desc: 'Enabling and facilitating diverse and inclusive contributions.' },
-            { title: 'RISE (recognize, incentivize, support, and empower)', desc: 'Empowering individuals and communities to actively participate.' },
-        ],
-    },
-    {
-        title: 'Collaborating globally to deliver locally',
-        items: [
-            { title: 'Contribute back', desc: 'Encouraging active participation in the Open Source ecosystem.' },
-            { title: 'Sustain and scale', desc: 'Supporting the development of solutions that meet the evolving needs of the City and beyond.' },
-        ],
-    },
-];
 
 /**
  * /campaign/endorse/document — a printable declaration for the City
@@ -40,6 +17,11 @@ const GROUPS = [
  * the UN's own three headings, using that source's own descriptions.
  */
 export default function EndorsementDocumentPage() {
+    // getContent reads the filesystem — must be called in the component, never
+    // at module scope (see CLAUDE.md). content/principles.md is the single
+    // source; this reshapes it into the declaration's headings, canonical
+    // principle names and City-facing descriptions.
+    const { lead, groups } = principlesDeclaration(getContent('principles').principlesDoc);
     return (
         <div className="unnyc-doc-wrap">
             <div className="unnyc-doc-toolbar">
@@ -75,15 +57,11 @@ export default function EndorsementDocumentPage() {
 
                 <div className="unnyc-doc-page__primary">
                     <p className="unnyc-doc-page__primary-label">The Foundation</p>
-                    <p className="unnyc-doc-page__primary-title">Open by default</p>
-                    <p className="unnyc-doc-page__primary-desc">
-                        Using open source software components to build solutions for the city is
-                        the standard and default approach to creating software. There are very
-                        few scenarios when open source isn&rsquo;t appropriate.
-                    </p>
+                    <p className="unnyc-doc-page__primary-title">{lead.title}</p>
+                    <p className="unnyc-doc-page__primary-desc">{lead.desc}</p>
                 </div>
 
-                {GROUPS.map((group) => (
+                {groups.map((group) => (
                     <div className="unnyc-doc-page__group" key={group.title}>
                         <h2 className="unnyc-doc-page__group-title">{group.title}</h2>
                         <ul className="unnyc-doc-page__group-list">

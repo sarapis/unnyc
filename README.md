@@ -167,23 +167,30 @@ and push protection are enabled. **Real secrets belong in Vercel env vars.**
 
 ## Known gaps
 
-- **The endorser wall needs the CMS deployed.** `/campaign/endorse` no longer
-  503s — it posts to Payload — but the wall on `/campaign/sign` stays empty until
-  the CMS ships `r42`, which makes reads public (they currently 403) and adds the
-  `activity` / `activityConsent` fields. **Deploy the CMS before this front-end**,
-  or Payload silently drops those two fields on submission. Existing signatures
-  also need a moderator pass: `published` defaults to false.
-- **The eight Principles are listed in three places and have already drifted.**
-  Despite what the "Shared content" notes elsewhere imply, there is **no single
-  source**: `src/data/unnyc.js`'s `openSource.principles` drives `/campaign/sign`,
-  `const GROUPS` in `src/app/campaign/endorse/document/page.js` drives the
-  printable declaration, and `content/principles.md` drives `/start` +
-  `/start/principles`. The wordings differ ("Provide documentation" / "Well
-  documented"; "Contribute back" / "Contributing back") and so do the
-  descriptions. **Editing `content/principles.md` does not update the letter or
-  the declaration.** Consolidating needs an editorial call on which phrasing wins.
+Nothing outstanding. The campaign accepts signatures and organization
+endorsements, and approved entries reach the public endorser wall.
+
+One thing to know rather than fix: **`published` defaults to false**, so a new
+submission is invisible until someone ticks it in the Payload admin. That is the
+review step, not a bug. If the wall looks empty, check there first.
 
 ### Resolved
+
+- **Nothing could reach the endorser wall — four independent silent failures**
+  (all fixed 2026-08-06). Payload read was `authenticated` so anonymous reads
+  403'd (CMS r42); CORS lacked `unnyc.wegov.nyc`, so the browser blocked every
+  submission before it was sent, introduced by this site's own extraction onto a
+  new subdomain (CMS r43); `fetchAPI` had no case for `campaign-endorsements` and
+  fell through to an empty list; and `/campaign-endorsements/stats` was not a real
+  endpoint. Each alone was enough to keep the wall empty, and none logged
+  anything. Verified end to end through the live form.
+- **`/campaign/endorse` returned 503** — the Google Sheet path needed an
+  `ENDORSEMENT_SHEET_WEBHOOK_URL` that was never set. Resolved by deleting that
+  path: endorsements go to Payload, which needs no secret.
+- **The eight Principles were listed in three places and had drifted.**
+  `content/principles.md` is now the single source; the letter and the printable
+  declaration derive from it. `src/data/` is deleted. See
+  [docs/EDITING-CONTENT.md](docs/EDITING-CONTENT.md).
 
 - `wegov.nyc/unnyc/*` now 308s to this site (`wegovnyc_front` @ `84a83de`), so the
   duplicate no longer competes in search. `/unnyc/guide` → `/resources`, since that

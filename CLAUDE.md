@@ -85,14 +85,18 @@ row mid-case-study) and `{{principles}}` (sign.md, the eight-principles list).
   orphaned** — zero code imports as of 2026-08-04 (the only `@/data` import
   anywhere is `openSource`; the remaining "unnyc-primer" hits are JSDoc comments
   and docs prose). Kept as a migration reference; safe to delete.
-- **The eight Principles are NOT single-sourced, whatever the docs used to say.**
-  Three independent hardcoded listings exist and have already drifted in wording:
-  `openSource.principles` in `src/data/unnyc.js` → `/campaign/sign`; `const GROUPS`
-  in `src/app/campaign/endorse/document/page.js` → the printable declaration;
-  `content/principles.md` → `/start` + `/start/principles`. Editing the markdown
-  updates only the third. Consolidating is deferred — it needs an editorial call on
-  which phrasing wins (the gerunds in `principles.md` match the UN's own one-pager;
-  the imperatives read better as a flat list). **Until then, change all three.**
+- **The eight Principles ARE single-sourced** as of 2026-08-06 —
+  `content/principles.md`, reshaped by `principlesFlat()` /
+  `principlesDeclaration()` in `src/lib/content.js`. There were three
+  hand-maintained copies and they had drifted (the letter said "Foster inclusion"
+  and a bare "RISE"). Each principle now carries its surface variants explicitly:
+  `title` (gerund, required by the group headings), `titleCanonical`, `desc`,
+  `descShort` for the letter, optional `descCity` for the declaration. Variants
+  on purpose, not drift. Change the markdown; nothing else holds a copy.
+- **`src/data/` is GONE** (2026-08-06) — both files were fully orphaned once the
+  letter stopped importing `openSource.principles`. 1,001 lines of
+  authoritative-looking but unused data is what allowed the drift in the first
+  place. Don't reintroduce a data module for content that belongs in `content/`.
 - `src/lib/api.js` is intentionally larger than this site needs (inherited whole
   from the marketing site). `fetchAPI` *is* used by the endorser wall on
   `/campaign/sign` — don't prune it casually.

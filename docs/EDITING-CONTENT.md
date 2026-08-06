@@ -130,30 +130,40 @@ Some pages place a structured block mid-prose. Write the marker on its own line:
 | Marker | Page | Renders |
 |---|---|---|
 | `{{stats}}` | `success.md` | The three-stat row inside a case study |
-| `{{principles}}` | `sign.md` | The eight principles list (from shared data, so every listing matches) |
+| `{{principles}}` | `sign.md` | The eight principles list, from `content/principles.md` — the single source every listing shares |
 
 ## Shared content
 
-- **The eight Principles** in `content/principles.md` are read by both `/start`
-  and `/start/principles` — but **that file is not the only listing on the site.**
-  See the warning below.
+- **The eight Principles** live once, in `content/principles.md`, and every
+  surface derives from it. See below.
 - **Glossary definitions** live in `content/start.md` under `concepts.terms`.
   A `[term](gloss:slug)` link anywhere on the site picks up its definition from
   there as a hover tooltip, so there's one place to edit a definition.
-### ⚠️ The eight Principles are listed THREE times and have drifted
+### The eight Principles — single-sourced
 
-This page used to claim they were single-sourced. They are not. Verified
-2026-08-04:
+`content/principles.md` is the only place they live. Three surfaces render from
+it and none holds a copy:
 
-| Listing | Drives | Phrasing style |
-|---|---|---|
-| `content/principles.md` | `/start`, `/start/principles` | gerunds — "Well documented", "Contributing back" |
-| `openSource.principles` in `src/data/unnyc.js` | `/campaign/sign` (the open letter) | imperatives — "Provide documentation", "Contribute back" |
-| `const GROUPS` in `src/app/campaign/endorse/document/page.js` | `/campaign/endorse/document` (the printable declaration) | imperatives, but its own descriptions ("Making security a priority…" vs "Security as a priority…") |
+| Surface | Shape it gets |
+|---|---|
+| `/start`, `/start/principles` | Grouped, `title` (gerund), `desc` |
+| `/campaign/sign` (the open letter) | Flat 1–8 by `n`, `titleCanonical`, `descShort` |
+| `/campaign/endorse/document` | Grouped, `titleDeclaration` headings, `titleCanonical`, `descCity` or `desc` |
 
-**Editing `content/principles.md` changes only `/start` and `/start/principles`.**
-The letter and the declaration will silently keep their old wording.
+Each principle carries several surface forms. **They are variants on purpose** —
+a different thing from the drift they replaced. Until 2026-08-06 these were three
+hand-maintained copies and had diverged: the letter said "Foster inclusion" and a
+bare "RISE" where everywhere else used the full names, and a stray Oxford comma
+had appeared in the declaration.
 
-Consolidating onto one source is deferred — it needs an editorial decision about
-which phrasing wins. Until then, **if you change a principle's wording, change it
-in all three places.**
+| Field | Why it exists |
+|---|---|
+| `n` | The UN's own number — drives the icon and the letter's ordering (the groups deliberately reorder: 3,5,6 / 4,7 / 2,8) |
+| `title` | Gerund form, **required** by the group headings: "Building Good Software that is… *Well documented*" |
+| `titleCanonical` | The UN's own name, for anywhere the principle stands alone |
+| `desc` | The full description |
+| `descShort` | Terse one-liner for the letter's numbered list, where the full text would swamp the line |
+| `descCity` | Optional NYC rewording for the declaration, where the City commits rather than the UN. Only #8 needs it today; falls back to `desc` |
+
+**To change a principle's wording, edit `content/principles.md`.** The reshaping
+lives in `principlesFlat()` and `principlesDeclaration()` in `src/lib/content.js`.
