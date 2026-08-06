@@ -15,18 +15,28 @@ These are short strings tied to structure rather than prose:
 | Form labels, validation + success messages | `CampaignSignForm.js`, `EndorseForm.js` |
 | Site-wide default title/description | `src/app/layout.js` (per-page titles are in each content file's `meta:`) |
 
-## Legacy data files
+## No data files
 
-- `src/data/unnyc.js` — only `openSource` is still used (the eight principles'
-  short titles/descriptions, shared by the letter and the printable document).
-- `src/data/unnyc-primer.js` — **superseded**. Its content now lives in the
-  `content/*.md` files. A few exports (`primerHero`, `primerMapMarkers`,
-  `primerMapLegend`, `principleIcon`) are already orphaned. Kept for now as a
-  reference during the migration; safe to delete once you're confident.
+`src/data/` was **deleted 2026-08-06** (1,001 lines). `unnyc.js` and
+`unnyc-primer.js` were both fully orphaned once the open letter stopped importing
+`openSource.principles`.
+
+The eight principles now live once, in `content/principles.md`, reshaped for each
+surface by `principlesFlat()` / `principlesDeclaration()` in `src/lib/content.js`.
+See [EDITING-CONTENT.md](EDITING-CONTENT.md).
+
+**Don't reintroduce a data module for content.** Those files carried three
+hand-maintained copies of the principles that had already drifted, and looked
+authoritative while being unused — which is exactly how the drift went unnoticed.
 
 ## Known copy inconsistencies
 
-- **Footer tagline** still uses the pre-campaign framing ("Where the United
-  Nations meets New York City...").
-- **Page H1s** on `/start` and `/crosswalk` don't match the renamed nav labels
-  ("The Global Movement", "Open Source for NYC"). Left alone by request.
+- **Page H1s on `/start` and `/crosswalk` deliberately do not match their nav
+  labels.** Editorial headlines and short wayfinding labels are different jobs,
+  and the H1s are the stronger copy. Only the `<title>`/`ogTitle` were aligned, so
+  a search result matches the label a visitor sees on arrival. **Don't "fix" this.**
+
+*(Resolved: the footer tagline used the pre-campaign "Where the United Nations
+meets New York City" framing — replaced 2026-08-04 with the campaign's own
+one-liner, reused verbatim from `content/home.md`'s `ogDescription` so the two
+cannot drift.)*
