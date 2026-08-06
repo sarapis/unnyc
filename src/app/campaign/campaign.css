@@ -505,13 +505,10 @@
     margin: var(--wg-sp-4) 0;
   }
 
-  /* wg-lint-ok: NO SEMANTIC EXISTS YET for an error colour. The system
-     carries state colours only in the REFERENCE tier (--db-danger etc.), and
-     this is a light red for a DARK surface, not --db-danger (#b50909).
-     Naming and valuing that token is an editorial call — tracked, not
-     forgotten. Until it lands this is unreachable by the brand variant. */
+  /* Error copy sits on the dark brand surface, so this needs the -on-brand
+     variant: plain --wg-danger measures 1.95:1 there and is unreadable. */
   .unnyc-cmp-form__error {
-    color: #ff8f8f;
+    color: var(--wg-danger-on-brand);
     font-size: var(--wg-fs-sm);
     margin: var(--wg-sp-4) 0 0;
   }

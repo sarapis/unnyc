@@ -1318,9 +1318,8 @@
   border-color: var(--wg-accent-warm);
 }
 
-/* wg-lint-ok: no error semantic yet — see the note in campaign/campaign.css */
 .unnyc-page .unnyc-campaign__signup-input[aria-invalid="true"] {
-  border-color: #ff8f8f;
+  border-color: var(--wg-danger-on-brand);
 }
 
 .unnyc-page .unnyc-campaign__signup-btn {
@@ -1342,9 +1341,8 @@
   margin: 0;
 }
 
-/* wg-lint-ok: no error semantic yet — see the note in campaign/campaign.css */
 .unnyc-page .unnyc-campaign__signup-error {
-  color: #ff8f8f;
+  color: var(--wg-danger-on-brand);
   font-size: var(--wg-fs-sm);
   margin: var(--wg-sp-4) 0 0;
 }

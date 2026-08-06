@@ -2,7 +2,7 @@
   "name": "unnyc",
   "version": "0.1.0",
   "private": true,
-  "description": "UNNYC \u2014 the campaign to make New York the first city in the Americas to endorse the UN Open Source Principles.",
+  "description": "UNNYC — the campaign to make New York the first city in the Americas to endorse the UN Open Source Principles.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
