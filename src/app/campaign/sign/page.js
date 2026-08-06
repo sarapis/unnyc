@@ -35,7 +35,11 @@ const PRINCIPLES_MARKER = '<p>{{principles}}</p>';
 
 async function getEndorsements() {
     try {
-        const res = await fetchAPI('/campaign-endorsements', { campaign: CAMPAIGN });
+        // Query goes in the PATH — fetchAPI's second argument is options
+        // ({ isDraftMode }), not params. This used to pass { campaign } there,
+        // where it was silently ignored; harmless with one campaign, wrong the
+        // moment there are two.
+        const res = await fetchAPI(`/campaign-endorsements?campaign=${encodeURIComponent(CAMPAIGN)}`);
         return res?.data || [];
     } catch (e) {
         console.error('Campaign: endorsements fetch failed —', e.message);

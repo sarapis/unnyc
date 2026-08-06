@@ -56,12 +56,27 @@ export async function fetchAPI(path, options = {}) {
       return getEvents(sp, { cache });
     case 'news-items':
       return getNewsItems(sp, { cache });
+    case 'campaign-endorsements':
+      return getCampaignEndorsements(sp, { cache });
     case 'pages':
       // Marketing page bodies are frozen in src/content/frozen-pages.js, so
       // there is nothing to fetch (see the header notes).
       return { data: [], meta: {} };
     default:
       // Unknown endpoint — behave like an empty list so callers degrade.
+      //
+      // ⚠ This default is a TRAP as well as a kindness. `campaign-endorsements`
+      // fell through to it, so the endorser wall fetched nothing, rendered
+      // nothing, and reported nothing — for as long as the page has existed.
+      // Warn loudly outside production so the next missing case is obvious
+      // instead of looking like "there is no data yet".
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn(
+          `[api] fetchAPI('${path}'): no case for '${collection}' — returning an ` +
+          `empty list. Add a case if this collection is real, or the caller will ` +
+          `silently render nothing.`
+        );
+      }
       return { data: [], meta: {} };
   }
 }
@@ -216,6 +231,32 @@ async function getNewsItems(sp, { cache }) {
     limit: sp.get('pagination[pageSize]') || sp.get('pagination[limit]') || '100',
   };
   const r = await payloadGET('news-items', params, cache);
+  return { data: r.docs || [], meta: listMeta(r, params.limit) };
+}
+
+/**
+ * Published endorsements for the wall on /campaign/sign, newest first.
+ *
+ * Server-side only in practice (the page is a Server Component), which is why
+ * this one is not affected by the CORS list that the browser-side
+ * createSubmission() calls depend on.
+ *
+ * Payload's access control already restricts anonymous reads to published docs
+ * and strips the private fields (email, contactName, activity, …), so there is
+ * no `where[published]` here on purpose: the API will not hand us anything the
+ * wall should not show, and duplicating the rule client-side would just be a
+ * second place for it to drift.
+ */
+async function getCampaignEndorsements(sp, { cache }) {
+  const params = {
+    'where[site.key][equals]': SITE_KEY,
+    sort: '-createdAt',
+    depth: '0',
+    limit: sp.get('pagination[pageSize]') || sp.get('pagination[limit]') || '200',
+  };
+  const campaign = sp.get('campaign');
+  if (campaign) params['where[campaign][equals]'] = campaign;
+  const r = await payloadGET('campaign-endorsements', params, cache);
   return { data: r.docs || [], meta: listMeta(r, params.limit) };
 }
 
