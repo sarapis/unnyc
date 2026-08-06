@@ -31,32 +31,30 @@ wall:
 
 Dear Chief Technology Officer and Commissioner for International Affairs,
 
-Every June, the United Nations convenes **UN Open Source Week** at its Headquarters — here, in New York City. In 2026 it drew more than **2,600 participants from over 120 countries** to discuss how open source software can serve the public good. New York provides the stage on which the world’s open source movement gathers. It has not yet joined that movement.
+Every June, the United Nations convenes **UN Open Source Week** at its Headquarters — here, in New York City. In 2026 it drew more than **2,600 participants from over 120 countries**. New York provides the stage on which the world’s open source movement gathers; it has not yet joined that movement.
 
-We are writing to ask you to change that: to **formally endorse the UN Open Source Principles**, and in doing so make New York the **first city in the Americas** to align its digital governance with the standard the UN itself has set.
+We are writing to ask you to change that: to **formally endorse the UN Open Source Principles**, making New York the **first city in the Americas** to align its digital governance with the standard the UN itself has set.
 
 ### The precedent is already set
 
-In November 2025, **Barcelona became the first city in the world to formally endorse the UN Open Source Principles** — a decision sparked by attending UN Open Source Week. Endorsement was not a procurement overhaul. It was a signature paired with a roadmap of three commitments:
+In November 2025, **Barcelona became the first city in the world to endorse the Principles** — a decision sparked by attending UN Open Source Week. It was not a procurement overhaul. It was a signature paired with three commitments:
 
-- A **Citizen Agreement for Democratic Technologies and Digital Rights** — a participatory forum with civil society, universities, and the private sector.
-- An **Open Source Programme Office (OSPO)**, modeled on those in Paris and Munich, to promote open source across municipal services.
-- A **municipal fund** offering grants for open source digital innovation.
+- A **Citizen Agreement for Democratic Technologies and Digital Rights**.
+- An **Open Source Programme Office (OSPO)**, modeled on those in Paris and Munich.
+- A **municipal fund** for open source digital innovation.
 The move cost Barcelona little and signaled a great deal: that a city can commit, publicly and concretely, to building and sharing technology as a public good.
 
 ### New York is ready — and has a habit of being first
 
-NYC has repeatedly led U.S. cities in its engagement with the UN and in open government. The groundwork for endorsement already exists:
-
-- **First U.S. city to submit a Voluntary Local Review (VLR)** of its Sustainable Development Goal progress to the UN (2018) — a model since copied worldwide.
+- **First U.S. city to submit a Voluntary Local Review** of its Sustainable Development Goal progress to the UN (2018).
 - **First U.S. city to join the UN’s Safe Cities Global Initiative.**
-- An **Open Data Law since 2012** (Local Law 11 of 2012), one of the strongest in the nation, with city code already published on GitHub.
-- An **Office of Technology & Innovation** already positioned to house an NYC OSPO and to coordinate open source practice across agencies.
-Endorsing the Principles formalizes values the City already professes, and gives its technologists a shared, internationally recognized framework to work within.
+- An **Open Data Law since 2012**, one of the strongest in the nation, with city code already published on GitHub.
+- An **Office of Technology & Innovation** positioned to house an NYC OSPO.
+Endorsing the Principles formalizes values the City already professes, and gives its technologists a shared, internationally recognized framework.
 
 ### The eight principles
 
-The UN Open Source Principles — endorsed in March 2025 by seventeen organizations, first the Open Source Initiative and then sixteen more including the Linux Foundation and the Eclipse Foundation — are:
+The UN Open Source Principles — endorsed in March 2025 by seventeen organizations, from the Open Source Initiative to the Linux Foundation — are:
 
 {{principles}}
 
@@ -65,8 +63,8 @@ The UN Open Source Principles — endorsed in March 2025 by seventeen organizati
 We respectfully call on the **Mayor’s Office of Technology & Innovation**, together with the **Mayor’s Office for International Affairs**, to:
 
 - **Formally endorse the UN Open Source Principles**, publicly and by name.
-- **Announce a light-touch roadmap** in the spirit of Barcelona’s — beginning with a commitment to explore an **NYC Open Source Programme Office** within OTI.
-- **Do so before or during UN Open Source Week**, so that the city that hosts the world’s open source community can welcome it as a member of it.
+- **Announce a light-touch roadmap** in the spirit of Barcelona’s, beginning with a commitment to explore an **NYC Open Source Programme Office** within OTI.
+- **Do so before or during UN Open Source Week**, so the city that hosts the world’s open source community can welcome it as a member.
 New York does not need to reinvent the model. It needs only to sign — and to lead the Americas in doing so.
 
 ## signoff

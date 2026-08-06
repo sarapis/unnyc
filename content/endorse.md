@@ -18,6 +18,6 @@ formLede: "Tell us your organization is committing to the UN Open Source Princip
 
 ## body
 
-The open letter is the public campaign — anyone can sign it in a minute. This page is for a further step: a **formal commitment**, recorded separately, for organizations that want their endorsement of the UN Open Source Principles on the record.
+The open letter is the public campaign — anyone can sign it in a minute. This page is a further step: a **formal commitment**, recorded separately, for organizations that want their endorsement on the record.
 
-If you represent the City of New York, or are preparing this for the Mayor’s Office, the button above opens a formatted declaration — [the lead principle, the rest grouped under the UN’s own headings, and a signature block](/campaign/endorse/document) — designed to be printed and signed as the City’s formal endorsement.
+If you’re preparing this for the City of New York, the button above opens a [formatted declaration](/campaign/endorse/document) with a signature block, designed to be printed and signed as the City’s formal endorsement.

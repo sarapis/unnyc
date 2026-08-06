@@ -40,7 +40,7 @@ resourceGroups:
     links:
     - text: "DPI Map (UCL IIPP)"
       url: "https://dpimap.org/"
-      desc: "Interactive world map — click any country to see the digital ID, payment, and data-exchange systems it uses. 210 countries; 2025 State of DPI report."
+      desc: "Interactive world map of the digital ID, payment, and data-exchange systems in use across 210 countries."
     - text: "DPG Standard & Registry (DPGA)"
       url: "https://www.digitalpublicgoods.net/registry"
       desc: "The vetted registry of digital public goods, filterable by SDG and searchable by deployment."
@@ -139,7 +139,7 @@ ospoDirectory:
     items:
     - name: "OSPO at Digital Service at the Centers for Medicare and Medicaid Services"
       url: "https://cms.gov/digital-service/open-source-program-office"
-      description: "Establish and maintain guidance, policies, practices, and talent pipelines that advance equity, build trust, and amplify impact across CMS, HHS, and Federal Open Source Ecosystems by working and sharing openly."
+      description: "Guidance, policies, practices, and talent pipelines for working openly across CMS, HHS, and federal open source ecosystems."
       email: "opensource@cms.hhs.gov"
       flossPolicy: "https://github.com/CMSgov/cms-open-source-policy"
   - country: "International"
@@ -157,7 +157,7 @@ ospoDirectory:
       flossPolicy: "https://opensource.muenchen.de/principles.html"
     - name: "Open Source Program Office of the State of Schleswig-Holstein"
       url: "https://schleswig-holstein.de/open-source"
-      description: "The state government’s central coordination office for the strategic use of open source software, aimed at ensuring digital sovereignty."
+      description: "The state government’s coordination office for the strategic use of open source, aimed at digital sovereignty."
       email: "ospo-sh@stk.landsh.de"
       flossPolicy: "https://gdi-sh.de/DE/landesregierung/themen/digitalisierung/linux-plus1/Projekt/open-source-strategie"
   - country: "Denmark"
@@ -171,7 +171,7 @@ ospoDirectory:
     items:
     - name: "Open Technologies Centre at the Aristotle University of Thessaloniki"
       url: "https://opentech.auth.gr/"
-      description: "Promotes and harnesses the transformative potential of open technologies — technologies defined by their openness to free use, analysis, modification, and redistribution by any user."
+      description: "Promotes open technologies — free for any user to use, analyze, modify, and redistribute."
       email: "opentech@auth.gr"
   - country: "France"
     items:
