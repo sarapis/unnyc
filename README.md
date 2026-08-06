@@ -156,8 +156,15 @@ and push protection are enabled. **Real secrets belong in Vercel env vars.**
 ## Known gaps
 
 - **`/campaign/endorse` returns 503 on submit** — `ENDORSEMENT_SHEET_WEBHOOK_URL`
-  is not set in Vercel. Individual signing on `/campaign/sign` works (it goes to
-  Payload).
+  is not set in Vercel, and the Apps Script it points at does not appear to exist
+  yet. Individual signing on `/campaign/sign` works (it goes to Payload).
+  **The receiving end is written and the setup is documented:**
+  [`docs/ENDORSEMENT-INTAKE.md`](docs/ENDORSEMENT-INTAKE.md) +
+  [`docs/endorsement-apps-script.gs`](docs/endorsement-apps-script.gs). It needs a
+  person: the webhook URL is a bearer capability, so it is entered in the Vercel
+  dashboard, not committed. Two things bite here — "Who has access" must be
+  **Anyone** (not "Anyone with a Google account", which returns a login page and
+  surfaces as 502), and Vercel env vars need a **redeploy** to take effect.
 - **The eight Principles are listed in three places and have already drifted.**
   Despite what the "Shared content" notes elsewhere imply, there is **no single
   source**: `src/data/unnyc.js`'s `openSource.principles` drives `/campaign/sign`,
