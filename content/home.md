@@ -8,20 +8,12 @@ hero:
   titleLines:
     - "The Movement for Open Source Government is Being Organized in New York City... by the UN."
     - "NYC Government Should Join It."
-  subtitle: "The world's best performing city governments have transitioning to open source at the center of their technology strategy. It's time for New York City to do the same.
+  subtitle: "The world's best performing city governments have transitioning to open source at the center of their technology strategy. It's time for New York City to do the same."
   ctas:
     - href: /campaign
       label: "Tell NYC to Use Open Source"
       style: primary
-  stats:
-    - number: "$20 million"
-      label: "UN Open Source Principles"
-    - number: "17+"
-      label: "Endorsing Organizations"
-    - number: "120+"
-      label: "Countries at UN OSW 2026"
-    - number: "1"
-      label: "City Endorsed — NYC Next?"
+
 paths:
   - href: /start
     question: "I’m new to the open source government movement."
