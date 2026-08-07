@@ -63,10 +63,6 @@ Every city agency runs on software, and most of it is proprietary — owned, lic
 
 The New Yorkers who feel that first aren’t the loudest voices at a budget hearing. They’re the residents stuck on a benefits portal an agency can’t fix without paying a vendor for the privilege, and the small businesses locked out of city data because it sits behind a system nobody outside the vendor can touch.
 
-### What Would Endorsement Actually Cost?
-
-Endorsing the UN Open Source Principles costs the city nothing directly — it’s a signature, the same one Barcelona signed in November 2025. What follows costs real but modest money, at a scale the city has already budgeted: the five PIT Crews carry [$5.24 million in baselined funding](https://www.amny.com/politics/mamdani-tech-five-new-pit-crews/). An [Open Source Programme Office](gloss:ospo) or open source maintenance fund is the same kind of investment — and unlike vendor licensing, it’s one-time money that replaces a recurring bill. The cautionary tale sits on the other side of the ledger: [CityTime](https://www.nyc.gov/assets/doi/downloads/pdf/mar12/pr92_12%20_citytimesettlement__2.pdf), a single closed vendor contract that ballooned from a $63 million no-bid deal into more than $700 million in costs and fraud.
-
 > Barcelona framed its own endorsement in terms that echo NYC’s civic tech mission: a “desire to put technology in the hands of citizens and reduce reliance on large tech companies,” through “a collaborative model in which cities control their own data and infrastructure.”
 >
 > — Barcelona’s endorsement of the UN Open Source Principles, as reported by [the EU Open Source Observatory](https://interoperable-europe.ec.europa.eu/collection/open-source-observatory-osor/news/barcelona-first-city-globally-adopt-un-open-source-principles)
