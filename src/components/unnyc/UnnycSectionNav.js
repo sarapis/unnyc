@@ -41,12 +41,34 @@ import { useEffect, useRef, useState } from 'react';
 export default function UnnycSectionNav({ items = [], ariaLabel = 'Sections on this page' }) {
     const [active, setActive] = useState(null);
     const listRef = useRef(null);
+    const barRef = useRef(null);
 
     // Pages build `items` inline (e.g. /crosswalk maps its principles), so the
     // array is a new reference on every render. Keying the observer effect on
     // the ids instead means it is built once, not torn down and rebuilt each
     // time React re-renders.
     const ids = items.map((i) => i.id).join(',');
+
+    // Publish this bar's height as --pr-subnav-h so section scroll offsets can
+    // clear it. primer.css's scroll-margin-top rules add it and default it to
+    // 0px, which is what the pages without a bar get. Measured rather than
+    // hardcoded because the label row's height follows the font size.
+    useEffect(() => {
+        const bar = barRef.current;
+        const root = document.documentElement;
+        if (!bar) return undefined;
+        const setVar = () => {
+            root.style.setProperty('--pr-subnav-h', `${Math.round(bar.getBoundingClientRect().height)}px`);
+        };
+        setVar();
+        const ro = new ResizeObserver(setVar);
+        ro.observe(bar);
+        if (document.fonts?.ready) document.fonts.ready.then(setVar).catch(() => { });
+        return () => {
+            ro.disconnect();
+            root.style.removeProperty('--pr-subnav-h');
+        };
+    }, []);
 
     // Scroll-spy. rootMargin pins the "active" line just under the sticky
     // headers, so a section counts as current once its top passes them rather
@@ -105,7 +127,7 @@ export default function UnnycSectionNav({ items = [], ariaLabel = 'Sections on t
     };
 
     return (
-        <nav className="unnyc-subnav" aria-label={ariaLabel}>
+        <nav className="unnyc-subnav" aria-label={ariaLabel} ref={barRef}>
             <div className="unnyc-container">
                 <ul className="unnyc-subnav__list" ref={listRef}>
                     {items.map((i) => (

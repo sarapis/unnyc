@@ -881,7 +881,12 @@
   position: sticky;
   top: var(--pr-header-h, 68px);
   z-index: 90;
-  background: var(--wg-surface);
+  /* Warm, not white: the bar sits flush beneath the navy header and directly
+     above each page's cream hero, which is this same value. At rest it reads as
+     the bottom edge of the header zone rather than a third stripe between navy
+     and cream; once stuck over the white sections below, the border gives it
+     its own edge. */
+  background: var(--wg-surface-warm);
   border-bottom: 1px solid var(--wg-border);
 }
 
@@ -921,11 +926,13 @@
   border-bottom-color: var(--wg-accent);
 }
 
-/* The bar is itself sticky, so a target must clear BOTH it and the header. */
-.unnyc-page .unnyc-subnav ~ * [id],
-.unnyc-page .unnyc-subnav ~ [id] {
-  scroll-margin-top: calc(var(--pr-header-h, 68px) + 64px);
-}
+/* Section scroll offsets are NOT set here. The bar is sticky, so a jump target
+   has to clear both it and the header — but primer.css already owns
+   scroll-margin-top for these sections at equal specificity, and a rule here
+   would just lose the source-order coin toss (it did: sections landed 21px
+   behind the bar). Instead the subnav publishes its own height as
+   --pr-subnav-h and primer.css's existing rules add it, defaulting to 0px on
+   the pages that have no bar. One owner, no specificity war. */
 
 @media (prefers-reduced-motion: reduce) {
   .unnyc-page .unnyc-subnav__link {

@@ -31,6 +31,8 @@ export default function SuccessPage() {
         <div className="unnyc-pr unnyc-success">
             <HeaderHeightVar />
 
+            <UnnycSectionNav items={doc.sectionNav} />
+
             <header className="unnyc-success__header">
                 <div className="unnyc-container">
                     <h1 className="unnyc-success__title">{doc.title}</h1>
@@ -40,8 +42,6 @@ export default function SuccessPage() {
                     />
                 </div>
             </header>
-
-            <UnnycSectionNav items={doc.sectionNav} />
 
             {doc.cases.map((c) => {
                 const html = doc.sections[c.id]?.html ?? '';

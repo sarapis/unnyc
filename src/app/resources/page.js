@@ -30,6 +30,8 @@ export default function ResourcesPage() {
         <div className="unnyc-pr">
             <HeaderHeightVar />
 
+            <UnnycSectionNav items={doc.sectionNav} />
+
             <header className="unnyc-resources__header">
                 <div className="unnyc-container">
                     <h1 className="unnyc-resources__title">{doc.title}</h1>
@@ -39,8 +41,6 @@ export default function ResourcesPage() {
                     />
                 </div>
             </header>
-
-            <UnnycSectionNav items={doc.sectionNav} />
 
             <PrimerResources groups={doc.resourceGroups} />
             <PrimerContacts contacts={doc.contacts} />

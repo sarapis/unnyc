@@ -35,6 +35,8 @@ export default function StartPage() {
         <div className="unnyc-pr">
             <HeaderHeightVar />
 
+            <UnnycSectionNav items={doc.sectionNav} />
+
             <header className="unnyc-start__header">
                 <div className="unnyc-container">
                     <h1 className="unnyc-start__title">{doc.title}</h1>
@@ -50,8 +52,6 @@ export default function StartPage() {
                     />
                 </div>
             </header>
-
-            <UnnycSectionNav items={doc.sectionNav} />
 
             <PrimerConcepts concepts={doc.concepts} />
             <PrincipleDefinitions principlesDoc={principlesDoc} />
