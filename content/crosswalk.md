@@ -75,7 +75,7 @@ Endorsing the UN Open Source Principles costs the city nothing directly — it�
 
 UN Open Source Principle #1 reverses the burden of proof: teams justify why software should stay closed, not why it should be open. New York already lives by this rule for data — the Open Data Law (Local Law 11 of 2012) requires agencies to publish public data by default — and a handful of agencies already publish code on GitHub. What’s missing is a citywide default, rather than a matter of which agency happens to care.
 
-### The Gap to Close
+### The Gap
 
 Endorsement formalizes that instinct for code. The tools taxpayers already funded — a benefits calculator, a 311 tracker, the next Click to Cancel — become auditable, reusable across agencies, and fixable faster, by a city full of developers who want to put their skills to work for it.
 
@@ -83,7 +83,7 @@ Endorsement formalizes that instinct for code. The tools taxpayers already funde
 
 UN Open Source Principle #2 is reciprocity: institutions that benefit from open source should upstream fixes, publish reusable tools, and engage the communities maintaining the software they depend on. Every large software company already works this way — not out of altruism, but influence: contributors steer projects toward their own needs. NYC could be doing the same.
 
-### The Gap to Close
+### The Gap
 
 New York already has a stake. Its own Civic Engagement Commission runs the city’s participatory budgeting on Decidim, the open source platform Barcelona built. Contributing fixes back would strengthen a tool NYC depends on today — and give the city more influence over its software than any vendor contract has ever granted it.
 
@@ -91,7 +91,7 @@ New York already has a stake. Its own Civic Engagement Commission runs the city�
 
 UN Open Source Principle #3 treats security as a first-class requirement, not a patch applied after launch — and open code is inspectable code: community review surfaces vulnerabilities faster than a vendor’s word. New York already runs a citywide [Vulnerability Disclosure Program](https://nyc.responsibledisclosure.com/hc/en-us) for outside researchers. But for the vendor-purchased majority of city systems the code stays closed, so nobody outside the vendor can verify how well-built a system was to begin with.
 
-### The Gap to Close
+### The Gap
 
 Endorsement means problems can be found before they’re exploited — code the city can audit by inspection, not just by policy. Instead of trusting a vendor’s word on security, NYC can check the work: the verifiable trust the administration has made a defining theme of its tech agenda.
 
@@ -99,41 +99,41 @@ Endorsement means problems can be found before they’re exploited — code the 
 
 UN Open Source Principle #4 calls for a broad, diverse contributor base — first-timers welcomed, documentation for non-experts, translation into the languages a community speaks. New York has the raw material: a famously diverse technical population, civic tech groups like BetaNYC, and [nearly 2,800 applicants to PIT Crew’s first hiring round](https://www.amny.com/politics/mamdanis-tech-pit-crews-2800-applicanants/). What it lacks is a formal bridge between that community and the city’s own software.
 
-### The Gap to Close
+### The Gap
 
 Endorsement extends the invitation past a single hiring cycle: a published contributor guide, city tools documented in multiple languages, and community contributions treated as a normal part of how NYC builds — trust earned the most direct way there is, by letting residents see and help build the software their government runs on.
 
 ## design-for-reusability
 
-UN Open Source Principle #5 calls for software that works across platforms and contexts, so one government’s solution becomes every government’s head start. Procurement is where this becomes leverage: the contracts NYC signs decide whether its data stays portable and whether a future administration can switch providers without rebuilding. As one of the country’s largest municipal technology buyers, NYC sets standards that ripple through the vendor market.
+UN Open Source Principle #5 calls for software built to work across platforms and contexts, so one government’s solution becomes every government’s head start. The contracts NYC signs decide whether its data stays portable, whether formats are documented, and whether a future administration can switch providers without rebuilding from scratch. As one of the largest municipal technology buyers in the country, the standards NYC writes into its solicitations ripple through the vendor market well beyond the five boroughs.
 
-### The Gap to Close
+### The Gap
 
-Standardize the city’s data plumbing — shared schemas, APIs, service levels — and pair it with a procurement preference for open standards and open source. A slow benefits portal or a broken permit form can then be handed to a different vendor, or rebuilt by the next PIT Crew, instead of the city staying stuck with whoever won the original contract.
+Endorsing this principle means standardizing the city’s data plumbing through shared schemas, APIs, interoperability, and service levels. For NYC, this extends the affordability agenda to procurement itself: a slow benefits portal or a broken permit form can be handed to a different vendor, or rebuilt by other developers in the civic tech space, instead of the city being stuck for years with whoever won the original contract. Furthermore, it puts NYC on the map as a provider of software that other cities reuse, continuing its legacy at the front of technological innovation, instead of relying exclusively on the open source tools built in other parts of the world.
 
 ## provide-documentation
 
-UN Open Source Principle #6 treats documentation as a deliverable — reviewed and maintained alongside the code, so someone other than the original author can safely use, fix, or extend a system. Vendor systems routinely ship documentation that is [thin, outdated, or restricted to the vendor’s own staff](https://www.cloudapper.ai/enterprise-ai/vendor-lock-in-legacy-system-modernization-how-enterprises-recreate-the-problem/), so when a contract lapses, knowledge of how a system actually works leaves with it.
+The strength of an open source project is largely derived from the comprehnsiveness of its documentation; UN Open Source Principle #6 treats documentation as a deliverable. Documentation should be reviewed and maintained alongside the code so someone other than the original author can safely use, fix, or extend it. Vendor systems often ship with documentation that’s thin, outdated, or contractually restricted to the vendor’s own staff, so when a contract lapses or a key technologist moves on, institutional knowledge of how a system actually works can leave with them.
 
-### The Gap to Close
+### The Gap
 
-Documentation that’s plain-language, current, and owned by the city is what keeps public software fixable after the team that built it moves on. NYC’s own civic tech community has already named the standard — [BetaNYC](https://www.beta.nyc/2025/11/18/dear-mayor-elect-8-gov-tech-ideas/): “adopt secure, reusable code citywide.”
+Endorsing this principle means is the key to building Fostering Inclusion and Contributing Back. Real documentation in plain-language that is kept current and owned by the city provides accessibility, making code more maintainable and increasing a solution's longevity. It’s also the standard NYC’s own civic tech community has pointed to ( [BetaNYC](https://www.beta.nyc/2025/11/18/dear-mayor-elect-8-gov-tech-ideas/) put it plainly: “adopt secure, reusable code citywide”).
 
 ## rise
 
-UN Open Source Principle #7 — Recognize, Incentivize, Support, and Empower — holds that institutions should formally back the people doing open source work. The mechanism other governments use is an [Open Source Programme Office](gloss:ospo): a small coordinating team, not a new agency, that decides what to use, what to publish, and how to contribute safely. [Munich](https://opensource.muenchen.de/ospo.html) runs one under a [“public money, public code”](gloss:public-money-public-code) mandate; Barcelona committed to one alongside its endorsement. NYC’s Office of Technology & Innovation is the natural host.
+UN Open Source Principle #7 — Recognize, Incentivize, Support, and Empower — holds that institutions should formally back the people doing open source work, not leave it to individual initiative. The mechanism other governments use is an [Open Source Programme Office](gloss:ospo):  [Munich](https://opensource.muenchen.de/ospo.html) runs one under a [“public money, public code”](gloss:public-money-public-code) mandate, and [Barcelona](https://interoperable-europe.ec.europa.eu/collection/open-source-observatory-osor/news/barcelona-first-city-globally-adopt-un-open-source-principles) paired its UN endorsement with a commitment to create one. New York’s Office of Technology & Innovation, which already coordinates technology citywide, is the natural host for one too.
 
-### The Gap to Close
+### The Gap
 
-An OSPO is the natural next chapter of the strategy PIT Crew already represents: real teams, real funding, public interest technology built in-house — a permanent, citywide mandate for the work [Lisa Gelobter’s](https://en.wikipedia.org/wiki/Lisa_Gelobter) office is already doing five crews at a time.
+Endorsing this principle, and pairing it with the creation of a dedicated OSPO for NYC, would provide the city with a small coordinating team that decides what an organization uses, what it publishes, how it contributes back, and how it stays secure while doing so. It is the organizational component that ensures the success of projects New Yorkers rely on. 
 
 ## sustain-and-scale
 
-UN Open Source Principle #8 calls for solutions funded and maintained for the long run, not abandoned after launch. Any large resident-facing platform is [digital public infrastructure](gloss:dpi) in effect; the question is whether it’s built on open, standards-based components the city can sustain indefinitely, or closed ones it can’t maintain without the original vendor.
+UN Open Source Principle #8 calls for solutions that meet evolving needs over time — funded and maintained for the long run, not abandoned when a contract or donor cyce ends. The mechanism other governments use to fund this is a modest, dedicated pool of money. This can be modeled on Germany’s [Sovereign Tech Agency](https://www.sovereign.tech/), which has put over €24 million into keeping critical open source infrastructure maintained. The city already found [$5.24 million in baselined funding](https://www.amny.com/politics/mamdani-tech-five-new-pit-crews/) for four PIT Crews, plus a fifth built with Rockefeller Foundation support.
 
-### The Gap to Close
+### The Gap
 
-The proven mechanism is a modest, dedicated maintenance fund — Germany’s [Sovereign Tech Agency](https://www.sovereign.tech/) is the model, with applications outstripping its funding several times over. New York already found comparable money for PIT Crew. Sustaining what those crews build is what makes affordability durable: a Click to Cancel portal that still works in five years, not just on launch day.
+ Since the money is already there, endorsing this principle means dedicating it to infrastructure that is built on open, reusable, standards-based components the city can sustain indefinitely. For NYC, sustaining the systems PIT Crew builds is what makes affordability durable rather than a one-time announcement.
 
 ## closing
 
