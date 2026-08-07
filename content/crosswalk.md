@@ -1,6 +1,6 @@
 ---
 title: "New York Runs on Software It Doesn’t Control"
-lede: "What vendor reliance costs the city, what endorsing the UN Open Source Principles would cost instead, and what [closing the gap](#open-by-default) on each of the eight principles would mean for New York."
+lede: "Vendor reliance for digital public infrastructure is the status quo, and it costs the city. Adoption of the UN Open Source Principles would close massive gaps and save taxpayer funds."
 meta:
   title: "Open Source for NYC: Why It Matters — UNNYC"
   description: "What NYC’s reliance on proprietary vendor software costs, what endorsing the UN Open Source Principles would cost and fund, and how each principle lines up with the city’s own tech agenda."
