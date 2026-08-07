@@ -65,6 +65,7 @@ export default function SuccessPage() {
                                 <div className="unnyc-success__case-hero-scrim" />
                                 <div className="unnyc-container unnyc-container--narrow unnyc-success__case-hero-content">
                                     <h2 className="unnyc-success__case-title">{c.title}</h2>
+                                    <div dangerouslySetInnerHTML={{ __html: before }} />
                                 </div>
                                 {c.banner.creditHref && (
                                     <a
@@ -80,14 +81,11 @@ export default function SuccessPage() {
                         ) : (
                             <div className="unnyc-container unnyc-container--narrow">
                                 <h2 className="unnyc-success__case-title">{c.title}</h2>
+                                <div dangerouslySetInnerHTML={{ __html: before }} />
                             </div>
                         )}
 
-                        <div
-                            className={`unnyc-container unnyc-container--narrow${c.banner ? ' unnyc-success__case-body--overlap' : ''}`}
-                        >
-                            <div dangerouslySetInnerHTML={{ __html: before }} />
-
+                        <div className="unnyc-container unnyc-container--narrow">
                             {c.stats?.length > 0 && (
                                 <div className="unnyc-success__stats">
                                     {c.stats.map((s, i) => (
