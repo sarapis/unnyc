@@ -68,6 +68,18 @@ their `## slug` section, duplicate `### Label` keys, and unknown `gloss:` refs
   broke `cab57e1`); sometimes it parses cleanly and silently eats a key or
   renders a stray `"`. `lint:content` catches both — don't weaken the
   odd-quote-count check, it is the only one that sees the silent variant.
+- **Icons are inline SVG, one set, themeable** — `src/components/unnyc/UnnycIcon.js`,
+  paths verbatim from Lucide v1.30.0 (ISC), 24×24 canvas, 2px stroke. Content
+  refers to them by name (`icon: shield-check` in `content/principles.md` and
+  `content/crosswalk.md`), never by path. They replaced eight PNGs that were
+  364 KB, four clashing art styles, and — the reason that actually mattered —
+  **un-themeable**: a black raster is a colour literal, invisible to the brand
+  variant, which is the exact failure the two-tier token system exists to stop.
+  Colour now comes from `color:` on the CSS class. **Add new icons from Lucide
+  on the same canvas**; mixing sets is the state this replaced.
+- **Case-study images are self-hosted** in `public/case-images/` and served via
+  `next/image`. They were hotlinked from each organisation's own server (~780 KB
+  a visit, one 482 KB OG image, all able to change or 404 without warning).
 - **Never write `*/` inside a CSS comment** (e.g. listing `--unnyc-*` families as
   `--unnyc-*/--un-*`). It closes the comment; Turbopack fails with a confusing
   `Unexpected token Delim('*')`.

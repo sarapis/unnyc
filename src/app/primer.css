@@ -343,11 +343,16 @@
     margin-bottom: var(--wg-sp-6);
   }
 
+  /* Inline SVG (UnnycIcon), so `color` drives the stroke — object-fit is no
+     longer needed, and the icon finally takes a semantic token like everything
+     else on the page. --wg-accent is UN blue; the gold (--wg-accent-warm) is
+     reserved for "active"/emphasis states, which a static principle icon is
+     not. */
   .unnyc-pr-cw__icon {
     width: 40px;
     height: 40px;
-    object-fit: contain;
     flex-shrink: 0;
+    color: var(--wg-accent);
   }
 
   .unnyc-pr-cw__title {

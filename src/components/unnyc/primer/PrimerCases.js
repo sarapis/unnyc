@@ -1,19 +1,34 @@
 "use client";
-
+import Image from 'next/image';
 
 /**
  * A single case-study card. `hidden` marks cards in the duplicated set used
  * to create the seamless carousel loop — kept out of the accessibility
  * tree and tab order so screen readers / keyboard users only encounter
  * each case study once.
+ *
+ * Images are SELF-HOSTED under public/case-images (2026-08-06). They used to be
+ * hotlinked straight from each organisation's own server — ~780 KB per visit of
+ * someone else's bandwidth, one of them a 482 KB OG image, all of it able to
+ * change or 404 without warning. They are now committed at 680px (2× the 340px
+ * card) and served through next/image, which adds WebP/AVIF conversion and lazy
+ * loading — the latter mattering here because the carousel renders each card
+ * twice for its seamless loop.
+ *
+ * The treatment is deliberately unchanged: still a 160px band with
+ * `object-fit: cover`, which does crop the wordmark-shaped logos (Munich) more
+ * aggressively than the photos. Giving logos their own contained treatment is a
+ * separate design decision, not a side effect of self-hosting.
  */
 function CaseCard({ c, hidden }) {
     return (
         <article className="unnyc-pr-case" aria-hidden={hidden || undefined}>
             <div className="unnyc-pr-case__image-wrap">
-                <img
+                <Image
                     src={c.image}
                     alt=""
+                    width={340}
+                    height={160}
                     className="unnyc-pr-case__image"
                     onError={(e) => { e.currentTarget.parentElement.style.display = 'none'; }}
                 />

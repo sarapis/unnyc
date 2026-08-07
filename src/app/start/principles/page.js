@@ -1,4 +1,5 @@
 import '../../printable-doc.css';
+import UnnycIcon from '@/components/unnyc/UnnycIcon';
 import PrintButton from '@/components/unnyc/PrintButton';
 import { getContent } from '@/lib/content';
 
@@ -47,7 +48,7 @@ export default function PrinciplesDocumentPage() {
 
                 <div className="unnyc-doc-page__primary">
                     <div className="unnyc-doc-page__primary-header">
-                        <img src={lead.icon} alt="" className="unnyc-doc-page__icon" />
+                        <UnnycIcon name={lead.icon} size={28} className="unnyc-doc-page__icon" />
                         <p className="unnyc-doc-page__primary-title">{lead.title}</p>
                     </div>
                     {lead.body.map((p, i) => (
@@ -66,7 +67,7 @@ export default function PrinciplesDocumentPage() {
                         <ul className="unnyc-doc-page__group-list">
                             {group.items.map((item) => (
                                 <li key={item.title}>
-                                    <img src={item.icon} alt="" className="unnyc-doc-page__icon" />
+                                    <UnnycIcon name={item.icon} size={28} className="unnyc-doc-page__icon" />
                                     <span><strong>{item.title}.</strong> {item.desc}</span>
                                 </li>
                             ))}

@@ -108,13 +108,15 @@
     margin-top: var(--wg-sp-3);
   }
 
+  /* Inline SVG (UnnycIcon) — `color` drives the stroke, so no object-fit or
+     object-position needed; the box is the artwork now. UN blue, matching the
+     crosswalk's treatment of the same eight icons. */
   .unnyc-start-principle__icon {
     display: block;
     width: 56px;
     height: 56px;
-    object-fit: contain;
-    object-position: left center;
     margin-bottom: var(--wg-sp-3);
+    color: var(--wg-accent);
   }
 
   .unnyc-start-principle__title {

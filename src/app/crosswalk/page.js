@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import UnnycIcon from '@/components/unnyc/UnnycIcon';
 import '../primer.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import { getContent, inlineMd } from '@/lib/content';
@@ -78,11 +78,9 @@ export default function CrosswalkPage() {
                         <section key={p.slug} id={p.slug} className="unnyc-pr-cw__section">
                             <div className="unnyc-container unnyc-container--narrow">
                                 <div className="unnyc-pr-cw__heading">
-                                    <Image
-                                        src={`/principle-icons/princ${p.icon}.png`}
-                                        alt=""
-                                        width={40}
-                                        height={40}
+                                    <UnnycIcon
+                                        name={p.icon}
+                                        size={40}
                                         className="unnyc-pr-cw__icon"
                                     />
                                     <h2 className="unnyc-pr-cw__title">
