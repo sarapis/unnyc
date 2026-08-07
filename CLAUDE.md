@@ -100,6 +100,38 @@ no gate. It checks YAML validity, unterminated quotes, frontmatter slugs missing
 their `## slug` section, duplicate `### Label` keys, and unknown `gloss:` refs
 (that last one warns only). Errors exit 1.
 
+## The CTFG map layer (branch `ctfg-open-source-map-layer`, NOT pushed)
+
+`/start#going-open-source` gained a second, deliberately quieter map layer: **62 government-built
+open source programs across 24 countries**, sourced from the Civic Tech Field Guide, each dot linking
+to its CTFG profile. Toggleable, default on. **Built but held** — it's local-only on that branch,
+because pushing `main` deploys instantly and there's an open question about linking into the CTFG
+directory while it's de-indexed pre-launch.
+
+- **It is a SUPPORTING layer, not a replacement.** The section's argument is the curated policy
+  markers (who endorsed; that NYC hasn't). Replacing them with project data undercuts it — NYC lights
+  up with dots. So CTFG dots are 9px teal, drawn *beneath* the policy markers, and switchable off.
+- **`content/ctfg-gov-open-source.json` is a curated SNAPSHOT, not a live fetch** — refresh with
+  `node scripts/fetch-ctfg-projects.mjs` and read the diff. Reasons: the map can't go half-empty if
+  the CTFG API is slow, and CTFG's `orgType` tagging has noise (6 entries are excluded there with
+  reasons — nonprofits, an advocacy coalition, a private LLC, a dead Wayback URL).
+- `getCtfgProjects()` in `src/lib/content.js` is **fail-soft on purpose**, unlike `getContent()`: a
+  missing snapshot costs the dots, never the page.
+- **CTFG popup fields are escaped** (`esc()` in `PrimerMapInner.js`) — third-party data, unlike the
+  hand-authored markers beside it.
+- **Attribution is a licence term**, not a courtesy: CTFG content is CC BY-NC-SA 4.0, so the credit +
+  `civictech.guide` link render under the map, counts read from the snapshot so they can't drift.
+  Wording lives in `content/start.md` (`mapSource`) per the copy-in-markdown rule.
+
+### Coverage audit vs CTFG (2026-08-07)
+Every project/org/resource/OSPO on this site was cross-checked against the full CTFG directory:
+**61 entities — 20 have CTFG profiles, 41 don't** (30 civic/gov-tech, 11 general FOSS). Largest gap:
+**17 of 18 OSPOs** in `/resources` are absent from CTFG — this site's OSPO directory is the better
+source. Also: `/success` says "Sovereign Tech **Fund**"; it renamed to **Agency** in 2025.
+⚠️ Method note if you redo it: match on homepage domain, but **exclude shared hosts**
+(`un.org`, `nyc.gov`, `github.com`, `ec.europa.eu`) — a domain hit there proves nothing and produced
+several false positives on the first pass.
+
 ## Non-obvious things that will bite you
 
 - **`getContent()` must be called inside the component or `generateMetadata`, not
