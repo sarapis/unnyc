@@ -15,7 +15,7 @@ sectionNav:
     label: "Tokyo"
   - id: cases
     label: "Governments Doing This Now"
-lede: "[Barcelona](#barcelona), [Paris](#paris), and [Tokyo](#tokyo) have already done versions of what this campaign asks of New York — and each has something concrete to show for it: working tools, lower costs, and standing in a global network of governments that build together."
+lede: "Cities around the world have already seen success endorsing the principles and adopting open source infrastructure. New York should join them."
 cases:
   - id: barcelona
     title: "Barcelona: The First City to Sign"
