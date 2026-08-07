@@ -462,13 +462,31 @@
     border-radius: var(--wg-radius-sm);
   }
 
+  /* Prose + pull-quote float side by side instead of stacking. Clearfix on
+     the wrapping block so its floated children aren't collapsed out of the
+     section's height. Stacks back to one column under 900px — see
+     Responsive at the bottom of this file. */
+  .unnyc-pr-why__block::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
+  .unnyc-pr-why__prose {
+    float: left;
+    width: 56%;
+  }
+
   .unnyc-pr-why__quote {
-    margin: var(--wg-sp-8) 0;
+    float: right;
+    width: 40%;
+    margin: 0 0 0 4%;
     padding: var(--wg-sp-6) var(--wg-sp-8);
     background: var(--wg-surface);
     border-left: 3px solid var(--wg-accent-warm);
     border-radius: 0 var(--wg-radius-md) var(--wg-radius-md) 0;
   }
+
 
   .unnyc-pr-why__quote p {
     font-family: var(--wg-font-display);
@@ -490,8 +508,20 @@
     font-weight: 600;
   }
 
-  /* --- Principle breakdown: three labeled parts, the gap emphasized --- */
+  /* --- Principle breakdown: three labeled parts, the gap emphasized ---
+     The main text and the Gap box float side by side rather than stack; the
+     section's own container clears the floats so its height still wraps
+     them. Stacks back to one column under 900px — see Responsive at the
+     bottom of this file. */
+  .unnyc-pr-cw__section .unnyc-container--narrow::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
   .unnyc-pr-cw__part {
+    float: left;
+    width: 56%;
     margin-bottom: var(--wg-sp-6);
   }
 
@@ -512,8 +542,9 @@
   }
 
   .unnyc-pr-cw__part--gap {
-    margin-top: var(--wg-sp-8);
-    margin-bottom: 0;
+    float: right;
+    width: 40%;
+    margin: 0 0 0 4%;
     padding: var(--wg-sp-8);
     background: rgba(212, 168, 67, 0.09);
     border: 1.5px solid var(--wg-accent-warm);
@@ -544,14 +575,25 @@
     margin: 0 0 var(--wg-sp-6);
   }
 
+  /* Both paragraphs float left at the same (narrower) width, so the second
+     stacks directly under the first instead of running full width. */
+  .unnyc-pr-cw__closing-body::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
   .unnyc-pr-cw__closing p {
+    float: left;
+    clear: left;
+    width: 56%;
     font-size: var(--wg-fs-lg);
     line-height: 1.75;
     color: var(--wg-text);
     margin: 0 0 var(--wg-sp-5);
   }
 
-  .unnyc-pr-cw__closing p:last-child {
+  .unnyc-pr-cw__closing p:last-of-type {
     margin-bottom: 0;
   }
 
@@ -973,6 +1015,21 @@
 
     .unnyc-pr-endorsers__grid {
       grid-template-columns: repeat(2, 1fr);
+    }
+
+    .unnyc-pr-why__prose,
+    .unnyc-pr-why__quote,
+    .unnyc-pr-cw__part,
+    .unnyc-pr-cw__part--gap,
+    .unnyc-pr-cw__closing p:first-of-type,
+    .unnyc-pr-cw__closing p:last-of-type {
+      float: none;
+      width: 100%;
+      margin: 0 0 var(--wg-sp-6);
+    }
+
+    .unnyc-pr-cw__closing p:last-of-type {
+      margin-bottom: 0;
     }
   }
 
