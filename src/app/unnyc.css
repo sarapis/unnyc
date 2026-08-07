@@ -889,6 +889,75 @@
   gap: var(--wg-sp-3);
 }
 
+/* --- Section subnav (UnnycSectionNav) ---
+   A per-page jump menu, sticky directly under the site header. Sits at
+   `--pr-header-h` (measured by HeaderHeightVar; 68px is this site's real
+   header height, not the marketing site's 130px). Scrolls horizontally rather
+   than wrapping — /crosswalk has eight items and a wrapping bar would push the
+   page content down by a whole second row. */
+.unnyc-page .unnyc-subnav {
+  position: sticky;
+  top: var(--pr-header-h, 68px);
+  z-index: 90;
+  /* Warm, not white: the bar sits flush beneath the navy header and directly
+     above each page's cream hero, which is this same value. At rest it reads as
+     the bottom edge of the header zone rather than a third stripe between navy
+     and cream; once stuck over the white sections below, the border gives it
+     its own edge. */
+  background: var(--wg-surface-warm);
+  border-bottom: 1px solid var(--wg-border);
+}
+
+.unnyc-page .unnyc-subnav__list {
+  display: flex;
+  align-items: center;
+  gap: var(--wg-sp-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.unnyc-page .unnyc-subnav__list::-webkit-scrollbar {
+  display: none;
+}
+
+.unnyc-page .unnyc-subnav__link {
+  display: block;
+  white-space: nowrap;
+  padding: var(--wg-sp-3) var(--wg-sp-3);
+  font-size: var(--wg-fs-sm);
+  color: var(--wg-text-muted);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s var(--wg-ease), border-color 0.2s var(--wg-ease);
+}
+
+.unnyc-page .unnyc-subnav__link:hover {
+  color: var(--wg-brand);
+}
+
+.unnyc-page .unnyc-subnav__link--active {
+  color: var(--wg-brand);
+  font-weight: 600;
+  border-bottom-color: var(--wg-accent);
+}
+
+/* Section scroll offsets are NOT set here. The bar is sticky, so a jump target
+   has to clear both it and the header — but primer.css already owns
+   scroll-margin-top for these sections at equal specificity, and a rule here
+   would just lose the source-order coin toss (it did: sections landed 21px
+   behind the bar). Instead the subnav publishes its own height as
+   --pr-subnav-h and primer.css's existing rules add it, defaulting to 0px on
+   the pages that have no bar. One owner, no specificity war. */
+
+@media (prefers-reduced-motion: reduce) {
+  .unnyc-page .unnyc-subnav__link {
+    transition: none;
+  }
+}
+
 /* --- Footer --- */
 .unnyc-page .unnyc-footer {
   background: var(--wg-brand-deep);

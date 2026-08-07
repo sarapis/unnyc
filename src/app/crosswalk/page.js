@@ -52,6 +52,11 @@ export default function CrosswalkPage() {
                 </div>
             </header>
 
+            {/* No section subnav here on purpose. This page's sections ARE the
+                eight principles, so the bar could only be a list of all eight —
+                too dense to scan, and it duplicated the page's own structure.
+                See UnnycSectionNav for where the bar is used. */}
+
             {/* Persuasive intro — the "meat" of the campaign */}
             <section className="unnyc-pr-why">
                 <div className="unnyc-container unnyc-container--narrow">

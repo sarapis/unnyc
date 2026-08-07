@@ -10,6 +10,18 @@ meta:
   ogTitle: "The Global Movement in Government Open Source — UNNYC"
   ogDescription: "The vocabulary, the principles, the history, and the map — everything you need to follow the UNNYC campaign from the beginning."
 title: "Let’s Get You Oriented"
+# Jump menu (UnnycSectionNav). Short labels on purpose — these sit in a one-line
+# bar, where the section headings ("How the UN Came to Champion Open Source")
+# are far too long. `id` must match an id rendered on the page.
+sectionNav:
+  - id: concepts
+    label: "Vocabulary"
+  - id: principles
+    label: "The Eight Principles"
+  - id: movement
+    label: "Timeline"
+  - id: going-open-source
+    label: "Who’s Signed On"
 basicsLink: "Are you entirely new to open source? [Start with the basics ↗](https://en.wikipedia.org/wiki/Open-source_software)"
 concepts:
   title: "The Vocabulary of the Movement"
