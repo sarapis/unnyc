@@ -73,6 +73,19 @@ their `## slug` section, duplicate `### Label` keys, and unknown `gloss:` refs
   `Unexpected token Delim('*')`.
 - **Don't add a `title.template`** in `src/app/layout.js` — page titles already end
   in "— UNNYC" and a template double-suffixes them.
+- **The contact form is the third Payload write path** (`/contact`, added
+  2026-08-06). It posts to `contact-submissions` — a collection that already
+  existed for sarapis.org, with exactly the `name`/`email`/`message` fields
+  needed, so **no CMS change was required**. Two traps: its `website` field is a
+  **honeypot** that makes Payload reject the submission, so `.unnyc-cmp-form__hp`
+  must stay `display:none`; and the collection is **not brand-scoped** (no
+  `sites` field), so UNNYC messages land in the same bucket as sarapis.org's —
+  `ContactForm.js` appends a "Sent from unnyc.wegov.nyc" line to the message
+  because that is the only thing distinguishing them.
+- **`localhost` is NOT in Payload's CORS allowlist**, so *any* form on this site
+  fails locally with a CORS error and the generic "Something went wrong" message.
+  That is expected, not a bug — form submission can only be tested for real from
+  the deployed origin.
 - **One endorsement destination**, separated by `kind`. Individuals and formal
   organizations both land in Payload's `campaign-endorsements`. They used to be
   split, with orgs going to a Google Sheet via an Apps Script webhook — that is

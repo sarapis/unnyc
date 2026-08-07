@@ -878,11 +878,15 @@
   padding: var(--wg-sp-16) 0 var(--wg-sp-8);
 }
 
+/* Logo left, links right on one row. Was a 1fr/2fr grid feeding three link
+   columns; the footer was simplified to a single row 2026-08-06. */
 .unnyc-page .unnyc-footer__grid {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: var(--wg-sp-12);
-  margin-bottom: var(--wg-sp-12);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--wg-sp-6);
+  margin-bottom: var(--wg-sp-8);
 }
 
 .unnyc-page .unnyc-footer__logo {
@@ -905,34 +909,13 @@
   font-family: var(--wg-font-display);
 }
 
-.unnyc-page .unnyc-footer__tagline {
-  font-size: var(--wg-fs-sm);
-  margin-top: var(--wg-sp-3);
-  color: rgba(255, 255, 255, 0.4);
-  line-height: 1.6;
-  max-width: 320px;
-}
-
-.unnyc-page .unnyc-footer__nav {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--wg-sp-6);
-}
-
-.unnyc-page .unnyc-footer__column-title {
-  font-family: var(--wg-font-body);
-  color: var(--wg-text-inverse);
-  font-size: var(--wg-fs-sm);
-  font-weight: 600;
-  margin: 0 0 var(--wg-sp-4);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
+/* One horizontal row of links. `__tagline` and `__column-title` went with the
+   footer simplification (2026-08-06) — no markup uses them any more. */
 .unnyc-page .unnyc-footer__links {
   display: flex;
-  flex-direction: column;
-  gap: var(--wg-sp-1);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--wg-sp-6);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1018,11 +1001,7 @@
   }
 
   .unnyc-page .unnyc-footer__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .unnyc-page .unnyc-footer__nav {
-    gap: var(--wg-sp-8);
+    justify-content: flex-start;
   }
 
   .unnyc-page .unnyc-section {
@@ -1036,8 +1015,8 @@
     grid-template-columns: 1fr;
   }
 
-  .unnyc-page .unnyc-footer__nav {
-    grid-template-columns: 1fr;
+  .unnyc-page .unnyc-footer__links {
+    gap: var(--wg-sp-4);
   }
 }
 

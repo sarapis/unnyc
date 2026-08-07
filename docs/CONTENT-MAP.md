@@ -10,9 +10,9 @@ These are short strings tied to structure rather than prose:
 
 | Thing | File |
 |---|---|
-| Header nav labels + "Sign the Letter" button | `src/components/unnyc/UnnycNav.js` (`LINKS`, `CTA`) |
-| Footer: tagline, three link columns, credit line | `src/components/unnyc/UnnycFooter.js` |
-| Form labels, validation + success messages | `CampaignSignForm.js`, `EndorseForm.js` |
+| Header nav labels + "Take Action" button | `src/components/unnyc/UnnycNav.js` (`LINKS`, `CTA`) |
+| Footer: org links (`ORGS`), Contact link, credit line | `src/components/unnyc/UnnycFooter.js` |
+| Form labels, validation + success messages | `CampaignSignForm.js`, `EndorseForm.js`, `ContactForm.js` |
 | Site-wide default title/description | `src/app/layout.js` (per-page titles are in each content file's `meta:`) |
 
 ## No data files
@@ -39,4 +39,10 @@ authoritative while being unused — which is exactly how the drift went unnotic
 *(Resolved: the footer tagline used the pre-campaign "Where the United Nations
 meets New York City" framing — replaced 2026-08-04 with the campaign's own
 one-liner, reused verbatim from `content/home.md`'s `ogDescription` so the two
-cannot drift.)*
+cannot drift. The tagline itself was then **removed** on 2026-08-06 when the
+footer was simplified to logo + org links + Contact + credit line.)*
+
+*(Also 2026-08-06: the footer's three columns — Explore, Official Sites,
+Programs — were deleted. Explore duplicated the header nav, and the other two
+were inherited from the pre-campaign "UN meets NYC" hub, pointing at un.org,
+nyc.gov and UNITAR. They sent people away from the campaign.)*

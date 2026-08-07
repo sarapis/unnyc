@@ -18,7 +18,7 @@ const LINKS = [
     { href: '/resources', label: 'Resources' },
 ];
 
-const CTA = { href: '/campaign', label: 'Sign the Letter' };
+const CTA = { href: '/campaign', label: 'Take Action' };
 
 export default function UnnycNav() {
     const pathname = usePathname();

@@ -399,6 +399,14 @@
     margin-bottom: var(--wg-sp-4);
   }
 
+  /* Honeypot wrapper on the contact form (ContactForm.js). Payload's
+     contact-submissions REJECTS any submission where `website` is filled, so
+     this MUST stay fully hidden — display:none, not a visually-hidden class a
+     screen reader would still read out and let someone fill in. */
+  .unnyc-cmp-form__hp {
+    display: none;
+  }
+
   .unnyc-cmp-form__section {
     font-family: var(--wg-font-body);
     font-size: var(--wg-fs-xs);
