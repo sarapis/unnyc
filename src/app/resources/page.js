@@ -2,6 +2,7 @@ import Link from 'next/link';
 import '../primer.css';
 import './resources.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
+import UnnycSectionNav from '@/components/unnyc/UnnycSectionNav';
 import PrimerResources from '@/components/unnyc/primer/PrimerResources';
 import PrimerContacts from '@/components/unnyc/primer/PrimerContacts';
 import PrimerOspoDirectory from '@/components/unnyc/primer/PrimerOspoDirectory';
@@ -38,6 +39,8 @@ export default function ResourcesPage() {
                     />
                 </div>
             </header>
+
+            <UnnycSectionNav items={doc.sectionNav} />
 
             <PrimerResources groups={doc.resourceGroups} />
             <PrimerContacts contacts={doc.contacts} />

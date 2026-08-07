@@ -2,6 +2,7 @@ import Link from 'next/link';
 import '../primer.css';
 import './start.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
+import UnnycSectionNav from '@/components/unnyc/UnnycSectionNav';
 import PrincipleDefinitions from '@/components/unnyc/primer/PrincipleDefinitions';
 import PrimerConcepts from '@/components/unnyc/primer/PrimerConcepts';
 import PrimerMovement from '@/components/unnyc/primer/PrimerMovement';
@@ -49,6 +50,8 @@ export default function StartPage() {
                     />
                 </div>
             </header>
+
+            <UnnycSectionNav items={doc.sectionNav} />
 
             <PrimerConcepts concepts={doc.concepts} />
             <PrincipleDefinitions principlesDoc={principlesDoc} />

@@ -5,6 +5,16 @@ meta:
   ogTitle: "What Success Looks Like — UNNYC"
   ogDescription: "What Barcelona, Paris, France, and Tokyo have already won by going open source — and what it would mean for New York."
 title: "A Roadmap for NYC to Follow"
+# Jump menu (UnnycSectionNav) — `id` must match an id rendered on the page.
+sectionNav:
+  - id: barcelona
+    label: "Barcelona"
+  - id: paris
+    label: "Paris"
+  - id: tokyo
+    label: "Tokyo"
+  - id: cases
+    label: "Governments Doing This Now"
 lede: "[Barcelona](#barcelona), [Paris](#paris), and [Tokyo](#tokyo) have already done versions of what this campaign asks of New York — and each has something concrete to show for it: working tools, lower costs, and standing in a global network of governments that build together."
 cases:
   - id: barcelona

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import '../primer.css';
 import './success.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
+import UnnycSectionNav from '@/components/unnyc/UnnycSectionNav';
 import PrimerCases from '@/components/unnyc/primer/PrimerCases';
 import { getContent, inlineMd } from '@/lib/content';
 
@@ -39,6 +40,8 @@ export default function SuccessPage() {
                     />
                 </div>
             </header>
+
+            <UnnycSectionNav items={doc.sectionNav} />
 
             {doc.cases.map((c) => {
                 const html = doc.sections[c.id]?.html ?? '';

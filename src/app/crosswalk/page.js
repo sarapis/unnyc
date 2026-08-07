@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import '../primer.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
+import UnnycSectionNav from '@/components/unnyc/UnnycSectionNav';
 import { getContent, inlineMd } from '@/lib/content';
 
 // Read per call, NOT once at module scope: content/crosswalk.md isn't a module
@@ -51,6 +52,8 @@ export default function CrosswalkPage() {
                     />
                 </div>
             </header>
+
+            <UnnycSectionNav items={doc.principles.map((p) => ({ id: p.slug, label: p.title }))} />
 
             {/* Persuasive intro — the "meat" of the campaign */}
             <section className="unnyc-pr-why">
