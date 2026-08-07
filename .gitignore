@@ -34,4 +34,11 @@ yarn-error.log*
 .vercel
 
 # editor / agent scratch
-.claude/
+# `.claude/*`, NOT `.claude/` — git cannot re-include a file whose parent
+# DIRECTORY is excluded, so the negation below is silently ignored with the
+# trailing-slash form. Ignoring the contents instead makes it work.
+.claude/*
+# Shared project settings are tracked: they carry the PreToolUse hook that
+# refuses blanket `git add -A` here, and it has to reach the other sessions and
+# clones it exists to protect. launch.json and settings.local.json stay local.
+!.claude/settings.json
