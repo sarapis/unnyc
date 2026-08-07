@@ -34,6 +34,56 @@ Vercel project is `unnyc-campaign` (not `unnyc` — that name belongs to the old
 Vite site, now at `old-unnyc.wegov.nyc`). Don't "fix" the name by taking `unnyc`;
 that would collide with a live site.
 
+## ⚠️ Another session may be working in this checkout
+
+More than one Claude session gets run against `~/Antigravity/unnyc` at a time.
+On 2026-08-06 that cost real effort three times in one afternoon: files from a
+concurrent session appeared **staged** in the middle of another session's
+commit, and a second session committed its work **on top of** an unpushed
+commit, so the two could not be shipped separately without a rebase.
+
+**Assume you are not alone in this working tree.**
+
+1. **Never `git add -A`, `git add .`, or `git commit -a`.** Stage the paths you
+   actually edited, by name. This is the single rule that would have prevented
+   all three incidents.
+2. **Read `git diff --cached --name-only` immediately before every commit** and
+   confirm every path is one you touched this session. If something unfamiliar
+   is staged, `git restore --staged <path>` — do not commit it, and do not
+   revert it either; it is someone's work in progress.
+3. **`git status` before you start** and again before you commit. Files you did
+   not write, or a HEAD that moved under you, mean another session is live.
+4. **Never rewrite a branch you did not create** (rebase, reset, amend,
+   force-push) without: a backup ref first, and afterwards proving the patch is
+   unchanged — `git show <old> --format="" > /tmp/a; git show <new> --format=""
+   > /tmp/b; diff /tmp/a /tmp/b`. Say what you did and where the backup is.
+5. **Doing substantial parallel work? Use a worktree** (below) rather than
+   sharing this one.
+
+### Worktrees
+
+One repo, several checked-out directories, each on its own branch. Git refuses
+to check the same branch out twice, which is precisely the protection wanted.
+
+```bash
+git -C ~/Antigravity/unnyc worktree add ~/Antigravity/unnyc-<task> -b <branch>
+git -C ~/Antigravity/unnyc worktree list
+git -C ~/Antigravity/unnyc worktree remove ~/Antigravity/unnyc-<task>
+```
+
+Four things are NOT inherited, all because they are gitignored:
+
+| | |
+|---|---|
+| `node_modules` | needs its own `npm install` — **350 MB**, and `@wegovnyc/design-tokens` is a git dep so it needs network |
+| `.vercel` | `vercel link --yes --project unnyc-campaign` before any manual deploy |
+| `.next` | cold first build; fine, just expected |
+| dev server port | `.claude/launch.json` uses 3100 — give a second worktree its own |
+
+Commits and branches ARE shared instantly (one object store), so the other
+worktree's work shows up in `git log` with no fetching. Remove a worktree when
+its branch merges; stale ones accumulate 350 MB apiece.
+
 ## All copy is in `content/*.md`
 
 One file per page, frontmatter for structure + markdown body for prose, rendered at
