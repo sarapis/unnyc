@@ -14,7 +14,7 @@ import dynamic from 'next/dynamic';
  */
 const PrimerMapInner = dynamic(() => import('./PrimerMapInner'), { ssr: false });
 
-export default function PrimerMovementNow({ endorsers, mapMarkers, mapLegend }) {
+export default function PrimerMovementNow({ endorsers, mapMarkers, mapLegend, ctfg, mapSource }) {
     if (!endorsers) return null;
     return (
         <section id="going-open-source" className="unnyc-section unnyc-section--alt unnyc-section--map">
@@ -30,7 +30,28 @@ export default function PrimerMovementNow({ endorsers, mapMarkers, mapLegend }) 
                     </p>
                 </header>
 
-                <PrimerMapInner markers={mapMarkers} legend={mapLegend} />
+                <PrimerMapInner
+                    markers={mapMarkers}
+                    legend={mapLegend}
+                    projects={ctfg?.projects || []}
+                    projectsLabel={mapSource?.ctfgLegendLabel}
+                />
+
+                {/* CTFG directory content is CC BY-NC-SA 4.0 — the credit is a licence
+                    term, not a courtesy. Copy lives in content/start.md; the counts and
+                    the link come from the snapshot so they can't drift from the data. */}
+                {ctfg && (
+                    <p className="unnyc-pr-map__source">
+                        {mapSource?.ctfgCredit ||
+                            'Government open source programs are drawn from the'}{' '}
+                        <a href={ctfg.sourceUrl} target="_blank" rel="noopener noreferrer">
+                            {ctfg.source}
+                        </a>{' '}
+                        — {ctfg.count} open source programs built by public bodies across{' '}
+                        {ctfg.countries} countries. Each dot links to its full profile.
+                        Data licensed {ctfg.licence}; snapshot taken {ctfg.generated}.
+                    </p>
+                )}
 
                 <p className="unnyc-pr-map__source">
                     This map is illustrative. For the full global picture, explore the{' '}

@@ -8,35 +8,35 @@ meta:
   ogDescription: "What vendor reliance costs the city, what endorsement would cost and fund, and how the UN Open Source Principles line up with NYC’s own stated tech priorities — principle by principle."
 principles:
   - slug: open-by-default
-    icon: 1
+    icon: unlock
     number: 1
     title: "Open by Default"
   - slug: contribute-back
-    icon: 2
+    icon: git-pull-request
     number: 2
     title: "Contribute Back"
   - slug: secure-by-design
-    icon: 3
+    icon: shield-check
     number: 3
     title: "Secure by Design"
   - slug: foster-inclusion
-    icon: 4
+    icon: users
     number: 4
     title: "Foster Inclusion"
   - slug: design-for-reusability
-    icon: 5
+    icon: recycle
     number: 5
     title: "Design for Reusability"
   - slug: provide-documentation
-    icon: 6
+    icon: book-open
     number: 6
     title: "Provide Documentation"
   - slug: rise
-    icon: 7
+    icon: award
     number: 7
     title: "RISE"
   - slug: sustain-and-scale
-    icon: 8
+    icon: trending-up
     number: 8
     title: "Sustain and Scale"
 closingTitle: "Why New York Is Central to This Movement"

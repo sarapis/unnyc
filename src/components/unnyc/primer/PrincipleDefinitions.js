@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import UnnycIcon from '@/components/unnyc/UnnycIcon';
 
 /**
  * PrincipleDefinitions — plain-English definitions of the eight UN Open
@@ -33,13 +33,11 @@ export default function PrincipleDefinitions({ principlesDoc }) {
                 </p>
 
                 <article className="unnyc-start-principle unnyc-start-principle--primary">
-                    <Image
-                        src={lead.icon}
-                        alt=""
-                        width={56}
-                        height={56}
-                        className="unnyc-start-principle__icon"
-                    />
+                    <UnnycIcon
+                            name={lead.icon}
+                            size={56}
+                            className="unnyc-start-principle__icon"
+                        />
                     <h3 className="unnyc-start-principle__title">{lead.title}.</h3>
                     {lead.body.map((p, i) => (
                         <p key={i} className="unnyc-start-principle__desc">{p}</p>
@@ -57,13 +55,11 @@ export default function PrincipleDefinitions({ principlesDoc }) {
                         <div className="unnyc-start-principles__grid">
                             {group.items.map((item) => (
                                 <article key={item.title} className="unnyc-start-principle">
-                                    <Image
-                                        src={item.icon}
-                                        alt=""
-                                        width={56}
-                                        height={56}
-                                        className="unnyc-start-principle__icon"
-                                    />
+                                    <UnnycIcon
+                            name={item.icon}
+                            size={56}
+                            className="unnyc-start-principle__icon"
+                        />
                                     <h4 className="unnyc-start-principle__title">{item.title}</h4>
                                     <p className="unnyc-start-principle__desc">{item.desc}</p>
                                 </article>

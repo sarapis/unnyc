@@ -37,7 +37,7 @@ meta:
 principlesDoc:
   lead:
     n: 1
-    icon: "/principle-icons/princ1.png"
+    icon: unlock
     title: "Open by default"
     titleCanonical: "Open by default"
     body:
@@ -51,19 +51,19 @@ principlesDoc:
     titleDeclaration: "We Build Good Software"
     items:
     - n: 3
-      icon: "/principle-icons/princ3.png"
+      icon: shield-check
       title: "Secure by design"
       titleCanonical: "Secure by design"
       desc: "Making security a priority in all software projects."
       descShort: "Security as a priority in all software projects"
     - n: 5
-      icon: "/principle-icons/princ5.png"
+      icon: recycle
       title: "Designed for reusability"
       titleCanonical: "Design for reusability"
       desc: "Designing projects to be interoperable across various platforms and ecosystems."
       descShort: "Interoperable across platforms and contexts"
     - n: 6
-      icon: "/principle-icons/princ6.png"
+      icon: book-open
       title: "Well documented"
       titleCanonical: "Provide documentation"
       desc: "Providing thorough documentation for end-users, integrators and developers."
@@ -72,13 +72,13 @@ principlesDoc:
     titleDeclaration: "Our Solutions are Cocreated with our Users"
     items:
     - n: 4
-      icon: "/principle-icons/princ4.png"
+      icon: users
       title: "Fostering inclusive participation and community building"
       titleCanonical: "Foster inclusive participation and community building"
       desc: "Enabling and facilitating diverse and inclusive contributions."
       descShort: "Inclusive participation and community building"
     - n: 7
-      icon: "/principle-icons/princ7.png"
+      icon: award
       title: "RISE (recognize, incentivize, support and empower)"
       titleCanonical: "RISE (recognize, incentivize, support and empower)"
       desc: "Empowering individuals and communities to actively participate."
@@ -87,13 +87,13 @@ principlesDoc:
     titleDeclaration: "Collaborating globally to deliver locally"
     items:
     - n: 2
-      icon: "/principle-icons/princ2.png"
+      icon: git-pull-request
       title: "Contributing back"
       titleCanonical: "Contribute back"
       desc: "Encouraging active participation in the Open Source ecosystem."
       descShort: "Active participation in the open source ecosystem"
     - n: 8
-      icon: "/principle-icons/princ8.png"
+      icon: trending-up
       title: "Sustaining and scaling"
       titleCanonical: "Sustain and scale"
       desc: "Supporting the development of solutions that meet the evolving needs of the UN system and beyond."

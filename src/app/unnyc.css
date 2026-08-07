@@ -797,6 +797,36 @@
   background: var(--wg-surface-alt);
 }
 
+/* The CTFG project layer is the one switchable legend entry, so it renders as a
+   label+checkbox. Cursor/user-select make it read as a control, not a caption. */
+.unnyc-page .unnyc-map-legend-item--toggle {
+  cursor: pointer;
+  user-select: none;
+}
+
+.unnyc-page .unnyc-map-legend-item--toggle input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: #3f8f7b;
+  cursor: pointer;
+}
+
+.unnyc-page .unnyc-map-legend-item--toggle:has(input:focus-visible) {
+  outline: 2px solid var(--wg-focus, #4b92db);
+  outline-offset: 2px;
+}
+
+/* Country line inside a CTFG popup — quieter than the description. */
+.unnyc-page .unnyc-map-popup__meta,
+.leaflet-popup-content .unnyc-map-popup__meta {
+  margin: 0.15rem 0 0.35rem;
+  font-size: var(--wg-fs-xs, 0.78rem);
+  color: var(--wg-text-secondary, #5a646e);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
 .unnyc-page .unnyc-map-legend-swatch {
   width: 12px;
   height: 12px;

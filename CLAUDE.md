@@ -34,6 +34,56 @@ Vercel project is `unnyc-campaign` (not `unnyc` — that name belongs to the old
 Vite site, now at `old-unnyc.wegov.nyc`). Don't "fix" the name by taking `unnyc`;
 that would collide with a live site.
 
+## ⚠️ Another session may be working in this checkout
+
+More than one Claude session gets run against `~/Antigravity/unnyc` at a time.
+On 2026-08-06 that cost real effort three times in one afternoon: files from a
+concurrent session appeared **staged** in the middle of another session's
+commit, and a second session committed its work **on top of** an unpushed
+commit, so the two could not be shipped separately without a rebase.
+
+**Assume you are not alone in this working tree.**
+
+1. **Never `git add -A`, `git add .`, or `git commit -a`.** Stage the paths you
+   actually edited, by name. This is the single rule that would have prevented
+   all three incidents.
+2. **Read `git diff --cached --name-only` immediately before every commit** and
+   confirm every path is one you touched this session. If something unfamiliar
+   is staged, `git restore --staged <path>` — do not commit it, and do not
+   revert it either; it is someone's work in progress.
+3. **`git status` before you start** and again before you commit. Files you did
+   not write, or a HEAD that moved under you, mean another session is live.
+4. **Never rewrite a branch you did not create** (rebase, reset, amend,
+   force-push) without: a backup ref first, and afterwards proving the patch is
+   unchanged — `git show <old> --format="" > /tmp/a; git show <new> --format=""
+   > /tmp/b; diff /tmp/a /tmp/b`. Say what you did and where the backup is.
+5. **Doing substantial parallel work? Use a worktree** (below) rather than
+   sharing this one.
+
+### Worktrees
+
+One repo, several checked-out directories, each on its own branch. Git refuses
+to check the same branch out twice, which is precisely the protection wanted.
+
+```bash
+git -C ~/Antigravity/unnyc worktree add ~/Antigravity/unnyc-<task> -b <branch>
+git -C ~/Antigravity/unnyc worktree list
+git -C ~/Antigravity/unnyc worktree remove ~/Antigravity/unnyc-<task>
+```
+
+Four things are NOT inherited, all because they are gitignored:
+
+| | |
+|---|---|
+| `node_modules` | needs its own `npm install` — **350 MB**, and `@wegovnyc/design-tokens` is a git dep so it needs network |
+| `.vercel` | `vercel link --yes --project unnyc-campaign` before any manual deploy |
+| `.next` | cold first build; fine, just expected |
+| dev server port | `.claude/launch.json` uses 3100 — give a second worktree its own |
+
+Commits and branches ARE shared instantly (one object store), so the other
+worktree's work shows up in `git log` with no fetching. Remove a worktree when
+its branch merges; stale ones accumulate 350 MB apiece.
+
 ## All copy is in `content/*.md`
 
 One file per page, frontmatter for structure + markdown body for prose, rendered at
@@ -49,6 +99,38 @@ and PR — the PR run is the one that matters, since a push to `main` deploys wi
 no gate. It checks YAML validity, unterminated quotes, frontmatter slugs missing
 their `## slug` section, duplicate `### Label` keys, and unknown `gloss:` refs
 (that last one warns only). Errors exit 1.
+
+## The CTFG map layer (branch `ctfg-open-source-map-layer`, NOT pushed)
+
+`/start#going-open-source` gained a second, deliberately quieter map layer: **62 government-built
+open source programs across 24 countries**, sourced from the Civic Tech Field Guide, each dot linking
+to its CTFG profile. Toggleable, default on. **Built but held** — it's local-only on that branch,
+because pushing `main` deploys instantly and there's an open question about linking into the CTFG
+directory while it's de-indexed pre-launch.
+
+- **It is a SUPPORTING layer, not a replacement.** The section's argument is the curated policy
+  markers (who endorsed; that NYC hasn't). Replacing them with project data undercuts it — NYC lights
+  up with dots. So CTFG dots are 9px teal, drawn *beneath* the policy markers, and switchable off.
+- **`content/ctfg-gov-open-source.json` is a curated SNAPSHOT, not a live fetch** — refresh with
+  `node scripts/fetch-ctfg-projects.mjs` and read the diff. Reasons: the map can't go half-empty if
+  the CTFG API is slow, and CTFG's `orgType` tagging has noise (6 entries are excluded there with
+  reasons — nonprofits, an advocacy coalition, a private LLC, a dead Wayback URL).
+- `getCtfgProjects()` in `src/lib/content.js` is **fail-soft on purpose**, unlike `getContent()`: a
+  missing snapshot costs the dots, never the page.
+- **CTFG popup fields are escaped** (`esc()` in `PrimerMapInner.js`) — third-party data, unlike the
+  hand-authored markers beside it.
+- **Attribution is a licence term**, not a courtesy: CTFG content is CC BY-NC-SA 4.0, so the credit +
+  `civictech.guide` link render under the map, counts read from the snapshot so they can't drift.
+  Wording lives in `content/start.md` (`mapSource`) per the copy-in-markdown rule.
+
+### Coverage audit vs CTFG (2026-08-07)
+Every project/org/resource/OSPO on this site was cross-checked against the full CTFG directory:
+**61 entities — 20 have CTFG profiles, 41 don't** (30 civic/gov-tech, 11 general FOSS). Largest gap:
+**17 of 18 OSPOs** in `/resources` are absent from CTFG — this site's OSPO directory is the better
+source. Also: `/success` says "Sovereign Tech **Fund**"; it renamed to **Agency** in 2025.
+⚠️ Method note if you redo it: match on homepage domain, but **exclude shared hosts**
+(`un.org`, `nyc.gov`, `github.com`, `ec.europa.eu`) — a domain hit there proves nothing and produced
+several false positives on the first pass.
 
 ## Non-obvious things that will bite you
 
@@ -68,6 +150,18 @@ their `## slug` section, duplicate `### Label` keys, and unknown `gloss:` refs
   broke `cab57e1`); sometimes it parses cleanly and silently eats a key or
   renders a stray `"`. `lint:content` catches both — don't weaken the
   odd-quote-count check, it is the only one that sees the silent variant.
+- **Icons are inline SVG, one set, themeable** — `src/components/unnyc/UnnycIcon.js`,
+  paths verbatim from Lucide v1.30.0 (ISC), 24×24 canvas, 2px stroke. Content
+  refers to them by name (`icon: shield-check` in `content/principles.md` and
+  `content/crosswalk.md`), never by path. They replaced eight PNGs that were
+  364 KB, four clashing art styles, and — the reason that actually mattered —
+  **un-themeable**: a black raster is a colour literal, invisible to the brand
+  variant, which is the exact failure the two-tier token system exists to stop.
+  Colour now comes from `color:` on the CSS class. **Add new icons from Lucide
+  on the same canvas**; mixing sets is the state this replaced.
+- **Case-study images are self-hosted** in `public/case-images/` and served via
+  `next/image`. They were hotlinked from each organisation's own server (~780 KB
+  a visit, one 482 KB OG image, all able to change or 404 without warning).
 - **Never write `*/` inside a CSS comment** (e.g. listing `--unnyc-*` families as
   `--unnyc-*/--un-*`). It closes the comment; Turbopack fails with a confusing
   `Unexpected token Delim('*')`.

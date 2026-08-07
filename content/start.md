@@ -199,6 +199,13 @@ mapMarkers:
   lng: -73.9682
   label: "UN Headquarters, NYC"
   desc: "Where the eight Principles were adopted — and where the world’s open source movement meets every June."
+# Credit + legend label for the CTFG map layer. The layer's DATA is a snapshot at
+# content/ctfg-gov-open-source.json (refresh with scripts/fetch-ctfg-projects.mjs);
+# the counts, source name, link and licence come from that file so they can't drift
+# from the dots. Only the wording lives here.
+mapSource:
+  ctfgLegendLabel: "Government open source programs"
+  ctfgCredit: "Government open source programs on this map are drawn from the"
 mapLegend:
 - type: "city"
   label: "Cities leading"

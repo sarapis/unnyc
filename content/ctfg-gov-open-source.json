@@ -1,0 +1,596 @@
+{
+  "source": "Civic Tech Field Guide",
+  "sourceUrl": "https://civictech.guide",
+  "sourceApi": "https://civictech.guide/api/v1/projects/search?openSource=Yes&orgType=Government%20%2F%20public%20sector",
+  "licence": "CC BY-NC-SA 4.0",
+  "generatedBy": "scripts/fetch-ctfg-projects.mjs",
+  "generated": "2026-08-07",
+  "count": 62,
+  "countries": 24,
+  "excluded": [
+    {
+      "slug": "civic-switchboard",
+      "reason": "IMLS-funded academic/public library capacity project"
+    },
+    {
+      "slug": "congressional-data-coalition",
+      "reason": "an advocacy coalition lobbying Congress, not a government body"
+    },
+    {
+      "slug": "code-for-australia-foresight",
+      "reason": "Code for Australia is a nonprofit; URL is a dead Wayback capture"
+    },
+    {
+      "slug": "civis",
+      "reason": "civis.vote — an Indian nonprofit platform, works with government but is not one"
+    },
+    {
+      "slug": "govtrackus",
+      "reason": "run by Civic Impulse LLC, a private company"
+    },
+    {
+      "slug": "civicspacetech",
+      "reason": "a collection of primers, not a government program"
+    }
+  ],
+  "projects": [
+    {
+      "slug": "argentinas-estandares-de-servicios-digitales",
+      "name": "Argentina's Estándares de Servicios Digitales",
+      "country": "Argentina",
+      "lat": -38.4161,
+      "lng": -63.6167,
+      "desc": "Formas de trabajar de la Dirección Nacional de Servicios Digitales de la República Argentina.",
+      "profile": "https://civictech.guide/projects/argentinas-estandares-de-servicios-digitales"
+    },
+    {
+      "slug": "australia-digital-transformation-agency",
+      "name": "Australia Digital Transformation Agency",
+      "country": "Australia",
+      "lat": -35.2774,
+      "lng": 149.1268,
+      "desc": "At the Digital Transformation Agency, we help government improve digital services to make them simple, clear and fast.",
+      "profile": "https://civictech.guide/projects/australia-digital-transformation-agency"
+    },
+    {
+      "slug": "australias-digital-service-standard",
+      "name": "Australia's Digital Service Standard",
+      "country": "Australia",
+      "lat": -35.2774,
+      "lng": 149.1268,
+      "desc": "The Digital Service Standard is a set of best-practice principles for designing and delivering government services. It helps digital teams to build services that are simple, cle…",
+      "profile": "https://civictech.guide/projects/australias-digital-service-standard"
+    },
+    {
+      "slug": "nationalmap-australia",
+      "name": "NationalMap Australia",
+      "country": "Australia",
+      "lat": -35.2774,
+      "lng": 149.1268,
+      "desc": "NationalMap is an online map-based tool to allow easy access to spatial data from Australian government agencies.",
+      "profile": "https://civictech.guide/projects/nationalmap-australia"
+    },
+    {
+      "slug": "european-age-verification-solution",
+      "name": "European Age Verification Solution",
+      "country": "Belgium",
+      "lat": 50.5039,
+      "lng": 4.4699,
+      "desc": "As more and more jurisdictions require digital platforms to verify their users' age, the European Commission has launched a white label, open source solution for EU Member State…",
+      "profile": "https://civictech.guide/projects/european-age-verification-solution"
+    },
+    {
+      "slug": "open-hardware-observatory",
+      "name": "Open Hardware Observatory",
+      "country": "Belgium",
+      "lat": 50.8551,
+      "lng": 4.3512,
+      "desc": "The Open Source Observatory (OSOR) serves as a place where the open source software community can come together to publish news, find out about events, find relevant open source…",
+      "profile": "https://civictech.guide/projects/open-hardware-observatory"
+    },
+    {
+      "slug": "embaixadores-da-cidadania",
+      "name": "Embaixadores da Cidadania",
+      "country": "Brazil",
+      "lat": -15.9322,
+      "lng": -50.1393,
+      "desc": "Incrições abertas em 08/08 - É um programa de Educação Cidadã que se baseia nos princípios de governo aberto: transparência, prestação de contas, participação cívica, tecnologia…",
+      "profile": "https://civictech.guide/projects/embaixadores-da-cidadania"
+    },
+    {
+      "slug": "labhacker",
+      "name": "LABHacker",
+      "country": "Brazil",
+      "lat": -15.796,
+      "lng": -47.912,
+      "desc": "Brazil's parliamentary innovation unit",
+      "profile": "https://civictech.guide/projects/labhacker"
+    },
+    {
+      "slug": "vlibras",
+      "name": "VLibras",
+      "country": "Brazil",
+      "lat": -14.235,
+      "lng": -51.9253,
+      "desc": "As aplicações da Suíte VLibras permitem que pessoas surdas acessem conteúdo multimídia em sua língua natural de comunicação, o que contribui para com a acessibilidade de computa…",
+      "profile": "https://civictech.guide/projects/vlibras"
+    },
+    {
+      "slug": "canadian-digital-service",
+      "name": "Canadian Digital Service",
+      "country": "Canada",
+      "lat": 56.1304,
+      "lng": -106.3468,
+      "desc": "The Canadian Digital Service teams up with federal departments and agencies to put people’s needs at the centre of government services.",
+      "profile": "https://civictech.guide/projects/canadian-digital-service"
+    },
+    {
+      "slug": "datos-abiertos-legislativos-camara-de-chile",
+      "name": "Datos Abiertos Legislativos (Camara de Chile)",
+      "country": "Chile",
+      "lat": -33.0458,
+      "lng": -71.6197,
+      "desc": "En esta sección se puede acceder a los antecedentes que se producen con ocasión de la tramitación de un proyecto de ley, información de los parlamentarios y leyes ya publicadas,…",
+      "profile": "https://civictech.guide/projects/datos-abiertos-legislativos-camara-de-chile"
+    },
+    {
+      "slug": "datos-abiertos-legislativos-congresso-nacional-de-chile",
+      "name": "Datos Abiertos Legislativos (Congresso Nacional de Chile)",
+      "country": "Chile",
+      "lat": -33.0458,
+      "lng": -71.6197,
+      "desc": "El Congreso Nacional pone a disposición de la ciudadanía su iniciativa de DATOS ABIERTOS LEGISLATIVOS, que se enmarca en el principio de Transparencia y acercamiento de la labor…",
+      "profile": "https://civictech.guide/projects/datos-abiertos-legislativos-congresso-nacional-de-chile"
+    },
+    {
+      "slug": "rahvaalgatusee",
+      "name": "Rahvaalgatus.ee",
+      "country": "Estonia",
+      "lat": 59.4367,
+      "lng": 24.7465,
+      "desc": "Estonian engagement platform with binding triggers for popular proposals to go before government, locally and nationally",
+      "profile": "https://civictech.guide/projects/rahvaalgatusee"
+    },
+    {
+      "slug": "civicbudget",
+      "name": "CivicBudget",
+      "country": "Europe",
+      "lat": 54.526,
+      "lng": 15.2551,
+      "desc": "Civicbudget is an open source participative platform enabling any organization, public or private, to launch a consultation process.",
+      "profile": "https://civictech.guide/projects/civicbudget"
+    },
+    {
+      "slug": "docs",
+      "name": "Docs",
+      "country": "Europe",
+      "lat": 48,
+      "lng": 4,
+      "desc": "Docs is the result of a joint effort lead by the French 🇫🇷🥖(DINUM) and German 🇩🇪🥨 governments (ZenDiS).",
+      "profile": "https://civictech.guide/projects/docs"
+    },
+    {
+      "slug": "public-sector-tech-watch",
+      "name": "Public Sector Tech Watch",
+      "country": "Europe",
+      "lat": 49.8431,
+      "lng": 9.9019,
+      "desc": "",
+      "profile": "https://civictech.guide/projects/public-sector-tech-watch"
+    },
+    {
+      "slug": "ades-groundwater-data-access-portal",
+      "name": "ADES - Groundwater data access portal",
+      "country": "France",
+      "lat": 47.9027,
+      "lng": 1.9086,
+      "desc": "ADES is the national groundwater data access portal for metropolitan France and overseas departments. It gathers quantitative and qualitative data on groundwater on a public web…",
+      "profile": "https://civictech.guide/projects/ades-groundwater-data-access-portal"
+    },
+    {
+      "slug": "albert",
+      "name": "Albert",
+      "country": "France",
+      "lat": 46.2276,
+      "lng": 2.2137,
+      "desc": "Starting in 2024, Albert will be tested at local public service counters — Maisons France services — to help users with their paperwork.",
+      "profile": "https://civictech.guide/projects/albert"
+    },
+    {
+      "slug": "free-software-unit-france",
+      "name": "Free Software unit (France)",
+      "country": "France",
+      "lat": 46.2276,
+      "lng": 2.2137,
+      "desc": "Assisting government agencies in increasing their use of Free and Open Source software and supporting their efforts to publish source code .",
+      "profile": "https://civictech.guide/projects/free-software-unit-france"
+    },
+    {
+      "slug": "lutece",
+      "name": "Lutece",
+      "country": "France",
+      "lat": 48.8535,
+      "lng": 2.3484,
+      "desc": "Lutece is an open source platform developed by the City of Paris to help you develop digital solutions.",
+      "profile": "https://civictech.guide/projects/lutece"
+    },
+    {
+      "slug": "open-terms-archive",
+      "name": "Open Terms Archive",
+      "country": "France",
+      "lat": 46.2276,
+      "lng": 2.2137,
+      "desc": "Open Terms Archive publicly records every version of the terms of digital services to enable democratic oversight.",
+      "profile": "https://civictech.guide/projects/open-terms-archive"
+    },
+    {
+      "slug": "pole-open-source-et-communs-numeriques",
+      "name": "Pôle open source et communs numériques",
+      "country": "France",
+      "lat": 46.2276,
+      "lng": 2.2137,
+      "desc": "Nous accompagnons les administrations pour renforcer leur utilisation de logiciels libres, soutenir leurs démarches de publication et de mutualisation de codes sources et créer…",
+      "profile": "https://civictech.guide/projects/pole-open-source-et-communs-numeriques"
+    },
+    {
+      "slug": "udata",
+      "name": "udata",
+      "country": "France",
+      "lat": 46.2276,
+      "lng": 2.2137,
+      "desc": "Customizable and skinnable social platform dedicated to (open)data.",
+      "profile": "https://civictech.guide/projects/udata"
+    },
+    {
+      "slug": "datisenatoit",
+      "name": "dati.senato.it",
+      "country": "Italy",
+      "lat": 41.9002,
+      "lng": 12.4766,
+      "desc": "Il punto per l'accesso diretto ai dati del Senato della Repubblica. Aggiornamenti quotidiani di informazioni facilmente e liberamente utilizzabili (dati aperti) che riguardano o…",
+      "profile": "https://civictech.guide/projects/datisenatoit"
+    },
+    {
+      "slug": "open-data-hub",
+      "name": "Open Data Hub",
+      "country": "Italy",
+      "lat": 46.4985,
+      "lng": 11.3547,
+      "desc": "Open Data Hub is an open platform designed to provide access to high-quality datasets and APIs for various sectors, enabling innovation and collaboration across industries.",
+      "profile": "https://civictech.guide/projects/open-data-hub"
+    },
+    {
+      "slug": "publiccodeyml",
+      "name": "publiccode.yml",
+      "country": "Italy",
+      "lat": 41.9002,
+      "lng": 12.4766,
+      "desc": "A metadata description standard for public software",
+      "profile": "https://civictech.guide/projects/publiccodeyml"
+    },
+    {
+      "slug": "tokyos-metropolitan-open-source-public-guidelines",
+      "name": "Tokyo's Metropolitan Open Source Public Guidelines",
+      "country": "Japan",
+      "lat": 35.6895,
+      "lng": 139.6917,
+      "desc": "東京都オープン・ソース・ソフトウェア公開ガイドライン. Contribute to Tokyo-Metro-Gov/tokyo-oss-guideline development by creating an account on GitHub.",
+      "profile": "https://civictech.guide/projects/tokyos-metropolitan-open-source-public-guidelines"
+    },
+    {
+      "slug": "lietuvos-finansai",
+      "name": "Lietuvos finansai",
+      "country": "Lithuania",
+      "lat": 55.1694,
+      "lng": 23.8813,
+      "desc": "The website allows you to view, filter and analyze government finance data in a variety of sections and levels, from the national level, which includes aggregated (total) govern…",
+      "profile": "https://civictech.guide/projects/lietuvos-finansai"
+    },
+    {
+      "slug": "circulaw",
+      "name": "CircuLaw",
+      "country": "Netherlands",
+      "lat": 52.378,
+      "lng": 4.9,
+      "desc": "Unlocking regulatory innovation for the circular economy transition.",
+      "profile": "https://civictech.guide/projects/circulaw"
+    },
+    {
+      "slug": "otwarte-dane",
+      "name": "Otwarte Dane",
+      "country": "Poland",
+      "lat": 52.2383,
+      "lng": 21.0086,
+      "desc": "Central repository of Polish open public data.",
+      "profile": "https://civictech.guide/projects/otwarte-dane"
+    },
+    {
+      "slug": "formsg",
+      "name": "FormSG",
+      "country": "Singapore",
+      "lat": 1.3521,
+      "lng": 103.8198,
+      "desc": "FormSG is a form builder tool that enables public officers to instantly create customisable forms with zero code or cost, to safely collect classified and sensitive data.",
+      "profile": "https://civictech.guide/projects/formsg"
+    },
+    {
+      "slug": "govtech-singapore-government-technology-agency",
+      "name": "GovTech Singapore Government Technology Agency",
+      "country": "Singapore",
+      "lat": 1.3521,
+      "lng": 103.8198,
+      "desc": "Singapore's digital transformation unit",
+      "profile": "https://civictech.guide/projects/govtech-singapore-government-technology-agency"
+    },
+    {
+      "slug": "mymzansi",
+      "name": "MyMzansi",
+      "country": "South Africa",
+      "lat": -30.5595,
+      "lng": 22.9375,
+      "desc": "A Roadmap for the Digital Transformation of the South African Government",
+      "profile": "https://civictech.guide/projects/mymzansi"
+    },
+    {
+      "slug": "el-centro-de-transferencia-de-tecnologia",
+      "name": "El Centro de Transferencia de Tecnología",
+      "country": "Spain",
+      "lat": 40.4637,
+      "lng": -3.7492,
+      "desc": "El Centro de Transferencia de Tecnología publica un directorio general de aplicaciones o/y soluciones cuyo objetivo es favorecer la reutilización de soluciones por todas las Adm…",
+      "profile": "https://civictech.guide/projects/el-centro-de-transferencia-de-tecnologia"
+    },
+    {
+      "slug": "jobtech-development",
+      "name": "JobTech Development",
+      "country": "Sweden",
+      "lat": 55.5999,
+      "lng": 13.0066,
+      "desc": "JobTech Development är en utvecklingsenhet inom Arbetsförmedlingen Vi erbjuder öppna data och Open Source-teknologi till de som, tillsammans med oss, vill bidra till en väl fung…",
+      "profile": "https://civictech.guide/projects/jobtech-development"
+    },
+    {
+      "slug": "natverk-for-samverkan-kring-oppna-data-och-oppen-kallkod-nosad",
+      "name": "Nätverk för samverkan kring öppna data och öppen källkod (NOSAD)",
+      "country": "Sweden",
+      "lat": 60.1282,
+      "lng": 18.6435,
+      "desc": "Swedish network for collaboration on open data and open source code",
+      "profile": "https://civictech.guide/projects/natverk-for-samverkan-kring-oppna-data-och-oppen-kallkod-nosad"
+    },
+    {
+      "slug": "offentligkod",
+      "name": "Offentligkod",
+      "country": "Sweden",
+      "lat": 60.1282,
+      "lng": 18.6435,
+      "desc": "Katalog med öppna programvaror som används av offentliga organisationer. Ett stöd för att välja ett öppet alternativ.",
+      "profile": "https://civictech.guide/projects/offentligkod"
+    },
+    {
+      "slug": "taiwan-ministry-of-digital-affairs-moda",
+      "name": "Taiwan Ministry of Digital Affairs (MODA)",
+      "country": "Taiwan",
+      "lat": 25.045,
+      "lng": 121.5439,
+      "desc": "The moda is committed to promoting suitable digital tools and open mindsets through building resilience and co-creation, powering Taiwan’s shift from a digital island to a globa…",
+      "profile": "https://civictech.guide/projects/taiwan-ministry-of-digital-affairs-moda"
+    },
+    {
+      "slug": "trinidad-and-tobago-open-source-program-office",
+      "name": "Trinidad and Tobago Open Source Program Office",
+      "country": "Trinidad and Tobago",
+      "lat": 10.6918,
+      "lng": -61.2225,
+      "desc": "This pilot, in collaboration with The University of the West Indies, and UNDP, is...a model for how open-source practices can strengthen digital ecosystems and drive inclusive i…",
+      "profile": "https://civictech.guide/projects/trinidad-and-tobago-open-source-program-office"
+    },
+    {
+      "slug": "reclaiming-spaces-initiative-rsi",
+      "name": "Reclaiming Spaces Initiative (RSI)",
+      "country": "Uganda",
+      "lat": 0.3177,
+      "lng": 32.5814,
+      "desc": "Mobimocc is an IVR-based platform that empowers rural women by providing accessible GBV education, interactive support, and real-time counseling through feature phones.",
+      "profile": "https://civictech.guide/projects/reclaiming-spaces-initiative-rsi"
+    },
+    {
+      "slug": "open-procurement",
+      "name": "Open Procurement",
+      "country": "Ukraine",
+      "lat": 48.3794,
+      "lng": 31.1656,
+      "desc": "OpenProcurement is an open source e-procurement toolkit.",
+      "profile": "https://civictech.guide/projects/open-procurement"
+    },
+    {
+      "slug": "accessibility-personas",
+      "name": "Accessibility Personas",
+      "country": "United Kingdom of Great Britain and Northern Ireland",
+      "lat": 55.3781,
+      "lng": -3.436,
+      "desc": "The GDS Accessibility team has created 7 different accessibility personas. Each persona has different access needs.",
+      "profile": "https://civictech.guide/projects/accessibility-personas"
+    },
+    {
+      "slug": "caddy-govuk",
+      "name": "Caddy (Gov.UK)",
+      "country": "United Kingdom of Great Britain and Northern Ireland",
+      "lat": 51.5033,
+      "lng": -0.1276,
+      "desc": "Caddy is an AI powered co-pilot for customer service functions everywhere.",
+      "profile": "https://civictech.guide/projects/caddy-govuk"
+    },
+    {
+      "slug": "consult-govuk",
+      "name": "Consult (GOV.UK)",
+      "country": "United Kingdom of Great Britain and Northern Ireland",
+      "lat": 51.5033,
+      "lng": -0.1276,
+      "desc": "Consult is a machine learning and LLM-powered tool to automate the processing of public consultations.",
+      "profile": "https://civictech.guide/projects/consult-govuk"
+    },
+    {
+      "slug": "government-digital-service-uk",
+      "name": "Government Digital Service UK",
+      "country": "United Kingdom of Great Britain and Northern Ireland",
+      "lat": 55.3781,
+      "lng": -3.436,
+      "desc": "We help government work better for everyone by leading digital transformation.",
+      "profile": "https://civictech.guide/projects/government-digital-service-uk"
+    },
+    {
+      "slug": "incubator-for-artificial-intelligence-iai",
+      "name": "Incubator for Artificial Intelligence (i.AI)",
+      "country": "United Kingdom of Great Britain and Northern Ireland",
+      "lat": 51.5033,
+      "lng": -0.1276,
+      "desc": "The Incubator for Artificial Intelligence in UK government",
+      "profile": "https://civictech.guide/projects/incubator-for-artificial-intelligence-iai"
+    },
+    {
+      "slug": "rapid",
+      "name": "rAPId",
+      "country": "United Kingdom of Great Britain and Northern Ireland",
+      "lat": 51.5033,
+      "lng": -0.1276,
+      "desc": "An end-to-end solution to sharing data across government",
+      "profile": "https://civictech.guide/projects/rapid"
+    },
+    {
+      "slug": "scout-govuk",
+      "name": "Scout (GOV.UK)",
+      "country": "United Kingdom of Great Britain and Northern Ireland",
+      "lat": 51.5033,
+      "lng": -0.1276,
+      "desc": "An AI-powered tool that improves government major project delivery by automatically analysing thousands of documents to help detect problems earlier, enabling timely interventio…",
+      "profile": "https://civictech.guide/projects/scout-govuk"
+    },
+    {
+      "slug": "themefinder",
+      "name": "ThemeFinder",
+      "country": "United Kingdom of Great Britain and Northern Ireland",
+      "lat": 51.5033,
+      "lng": -0.1276,
+      "desc": "ThemeFinder is a topic modelling Python package designed for analysing one-to-many question-answer data (i.e. survey responses, public consultations, etc.).",
+      "profile": "https://civictech.guide/projects/themefinder"
+    },
+    {
+      "slug": "uk-parliament-members-api",
+      "name": "UK Parliament Members API",
+      "country": "United Kingdom of Great Britain and Northern Ireland",
+      "lat": 51.5073,
+      "lng": -0.1276,
+      "desc": "An API which retrieves Members data.",
+      "profile": "https://civictech.guide/projects/uk-parliament-members-api"
+    },
+    {
+      "slug": "boston-smart-cities-playbook",
+      "name": "Boston Smart Cities Playbook",
+      "country": "United States of America",
+      "lat": 42.3589,
+      "lng": -71.0568,
+      "desc": "",
+      "profile": "https://civictech.guide/projects/boston-smart-cities-playbook"
+    },
+    {
+      "slug": "census-accelerate-video-challenge",
+      "name": "Census Accelerate Video Challenge",
+      "country": "United States of America",
+      "lat": 37.0902,
+      "lng": -95.7129,
+      "desc": "Census Accelerate, an initiative within the innovation arm of the U.S. Census Bureau, has launched its first-ever video prize competition to reward the most engaging, impactful…",
+      "profile": "https://civictech.guide/projects/census-accelerate-video-challenge"
+    },
+    {
+      "slug": "code-california",
+      "name": "Code California",
+      "country": "United States of America",
+      "lat": 37.0744,
+      "lng": -119.6994,
+      "desc": "Code California is an open collaboration between agencies, industry technology partners and civic technologists working to code a more innovative, collaborative and effective go…",
+      "profile": "https://civictech.guide/projects/code-california"
+    },
+    {
+      "slug": "new-jersey-state-office-of-innovation",
+      "name": "New Jersey State Office of Innovation",
+      "country": "United States of America",
+      "lat": 40.4948,
+      "lng": -74.4467,
+      "desc": "The Office of Innovation works collaboratively with government, academic, non-profit, and private sector institutions to drive innovation in the Garden State and improve the des…",
+      "profile": "https://civictech.guide/projects/new-jersey-state-office-of-innovation"
+    },
+    {
+      "slug": "nyc-planning-labs",
+      "name": "NYC Planning Labs",
+      "country": "United States of America",
+      "lat": 40.7085,
+      "lng": -74.011,
+      "desc": "NYC Planning Labs builds open, impactful, modern technology tools for urban planners",
+      "profile": "https://civictech.guide/projects/nyc-planning-labs"
+    },
+    {
+      "slug": "presidential-innovation-fellows",
+      "name": "Presidential Innovation Fellows",
+      "country": "United States of America",
+      "lat": 38.897,
+      "lng": -77.0426,
+      "desc": "We must harness new ideas and technology to remake our government.",
+      "profile": "https://civictech.guide/projects/presidential-innovation-fellows"
+    },
+    {
+      "slug": "primary-land-use-tax-lot-output-pluto",
+      "name": "Primary Land Use Tax Lot Output (PLUTO)",
+      "country": "United States of America",
+      "lat": 40.7127,
+      "lng": -74.006,
+      "desc": "Extensive land use and geographic data at the tax lot level in comma–separated values (CSV) file format. The PLUTO files contain more than seventy fields derived from data maint…",
+      "profile": "https://civictech.guide/projects/primary-land-use-tax-lot-output-pluto"
+    },
+    {
+      "slug": "the-lab-at-dc",
+      "name": "The Lab @ DC",
+      "country": "United States of America",
+      "lat": 38.8845,
+      "lng": -77.0249,
+      "desc": "The Lab uses scientific insights and methods to test and improve policies and provide timely, relevant, and high-quality analysis to inform the District's most important decisions.",
+      "profile": "https://civictech.guide/projects/the-lab-at-dc"
+    },
+    {
+      "slug": "the-opportunity-project",
+      "name": "The Opportunity Project",
+      "country": "United States of America",
+      "lat": 37.0902,
+      "lng": -95.7129,
+      "desc": "The Opportunity Project helps teams use federal open data to build solutions to our nation’s toughest challenges.",
+      "profile": "https://civictech.guide/projects/the-opportunity-project"
+    },
+    {
+      "slug": "united-states-doge-service-usds",
+      "name": "United States DOGE Service (USDS)",
+      "country": "United States of America",
+      "lat": 38.9038,
+      "lng": -77.0401,
+      "desc": "The United States Digital Service is transforming how the federal government works for the American people. And we need you.",
+      "profile": "https://civictech.guide/projects/united-states-doge-service-usds"
+    },
+    {
+      "slug": "us-web-design-standards",
+      "name": "US Web Design Standards",
+      "country": "United States of America",
+      "lat": 38.8973,
+      "lng": -77.021,
+      "desc": "Design and build fast, accessible, mobile-friendly government websites backed by user research.",
+      "profile": "https://civictech.guide/projects/us-web-design-standards"
+    },
+    {
+      "slug": "wheres-my-school-bus",
+      "name": "Where's my school bus?",
+      "country": "United States of America",
+      "lat": 42.3589,
+      "lng": -71.0568,
+      "desc": "Our program offers real-time tracking of school buses through a mobile web app. We hope that — in a small way — this creates a better experience for parents and students.",
+      "profile": "https://civictech.guide/projects/wheres-my-school-bus"
+    }
+  ]
+}

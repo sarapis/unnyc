@@ -137,6 +137,28 @@ export function getContent(name) {
     return { ...data, sections: splitSections(content) };
 }
 
+/**
+ * The curated "government open source programs" map layer, sourced from the Civic
+ * Tech Field Guide's public API and snapshotted by
+ * `scripts/fetch-ctfg-projects.mjs` (re-run that to refresh; read the diff before
+ * committing). A snapshot rather than a live fetch so the map can't go half-empty
+ * if the CTFG API is slow, and so the set stays human-gated — CTFG's org-type
+ * tagging has some noise.
+ *
+ * Fail-soft ON PURPOSE, unlike getContent(): this layer is supporting evidence, so
+ * a missing file should cost you the extra dots, not the whole page and its
+ * argument. Returns null and the map just renders the curated policy markers.
+ */
+export function getCtfgProjects() {
+    const file = path.join(CONTENT_DIR, 'ctfg-gov-open-source.json');
+    try {
+        const d = JSON.parse(fs.readFileSync(file, 'utf8'));
+        return Array.isArray(d?.projects) && d.projects.length ? d : null;
+    } catch {
+        return null;
+    }
+}
+
 /* ---------------------------------------------------------------------------
    The eight principles, derived
    ---------------------------------------------------------------------------
