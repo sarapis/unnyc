@@ -2,7 +2,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import '../primer.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
-import UnnycSectionNav from '@/components/unnyc/UnnycSectionNav';
 import { getContent, inlineMd } from '@/lib/content';
 
 // Read per call, NOT once at module scope: content/crosswalk.md isn't a module
@@ -53,7 +52,10 @@ export default function CrosswalkPage() {
                 </div>
             </header>
 
-            <UnnycSectionNav items={doc.principles.map((p) => ({ id: p.slug, label: p.title }))} />
+            {/* No section subnav here on purpose. This page's sections ARE the
+                eight principles, so the bar could only be a list of all eight —
+                too dense to scan, and it duplicated the page's own structure.
+                See UnnycSectionNav for where the bar is used. */}
 
             {/* Persuasive intro — the "meat" of the campaign */}
             <section className="unnyc-pr-why">

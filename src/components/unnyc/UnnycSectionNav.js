@@ -5,8 +5,26 @@ import { useEffect, useRef, useState } from 'react';
  * UnnycSectionNav — a per-page submenu of the current page's sections.
  *
  * Sticks directly under the site header and jumps to a section on click, with
- * the active section highlighted as you scroll (a scroll-spy). Pages pass their
- * own `items`; a page with fewer than two sections should not render it at all.
+ * the active section highlighted as you scroll (a scroll-spy).
+ *
+ * WHERE IT BELONGS — only /start, /success and /resources:
+ *
+ *  - Short pages don't get one. /campaign (116 words), /contact (133) and
+ *    /campaign/sign (733) fit in a screen or two, so there is nothing to jump
+ *    past. The `items.length < 3` guard below is the backstop, but the real
+ *    rule is simply not to mount it on a page that doesn't need it.
+ *  - /crosswalk doesn't get one either, despite being the longest page. Its
+ *    sections ARE the eight principles, so the bar could only ever be a list
+ *    of all eight — too dense to scan, and a restatement of the page's own
+ *    structure rather than a way through it.
+ *
+ * The pages that keep it have a handful of genuinely different chunks
+ * (a glossary, a timeline, three city case studies, three directories) where
+ * a reader plausibly wants one and not the others.
+ *
+ * Progressive enhancement: the items are real `<a href="#id">` anchors, so they
+ * work with JS disabled and are keyboard-navigable for free. The click handler
+ * only adds smooth scrolling and a clean URL update.
  *
  * Progressive enhancement: the items are real `<a href="#id">` anchors, so they
  * work with JS disabled and are keyboard-navigable for free. The click handler
@@ -18,6 +36,8 @@ import { useEffect, useRef, useState } from 'react';
  *
  * @param {{items: {id: string, label: string}[], ariaLabel?: string}} props
  */
+/* eslint-disable react-hooks/exhaustive-deps -- the observer is keyed on `ids`
+   (a stable string) rather than `items` (a fresh array each render). */
 export default function UnnycSectionNav({ items = [], ariaLabel = 'Sections on this page' }) {
     const [active, setActive] = useState(null);
     const listRef = useRef(null);
@@ -68,7 +88,9 @@ export default function UnnycSectionNav({ items = [], ariaLabel = 'Sections on t
         }
     }, [active]);
 
-    if (items.length < 2) return null;
+    // Backstop only — see the "where it belongs" note above. Two items is not
+    // a menu worth a sticky bar.
+    if (items.length < 3) return null;
 
     const jump = (e, id) => {
         const target = document.getElementById(id);
