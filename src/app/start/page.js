@@ -7,7 +7,7 @@ import PrincipleDefinitions from '@/components/unnyc/primer/PrincipleDefinitions
 import PrimerConcepts from '@/components/unnyc/primer/PrimerConcepts';
 import PrimerMovement from '@/components/unnyc/primer/PrimerMovement';
 import PrimerMovementNow from '@/components/unnyc/primer/PrimerMovementNow';
-import { getContent, inlineMd } from '@/lib/content';
+import { getContent, getCtfgProjects, inlineMd } from '@/lib/content';
 
 export async function generateMetadata() {
     const { meta } = getContent('start');
@@ -60,6 +60,8 @@ export default function StartPage() {
                 endorsers={doc.endorsers}
                 mapMarkers={doc.mapMarkers}
                 mapLegend={doc.mapLegend}
+                ctfg={getCtfgProjects()}
+                mapSource={doc.mapSource}
             />
 
             {/* Foot CTA — leads into the next section */}
