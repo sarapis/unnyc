@@ -19,7 +19,6 @@ meta:
   description: "A resource directory and the people to call. Looking for case studies? See what success looks like."
   ogTitle: "Related Resources — UNNYC"
   ogDescription: "The resource directory and the people to call for the UNNYC campaign."
-title: "Related Resources"
 # Jump menu (UnnycSectionNav) — `id` must match an id rendered on the page.
 sectionNav:
   - id: resources
@@ -28,7 +27,6 @@ sectionNav:
     label: "People to Call"
   - id: ospos
     label: "Find an OSPO"
-lede: "The [primary sources](#resources), the [people to call](#contacts), and a [directory of global OSPOs](#ospos). If it’s not here, one of these contacts can point you to who has it. Looking for case studies instead? [See what success looks like →](/success)"
 resourceGroups:
   title: "Primary Sources"
   lede: "Read the frameworks, browse the registries, join the communities."
