@@ -55,12 +55,17 @@ export default function SuccessPage() {
                         id={c.id}
                         className={`unnyc-success__case${c.alt ? ' unnyc-success__case--alt' : ''}`}
                     >
-                        {c.banner && (
-                            <div className="unnyc-success__case-banner">
-                                {/* Remote editorial photos: plain <img> on purpose — these are
-                                    arbitrary Wikimedia URLs, not next/image-optimised assets. */}
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={c.banner.src} alt={c.banner.alt} />
+                        {c.banner ? (
+                            <div
+                                className="unnyc-success__case-hero"
+                                style={{ backgroundImage: `url(${c.banner.src})` }}
+                                role="img"
+                                aria-label={c.banner.alt}
+                            >
+                                <div className="unnyc-success__case-hero-scrim" />
+                                <div className="unnyc-container unnyc-container--narrow unnyc-success__case-hero-content">
+                                    <h2 className="unnyc-success__case-title">{c.title}</h2>
+                                </div>
                                 {c.banner.creditHref && (
                                     <a
                                         href={c.banner.creditHref}
@@ -72,11 +77,15 @@ export default function SuccessPage() {
                                     </a>
                                 )}
                             </div>
+                        ) : (
+                            <div className="unnyc-container unnyc-container--narrow">
+                                <h2 className="unnyc-success__case-title">{c.title}</h2>
+                            </div>
                         )}
 
-                        <div className="unnyc-container unnyc-container--narrow">
-                            <h2 className="unnyc-success__case-title">{c.title}</h2>
-
+                        <div
+                            className={`unnyc-container unnyc-container--narrow${c.banner ? ' unnyc-success__case-body--overlap' : ''}`}
+                        >
                             <div dangerouslySetInnerHTML={{ __html: before }} />
 
                             {c.stats?.length > 0 && (

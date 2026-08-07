@@ -20,10 +20,8 @@ cases:
   - id: barcelona
     title: "Barcelona: The First City to Sign"
     banner:
-      src: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Barcelona_Skyline.jpg/1280px-Barcelona_Skyline.jpg"
-      alt: "Skyline of Barcelona"
-      creditHref: "https://commons.wikimedia.org/wiki/File:Barcelona_Skyline.jpg"
-      creditText: "Photo: SGDWN / Wikimedia Commons (CC BY-SA 4.0)"
+      src: "/images/success/barcelona.jpg"
+      alt: "Aerial view of the Barcelona skyline and Sagrada Família at dusk"
     stats:
       - number: "1st"
         label: "City in the world to endorse the UN Principles"
@@ -39,10 +37,8 @@ cases:
     alt: true
     title: "Paris: From One Office to National Policy"
     banner:
-      src: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Paris_Night.jpg/1280px-Paris_Night.jpg"
-      alt: "Paris cityscape at night"
-      creditHref: "https://commons.wikimedia.org/wiki/File:Paris_Night.jpg"
-      creditText: "Photo: Benh LIEU SONG / Wikimedia Commons (CC BY-SA 4.0)"
+      src: "/images/success/paris.webp"
+      alt: "Eiffel Tower and Paris rooftops at sunset"
     stats:
       - number: "2022"
         label: "Paris’s OSPO founded — first in Europe"
@@ -59,10 +55,8 @@ cases:
   - id: tokyo
     title: "Tokyo: When Transparency Becomes Infrastructure"
     banner:
-      src: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Minato_City%2C_Tokyo%2C_Japan_%28Night%29.jpg/1280px-Minato_City%2C_Tokyo%2C_Japan_%28Night%29.jpg"
-      alt: "Tokyo skyline at night"
-      creditHref: "https://commons.wikimedia.org/wiki/File:Minato_City,_Tokyo,_Japan_(Night).jpg"
-      creditText: "Photo: David Kernan / Wikimedia Commons (CC BY 4.0)"
+      src: "/images/success/tokyo.jpg"
+      alt: "Tokyo Tower and skyline at sunset"
     stats:
       - number: "47/47"
         label: "Japanese prefectures that adopted Tokyo’s dashboard"

@@ -49,19 +49,82 @@
     background: var(--wg-surface-alt);
   }
 
-  .unnyc-success__case-banner {
-    width: 100%;
-    height: 360px;
-    overflow: hidden;
+  /* The photo is the section's background rather than a separate cropped
+     strip above the title — a plain object-fit: cover box was cutting the
+     tops off the Sagrada Família / Eiffel Tower at this aspect ratio. The
+     scrim darkens the photo just enough for the title to read, then fades
+     the bottom edge into the section's own background color (white, or
+     --wg-surface-alt on an alt-striped case) so the photo dissolves into
+     the page instead of ending in a hard line. The title sits above that
+     fade band, absolutely positioned, so it never lands on the light zone. */
+  .unnyc-success__case-hero {
     position: relative;
-    margin-bottom: var(--wg-sp-10);
+    width: 100%;
+    min-height: 640px;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
   }
 
-  .unnyc-success__case-banner img {
+  /* Pulls the prose up so its opening lines sit inside the hero's fade band
+     (the #ffffffd1 86% -> surface 100% stops), instead of starting only
+     after the photo ends. Kept shallow enough to stay in that light part
+     of the gradient — the paragraph text is dark, so overlapping any
+     deeper (into the mid-gradient's navy tones) would kill legibility. */
+  .unnyc-page .unnyc-container.unnyc-success__case-body--overlap {
+    position: relative;
+    margin-top: -85px;
+  }
+
+  .unnyc-success__case-hero-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      #0f172a00 0%,
+      #0f172a0a 20%,
+      #0f172a1f 35%,
+      #0f172a42 50%,
+      #0f172a70 62%,
+      #0f172aa6 74%,
+      #ffffffd1 86%,
+      var(--wg-surface) 100%
+    );
+  }
+
+  .unnyc-success__case--alt .unnyc-success__case-hero-scrim {
+    background: linear-gradient(
+      180deg,
+      #0f172a00 0%,
+      #0f172a0a 20%,
+      #0f172a1f 35%,
+      #0f172a42 50%,
+      #0f172a70 62%,
+      #0f172aa6 74%,
+      #ffffffd1 86%,
+      var(--wg-surface-alt) 100%
+    );
+  }
+
+  .unnyc-success__case-hero-content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 22%;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  }
+
+  .unnyc-success__case-hero .unnyc-success__case-title {
+    color: #ffffff;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+    margin: 0;
+  }
+
+  /* Paris's source photo has more empty sky than the other two — nudge the
+     crop down so the Eiffel Tower/rooftops sit higher in the frame instead
+     of being pushed toward the bottom by all that sky. */
+  #paris .unnyc-success__case-hero {
+    background-position: center 22%;
   }
 
   .unnyc-success__case-banner-credit {
@@ -81,8 +144,12 @@
   }
 
   @media (max-width: 640px) {
-    .unnyc-success__case-banner {
-      height: 200px;
+    .unnyc-success__case-hero {
+      min-height: 420px;
+    }
+
+    .unnyc-success__case-hero-content {
+      padding-top: var(--wg-sp-10);
     }
   }
 
