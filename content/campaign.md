@@ -8,9 +8,9 @@ title: "Ready to Act?"
 lede: "There are two ways to back this campaign — pick the one that fits."
 paths:
   - href: /campaign/sign
-    question: "Sign the open letter."
+    question: "Sign the open letter to the NYC CTO"
     answer: "Add your name, or endorse on behalf of your organization, on the public letter calling on NYC to act."
   - href: /campaign/endorse
-    question: "Formally endorse the UN Open Source Principles."
+    question: "Endorse the UN Open Source Principles"
     answer: "For organizations ready to make it official — submit a formal commitment, or download the signable document."
 ---
