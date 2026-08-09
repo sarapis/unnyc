@@ -35,13 +35,15 @@ yarn-error.log*
 
 # editor / agent scratch
 # "When NYC Government Goes Open Source by Default" — a draft roadmap that is
-# NOT for this public repo. It is expected to become an independent document and
-# site on wegovnyc later. Untracked 2026-08-07; the file stays on disk at
-# docs/OPEN-SOURCE-BY-DEFAULT.md so work can continue on it locally.
+# NOT for this public repo. It now lives in its own PRIVATE repo:
+#   https://github.com/sarapis/open-source-by-default  (~/Antigravity/open-source-by-default)
+# The local copy here was deleted once that repo existed, so there is one source
+# rather than two that can drift. This entry stays as a guard against re-adding.
 #
-# ⚠ This only stops FUTURE commits. The draft was pushed publicly in four
-# commits (8462c02, 6f3e02e, 5f7b029, ab1b6f7) and remains readable in this
-# repo's history on GitHub until those are purged. Do not re-add it.
+# ⚠ Untracking never unpublished it. The draft was pushed publicly in four
+# commits (8462c02, 6f3e02e, 5f7b029, ab1b6f7) and those versions remain readable
+# in this repo's history on GitHub — a deliberate decision, since the content is
+# sourced public facts, not anything sensitive.
 docs/OPEN-SOURCE-BY-DEFAULT.md
 
 # `.claude/*`, NOT `.claude/` — git cannot re-include a file whose parent
