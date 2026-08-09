@@ -1,12 +1,62 @@
 # When NYC Government Goes Open Source by Default
 
-**Draft, 2026-08-07. Not published — a working document to circulate.** It is
-deliberately directional: it gives the sequence of what follows an endorsement
-and what each step unlocks, without asserting timelines the City has not agreed
-to. Factual claims are sourced. Claims that are the campaign's judgement rather
-than fact are labelled as such.
+**Draft, 2026-08-07. Not published — a working document to circulate.** The
+executive summary is the whole argument in one page; the full report below it
+carries the evidence, the sourcing and the caveats, and is expected to grow.
+
+Directional by design: it gives the sequence that follows an endorsement and what
+each step unlocks, without asserting timelines the City has not agreed to.
+Factual claims are sourced. Claims that are the campaign's judgement rather than
+fact are labelled as such, in both halves.
 
 ---
+
+# Executive summary
+
+New York is asked to endorse the UN Open Source Principles. This document answers
+the question that follows: **what happens the day after we sign.**
+
+**Endorsement is** a public statement of how the city intends to build and buy
+software. **It is not** a procurement overhaul, a migration, or a budget line.
+Barcelona signed in a single day in November 2025 and is still building out what
+it committed to.
+
+Then, in order:
+
+| # | Step | What it unlocks |
+|---|---|---|
+| 1 | **Keep building the capacity to build** — PIT Crew | The ability to *choose* open source, not only to ask for it |
+| 2 | **Give it an owner** — an OSPO | Decisions made once, not agency by agency |
+| 3 | **Inventory what the city already has** | A real picture — usually further along than anyone counted |
+| 4 | **Ask the question at every contract expiry** | Change needing no new policy, on dates already in the calendar |
+| 5 | **Then write it into new contracts** | Systems the city can move between vendors |
+| 6 | **Contribute back to what it already runs on** | Influence over the software the city depends on |
+| 7 | **Pursue strategically significant projects** | Solved problems that leave reusable components behind |
+| 8 | **Collaborate globally, aim to lead** | Standing — a city others build on |
+
+**Three things that make this credible:**
+
+- **The capacity already exists.** PIT Crew is 30 staff across four crews on
+  $5.24M baselined, with roughly 2,800 applicants. Step 1 is not "start" — it is
+  "keep going." Everything below it is downstream.
+- **Not renewing is easier than rewriting.** OTI's contracting identity holds
+  1,381 contracts worth roughly $6.8 billion, every one with an end date.
+  Declining a renewal needs no drafting, no legal review and no procurement
+  change — only a question asked on a date already in the calendar.
+- **The flagship already exists.** ACCESS NYC runs its eligibility logic on an
+  open source rules engine and publishes the rules. Rules as code is an
+  established international practice, and New York has one of the most complex
+  benefits landscapes in the country already encoded.
+
+**The smallest possible next step.** Those published ACCESS NYC rules carry **no
+licence**, which means that legally nobody can reuse them — the city has done the
+hard part and left the easy part undone. Applying a clear open licence costs
+essentially nothing, converts an existing asset into a genuine public good, and
+is the cleanest early test of whether any of this is real.
+
+---
+
+# Full report
 
 ## The question this answers
 
@@ -373,6 +423,35 @@ link:
   Zendesk-hosted help centre, and the same URL already cited on the live
   `/crosswalk` page.
 
+## How this document grows
+
+The report is expected to get longer; the executive summary is not. Keep the
+summary at one page — if a new finding does not change the eight steps, the three
+credibility points or the smallest next step, it belongs below the fold only.
+
+Known gaps, roughly in order of how much they would strengthen the argument:
+
+- **A worked contract-expiry example.** Step 4 argues the case in the abstract.
+  One real expiring contract, with the open alternative named and the saving or
+  capability gain estimated, would make it concrete. The data supports this; it
+  needs the analysis doing.
+- **What the inventory would actually find.** Step 3 asserts the city is further
+  along than anyone has counted. A first pass across city GitHub organisations
+  would turn that assertion into a number.
+- **Rules as code, costed.** Step 7's case is strong on principle and thin on
+  what expanding ACCESS NYC would take — people, time, which agencies first.
+- **Other cities' failures, not only their wins.** Every case study here
+  succeeded. Munich's earlier desktop-Linux retreat is the obvious counter-example
+  the campaign should be able to discuss confidently rather than avoid.
+- **What OTI already says it wants.** The argument would land harder quoted back
+  in the administration's own language, from OTI's published strategy.
+- **A named ask.** The document explains a sequence but never says who should do
+  what next. Deliberate at this stage; it will need one before it goes to anybody.
+
+When a step's evidence changes, update the summary table's "what it unlocks" line
+in the same commit — a summary that drifts from the report is worse than no
+summary.
+
 ## If this becomes a public page
 
 Written as a repo document by choice. If published, the natural slot is between
@@ -380,4 +459,5 @@ Written as a repo document by choice. If published, the natural slot is between
 [/campaign](https://unnyc.wegov.nyc/campaign) (sign) — the funnel currently jumps
 from evidence straight to the ask without answering "and then what?".
 Publishing means moving the prose into `content/*.md` and adding a route; see
-[EDITING-CONTENT.md](EDITING-CONTENT.md).
+[EDITING-CONTENT.md](EDITING-CONTENT.md). The executive summary would make a
+strong page on its own, with the full report behind a link.
