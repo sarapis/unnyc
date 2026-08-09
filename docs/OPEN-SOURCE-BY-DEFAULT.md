@@ -173,35 +173,100 @@ direction than any vendor relationship has offered.
 *What this unlocks: the city stops being purely a consumer of the commons it
 relies on.*
 
-### 7. Fund maintenance, not just launches
+### 7. Pursue strategically significant projects
 
-Software built and then abandoned is the failure this principle exists to
-prevent, and it is the predictable result of funding launches only. The proven
-mechanism is a modest, dedicated maintenance fund: Germany's Sovereign Tech
-Agency has invested over €24 million in 60+ critical open source components since
-2022, and received nearly 500 applications seeking more than €114 million —
-several times what it could fund ([Sovereign Tech Agency](https://www.sovereign.tech/)).
+The steps so far are posture, plumbing and procurement. This is where the city
+builds something — deliberately choosing projects that produce **reusable
+building blocks**, not one-off applications, so each solved problem leaves behind
+a component the next problem can use.
 
-New York does not have to invent the scale. PIT Crew's baselined funding shows a
-commitment of this order is a category of spending the city can already do. The
-point is not to redirect that money, but that the precedent exists.
+**The clearest candidate is rules as code, and New York has already started it.**
 
-*What this unlocks: affordability that lasts — a Click to Cancel portal that still
-works in five years, not only on launch day.*
+ACCESS NYC, the city's benefits eligibility screener, is not a form with a
+lookup table behind it. Its eligibility logic runs on a rules engine — the open
+source Drools platform — and the city publishes both the application
+([CityOfNewYork/ACCESS-NYC](https://github.com/CityOfNewYork/ACCESS-NYC)) and the
+rules themselves
+([NYCOpportunity/ACCESS-NYC-Rules](https://github.com/NYCOpportunity/ACCESS-NYC-Rules)).
+NYC Opportunity went further and exposed the engine as a public
+[Benefits Screening API](https://digitalgovernmenthub.org/publications/access-nyc-benefits-screening-api/),
+explicitly so other governments could use it. Both repositories were actively
+maintained as of August 2026.
 
-### 8. Take the seat that already exists
+That is rules as code: policy expressed as executable, inspectable logic rather
+than reimplemented by hand in every system that needs it. It is an international
+practice with an existing commons — France's open source
+[OpenFisca](https://openfisca.org/en/) engine is used by France, New Zealand,
+Australia and Spain, and by Barcelona to tell residents what they are entitled
+to. New York would not be inventing the category. It would be joining it with one
+of the most complex benefits landscapes in the United States already encoded.
 
-Every June, UN Open Source Week brings more than 2,600 participants from over 120
-countries to UN Headquarters — a subway ride from City Hall. New York currently
-hosts that gathering without participating in it.
+**The strategic move is to expand this into a citywide standard.** Any city
+application where a deterministic rule decides an outcome — eligibility,
+entitlement, fee schedules, licensing thresholds, penalty calculations — is a
+candidate to run on shared, published rules instead of logic rebuilt per system.
+Written once, inspectable by the public, reusable by every agency, and correct in
+the same way everywhere.
 
-The practical benefit is access: to governments that have already solved problems
-New York is about to meet, and to software they have built and tested. Paris's
+**The campaign's position** — inference, and a pointed one — is that this is the
+better foundation for the city's unified services portal than the path MyCity has
+taken. MyCity launched in 2023 and drew a
+[City Council oversight hearing in September 2024](https://council.nyc.gov/jennifer-gutierrez/2024/09/30/chair-jennifer-gutierrez-leads-key-oversight-hearing-on-mycity-portal-highlighting-delays-and-concerns-with-adams-administrations-flagship-initiative)
+over delays and the absence of a clear roadmap, by which point the city had
+registered 97 contracts across 32 vendors and spent more than $60 million. Set
+beside a rules engine the city already owns, already publishes, and already
+operates, the contrast is the whole argument of this document in one example.
+
+**A concrete first move, costing almost nothing.** As of 7 August 2026, the
+`ACCESS-NYC-Rules` repository contains no licence file, and the main ACCESS NYC
+repository's `license.txt` is WordPress's, inherited from the platform rather
+than chosen for the City's own code. Code published without a licence is not
+open source — copyright defaults to all rights reserved, and reuse is legally
+unclear. New York has therefore already done the hard part, publishing its
+eligibility rules, while leaving the easy part undone. Applying a clear open
+licence would convert an existing asset into a genuine public good, and it is
+exactly the kind of thing an OSPO (step 2) and an inventory (step 3) exist to
+catch.
+
+*What this unlocks: solved problems that leave reusable components behind —
+and one flagship the city can point at.*
+
+### 8. Collaborate globally, and aim to be a leading contributor
+
+The final step is a change in posture: from a city that hosts and consumes the
+global open source commons to one that **contributes to and helps lead it**.
+
+Three venues are already open to New York:
+
+- **The UN.** Every June, UN Open Source Week brings more than 2,600 participants
+  from over 120 countries to UN Headquarters — a subway ride from City Hall. New
+  York currently hosts that gathering without participating in it.
+- **The Open Government Partnership.** New York is not a candidate here; it is
+  already a member, having
+  [joined OGP Local in the 2024 cohort](https://www.opengovpartnership.org/members/new-york-city-usa/),
+  with government contacts in the Mayor's Office and the Mayor's Office of
+  Engagement. Its action plan is being co-created with civil society **now** —
+  which makes it a live, concrete route for an open source commitment rather
+  than a future ambition.
+- **Practitioner networks** — the TODO Group for OSPOs, the Digital Public Goods
+  Alliance for certifying what the city builds, and the rules-as-code community
+  around OpenFisca and its equivalents.
+
+The benefit runs both ways, and the outbound direction is the point. Paris's
 Lutèce platform was piloted by a Baltimore neighbourhood nonprofit with support
-from Paris's own IT staff. That is what the network membership actually buys.
+from Paris's own IT staff; Barcelona's Decidim runs New York's own participatory
+budgeting. Cities that publish good software acquire influence disproportionate
+to their size, because other governments adopt what works and then help maintain
+it.
 
-*What this unlocks: the city stops solving alone what dozens of governments have
-already solved together.*
+**The ambition worth stating plainly:** that New York becomes a leading
+contributor of technical solutions to the global public sector — a city other
+governments build on, not only the city where the movement holds its annual
+meeting. Step 7 is what makes that credible, because a leading contributor needs
+something worth contributing.
+
+*What this unlocks: standing. The city stops solving alone what dozens of
+governments have already solved together — and starts solving things for them.*
 
 ## What could go wrong
 
@@ -216,7 +281,17 @@ An honest roadmap names its own failure modes.
 - **"Open source" read as "free."** It removes per-seat licensing, not the cost of
   maintenance — the city already pays support fees for open source it runs. A
   roadmap promising savings without funding upkeep produces abandoned systems and
-  well-earned cynicism.
+  well-earned cynicism. UN Principle 8 is *sustain and scale*, and building blocks
+  (step 7) raise the stakes rather than lowering them: a component several
+  agencies depend on has to be somebody's ongoing job, not a launch.
+- **Rules as code drifting from the rules.** Encoded eligibility logic is only
+  trustworthy if the people who own the policy agree it says what the policy says,
+  and keep agreeing as the policy changes. Without that loop, the city ends up
+  with a fast, inspectable, confidently wrong answer — worse than a slow one,
+  because it looks authoritative.
+- **A "building block" nobody adopts.** A component is only reusable if a second
+  team actually reuses it. If the rules engine serves one application forever, it
+  is a good application and a failed standard.
 - **Publishing without documenting.** Code released with thin documentation is
   technically open and practically unusable. Principle 6 exists because this is
   the common failure, not a hypothetical one.
@@ -233,12 +308,17 @@ metrics:
 - PIT Crew growing rather than holding at its first cohort.
 - A named team whose job description includes open source across agencies.
 - An inventory that exists, is current, and is public.
+- **A clear open licence on the ACCESS NYC rules** — the smallest possible test of
+  whether any of this is real.
 - At least one contract expiry where the answer was "don't renew, we have an open
   option" — and the reasoning published.
 - Open standards language appearing in new solicitations.
 - One upstream contribution to software the city depends on.
-- NYC staff at UN Open Source Week as participants, not hosts.
-- A second city in the Americas following, because New York went first.
+- A second city application running on the same published rules, rather than
+  reimplementing them.
+- An open source commitment in New York's OGP action plan.
+- Another government adopting something New York built — the real test of
+  step 8.
 
 ## Sources and provenance
 
@@ -248,27 +328,50 @@ that carries them, because nyc.gov returns 403 to automated requests and the
 figures could not be machine-verified there. The 30 staff / four crews /
 $5.24 million figures were confirmed against amNY, which quotes them directly.
 Contract counts and values are from NYC's public procurement records as surfaced
-by [Databook](https://databook.nyc/). Facts about Barcelona, Paris, Munich and
-the Sovereign Tech Agency come from the campaign's own sourced pages —
-[/success](https://unnyc.wegov.nyc/success),
+by [Databook](https://databook.nyc/). MyCity's 97 contracts / 32 vendors /
+$60 million figures are from the
+[September 2024 Council oversight hearing](https://council.nyc.gov/jennifer-gutierrez/2024/09/30/chair-jennifer-gutierrez-leads-key-oversight-hearing-on-mycity-portal-highlighting-delays-and-concerns-with-adams-administrations-flagship-initiative).
+Facts about Barcelona, Paris and Munich come from the campaign's own sourced
+pages — [/success](https://unnyc.wegov.nyc/success),
 [/crosswalk](https://unnyc.wegov.nyc/crosswalk) and
 [/resources](https://unnyc.wegov.nyc/resources).
 
+The ACCESS NYC licensing observation was checked directly against the GitHub API
+on 7 August 2026: `ACCESS-NYC-Rules` returns 404 for a licence and its file list
+contains none, and `ACCESS-NYC`'s `license.txt` is WordPress's. **Both are easily
+changed, and may have been by the time you read this — re-check before repeating
+the claim.**
+
 **Labelled as the campaign's judgement, not fact:** that PIT Crew capacity should
 expand and that endorsement is a reason to expand it; that OTI is the natural
-home for an OSPO; that contract-expiry review should become routine practice; and
-the ordering of the eight steps. The City may sequence differently, and a roadmap
-it writes itself will be better than one written for it.
+home for an OSPO; that contract-expiry review should become routine practice;
+that expanding ACCESS NYC into a citywide rules-as-code standard is a better
+foundation for unified services than MyCity's path; and the ordering of the eight
+steps. The City may sequence differently, and a roadmap it writes itself will be
+better than one written for it.
+
+The MyCity comparison is a criticism of an approach, not of the people doing the
+work, and it should be made that way in any room. The relevant claim is that
+building on owned, published components beats assembling a portal from many
+contracts — not that anyone acted in bad faith.
 
 Contract figures are a snapshot and will move. No individual vendor or contract
 is named here by choice — the argument is about a recurring decision point, not
 about any particular supplier, and the underlying data is public for anyone who
 wants to check it.
 
-Every external link above returns 200 except two that return 403 to automated
-requests and have not been confirmed in a browser here: `nyc.gov` (see above) and
-`nyc.responsibledisclosure.com`, which is normal for a Zendesk-hosted help centre
-and is the same URL already cited on the live `/crosswalk` page.
+Link checks. Everything above returns 200 to an automated request except three
+that return 403, which is common bot protection rather than evidence of a dead
+link:
+
+- `opengovpartnership.org` — **confirmed by loading it in a browser.** NYC's
+  membership, the 2024 cohort, the ongoing co-creation process and the named
+  government contacts were all read off the live page.
+- `nyc.gov` (the PIT Crew release) — **not confirmed here**; its figures were
+  verified against amNY instead, which quotes them directly.
+- `nyc.responsibledisclosure.com` — **not confirmed here**; normal for a
+  Zendesk-hosted help centre, and the same URL already cited on the live
+  `/crosswalk` page.
 
 ## If this becomes a public page
 
