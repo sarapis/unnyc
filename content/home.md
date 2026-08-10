@@ -28,7 +28,6 @@ paths:
     question: "3. How have other cities benefited from open source?"
     answer: "Cases of the open source principles operationalized, building a global network of innovation and reform."
   - href: /resources
-    image: "/favicon.svg"
     question: "4. How can I find more information?"
     answer: "People, places, projects, OSPOs — and maybe a bumper sticker? Check out our resource library to find out more!"
 ---
