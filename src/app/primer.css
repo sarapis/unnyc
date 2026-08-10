@@ -947,6 +947,41 @@
   }
 
   /* --- Find an OSPO --- */
+  .unnyc-pr-ospo__intro {
+    font-size: var(--wg-fs-lg);
+    line-height: 1.75;
+    color: var(--wg-text);
+    max-width: 760px;
+    margin: 0 auto var(--wg-sp-10);
+    text-align: center;
+  }
+
+  .unnyc-pr-ospo__diagram {
+    max-width: 900px;
+    margin: 0 auto var(--wg-sp-10);
+  }
+
+  .unnyc-pr-ospo__diagram img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--wg-border);
+    border-radius: var(--wg-radius-md);
+    background: var(--wg-surface);
+  }
+
+  .unnyc-pr-ospo__diagram figcaption {
+    margin-top: var(--wg-sp-2);
+    font-size: var(--wg-fs-xs);
+    color: var(--wg-text-muted);
+    text-align: center;
+  }
+
+  .unnyc-pr-ospo__diagram figcaption a {
+    color: var(--wg-text-muted);
+    text-decoration: underline;
+  }
+
   .unnyc-pr-ospo__source {
     font-size: var(--wg-fs-sm);
     color: var(--wg-text-secondary);

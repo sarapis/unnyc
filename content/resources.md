@@ -139,6 +139,12 @@ contacts:
 ospoDirectory:
   title: "Find an OSPO"
   lede: "Public-sector Open Source Program Offices already running elsewhere."
+  intro: "The diagram below maps how this actually works: city leadership (Management) stands up the OSPO and receives its reports, while the OSPO runs the concrete machinery of an open source program for the rest of the organization — compliance review, contribution approval, participation guidelines, and training — and measures the results. As the office matures, its relationship with the wider open source community deepens too: from simple communication, to funding the projects the city depends on, to actively contributing code and eventually leading initiatives within that community. That's the difference between endorsing open source as a value and running a program for it: a distinct office with the mandate to make agencies’ open source use consistent, secure, and reciprocal, instead of leaving it to whichever developer happens to be motivated."
+  diagram:
+    src: "/images/resources/ospo-diagram.png"
+    alt: "Diagram of an OSPO's relationships: Management creates the OSPO and receives its reports; the OSPO delivers compliance, contribution, participation, and training to the Organization while measuring results; and, depending on the office's maturity, it communicates, funds, contributes to, and eventually leads within the Open Source Community"
+    creditText: "Diagram: TODO Group / Linux Foundation, OSPO Book (CC BY 4.0)"
+    creditHref: "https://ospobook.todogroup.org/01-chapter/"
   sourceUrl: "https://floss-pso.network/"
   groups:
   - country: "United States"

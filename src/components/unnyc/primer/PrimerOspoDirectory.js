@@ -24,6 +24,30 @@ export default function PrimerOspoDirectory({ ospoDirectory }) {
                     <p className="unnyc-section__desc">{ospoDirectory.lede}</p>
                 </header>
 
+                {ospoDirectory.intro && (
+                    <p className="unnyc-pr-ospo__intro">{ospoDirectory.intro}</p>
+                )}
+
+                {ospoDirectory.diagram && (
+                    <figure className="unnyc-pr-ospo__diagram">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={ospoDirectory.diagram.src} alt={ospoDirectory.diagram.alt} />
+                        <figcaption>
+                            {ospoDirectory.diagram.creditHref ? (
+                                <a
+                                    href={ospoDirectory.diagram.creditHref}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {ospoDirectory.diagram.creditText}
+                                </a>
+                            ) : (
+                                ospoDirectory.diagram.creditText
+                            )}
+                        </figcaption>
+                    </figure>
+                )}
+
                 <p className="unnyc-pr-ospo__source">
                     Full, regularly-updated list maintained by{' '}
                     <a href={ospoDirectory.sourceUrl} target="_blank" rel="noopener noreferrer">
