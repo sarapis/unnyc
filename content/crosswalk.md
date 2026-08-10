@@ -105,7 +105,7 @@ UN Open Source Principle #5 calls for software built to work across platforms an
 
 ### The Gap
 
-Endorsing this principle means standardizing the city’s data plumbing through shared schemas, APIs, interoperability, and service levels. For NYC, this extends the affordability agenda to procurement itself: a slow benefits portal or a broken permit form can be handed to a different vendor, or rebuilt by other developers in the civic tech space, instead of the city being stuck for years with whoever won the original contract. Furthermore, it puts NYC on the map as a provider of software that other cities reuse, continuing its legacy at the front of technological innovation, instead of relying exclusively on the open source tools built in other parts of the world.
+Endorsing this principle means designing tools that can be adapted for reuse in different cities across contexts. This puts NYC on the map as a provider of software that other cities benefit from, continuing its legacy at the front of technological innovation, instead of relying exclusively on costly vendor contracts and the open source tools built in other parts of the world.
 
 ## provide-documentation
 

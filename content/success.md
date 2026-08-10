@@ -78,7 +78,7 @@ foot:
       style: primary
 caseGrid:
   title: "Governments Doing This Now"
-  lede: "None of this is theoretical. Cities and nations have run open source programs for years — increasingly sharing one codebase across dozens of governments instead of each buying its own. Results NYC can learn from, and networks it can join."
+  lede: "Cities and nations have run open source programs for years, increasingly sharing one codebase across dozens of governments instead of each buying its own."
   items:
   - place: "Munich"
     image: "/case-images/munich.png"
