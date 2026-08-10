@@ -16,6 +16,12 @@ export default function UnnycPathCards({ paths = [] }) {
                 <div className="unnyc-pr-paths__grid">
                     {paths.map((path) => (
                         <Link key={path.href} href={path.href} className="unnyc-pr-path">
+                            {path.image && (
+                                <div
+                                    className="unnyc-pr-path__image"
+                                    style={{ backgroundImage: `url(${path.image})` }}
+                                />
+                            )}
                             <h2 className="unnyc-pr-path__question">{path.question}</h2>
                             <p className="unnyc-pr-path__answer">
                                 {path.answer}{' '}

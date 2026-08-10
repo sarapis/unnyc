@@ -1,5 +1,5 @@
 ---
-lede: "Open source went from insurgency to industry standard: it now sits at the heart of the world’s most successful technology companies — and, increasingly, its best performing governments. Here’s the [vocabulary](#concepts), the [eight principles](#principles) the UN adopted, the [timeline](#movement) of how the movement got here, and [who](#going-open-source) has already signed on."
+lede: "All modern digital infrastructure is built on top of open source tools, maintained globally by developers serving the public good. Open information is a practice, a movement, and it's gaining traction on the international stage with the UN and some of the strongest city governments."
 next:
   text: "Now that you know the basics —"
   href: /crosswalk

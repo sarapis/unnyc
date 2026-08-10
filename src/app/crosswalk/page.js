@@ -61,12 +61,20 @@ export default function CrosswalkPage() {
             <section className="unnyc-pr-why">
                 <div className="unnyc-container unnyc-container--narrow">
                     <div dangerouslySetInnerHTML={{ __html: sections.intro.html }} />
-                    {sections.intro.blocks.map((b) => (
-                        <div key={b.label}>
-                            <h2 className="unnyc-pr-why__heading">{b.label}</h2>
-                            <div dangerouslySetInnerHTML={{ __html: b.html }} />
-                        </div>
-                    ))}
+                    {sections.intro.blocks.map((b) => {
+                        // Splits the trailing pull-quote (if any) out of the prose so
+                        // the two can float side by side instead of stacking.
+                        const match = b.html.match(/^([\s\S]*?)(<blockquote[\s\S]*<\/blockquote>)\s*$/);
+                        const prose = match ? match[1] : b.html;
+                        const quote = match ? match[2] : null;
+                        return (
+                            <div key={b.label} className="unnyc-pr-why__block">
+                                <h2 className="unnyc-pr-why__heading">{b.label}</h2>
+                                <div className="unnyc-pr-why__prose" dangerouslySetInnerHTML={{ __html: prose }} />
+                                {quote && <div dangerouslySetInnerHTML={{ __html: quote }} />}
+                            </div>
+                        );
+                    })}
                 </div>
             </section>
 
@@ -114,7 +122,10 @@ export default function CrosswalkPage() {
             <section className="unnyc-pr-cw__closing">
                 <div className="unnyc-container unnyc-container--narrow">
                     <h2 className="unnyc-pr-cw__closing-title">{doc.closingTitle}</h2>
-                    <div dangerouslySetInnerHTML={{ __html: sections.closing.html }} />
+                    <div
+                        className="unnyc-pr-cw__closing-body"
+                        dangerouslySetInnerHTML={{ __html: sections.closing.html }}
+                    />
                 </div>
             </section>
 

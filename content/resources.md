@@ -19,7 +19,6 @@ meta:
   description: "A resource directory and the people to call. Looking for case studies? See what success looks like."
   ogTitle: "Related Resources — UNNYC"
   ogDescription: "The resource directory and the people to call for the UNNYC campaign."
-title: "Related Resources"
 # Jump menu (UnnycSectionNav) — `id` must match an id rendered on the page.
 sectionNav:
   - id: resources
@@ -28,7 +27,6 @@ sectionNav:
     label: "People to Call"
   - id: ospos
     label: "Find an OSPO"
-lede: "The [primary sources](#resources), the [people to call](#contacts), and a [directory of global OSPOs](#ospos). If it’s not here, one of these contacts can point you to who has it. Looking for case studies instead? [See what success looks like →](/success)"
 resourceGroups:
   title: "Primary Sources"
   lede: "Read the frameworks, browse the registries, join the communities."
@@ -141,6 +139,12 @@ contacts:
 ospoDirectory:
   title: "Find an OSPO"
   lede: "Public-sector Open Source Program Offices already running elsewhere."
+  intro: "The diagram below maps how this actually works: city leadership (Management) stands up the OSPO and receives its reports, while the OSPO runs the concrete machinery of an open source program for the rest of the organization — compliance review, contribution approval, participation guidelines, and training — and measures the results. As the office matures, its relationship with the wider open source community deepens too: from simple communication, to funding the projects the city depends on, to actively contributing code and eventually leading initiatives within that community. That's the difference between endorsing open source as a value and running a program for it: a distinct office with the mandate to make agencies’ open source use consistent, secure, and reciprocal, instead of leaving it to whichever developer happens to be motivated."
+  diagram:
+    src: "/images/resources/ospo-diagram.png"
+    alt: "Diagram of an OSPO's relationships: Management creates the OSPO and receives its reports; the OSPO delivers compliance, contribution, participation, and training to the Organization while measuring results; and, depending on the office's maturity, it communicates, funds, contributes to, and eventually leads within the Open Source Community"
+    creditText: "Diagram: TODO Group / Linux Foundation, OSPO Book (CC BY 4.0)"
+    creditHref: "https://ospobook.todogroup.org/01-chapter/"
   sourceUrl: "https://floss-pso.network/"
   groups:
   - country: "United States"

@@ -49,19 +49,91 @@
     background: var(--wg-surface-alt);
   }
 
-  .unnyc-success__case-banner {
-    width: 100%;
-    height: 360px;
-    overflow: hidden;
+  /* The photo is the section's background rather than a separate cropped
+     strip above the title — a plain object-fit: cover box was cutting the
+     tops off the Sagrada Família / Eiffel Tower at this aspect ratio. The
+     scrim darkens the photo just enough for the title to read, then fades
+     the bottom edge into the section's own background color (white, or
+     --wg-surface-alt on an alt-striped case) so the photo dissolves into
+     the page instead of ending in a hard line. The title sits above that
+     fade band, absolutely positioned, so it never lands on the light zone. */
+  .unnyc-success__case-hero {
     position: relative;
-    margin-bottom: var(--wg-sp-10);
+    width: 100%;
+    min-height: 660px;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
   }
 
-  .unnyc-success__case-banner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  /* Opaque zone (the white-ish stops) starts earlier and holds longer than a
+     straight ramp would, so text wrapping close to the column's right edge
+     (near viewport-center, i.e. the middle of the photo) still sits on a
+     mostly-opaque backing instead of catching the gradient mid-fade. */
+  .unnyc-success__case-hero-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      270deg,
+      #0f172a00 0%,
+      #0f172a0a 15%,
+      #0f172a1f 25%,
+      #ffffff5e 35%,
+      #ffffff8c 42%,
+      #ffffffb0 50%,
+      #ffffffd1 60%,
+      var(--wg-surface) 75%
+    );
+  }
+
+  .unnyc-success__case--alt .unnyc-success__case-hero-scrim {
+    background: linear-gradient(
+      270deg,
+      #0f172a00 0%,
+      #0f172a0a 15%,
+      #0f172a1f 25%,
+      #ffffff5e 35%,
+      #ffffff8c 42%,
+      #ffffffb0 50%,
+      #ffffffd1 60%,
+      var(--wg-surface-alt) 75%
+    );
+  }
+
+  /* Title + opening prose sit near the top of the photo, in a column half
+     the width of the shared .unnyc-container — which is nested inside here
+     so its left edge (and gutters) line up with the stats/sources container
+     below, instead of the text running flush to the viewport edge on a wide
+     screen. */
+  .unnyc-success__case-hero-content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: var(--wg-sp-12);
+  }
+
+  .unnyc-success__case-hero-text {
+    width: 50%;
+    max-width: 600px;
+  }
+
+  .unnyc-page .unnyc-success__case-hero .unnyc-success__case-title {
+    color: var(--wg-brand);
+  }
+
+  .unnyc-page .unnyc-success__case-hero p {
+    color: var(--wg-text);
+  }
+
+  .unnyc-success__case-hero .unnyc-success__case-title {
+    margin: 0 0 var(--wg-sp-5);
+  }
+
+  /* Paris's source photo has more empty sky than the other two — nudge the
+     crop down so the Eiffel Tower/rooftops sit higher in the frame instead
+     of being pushed toward the bottom by all that sky. */
+  #paris .unnyc-success__case-hero {
+    background-position: center 22%;
   }
 
   .unnyc-success__case-banner-credit {
@@ -81,8 +153,13 @@
   }
 
   @media (max-width: 640px) {
-    .unnyc-success__case-banner {
-      height: 200px;
+    .unnyc-success__case-hero {
+      min-height: 420px;
+    }
+
+    .unnyc-success__case-hero-text {
+      width: 100%;
+      max-width: 100%;
     }
   }
 
