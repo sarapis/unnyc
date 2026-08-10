@@ -16,15 +16,15 @@ hero:
 
 paths:
   - href: /start
-    image: "/images/home/SDG01.jpeg"
+    image: "/images/home/SDGs01.jpeg"
     question: "1. What is the open source government movement?"
     answer: "The basics of the open source movement, plus its relevance to city governments and the UN from inception to present."
   - href: /crosswalk
-    image: "/images/home/NYC02.jpg"
+    image: "/images/home/NYC02.jpeg"
     question: "2. How would open source improve NYC's tech strategy?"
     answer: "Utilizing open source principles by default can improve digital infrastructure for New Yorkers (and save the city money)."
   - href: /success
-    image: "/images/success/barcelona.jpg"
+    image: "/images/success/barcelona.jpeg"
     question: "3. How have other cities benefited from open source?"
     answer: "Cases of the open source principles operationalized, building a global network of innovation and reform."
   - href: /resources

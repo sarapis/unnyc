@@ -20,7 +20,7 @@ cases:
   - id: barcelona
     title: "Barcelona: The First City to Sign"
     banner:
-      src: "/images/success/barcelona.jpg"
+      src: "/images/success/barcelona.jpeg"
       alt: "Aerial view of the Barcelona skyline and Sagrada Família at dusk"
     stats:
       - number: "1st"
@@ -37,7 +37,7 @@ cases:
     alt: true
     title: "Paris: From One Office to National Policy"
     banner:
-      src: "/images/success/paris.webp"
+      src: "/images/success/paris.jpeg"
       alt: "Eiffel Tower and Paris rooftops at sunset"
     stats:
       - number: "2022"
@@ -55,7 +55,7 @@ cases:
   - id: tokyo
     title: "Tokyo: When Transparency Becomes Infrastructure"
     banner:
-      src: "/images/success/tokyo.jpg"
+      src: "/images/success/tokyo.jpeg"
       alt: "Tokyo Tower and skyline at sunset"
     stats:
       - number: "47/47"
