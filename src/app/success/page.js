@@ -63,9 +63,13 @@ export default function SuccessPage() {
                                 aria-label={c.banner.alt}
                             >
                                 <div className="unnyc-success__case-hero-scrim" />
-                                <div className="unnyc-container unnyc-container--narrow unnyc-success__case-hero-content">
-                                    <h2 className="unnyc-success__case-title">{c.title}</h2>
-                                    <div dangerouslySetInnerHTML={{ __html: before }} />
+                                <div className="unnyc-success__case-hero-content">
+                                    <div className="unnyc-container unnyc-container--narrow">
+                                        <div className="unnyc-success__case-hero-text">
+                                            <h2 className="unnyc-success__case-title">{c.title}</h2>
+                                            <div dangerouslySetInnerHTML={{ __html: before }} />
+                                        </div>
+                                    </div>
                                 </div>
                                 {c.banner.creditHref && (
                                     <a

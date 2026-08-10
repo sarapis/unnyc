@@ -100,15 +100,21 @@
     );
   }
 
-  /* Title + opening prose sit near the top of the photo — half the viewport,
-     left-aligned (not the shared centered .unnyc-container) — while the
-     stats/sources block below returns to the page's normal full-width flow. */
-  .unnyc-page .unnyc-container.unnyc-success__case-hero-content {
+  /* Title + opening prose sit near the top of the photo, in a column half
+     the width of the shared .unnyc-container — which is nested inside here
+     so its left edge (and gutters) line up with the stats/sources container
+     below, instead of the text running flush to the viewport edge on a wide
+     screen. */
+  .unnyc-success__case-hero-content {
     position: absolute;
     left: 0;
+    right: 0;
     top: var(--wg-sp-12);
-    width: 50vw;
-    max-width: 50vw;
+  }
+
+  .unnyc-success__case-hero-text {
+    width: 50%;
+    max-width: 600px;
   }
 
   .unnyc-page .unnyc-success__case-hero .unnyc-success__case-title {
@@ -151,7 +157,7 @@
       min-height: 420px;
     }
 
-    .unnyc-page .unnyc-container.unnyc-success__case-hero-content {
+    .unnyc-success__case-hero-text {
       width: 100%;
       max-width: 100%;
     }
