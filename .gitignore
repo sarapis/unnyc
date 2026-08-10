@@ -34,6 +34,18 @@ yarn-error.log*
 .vercel
 
 # editor / agent scratch
+# "When NYC Government Goes Open Source by Default" — a draft roadmap that is
+# NOT for this public repo. It now lives in its own PRIVATE repo:
+#   https://github.com/sarapis/open-source-by-default  (~/Antigravity/open-source-by-default)
+# The local copy here was deleted once that repo existed, so there is one source
+# rather than two that can drift. This entry stays as a guard against re-adding.
+#
+# ⚠ Untracking never unpublished it. The draft was pushed publicly in four
+# commits (8462c02, 6f3e02e, 5f7b029, ab1b6f7) and those versions remain readable
+# in this repo's history on GitHub — a deliberate decision, since the content is
+# sourced public facts, not anything sensitive.
+docs/OPEN-SOURCE-BY-DEFAULT.md
+
 # `.claude/*`, NOT `.claude/` — git cannot re-include a file whose parent
 # DIRECTORY is excluded, so the negation below is silently ignored with the
 # trailing-slash form. Ignoring the contents instead makes it work.
