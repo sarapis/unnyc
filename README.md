@@ -93,7 +93,7 @@ em-dash becomes a pull-quote with a `<cite>`.
 | **Individual signature** (`/campaign/sign`) | Payload CMS → `campaign-endorsements` | Arrives unpublished. **Publishing an entry in the Payload admin is the review step** that puts a name on the public endorser wall. Email is never exposed publicly. |
 | **"Get updates" email** | Payload CMS → `campaign-signups` | Best-effort; never blocks a signature. |
 | **Formal org endorsement** (`/campaign/endorse`) | Payload CMS → `campaign-endorsements` (`kind: organization`) | Same collection and review step as an individual signature. Approved entries appear on the public endorser wall. |
-| **Contact message** (`/contact`) | Payload CMS → `contact-submissions` | Added 2026-08-06. Needed **no CMS change** — the collection already existed for sarapis.org with exactly these fields. Its `website` field is a **honeypot**: Payload rejects any submission that fills it, so `.unnyc-cmp-form__hp` must stay `display:none`. Not brand-scoped, so `ContactForm.js` appends a "Sent from unnyc.wegov.nyc" line — the only thing distinguishing these from sarapis.org's. Nothing emails you; messages sit in the admin. |
+| **Contact message** (`/contact`) | Payload CMS → `contact-submissions` | Added 2026-08-07. Needed **no CMS change** — the collection already existed for sarapis.org with exactly these fields. Its `website` field is a **honeypot**: Payload rejects any submission that fills it, so `.unnyc-cmp-form__hp` must stay `display:none`. Not brand-scoped, so `ContactForm.js` appends a "Sent from unnyc.wegov.nyc" line — the only thing distinguishing these from sarapis.org's. Nothing emails you; messages sit in the admin. |
 
 Both endorsement flows now land in the **same** Payload collection, separated by
 `kind`. They used to be split — org endorsements went to a Google Sheet via an
@@ -199,7 +199,7 @@ and push protection are enabled. **Real secrets belong in Vercel env vars.**
 
 ## Working alongside other sessions
 
-More than one Claude session gets run against this checkout, and on 2026-08-08
+More than one Claude session gets run against this checkout, and on 2026-08-07
 that cost real effort three times in one afternoon — a concurrent session's files
 turned up **staged** inside another session's commit, and one session committed on
 top of another's unpushed work so the two could not ship separately.

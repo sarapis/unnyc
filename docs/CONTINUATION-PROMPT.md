@@ -30,7 +30,7 @@ All clean and deployed as of 2026-08-10.
 
 ## Read this part before you touch anything
 
-1. **You are probably not the only session in this checkout.** On 2026-08-08 that
+1. **You are probably not the only session in this checkout.** On 2026-08-07 that
    cost real effort three times in an afternoon: another session's files appeared
    **staged** inside a commit being written, and a second session committed on top
    of unpushed work so the two could not ship separately. **Never `git add -A`,
@@ -69,7 +69,7 @@ never loaded. So:
 - **Re-verify dated claims before repeating them.** The roadmap draft was stamped
   three days early once.
 
-## What changed most recently (2026-08-08 → 08-10)
+## What changed most recently (2026-08-06 → 08-10)
 
 - **Content rewrite**: 7,484 → 5,655 reader-visible words (−24%), interior pages
   re-pointed at the home page's performance/cost framing. "Pays billions" is now

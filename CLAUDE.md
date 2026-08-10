@@ -37,7 +37,7 @@ that would collide with a live site.
 ## ⚠️ Another session may be working in this checkout
 
 More than one Claude session gets run against `~/Antigravity/unnyc` at a time.
-On 2026-08-06 that cost real effort three times in one afternoon: files from a
+On 2026-08-07 that cost real effort three times in one afternoon: files from a
 concurrent session appeared **staged** in the middle of another session's
 commit, and a second session committed its work **on top of** an unpushed
 commit, so the two could not be shipped separately without a rebase.
@@ -100,7 +100,7 @@ no gate. It checks YAML validity, unterminated quotes, frontmatter slugs missing
 their `## slug` section, duplicate `### Label` keys, and unknown `gloss:` refs
 (that last one warns only). Errors exit 1.
 
-## The CTFG map layer (MERGED and live as of `7faaf97`, 2026-08-08)
+## The CTFG map layer (MERGED and live as of `7faaf97`, 2026-08-07)
 
 `/start#going-open-source` has a second, deliberately quieter map layer: **62 government-built
 open source programs across 24 countries**, sourced from the Civic Tech Field Guide, each dot linking
@@ -165,7 +165,7 @@ several false positives on the first pass.
   unnyc.css — one was tried, lost the source-order tie at equal specificity, and
   left every section 21px behind the bar.
 - **`HeaderHeightVar` measures `.unnyc-nav`, not `.site-header`.** It looked for
-  the latter until 2026-08-08 — a class only the MARKETING site has — so
+  the latter until 2026-08-07 — a class only the MARKETING site has — so
   `--pr-header-h` was never set on any of the six pages that mount it and every
   hash jump used the 130px fallback against a ~68px header. If anchors start
   landing wrong, check this first.
@@ -202,7 +202,7 @@ several false positives on the first pass.
 - **Don't add a `title.template`** in `src/app/layout.js` — page titles already end
   in "— UNNYC" and a template double-suffixes them.
 - **The contact form is the third Payload write path** (`/contact`, added
-  2026-08-06). It posts to `contact-submissions` — a collection that already
+  2026-08-07). It posts to `contact-submissions` — a collection that already
   existed for sarapis.org, with exactly the `name`/`email`/`message` fields
   needed, so **no CMS change was required**. Two traps: its `website` field is a
   **honeypot** that makes Payload reject the submission, so `.unnyc-cmp-form__hp`
