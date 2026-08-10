@@ -11,11 +11,11 @@ free use**, which covers web use. See [Adobe Stock's license terms](https://stoc
 
 | File | Used on | License holder | Date acquired |
 |---|---|---|---|
-| `home/SDGs01.jpeg` | `/` — homepage path card #1 | _[olivia@sarapis.org]_ | _[08/10/2026]_ |
-| `home/NYC02.jpeg` | `/` — homepage path card #2 | _[olivia@sarapis.org]_ | _[08/10/2026]_ |
-| `success/barcelona.jpeg` | `/success` — Barcelona case hero (also reused on the homepage path card #3) | _[olivia@sarapis.org]_ | _[08/10/2026]_ |
-| `success/paris.jpeg` | `/success` — Paris case hero | _[olivia@sarapis.org]_ | _[08/10/2026]_ |
-| `success/tokyo.jpeg` | `/success` — Tokyo case hero | _[olivia@sarapis.org]_ | _[08/10/2026]_ |
+| `home/SDGs01.jpeg` | `/` — homepage path card #1 | olivia@sarapis.org | 08/10/2026 |
+| `home/NYC02.jpeg` | `/` — homepage path card #2 | olivia@sarapis.org | 08/10/2026 |
+| `success/barcelona.jpeg` | `/success` — Barcelona case hero (also reused on the homepage path card #3) | olivia@sarapis.org | 08/10/2026 |
+| `success/paris.jpeg` | `/success` — Paris case hero | olivia@sarapis.org | 08/10/2026 |
+| `success/tokyo.jpeg` | `/success` — Tokyo case hero | olivia@sarapis.org | 08/10/2026 |
 
 ## Other licenses
 
