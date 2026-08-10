@@ -8,7 +8,7 @@ hero:
   titleLines:
     - "The Movement for Open Source Government is Being Organized in New York City... by the UN."
     - "NYC Government Should Join It."
-  subtitle: "The world's best performing city governments have put transitioning to open source at the center of their technology strategy. It's time for New York City to do the same."
+  subtitle: "The world’s best performing city governments have put transitioning to open source at the center of their technology strategy. It’s time for New York City to do the same."
   ctas:
     - href: /campaign
       label: "Tell NYC to Use Open Source"
@@ -21,7 +21,7 @@ paths:
     answer: "The basics of the open source movement, plus its relevance to city governments and the UN from inception to present."
   - href: /crosswalk
     image: "/images/home/NYC02.jpeg"
-    question: "2. How would open source improve NYC's tech strategy?"
+    question: "2. How would open source improve NYC’s tech strategy?"
     answer: "Utilizing open source principles by default can improve digital infrastructure for New Yorkers (and save the city money)."
   - href: /success
     image: "/images/success/barcelona.jpeg"

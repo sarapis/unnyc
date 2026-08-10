@@ -42,6 +42,7 @@ In November 2025, **Barcelona became the first city in the world to endorse the 
 - A **Citizen Agreement for Democratic Technologies and Digital Rights**.
 - An **Open Source Programme Office (OSPO)**, modeled on those in Paris and Munich.
 - A **municipal fund** for open source digital innovation.
+
 The move cost Barcelona little and signaled a great deal: that a city can commit, publicly and concretely, to building and sharing technology as a public good.
 
 ### New York is ready — and has a habit of being first
@@ -50,6 +51,7 @@ The move cost Barcelona little and signaled a great deal: that a city can commit
 - **First U.S. city to join the UN’s Safe Cities Global Initiative.**
 - An **Open Data Law since 2012**, one of the strongest in the nation, with city code already published on GitHub.
 - An **Office of Technology & Innovation** positioned to house an NYC OSPO.
+
 Endorsing the Principles formalizes values the City already professes, and gives its technologists a shared, internationally recognized framework.
 
 ### The eight principles
@@ -65,6 +67,7 @@ We respectfully call on the **Mayor’s Office of Technology & Innovation**, tog
 - **Formally endorse the UN Open Source Principles**, publicly and by name.
 - **Announce a light-touch roadmap** in the spirit of Barcelona’s, beginning with a commitment to explore an **NYC Open Source Programme Office** within OTI.
 - **Do so before or during UN Open Source Week**, so the city that hosts the world’s open source community can welcome it as a member.
+
 New York does not need to reinvent the model. It needs only to sign — and to lead the Americas in doing so.
 
 ## signoff
