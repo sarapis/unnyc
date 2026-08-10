@@ -76,12 +76,19 @@
   /* Bleeds to the card's edges despite its padding (negative margin cancels
      it out on three sides); overflow: hidden on .unnyc-pr-path clips it to
      the card's own rounded corners, so it doesn't need its own radius. */
+  /* Holds a next/image with `fill` (see UnnycPathCards.js), so it needs
+     position + overflow; object-fit on the image reproduces what
+     `background-size: cover` / `background-position: center` used to do. */
   .unnyc-pr-path__image {
+    position: relative;
     height: 160px;
     margin: calc(-1 * var(--wg-sp-8)) calc(-1 * var(--wg-sp-8)) var(--wg-sp-6);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    overflow: hidden;
+  }
+
+  .unnyc-pr-path__image-img {
+    object-fit: cover;
+    object-position: center;
   }
 
   .unnyc-pr-path__question {

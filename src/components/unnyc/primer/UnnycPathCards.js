@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 /**
  * UnnycPathCards — a grid of "pick your entry point" cards.
@@ -17,10 +18,18 @@ export default function UnnycPathCards({ paths = [] }) {
                     {paths.map((path) => (
                         <Link key={path.href} href={path.href} className="unnyc-pr-path">
                             {path.image && (
-                                <div
-                                    className="unnyc-pr-path__image"
-                                    style={{ backgroundImage: `url(${path.image})` }}
-                                />
+                                <div className="unnyc-pr-path__image">
+                                    {/* next/image rather than a CSS background so the
+                                        card strip gets WebP and a right-sized variant —
+                                        the sources are far larger than the 160px band. */}
+                                    <Image
+                                        src={path.image}
+                                        alt=""
+                                        fill
+                                        sizes="(max-width: 900px) 100vw, 560px"
+                                        className="unnyc-pr-path__image-img"
+                                    />
+                                </div>
                             )}
                             <h2 className="unnyc-pr-path__question">{path.question}</h2>
                             <p className="unnyc-pr-path__answer">

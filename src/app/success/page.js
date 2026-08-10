@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import '../primer.css';
 import './success.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
@@ -43,7 +44,7 @@ export default function SuccessPage() {
                 </div>
             </header>
 
-            {doc.cases.map((c) => {
+            {doc.cases.map((c, caseIndex) => {
                 const html = doc.sections[c.id]?.html ?? '';
                 const [before, after] = html.includes(STATS_MARKER)
                     ? html.split(STATS_MARKER)
@@ -56,12 +57,21 @@ export default function SuccessPage() {
                         className={`unnyc-success__case${c.alt ? ' unnyc-success__case--alt' : ''}`}
                     >
                         {c.banner ? (
-                            <div
-                                className="unnyc-success__case-hero"
-                                style={{ backgroundImage: `url(${c.banner.src})` }}
-                                role="img"
-                                aria-label={c.banner.alt}
-                            >
+                            <div className="unnyc-success__case-hero">
+                                {/* next/image rather than a CSS background: these are
+                                    2560px photos on a full-bleed hero, and background-image
+                                    gets no WebP/AVIF conversion, no responsive srcset and no
+                                    lazy loading. `fill` + object-fit reproduces `cover`
+                                    exactly. The first hero is `priority` because it is above
+                                    the fold; the rest stay lazy. */}
+                                <Image
+                                    src={c.banner.src}
+                                    alt={c.banner.alt}
+                                    fill
+                                    sizes="100vw"
+                                    priority={caseIndex === 0}
+                                    className="unnyc-success__case-hero-img"
+                                />
                                 <div className="unnyc-success__case-hero-scrim" />
                                 <div className="unnyc-success__case-hero-content">
                                     <div className="unnyc-container unnyc-container--narrow">

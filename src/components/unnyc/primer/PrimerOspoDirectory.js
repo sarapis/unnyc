@@ -10,6 +10,8 @@
  * instead, so cards still read grouped (data is listed country by country)
  * without leaving gaps.
  */
+import Image from 'next/image';
+
 export default function PrimerOspoDirectory({ ospoDirectory }) {
     if (!ospoDirectory) return null;
     const items = ospoDirectory.groups.flatMap((group) =>
@@ -30,8 +32,16 @@ export default function PrimerOspoDirectory({ ospoDirectory }) {
 
                 {ospoDirectory.diagram && (
                     <figure className="unnyc-pr-ospo__diagram">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={ospoDirectory.diagram.src} alt={ospoDirectory.diagram.alt} />
+                        {/* next/image: the source is a 3455px PNG rendered at
+                            900px max, so this is where the WebP conversion and
+                            responsive sizing actually pay. */}
+                        <Image
+                            src={ospoDirectory.diagram.src}
+                            alt={ospoDirectory.diagram.alt}
+                            width={1600}
+                            height={965}
+                            sizes="(max-width: 900px) 100vw, 900px"
+                        />
                         <figcaption>
                             {ospoDirectory.diagram.creditHref ? (
                                 <a

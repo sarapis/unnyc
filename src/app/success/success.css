@@ -61,9 +61,16 @@
     position: relative;
     width: 100%;
     min-height: 660px;
-    background-size: cover;
-    background-position: center top;
-    background-repeat: no-repeat;
+    overflow: hidden;
+  }
+
+  /* The photo is a next/image with `fill` (see success/page.js), so Next
+     positions it absolutely and object-fit here reproduces exactly what
+     `background-size: cover` / `background-position: center top` used to do.
+     It sits under the scrim and text, which are later siblings in the DOM. */
+  .unnyc-success__case-hero-img {
+    object-fit: cover;
+    object-position: center top;
   }
 
   /* Opaque zone (the white-ish stops) starts earlier and holds longer than a
