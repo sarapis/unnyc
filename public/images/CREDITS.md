@@ -21,7 +21,19 @@ free use**, which covers web use. See [Adobe Stock's license terms](https://stoc
 
 | File | Used on | License | Source |
 |---|---|---|---|
-| `resources/ospo-diagram.png` | `/resources` — "Find an OSPO" section | **CC BY 4.0** (attribution required, redistribution and modification allowed) | [OSPO Book](https://ospobook.todogroup.org/01-chapter/), TODO Group / Linux Foundation |
+| `resources/ospo-archetypes.jpg` | `/resources` — "Find an OSPO" section | **CC BY 4.0** (attribution required, redistribution and modification allowed) | Fig. 1 of Linåker, Nummelin Carlberg & O'Riordan, "Public sector open source program offices — Archetypes for how to grow (common) institutional capabilities", *Journal of Systems and Software* **241** (2026) 112998, [doi:10.1016/j.jss.2026.112998](https://doi.org/10.1016/j.jss.2026.112998) |
+
+The CC BY licence on that figure was confirmed on 2026-08-10 from two
+independent sources rather than assumed — Crossref reports
+`creativecommons.org/licenses/by/4.0/` for the version of record, and OpenAlex
+reports `cc-by` on the published version. The article is hybrid open access in
+a subscription journal, so the licence is a property of this article, not of
+the journal: **do not assume other Elsevier figures may be reused.** The image
+was resized from the publisher's 2505px original; no other modification.
+
+Replaced `resources/ospo-diagram.png` (also CC BY 4.0, from the TODO Group /
+Linux Foundation [OSPO Book](https://ospobook.todogroup.org/01-chapter/)) on
+2026-08-10.
 
 ## Not covered by this file
 

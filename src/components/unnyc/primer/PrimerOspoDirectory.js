@@ -32,14 +32,18 @@ export default function PrimerOspoDirectory({ ospoDirectory }) {
 
                 {ospoDirectory.diagram && (
                     <figure className="unnyc-pr-ospo__diagram">
-                        {/* next/image: the source is a 3455px PNG rendered at
-                            900px max, so this is where the WebP conversion and
-                            responsive sizing actually pay. */}
+                        {/* next/image for WebP + responsive sizing. width/height
+                            must match the FILE's real aspect ratio — they size the
+                            reserved box before the image loads, and CSS
+                            `height: auto` hides a mismatch in the final render
+                            while still shifting layout on the way there. Currently
+                            /images/resources/ospo-archetypes.jpg at 1800x803;
+                            update these two numbers if the diagram is replaced. */}
                         <Image
                             src={ospoDirectory.diagram.src}
                             alt={ospoDirectory.diagram.alt}
-                            width={1600}
-                            height={965}
+                            width={1800}
+                            height={803}
                             sizes="(max-width: 900px) 100vw, 900px"
                         />
                         <figcaption>
