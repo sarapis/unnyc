@@ -7,24 +7,24 @@ commit. That's the live page.
 
 | Page | File |
 |---|---|
-| `/` | `content/home.md` |
-| `/start` | `content/start.md` |
-| `/start/principles` | `content/principles.md` |
-| `/crosswalk` | `content/crosswalk.md` |
-| `/success` | `content/success.md` |
-| `/campaign` | `content/campaign.md` |
-| `/campaign/sign` | `content/sign.md` |
-| `/campaign/endorse` | `content/endorse.md` |
-| `/campaign/endorse/document` | `content/principles.md` (shares the principles) |
-| `/resources` | `content/resources.md` |
-| `/contact` | `content/contact.md` |
+| `/` | [`content/home.md`](../content/home.md) |
+| `/start` | [`content/start.md`](../content/start.md) |
+| `/start/principles` | [`content/principles.md`](../content/principles.md) |
+| `/crosswalk` | [`content/crosswalk.md`](../content/crosswalk.md) |
+| `/success` | [`content/success.md`](../content/success.md) |
+| `/campaign` | [`content/campaign.md`](../content/campaign.md) |
+| `/campaign/sign` | [`content/sign.md`](../content/sign.md) |
+| `/campaign/endorse` | [`content/endorse.md`](../content/endorse.md) |
+| `/campaign/endorse/document` | [`content/principles.md`](../content/principles.md) (shares the principles) |
+| `/resources` | [`content/resources.md`](../content/resources.md) |
+| `/contact` | [`content/contact.md`](../content/contact.md) |
 
 Site chrome (nav labels, footer) is still in components — see
 [CONTENT-MAP.md](CONTENT-MAP.md).
 
 No build step to run, no CMS to log into, nothing to keep in sync — the site
 reads that file directly. If you'd rather hand it to an agent: edit the file (or
-just describe what you want) and point at `content/crosswalk.md`.
+just describe what you want) and point at [`content/crosswalk.md`](../content/crosswalk.md).
 
 > **Edit through a pull request, not straight into `main`.** A push to `main`
 > deploys to production immediately. On a PR, the `Validate content` check runs
@@ -126,9 +126,9 @@ The visible `<h1>` is `title:`, which is separate on purpose.
 
 | File | Role |
 |---|---|
-| `content/crosswalk.md` | The words. This is what you edit. |
-| `src/lib/content.js` | Parses frontmatter (`gray-matter`), renders markdown (`marked`), splits the body on `## slug`, and applies the link/blockquote conventions above. |
-| `src/app/crosswalk/page.js` | Layout only — no copy. Maps the parsed content onto the page's components and CSS classes. |
+| [`content/crosswalk.md`](../content/crosswalk.md) | The words. This is what you edit. |
+| [`src/lib/content.js`](../src/lib/content.js) | Parses frontmatter (`gray-matter`), renders markdown (`marked`), splits the body on `## slug`, and applies the link/blockquote conventions above. |
+| [`src/app/crosswalk/page.js`](../src/app/crosswalk/page.js) | Layout only — no copy. Maps the parsed content onto the page's components and CSS classes. |
 
 The original prose was lifted out of the JSX mechanically (not retyped), and the
 result was diffed against the previously deployed page: same words, same
@@ -142,18 +142,18 @@ Some pages place a structured block mid-prose. Write the marker on its own line:
 | Marker | Page | Renders |
 |---|---|---|
 | `{{stats}}` | `success.md` | The three-stat row inside a case study |
-| `{{principles}}` | `sign.md` | The eight principles list, from `content/principles.md` — the single source every listing shares |
+| `{{principles}}` | `sign.md` | The eight principles list, from [`content/principles.md`](../content/principles.md) — the single source every listing shares |
 
 ## Shared content
 
-- **The eight Principles** live once, in `content/principles.md`, and every
+- **The eight Principles** live once, in [`content/principles.md`](../content/principles.md), and every
   surface derives from it. See below.
-- **Glossary definitions** live in `content/start.md` under `concepts.terms`.
+- **Glossary definitions** live in [`content/start.md`](../content/start.md) under `concepts.terms`.
   A `[term](gloss:slug)` link anywhere on the site picks up its definition from
   there as a hover tooltip, so there's one place to edit a definition.
 ### The eight Principles — single-sourced
 
-`content/principles.md` is the only place they live. Three surfaces render from
+[`content/principles.md`](../content/principles.md) is the only place they live. Three surfaces render from
 it and none holds a copy:
 
 | Surface | Shape it gets |
@@ -177,5 +177,5 @@ had appeared in the declaration.
 | `descShort` | Terse one-liner for the letter's numbered list, where the full text would swamp the line |
 | `descCity` | Optional NYC rewording for the declaration, where the City commits rather than the UN. Only #8 needs it today; falls back to `desc` |
 
-**To change a principle's wording, edit `content/principles.md`.** The reshaping
-lives in `principlesFlat()` and `principlesDeclaration()` in `src/lib/content.js`.
+**To change a principle's wording, edit [`content/principles.md`](../content/principles.md).** The reshaping
+lives in `principlesFlat()` and `principlesDeclaration()` in [`src/lib/content.js`](../src/lib/content.js).
