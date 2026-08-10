@@ -16,15 +16,19 @@ hero:
 
 paths:
   - href: /start
-    question: "I’m new to the open source government movement."
-    answer: "Open source transformed the software industry and is at the heart of today's most successful technology companies. And it should be at the heart of today's governments too."
+    image: "/images/home/SDG01.jpeg"
+    question: "1. What is the open source government movement?"
+    answer: "The basics of the open source movement, plus its relevance to city governments and the UN from inception to present."
   - href: /crosswalk
-    question: "Why should NYC government make “open source by default” a core pillar of its technology strategy?"
-    answer: "New York City runs on software it doesn't control and pays billions for the privilege. Open source presents a different path and cities around the world are taking it."
+    image: "/images/home/NYC02.jpg"
+    question: "2. How would open source improve NYC's tech strategy?"
+    answer: "Utilizing open source principles by default can improve digital infrastructure for New Yorkers (and save the city money)."
   - href: /success
-    question: "How have other cities operationalized open source principles to improve their performance?"
-    answer: "Some of the world's best performing cities have already made open source core to their technology strategy and, in the process, have built a global network of government innovation and reform."
+    image: "/images/success/barcelona.jpg"
+    question: "3. How have other cities benefited from open source?"
+    answer: "Cases of the open source principles operationalized, building a global network of innovation and reform."
   - href: /resources
-    question: "I want more information: people, places, projects — and maybe a bumper sticker?"
-    answer: "Check out our resource library to find out more!"
+    image: "/favicon.svg"
+    question: "4. How can I find more information?"
+    answer: "People, places, projects, OSPOs — and maybe a bumper sticker? Check out our resource library to find out more!"
 ---
