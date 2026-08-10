@@ -44,6 +44,7 @@ this order, so it reads as a funnel *or* as a pick-your-entry-point.
 | `/campaign/endorse` | Formal organizational endorsement form |
 | `/campaign/endorse/document` | Printable declaration for City officials |
 | `/resources` | Reference directory |
+| `/contact` | Contact form (name, email, message) — linked from the footer |
 
 ## Editing the words
 
@@ -63,10 +64,21 @@ no CMS, no sync step.
 | `/campaign/sign` | `content/sign.md` |
 | `/campaign/endorse` | `content/endorse.md` |
 | `/resources` | `content/resources.md` |
+| `/contact` | `content/contact.md` |
 
 Full conventions, markers and gotchas: **[docs/EDITING-CONTENT.md](docs/EDITING-CONTENT.md)**.
 What's still in components (nav labels, footer, form messages):
 [docs/CONTENT-MAP.md](docs/CONTENT-MAP.md).
+
+**`npm run lint:content` guards these files** and runs both as `prebuild` and as
+the `Validate content` GitHub Action on every push and PR. It catches invalid
+YAML, an odd number of `"` on a frontmatter line, a frontmatter slug with no
+matching `## slug` section, and duplicate `### Label` keys. It exists because an
+unterminated quote in `home.md` broke a production build, reporting the error
+four lines below the actual mistake — and because the same class of typo can
+parse cleanly and silently eat a key instead. **Edit content through a pull
+request**: pushing `main` deploys, and the PR run is the check that catches this
+before it ships.
 
 `src/lib/content.js` does the parsing (`gray-matter` + `marked`) and applies three
 conventions so plain markdown keeps the design: `[text](gloss:ospo)` renders a
@@ -81,6 +93,7 @@ em-dash becomes a pull-quote with a `<cite>`.
 | **Individual signature** (`/campaign/sign`) | Payload CMS → `campaign-endorsements` | Arrives unpublished. **Publishing an entry in the Payload admin is the review step** that puts a name on the public endorser wall. Email is never exposed publicly. |
 | **"Get updates" email** | Payload CMS → `campaign-signups` | Best-effort; never blocks a signature. |
 | **Formal org endorsement** (`/campaign/endorse`) | Payload CMS → `campaign-endorsements` (`kind: organization`) | Same collection and review step as an individual signature. Approved entries appear on the public endorser wall. |
+| **Contact message** (`/contact`) | Payload CMS → `contact-submissions` | Added 2026-08-06. Needed **no CMS change** — the collection already existed for sarapis.org with exactly these fields. Its `website` field is a **honeypot**: Payload rejects any submission that fills it, so `.unnyc-cmp-form__hp` must stay `display:none`. Not brand-scoped, so `ContactForm.js` appends a "Sent from unnyc.wegov.nyc" line — the only thing distinguishing these from sarapis.org's. Nothing emails you; messages sit in the admin. |
 
 Both endorsement flows now land in the **same** Payload collection, separated by
 `kind`. They used to be split — org endorsements went to a Google Sheet via an
@@ -133,6 +146,25 @@ reset < components < unnyc < site
   colour literal or read a reference token (`--db-*`) in a rule: both are
   invisible to the brand variant. `npm run lint:tokens` warns if you do.
 
+## Images and icons
+
+- **Icons** are one inline SVG set — `src/components/unnyc/UnnycIcon.js`, paths
+  taken verbatim from [Lucide](https://lucide.dev) (ISC), a single 24×24 canvas
+  at 2px stroke. Content refers to them by name (`icon: shield-check`). They took
+  over from eight PNGs that were 364 KB in four clashing art styles and, more to
+  the point, **un-themeable** — a black raster is a colour literal, invisible to
+  the brand variant. Colour now comes from `color:` on the CSS class. Add new
+  icons from Lucide on the same canvas.
+- **Photos** live in `public/images/` and are served through `next/image` —
+  never a CSS `background-image`, which forfeits WebP, responsive sizing and
+  lazy loading.
+- **[`public/images/CREDITS.md`](public/images/CREDITS.md) records the source and
+  licence of every image, and must be updated in the same commit that changes
+  one.** Where a licence requires attribution it also has to render on the page:
+  the `/resources` OSPO figure is CC BY 4.0 and carries its citation in a
+  figcaption. Check the licence *before* using anything from a publisher CDN —
+  that figure is reusable only because its article is hybrid open access.
+
 ## Deploying
 
 **Pushing to `main` deploys to production.** Git integration was connected on
@@ -165,10 +197,30 @@ for secrets (none: no `.pem`/`.key`/`.env` file has ever been committed, and
 `.env.example` holds placeholders with an empty webhook value). Secret scanning
 and push protection are enabled. **Real secrets belong in Vercel env vars.**
 
+## Working alongside other sessions
+
+More than one Claude session gets run against this checkout, and on 2026-08-08
+that cost real effort three times in one afternoon — a concurrent session's files
+turned up **staged** inside another session's commit, and one session committed on
+top of another's unpushed work so the two could not ship separately.
+
+**Never `git add -A`, `git add .` or `git commit -a` here.** A `PreToolUse` hook
+in [`.claude/settings.json`](.claude/settings.json) refuses them
+([`scripts/hooks/no-blanket-git-staging.sh`](scripts/hooks/no-blanket-git-staging.sh));
+`.gitignore` has a deliberate `.claude/*` + `!.claude/settings.json` exception so
+that guard travels with the repo. Stage by name, then read
+`git diff --cached --name-only` before committing. For parallel work use a
+worktree — see the CLAUDE.md section for the four gitignored things a new
+worktree does not inherit.
+
 ## Known gaps
 
-Nothing outstanding. The campaign accepts signatures and organization
-endorsements, and approved entries reach the public endorser wall.
+Nothing outstanding. The campaign accepts signatures, organization endorsements
+and contact messages, and approved entries reach the public endorser wall.
+
+Worth a decision rather than a fix: the CTFG map layer is now **live**, so the
+open question about linking into the Civic Tech Field Guide directory while it is
+de-indexed pre-launch is a current question, not a deferred one.
 
 One thing to know rather than fix: **`published` defaults to false**, so a new
 submission is invisible until someone ticks it in the Payload admin. That is the

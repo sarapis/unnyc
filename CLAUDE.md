@@ -100,13 +100,16 @@ no gate. It checks YAML validity, unterminated quotes, frontmatter slugs missing
 their `## slug` section, duplicate `### Label` keys, and unknown `gloss:` refs
 (that last one warns only). Errors exit 1.
 
-## The CTFG map layer (branch `ctfg-open-source-map-layer`, NOT pushed)
+## The CTFG map layer (MERGED and live as of `7faaf97`, 2026-08-08)
 
-`/start#going-open-source` gained a second, deliberately quieter map layer: **62 government-built
+`/start#going-open-source` has a second, deliberately quieter map layer: **62 government-built
 open source programs across 24 countries**, sourced from the Civic Tech Field Guide, each dot linking
-to its CTFG profile. Toggleable, default on. **Built but held** — it's local-only on that branch,
-because pushing `main` deploys instantly and there's an open question about linking into the CTFG
-directory while it's de-indexed pre-launch.
+to its CTFG profile. Toggleable, default on.
+
+> ⚠ This section previously said "built but held — local-only on that branch." That stopped being
+> true when the branch was merged and deployed. If the open question about linking into the CTFG
+> directory while it is de-indexed pre-launch still matters, it is **live now** and needs deciding,
+> not deferring.
 
 - **It is a SUPPORTING layer, not a replacement.** The section's argument is the curated policy
   markers (who endorsed; that NYC hasn't). Replacing them with project data undercuts it — NYC lights
@@ -150,6 +153,37 @@ several false positives on the first pass.
   broke `cab57e1`); sometimes it parses cleanly and silently eats a key or
   renders a stray `"`. `lint:content` catches both — don't weaken the
   odd-quote-count check, it is the only one that sees the silent variant.
+- **The per-page section subnav has rules about where it goes.**
+  `UnnycSectionNav` renders a sticky jump menu directly under the header on
+  **/start, /success and /resources only**. Not on short pages, and *not* on
+  /crosswalk — that page's sections ARE the eight principles, so the bar could
+  only list all eight, which restates the page instead of navigating it. The
+  guard is `items.length < 3`, but the real rule is not to mount it.
+  **Section scroll offsets have exactly one owner:** the bar measures itself into
+  `--pr-subnav-h` and primer.css's existing `scroll-margin-top` rules add it,
+  defaulting to `0px` where there is no bar. Do not add a competing rule in
+  unnyc.css — one was tried, lost the source-order tie at equal specificity, and
+  left every section 21px behind the bar.
+- **`HeaderHeightVar` measures `.unnyc-nav`, not `.site-header`.** It looked for
+  the latter until 2026-08-08 — a class only the MARKETING site has — so
+  `--pr-header-h` was never set on any of the six pages that mount it and every
+  hash jump used the 130px fallback against a ~68px header. If anchors start
+  landing wrong, check this first.
+- **Content images go through `next/image`, never a CSS `background-image`.**
+  A background image gets no WebP conversion, no responsive srcset and no lazy
+  loading. Three of them shipped that way once and cost 2.4MB; converting to
+  `fill` + `object-fit` reproduces `cover`/`background-position` exactly. When
+  you swap an image, **update the `width`/`height` props to the new file's real
+  ratio** — they size the reserved box, and CSS `height: auto` hides a mismatch
+  in the final render while still shifting layout on the way there.
+- **`public/images/CREDITS.md` is a licence record, and attribution is a term,
+  not a courtesy.** Every image under `public/images/` must have an entry, in the
+  same commit that adds or replaces it. Check the licence BEFORE using anything
+  from a publisher CDN: the `/resources` OSPO figure is reusable only because
+  that specific article is hybrid open access under CC BY 4.0, confirmed from
+  Crossref and OpenAlex — the journal is otherwise subscription. Where a licence
+  requires credit, the credit must actually RENDER (the figcaption on
+  /resources), not merely sit in CREDITS.md.
 - **Icons are inline SVG, one set, themeable** — `src/components/unnyc/UnnycIcon.js`,
   paths verbatim from Lucide v1.30.0 (ISC), 24×24 canvas, 2px stroke. Content
   refers to them by name (`icon: shield-check` in `content/principles.md` and
