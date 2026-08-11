@@ -16,6 +16,7 @@ free use**, which covers web use. See [Adobe Stock's license terms](https://stoc
 | `success/barcelona.jpeg` | `/success` — Barcelona case hero (also reused on the homepage path card #3) | olivia@sarapis.org | 08/10/2026 |
 | `success/paris.jpeg` | `/success` — Paris case hero | olivia@sarapis.org | 08/10/2026 |
 | `success/tokyo.jpeg` | `/success` — Tokyo case hero | olivia@sarapis.org | 08/10/2026 |
+| `success/munich.jpeg` | `/success` — Munich case hero | olivia@sarapis.org | 08/11/2026 |
 
 ## Other licenses
 

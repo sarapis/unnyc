@@ -9,6 +9,8 @@ title: "A Roadmap for NYC to Follow"
 sectionNav:
   - id: barcelona
     label: "Barcelona"
+  - id: munich
+    label: "Munich"
   - id: paris
     label: "Paris"
   - id: tokyo
@@ -33,8 +35,24 @@ cases:
       - "[Barcelona City Council](https://www.barcelona.cat/infobarcelona/en/tema/science/barcelona-is-the-first-city-in-the-world-to-endorse-the-un-open-source-principles_1567058.html)"
       - "[Decidim](https://decidim.org/blog/2026-04-07-case-study-participatory-budget-2020-2023-in-barcelona/)"
       - "[Digital Public Goods Alliance](https://decidim.org/blog/2023-07-13-decidim-is-recognized-as-a-digital-public-good/)"
-  - id: paris
+  - id: munich
     alt: true
+    title: "Munich: The Office Survived What the Migration Didn't"
+    banner:
+      src: "/images/success/munich.jpeg"
+      alt: "Munich cityscape"
+    stats:
+      - number: "15,000"
+        label: "Desktops migrated to Linux under Munich's original LiMux project"
+      - number: "2017"
+        label: "Year the city council reversed the migration back to Windows"
+      - number: "2024"
+        label: "Munich's Open Source Program Office opens under a \"public money, public code\" mandate"
+    sources:
+      - "[Munich OSPO](https://opensource.muenchen.de/ospo.html)"
+      - "[Open Source Observatory (EU)](https://interoperable-europe.ec.europa.eu/collection/open-source-observatory-osor/document/limux-it-evolution-open-source-success-story-never)"
+      - "[Wikipedia — LiMux](https://en.wikipedia.org/wiki/LiMux)"
+  - id: paris
     title: "Paris: From One Office to National Policy"
     banner:
       src: "/images/success/paris.jpeg"
@@ -53,6 +71,7 @@ cases:
       - "[unite.un.org](https://unite.un.org/en/news/france-becomes-first-government-endorse-un-open-source-principles)"
       - "[code.gouv.fr](https://code.gouv.fr/en/expenditure-staff-impact/)"
   - id: tokyo
+    alt: true
     title: "Tokyo: When Transparency Becomes Infrastructure"
     banner:
       src: "/images/success/tokyo.jpeg"
@@ -130,6 +149,16 @@ The proof of concept was already running. **Decidim**, Barcelona’s open source
 {{stats}}
 
 New York is already inside this story: the city’s own Civic Engagement Commission runs its participatory budgeting on Decidim today. NYC didn’t have to build that tool — Barcelona built it and gave it away, as it did for Helsinki, Mexico City, France’s National Assembly, and the European Commission.
+
+## munich
+
+Munich isn’t a story where open source simply worked — it’s a story about what survives when it doesn’t. In 2003, the city council voted to move its desktops off Windows; by the time the project closed out a decade later, roughly 15,000 machines were running Linux and LibreOffice, the largest public-sector Linux migration in Europe. Then politics changed: a new governing coalition took office, Microsoft relocated its German headquarters to Munich, and in November 2017 the council voted to reverse course and return to Windows by 2020, citing user complaints and organizational strain.
+
+That could have been the end of Munich’s open source story. It wasn’t. In February 2023, the council passed a motion to establish an Open Source Hub, and in 2024 the city’s Open Source Program Office opened inside its IT department — this time as a standing office with an explicit "public money, public code" mandate, not a single migration project riding on one administration’s goodwill.
+
+{{stats}}
+
+The lesson for New York isn’t "don’t migrate" — it’s that a single big-bang project is politically fragile in a way an institution isn’t. An OSPO with a policy mandate behind it outlasts whichever administration created it; a desktop migration doesn’t. That’s the version of this campaign that asks New York to build.
 
 ## paris
 
