@@ -170,6 +170,7 @@ export default function PrimerMapInner({ markers = [], legend = [], projects = [
                             type="checkbox"
                             checked={showProjects}
                             onChange={(e) => setShowProjects(e.target.checked)}
+                            style={{ accentColor: COLORS.ctfg }}
                         />
                         <span
                             className="unnyc-map-legend-swatch"

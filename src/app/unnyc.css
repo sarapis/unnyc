@@ -804,11 +804,14 @@
   user-select: none;
 }
 
+/* `accent-color` is set inline by PrimerMapInner from COLORS.ctfg — the same
+   source the swatch beside it already uses. It was a second hand-copy of that
+   hex here, which is both a drift risk and a colour literal the brand variant
+   cannot reach. The layer's palette is data, owned by the component, not theme. */
 .unnyc-page .unnyc-map-legend-item--toggle input {
   width: 14px;
   height: 14px;
   margin: 0;
-  accent-color: #3f8f7b;
   cursor: pointer;
 }
 
