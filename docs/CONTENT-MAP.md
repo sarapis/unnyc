@@ -10,10 +10,10 @@ These are short strings tied to structure rather than prose:
 
 | Thing | File |
 |---|---|
-| Header nav labels + "Take Action" button | `src/components/unnyc/UnnycNav.js` (`LINKS`, `CTA`) |
-| Footer: org links (`ORGS`), Contact link, credit line | `src/components/unnyc/UnnycFooter.js` |
-| Form labels, validation + success messages | `CampaignSignForm.js`, `EndorseForm.js`, `ContactForm.js` |
-| Site-wide default title/description | `src/app/layout.js` (per-page titles are in each content file's `meta:`) |
+| Header nav labels + "Take Action" button | [`src/components/unnyc/UnnycNav.js`](../src/components/unnyc/UnnycNav.js) (`LINKS`, `CTA`) |
+| Footer: org links (`ORGS`), Contact link, credit line | [`src/components/unnyc/UnnycFooter.js`](../src/components/unnyc/UnnycFooter.js) |
+| Form labels, validation + success messages | [`CampaignSignForm.js`](../src/components/unnyc/CampaignSignForm.js), [`EndorseForm.js`](../src/components/unnyc/EndorseForm.js), [`ContactForm.js`](../src/components/unnyc/ContactForm.js) — all in `src/components/unnyc/` |
+| Site-wide default title/description | [`src/app/layout.js`](../src/app/layout.js) (per-page titles are in each content file's `meta:`) |
 
 ## No data files
 
@@ -21,8 +21,8 @@ These are short strings tied to structure rather than prose:
 `unnyc-primer.js` were both fully orphaned once the open letter stopped importing
 `openSource.principles`.
 
-The eight principles now live once, in `content/principles.md`, reshaped for each
-surface by `principlesFlat()` / `principlesDeclaration()` in `src/lib/content.js`.
+The eight principles now live once, in [`content/principles.md`](../content/principles.md), reshaped for each
+surface by `principlesFlat()` / `principlesDeclaration()` in [`src/lib/content.js`](../src/lib/content.js).
 See [EDITING-CONTENT.md](EDITING-CONTENT.md).
 
 **Don't reintroduce a data module for content.** Those files carried three
@@ -38,7 +38,7 @@ authoritative while being unused — which is exactly how the drift went unnotic
 
 *(Resolved: the footer tagline used the pre-campaign "Where the United Nations
 meets New York City" framing — replaced 2026-08-04 with the campaign's own
-one-liner, reused verbatim from `content/home.md`'s `ogDescription` so the two
+one-liner, reused verbatim from [`content/home.md`](../content/home.md)'s `ogDescription` so the two
 cannot drift. The tagline itself was then **removed** on 2026-08-06 when the
 footer was simplified to logo + org links + Contact + credit line.)*
 
