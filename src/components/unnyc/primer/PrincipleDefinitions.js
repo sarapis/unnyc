@@ -29,7 +29,7 @@ export default function PrincipleDefinitions({ principlesDoc }) {
                 </header>
 
                 <p className="unnyc-start-principles__intro">
-                    Primarily, this means that software built for the city ought to be:
+                    The software built for the city ought to be:
                 </p>
 
                 <article className="unnyc-start-principle unnyc-start-principle--primary">

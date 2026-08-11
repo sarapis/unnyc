@@ -43,7 +43,7 @@ export default function PrinciplesDocumentPage() {
                 </p>
 
                 <p className="unnyc-doc-page__lead-in">
-                    Primarily, this means that software built for the city ought to be:
+                    The software built for the city ought to be:
                 </p>
 
                 <div className="unnyc-doc-page__primary">
