@@ -143,6 +143,17 @@ several false positives on the first pass.
   This was a real bug; don't "optimise" it back.
 - **`getContent()` is server-only** (uses `node:fs`). Never import it in a
   `"use client"` file.
+- **`sections.*.html` goes in a `<div>`; `inlineMd()` goes in a `<p>`/`<h*>`/`<li>`.**
+  `sections.*.html` is block-level output — it already carries its own `<p>`. Put it
+  inside a `<p>` and you get `<p><p>…</p></p>`, which is invalid: the browser closes
+  the outer `<p>` and splits it into siblings, the parsed DOM stops matching what
+  React rendered, and **the entire page silently falls back to client rendering**.
+  `/campaign/sign`'s signoff did exactly this until 2026-08-11, and the only symptom
+  was a dev-console hydration error — the page looked correct, because React
+  re-rendered it correctly on the client. `inlineMd()` exists precisely for the
+  phrasing-element case; every other consumer in the repo already uses it.
+  To check a page: `curl` it and look for a block tag inside a `<p>`. Reading the
+  JSX will not show you this.
 - **CSS layer order `reset < components < unnyc < site` must be preserved.** The
   nav sits inside `.unnyc-page` to inherit its tokens, so `.unnyc-page a { color:
   inherit }` in `@layer unnyc` will paint nav links navy-on-navy if `site` stops

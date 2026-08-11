@@ -173,9 +173,17 @@
     counter-reset: principle;
   }
 
+  /* A wrapper around the signoff's own <p>, not the paragraph itself — it
+     cannot be a <p>; see the note in campaign/sign/page.js.
+
+     This block used to also declare `line-height: 1.8`, which NEVER APPLIED:
+     `.unnyc-cmp-letter p` above is 0-1-1 and this selector is 0-1-0, so the
+     paragraph has always rendered at 1.75. Removed rather than rescued — moving
+     it to `.unnyc-cmp-letter__signoff p` would win on source order and quietly
+     restyle the signoff on the back of a hydration fix. If 1.8 is wanted here,
+     that is a design decision worth making on purpose. */
   .unnyc-cmp-letter__signoff {
     margin-top: var(--wg-sp-8);
-    line-height: 1.8;
   }
 
   .unnyc-cmp-letter__refs {

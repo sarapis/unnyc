@@ -128,7 +128,16 @@ export default async function CampaignSignPage() {
                         </div>
                     ))}
 
-                    <p
+                    {/* MUST be a flow container, not a <p>. `sections.*.html` is
+                        block-level markdown output, so it arrives already wrapped
+                        in its own <p>. A <p> cannot contain a <p>: the browser
+                        silently closes the outer one and splits it into siblings,
+                        so the parsed DOM stops matching what React rendered and
+                        the whole page fails to hydrate. That is what this was
+                        until 2026-08-11. Anywhere a phrasing element needs
+                        markdown, use inlineMd() instead — see the refs list below
+                        and every other consumer in this repo. */}
+                    <div
                         className="unnyc-cmp-letter__signoff"
                         dangerouslySetInnerHTML={{ __html: doc.sections.signoff.html }}
                     />
