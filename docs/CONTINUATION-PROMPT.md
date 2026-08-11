@@ -3,10 +3,12 @@
 Paste the block below into a new session. Everything above the line is context for
 whoever is maintaining this file.
 
-**Last updated 2026-08-11.** The previous version described 2026-08-10, before the
-copy-defect pass and before wegov.nyc finished its token migration. **Rewrite this
-whenever something lands** — a continuation prompt that describes a state that no
-longer exists is worse than none, because it is read as current.
+**Last updated 2026-08-11, after PRs #8/#9/#10 merged.** This file drifted three
+times in that one day — it named an open PR that had landed, and listed a bug as
+unfixed with a guess at its cause that turned out to be wrong. **Rewrite this
+whenever something lands.** A continuation prompt describing a state that no longer
+exists is worse than none, because it is read as current; a wrong *diagnosis* left
+in it is worse still, because the next session starts by chasing it.
 
 ---
 
@@ -26,10 +28,7 @@ I'm continuing work on the **UNNYC campaign site**. Start by querying the Hub
 | `sarapis/wegovnyc-design-tokens` | `~/Antigravity/wegovnyc-design-tokens` | The design system both sites install |
 | `devinbalkind/sarapis-website` | `~/Antigravity/Sarapis/site` | The Payload CMS → https://next.sarapis.org |
 
-All clean and deployed as of 2026-08-11, with one exception: **this repo has an
-open PR** — [#8](https://github.com/sarapis/unnyc/pull/8), the copy-defect pass
-below. Checks green, unmerged. Check whether it has landed before editing
-`content/sign.md`, `content/crosswalk.md`, `content/home.md` or `content/start.md`.
+All clean and deployed as of 2026-08-11. No open PRs in either site repo.
 
 ## Read this part before you touch anything
 
@@ -74,20 +73,31 @@ never loaded. So:
 
 ## What changed most recently (2026-08-10 → 08-11)
 
+All of the below is **merged and live** (PRs #8, #9, #10).
+
+- **`/campaign/sign` was failing hydration on every visit** — the signoff fed
+  block-level markdown HTML into a `<p>`, giving `<p><p>…</p></p>`. The parser
+  splits that into three siblings, so the DOM never matched React's render and the
+  whole page silently fell back to client rendering. Wrapper is a `<div>` now.
+  **The rule, since this will recur:** `sections.*.html` goes in a `<div>`;
+  `inlineMd()` is what a `<p>`/`<h*>`/`<li>` takes. See `CLAUDE.md`.
 - **Three paragraphs in the open letter were being swallowed by the bullet lists
   above them** — written with no blank line, so `marked` folded each into the last
-  `<li>`. One of them was the letter's closing argument ("New York does not need to
+  `<li>`. One was the letter's closing argument ("New York does not need to
   reinvent the model. It needs only to sign."). Confirmed on production before
-  fixing. **In PR #8, not yet merged.** Valid markdown, clean build, `lint:content`
-  green, page looks fine at a glance — `lint:content` does not check for this, so
-  the pattern can come back.
-- **Copy defects fixed in `/crosswalk`** (also PR #8): two typos, one broken clause
-  ("means is the key to"), and four straight apostrophes in the two most-read
-  strings on the site — the home hero subtitle and the `/start` lede.
+  fixing. Valid markdown, clean build, `lint:content` green, page looked fine at a
+  glance — `lint:content` does not check for this, so the pattern can come back.
+- **Copy defects fixed in `/crosswalk`**: two typos, one broken clause ("means is
+  the key to"), and four straight apostrophes in the two most-read strings on the
+  site — the home hero subtitle and the `/start` lede.
 - **File references in `docs/EDITING-CONTENT.md` and `docs/CONTENT-MAP.md` are now
-  clickable** (PR #8). They were bare code spans, so the page-to-file table — the
-  whole point of that doc — could not be clicked through. 28 links, `../`-prefixed
-  to resolve from `docs/`.
+  clickable.** They were bare code spans, so the page-to-file table — the whole
+  point of that doc — could not be clicked through. 28 links, `../`-prefixed to
+  resolve from `docs/`.
+- **The CTFG teal literal is gone** (`#3f8f7b`, `unnyc.css`), which `wg-lint-tokens`
+  had warned about on every build since 2026-08-07. It was a hand-copied duplicate
+  of `COLORS.ctfg`; the checkbox now sets `accent-color` inline from that constant,
+  as the swatch beside it already did. **Both lints now report clean in both repos.**
 - **wegov.nyc finished its token migration and is deployed** (`80aeca4`): the last
   92 colour literals in its `globals.css` are gone and `.wg-lint-baseline.json` was
   deleted, so that lint now reports against zero in BOTH repos. Verified live —
@@ -120,35 +130,30 @@ never loaded. So:
 
 Nothing is blocking. In rough order of value:
 
-1. **Merge or close PR #8.** Everything in it is verified and its checks are green;
-   it is only unmerged because a human had not looked yet.
-2. **`/campaign/sign` throws a React hydration mismatch in dev.** Found 2026-08-11
-   and NOT fixed. It is pre-existing — reproduced on `main` with the PR #8 edits
-   stashed, and absent on `/` — so it is not from the copy pass. It is on the
-   campaign's conversion page, which makes it the most valuable open bug here. The
-   endorser wall's Payload fetch is the obvious suspect (a server render with an
-   empty wall, then a client render with entries). Not yet investigated.
-3. **Decide the CTFG directory question.** The layer is live now, so the open
-   question about linking into the Civic Tech Field Guide while it is de-indexed
-   pre-launch is current, not deferred. Hub task `168a959d`.
-4. **The roadmap doc needs a named ask.** `sarapis/open-source-by-default`
+1. **Decide the CTFG directory question.** The layer is live, so the open question
+   about linking into the Civic Tech Field Guide while it is de-indexed pre-launch
+   is current, not deferred. Hub task `168a959d` — the only open task on the board
+   for this workspace.
+2. **The roadmap doc needs a named ask.** `sarapis/open-source-by-default`
    explains a sequence but never says who should do what next. Its own *How this
    document grows* section lists five other gaps, the most valuable being a worked
    contract-expiry example.
-5. **`/resources` is the only home path card without an image** — a favicon
+3. **`/resources` is the only home path card without an image** — a favicon
    placeholder was removed rather than replaced. Needs a licensed image, and an
    entry in `public/images/CREDITS.md` in the same commit.
-6. **Watch for the first real endorsement.** `published` defaults to false, so a
+4. **Watch for the first real endorsement.** `published` defaults to false, so a
    new signature needs ticking in the Payload admin before it reaches the wall.
-7. **A shared component package.** Token *values* are unified across wegov.nyc and
+5. **A shared component package.** Token *values* are unified across wegov.nyc and
    this site; the *implementations* — button, card, nav — are still separate. Hub
    task `7656df36` (Backburner) — the only live item left on that roadmap.
-8. **Exposed keys in `wegovnyc_front`'s git history** — Hub task `51968fc0`. Lower
+6. **Exposed keys in `wegovnyc_front`'s git history** — Hub task `51968fc0`. Lower
    urgency after triage, but the purge needs coordinating because a fork keeps the
    blobs reachable.
 
-*(Struck 2026-08-11: "~90 baselined colour literals in wegov.nyc's `globals.css`" —
-done and deployed, see above.)*
+*(Struck 2026-08-11, all done and deployed: the ~90 baselined colour literals in
+wegov.nyc's `globals.css`; PR #8; the `/campaign/sign` hydration mismatch — which
+turned out NOT to be the endorser wall's Payload fetch, as this file previously
+guessed, but invalid HTML nesting. See above.)*
 
 ## Things that are true and easy to get wrong
 
