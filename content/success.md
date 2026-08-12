@@ -37,21 +37,22 @@ cases:
       - "[Digital Public Goods Alliance](https://decidim.org/blog/2023-07-13-decidim-is-recognized-as-a-digital-public-good/)"
   - id: munich
     alt: true
-    title: "Munich: The Office Survived What the Migration Didn't"
+    title: "Munich: A Landmark Migration and Lasting Institution"
     banner:
       src: "/images/success/munich.jpeg"
       alt: "Munich cityscape"
     stats:
       - number: "15,000"
         label: "Desktops migrated to Linux under Munich's original LiMux project"
-      - number: "2017"
-        label: "Year the city council reversed the migration back to Windows"
+      - number: "2023"
+        label: "City Council motion establishes Munich's Open Source Hub"
       - number: "2024"
         label: "Munich's Open Source Program Office opens under a \"public money, public code\" mandate"
     sources:
       - "[Munich OSPO](https://opensource.muenchen.de/ospo.html)"
       - "[Open Source Observatory (EU)](https://interoperable-europe.ec.europa.eu/collection/open-source-observatory-osor/document/limux-it-evolution-open-source-success-story-never)"
       - "[Wikipedia — LiMux](https://en.wikipedia.org/wiki/LiMux)"
+      - "[openCode.de](https://opencode.de/en/software/zammad-3166)"
   - id: paris
     title: "Paris: From One Office to National Policy"
     banner:
@@ -152,13 +153,13 @@ New York is already inside this story: the city’s own Civic Engagement Commiss
 
 ## munich
 
-Munich isn’t a story where open source simply worked — it’s a story about what survives when it doesn’t. In 2003, the city council voted to move its desktops off Windows; by the time the project closed out a decade later, roughly 15,000 machines were running Linux and LibreOffice, the largest public-sector Linux migration in Europe. Then politics changed: a new governing coalition took office, Microsoft relocated its German headquarters to Munich, and in November 2017 the council voted to reverse course and return to Windows by 2020, citing user complaints and organizational strain.
+Munich proved open source works at city scale early: starting in 2003, the city moved roughly 15,000 desktops to Linux and LibreOffice, the largest public-sector Linux deployment in Europe at the time. A change in political leadership shifted the city back toward Windows in 2017, but the commitment to open source kept going in a more durable form: in 2024, Munich's Open Source Program Office opened under an explicit "public money, public code" mandate, an institution built to outlast any single administration.
 
-That could have been the end of Munich’s open source story. It wasn’t. In February 2023, the council passed a motion to establish an Open Source Hub, and in 2024 the city’s Open Source Program Office opened inside its IT department — this time as a standing office with an explicit "public money, public code" mandate, not a single migration project riding on one administration’s goodwill.
+That commitment shows up in daily use today, not just policy. Munich runs Zammad, an open source helpdesk platform, and lists its work on [openCode.de](https://opencode.de/en/software/zammad-3166), Germany’s national exchange for public-sector open source software.
 
 {{stats}}
 
-The lesson for New York isn’t "don’t migrate" — it’s that a single big-bang project is politically fragile in a way an institution isn’t. An OSPO with a policy mandate behind it outlasts whichever administration created it; a desktop migration doesn’t. That’s the version of this campaign that asks New York to build.
+For New York, the takeaway is that open source at city-government scale is proven. The durable form it takes is an institution with a policy mandate behind it, paired with everyday adoption — exactly what this campaign asks New York to build.
 
 ## paris
 
