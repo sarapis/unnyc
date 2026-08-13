@@ -14,20 +14,18 @@ import dynamic from 'next/dynamic';
  */
 const PrimerMapInner = dynamic(() => import('./PrimerMapInner'), { ssr: false });
 
-export default function PrimerMovementNow({ endorsers, mapMarkers, mapLegend, ctfg, mapSource }) {
+export default function PrimerMovementNow({ endorsers, mapMarkers, mapLegend, ctfg, mapSource, title, lede }) {
     if (!endorsers) return null;
     return (
         <section id="going-open-source" className="unnyc-section unnyc-section--alt unnyc-section--map">
             <div className="unnyc-container">
+                {/* Title and lede come from content/start.md (`movementNow`). They
+                    were hardcoded here until 2026-08-13 — the last of the copy
+                    this component owned, and the reason a wording change needed a
+                    developer. See docs/CONTENT-MAP.md. */}
                 <header className="unnyc-section__header">
-                    <h2 className="unnyc-section__title">The World is Going Open Source</h2>
-                    <p className="unnyc-section__desc">
-                        In November 2025, <strong>Barcelona</strong> became the first city in the
-                        world to formally endorse the UN Open Source Principles. New York hosts
-                        the movement every June but hasn&rsquo;t joined it yet. Following
-                        Barcelona&rsquo;s lead would make New York the first city in the Americas
-                        to do the same.
-                    </p>
+                    <h2 className="unnyc-section__title">{title}</h2>
+                    <p className="unnyc-section__desc">{lede}</p>
                 </header>
 
                 <PrimerMapInner

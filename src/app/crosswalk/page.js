@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import UnnycIcon from '@/components/unnyc/UnnycIcon';
 import '../primer.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import { getContent, inlineMd } from '@/lib/content';
@@ -23,15 +22,20 @@ export async function generateMetadata() {
 }
 
 /**
- * /crosswalk — "why this matters to NYC." The persuasive core of the campaign:
- * who pays for vendor reliance today, what endorsement would actually cost and
- * fund, then a principle-by-principle crosswalk between the UN's agenda and
- * NYC's reality.
+ * /crosswalk — "why this matters to NYC." Who pays for vendor reliance today,
+ * and why New York is central to the movement.
+ *
+ * The principle-by-principle crosswalk that gave this page its name MOVED to
+ * /principles on 2026-08-13, so it sits with the principles it maps rather than
+ * restating them a page away. Moved, not copied — this repo has already spent a
+ * day untangling drifted copies of the principles. The page name stayed: it is
+ * still the crosswalk between the UN's agenda and NYC's reality, just the half
+ * that is about NYC.
  *
  * ALL COPY ON THIS PAGE LIVES IN content/crosswalk.md — frontmatter for the
- * structure (titles, the eight principles, foot CTAs), markdown body for the
- * prose, split into `## <slug>` sections. This file is layout only; to change
- * wording, edit the markdown. See docs/EDITING-CONTENT.md.
+ * structure (titles, foot CTAs), markdown body for the prose, split into
+ * `## <slug>` sections. This file is layout only; to change wording, edit the
+ * markdown. See docs/EDITING-CONTENT.md.
  */
 export default function CrosswalkPage() {
     const doc = getContent('crosswalk');
@@ -52,10 +56,9 @@ export default function CrosswalkPage() {
                 </div>
             </header>
 
-            {/* No section subnav here on purpose. This page's sections ARE the
-                eight principles, so the bar could only be a list of all eight —
-                too dense to scan, and it duplicated the page's own structure.
-                See UnnycSectionNav for where the bar is used. */}
+            {/* No section subnav here on purpose — the page is now two sections
+                long (the cost of vendor reliance, and why NYC is central), so
+                there is nothing to jump past. See UnnycSectionNav for the rule. */}
 
             {/* Persuasive intro — the "meat" of the campaign */}
             <section className="unnyc-pr-why">
@@ -78,45 +81,12 @@ export default function CrosswalkPage() {
                 </div>
             </section>
 
-            {/* One section per principle */}
-            <div className="unnyc-pr-cw">
-                {doc.principles.map((p) => {
-                    const section = sections[p.slug];
-                    return (
-                        <section key={p.slug} id={p.slug} className="unnyc-pr-cw__section">
-                            <div className="unnyc-container unnyc-container--narrow">
-                                <div className="unnyc-pr-cw__heading">
-                                    <UnnycIcon
-                                        name={p.icon}
-                                        size={40}
-                                        className="unnyc-pr-cw__icon"
-                                    />
-                                    <h2 className="unnyc-pr-cw__title">
-                                        {p.number}. {p.title}
-                                    </h2>
-                                </div>
-
-                                <div
-                                    className="unnyc-pr-cw__part"
-                                    dangerouslySetInnerHTML={{ __html: section.html }}
-                                />
-
-                                {section.blocks.map((b) => (
-                                    <div
-                                        key={b.label}
-                                        className="unnyc-pr-cw__part unnyc-pr-cw__part--gap"
-                                    >
-                                        <h4 className="unnyc-pr-cw__part-label unnyc-pr-cw__part-label--gap">
-                                            {b.label}
-                                        </h4>
-                                        <div dangerouslySetInnerHTML={{ __html: b.html }} />
-                                    </div>
-                                ))}
-                            </div>
-                        </section>
-                    );
-                })}
-            </div>
+            {/* The eight per-principle sections MOVED to /principles on 2026-08-13.
+                They were the same eight this page's argument leads up to, so they
+                now sit with the principles themselves rather than being restated
+                here. This page keeps what is genuinely its own: what vendor
+                reliance costs New York, and why the city is central to the
+                movement. The foot CTA hands off. */}
 
             {/* Closing — why NYC is central to the movement */}
             <section className="unnyc-pr-cw__closing">

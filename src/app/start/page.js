@@ -3,7 +3,6 @@ import '../primer.css';
 import './start.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import UnnycSectionNav from '@/components/unnyc/UnnycSectionNav';
-import PrincipleDefinitions from '@/components/unnyc/primer/PrincipleDefinitions';
 import PrimerConcepts from '@/components/unnyc/primer/PrimerConcepts';
 import PrimerMovement from '@/components/unnyc/primer/PrimerMovement';
 import PrimerMovementNow from '@/components/unnyc/primer/PrimerMovementNow';
@@ -21,15 +20,16 @@ export async function generateMetadata() {
 /**
  * /start — "The Global Movement." Orientation for a reader who knows what open
  * source is but not how it connects to government and the UN: vocabulary, the
- * eight Principles, the movement's timeline, and who has already signed on.
+ * the movement's timeline, and who has already signed on.
  *
- * ALL COPY LIVES IN content/start.md (the eight Principles come from
- * content/principles.md, shared with /start/principles so the two can't drift).
- * See docs/EDITING-CONTENT.md.
+ * The eight Principles used to sit here too. They are their own top-level page
+ * as of 2026-08-13 (/principles), which also carries the per-principle NYC
+ * argument that used to be the body of /crosswalk.
+ *
+ * ALL COPY LIVES IN content/start.md. See docs/EDITING-CONTENT.md.
  */
 export default function StartPage() {
     const doc = getContent('start');
-    const { principlesDoc } = getContent('principles');
 
     return (
         <div className="unnyc-pr">
@@ -53,16 +53,21 @@ export default function StartPage() {
                 </div>
             </header>
 
+            {/* Order: vocabulary, then who is already doing it, then how the UN
+                got here. The eight principles used to sit between the first two;
+                they are their own top-level page as of 2026-08-13 (/principles),
+                and the foot CTA below is the hand-off. */}
             <PrimerConcepts concepts={doc.concepts} />
-            <PrincipleDefinitions principlesDoc={principlesDoc} />
-            <PrimerMovement movement={doc.movement} />
             <PrimerMovementNow
                 endorsers={doc.endorsers}
                 mapMarkers={doc.mapMarkers}
                 mapLegend={doc.mapLegend}
                 ctfg={getCtfgProjects()}
                 mapSource={doc.mapSource}
+                title={doc.movementNow?.title}
+                lede={doc.movementNow?.lede}
             />
+            <PrimerMovement movement={doc.movement} />
 
             {/* Foot CTA — leads into the next section */}
             <section className="unnyc-start__next">

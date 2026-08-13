@@ -13,11 +13,15 @@ export async function generateMetadata() {
 }
 
 /**
- * /start/principles — a standalone, linkable/printable version of the
- * Eight Principles section on /start (PrincipleDefinitions.js), for
- * sharing outside the site. Shares content (data/unnyc-primer.js's
- * `principlesDoc`) and "paper" styling (printable-doc.css) with the
- * campaign's printable endorsement declaration.
+ * /principles/document — a standalone, linkable/printable one-pager of the
+ * eight principles, for sharing outside the site.
+ *
+ * MOVED from /start/principles on 2026-08-13, when the principles became their
+ * own top-level page; the old URL 308s here (see next.config.mjs). Named
+ * `document` to match /campaign/endorse/document, the site's other printable.
+ *
+ * Shares its content (content/principles.md's `principlesDoc`) and its "paper"
+ * styling (printable-doc.css) with the campaign's endorsement declaration.
  */
 export default function PrinciplesDocumentPage() {
     const { principlesDoc } = getContent('principles');
@@ -33,7 +37,7 @@ export default function PrinciplesDocumentPage() {
             </div>
 
             <main className="unnyc-doc-page">
-                <h1 className="unnyc-doc-page__title">The Eight UN Open Source Principles</h1>
+                <h1 className="unnyc-doc-page__title">The UN Open Source Principles</h1>
 
                 <p className="unnyc-doc-page__intro">
                     Adopted by the UN&rsquo;s Digital and Technology Network in 2025, these eight
