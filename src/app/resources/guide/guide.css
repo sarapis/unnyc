@@ -1,0 +1,195 @@
+/* ============================================
+   /resources/guide — "The UN System & NYC Government Technology"
+   Long-form briefing ported from old-unnyc.wegov.nyc/guide.html.
+   Scoped under `.unnyc-guide`, prefix `unnyc-guide-`.
+   Lives in @layer unnyc, like the rest of the site's page CSS.
+
+   Colours read the SEMANTIC tier (--wg-*) only — never a literal, never
+   --db-*. See CLAUDE.md.
+   ============================================ */
+
+@layer unnyc {
+
+  .unnyc-guide__header {
+    padding: var(--wg-sp-16) 0 var(--wg-sp-10);
+    background:
+      radial-gradient(ellipse at 80% -20%, rgba(75, 146, 219, 0.12), transparent 55%),
+      var(--wg-surface-warm);
+    border-bottom: 1px solid var(--wg-border);
+  }
+
+  .unnyc-guide__eyebrow {
+    font-size: var(--wg-fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--wg-accent-strong);
+    margin: 0 0 var(--wg-sp-3);
+  }
+
+  .unnyc-guide__title {
+    font-family: var(--wg-font-display);
+    font-weight: 400;
+    font-size: var(--wg-fs-4xl);
+    line-height: 1.15;
+    color: var(--wg-brand);
+    margin: 0 0 var(--wg-sp-4);
+  }
+
+  .unnyc-guide__subtitle {
+    font-size: var(--wg-fs-lg);
+    line-height: 1.7;
+    color: var(--wg-text-secondary);
+    margin: 0 0 var(--wg-sp-5);
+  }
+
+  .unnyc-guide__meta {
+    font-size: var(--wg-fs-sm);
+    color: var(--wg-text-muted);
+    margin: 0;
+  }
+
+  .unnyc-guide__section {
+    padding: var(--wg-sp-10) 0 0;
+  }
+
+  /* Number + title on one baseline. The original used a large ghosted numeral
+     in the margin; at this measure it collided with the text, so it sits inline
+     as a token instead. */
+  .unnyc-guide__heading {
+    display: flex;
+    align-items: baseline;
+    gap: var(--wg-sp-3);
+    margin-bottom: var(--wg-sp-4);
+  }
+
+  .unnyc-guide__number {
+    flex: 0 0 auto;
+    font-size: var(--wg-fs-sm);
+    font-weight: 700;
+    color: var(--wg-text-inverse);
+    background: var(--wg-accent);
+    border-radius: var(--wg-radius-pill);
+    padding: 2px 10px;
+  }
+
+  .unnyc-guide__section-title {
+    font-family: var(--wg-font-display);
+    font-weight: 400;
+    font-size: var(--wg-fs-2xl);
+    line-height: 1.25;
+    color: var(--wg-brand);
+    margin: 0;
+  }
+
+  .unnyc-guide__badge {
+    display: inline-block;
+    font-size: var(--wg-fs-xs);
+    font-weight: 600;
+    color: var(--wg-accent-warm-dark);
+    background: var(--wg-surface-alt);
+    border: 1px solid var(--wg-border);
+    border-radius: var(--wg-radius-pill);
+    padding: 3px 12px;
+    margin: 0 0 var(--wg-sp-4);
+  }
+
+  .unnyc-guide__prose p,
+  .unnyc-guide__prose li {
+    font-size: var(--wg-fs-base);
+    line-height: 1.75;
+    color: var(--wg-text);
+  }
+
+  .unnyc-guide__prose p {
+    margin: 0 0 var(--wg-sp-4);
+  }
+
+  .unnyc-guide__prose ul,
+  .unnyc-guide__prose ol {
+    margin: 0 0 var(--wg-sp-4);
+    padding-left: var(--wg-sp-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--wg-sp-2);
+  }
+
+  .unnyc-guide__prose li::marker {
+    color: var(--wg-accent-warm-dark);
+    font-weight: 700;
+  }
+
+  .unnyc-guide__prose a {
+    color: var(--wg-accent-strong);
+  }
+
+  /* `### Label` sub-block. The original had three flavours of these — what-is,
+     why-matters, how-to, plus callouts and cards. One treatment here: a quiet
+     left rule, so a nine-section article does not read as nine card grids. */
+  .unnyc-guide__block {
+    margin: 0 0 var(--wg-sp-5);
+    padding-left: var(--wg-sp-5);
+    border-left: 2px solid var(--wg-border);
+  }
+
+  .unnyc-guide__block-label {
+    font-size: var(--wg-fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--wg-text-muted);
+    margin: 0 0 var(--wg-sp-3);
+  }
+
+  /* Tables — the day grid and the calendar. */
+  .unnyc-guide__prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 var(--wg-sp-5);
+    font-size: var(--wg-fs-sm);
+  }
+
+  .unnyc-guide__prose th,
+  .unnyc-guide__prose td {
+    border: 1px solid var(--wg-border);
+    padding: var(--wg-sp-3) var(--wg-sp-4);
+    text-align: left;
+    line-height: 1.5;
+  }
+
+  .unnyc-guide__prose th {
+    background: var(--wg-surface-alt);
+    font-weight: 600;
+    color: var(--wg-brand);
+  }
+
+  .unnyc-guide__foot {
+    margin-top: var(--wg-sp-12);
+    padding: var(--wg-sp-10) 0 var(--wg-sp-16);
+    border-top: 1px solid var(--wg-border);
+    text-align: center;
+  }
+
+  .unnyc-guide__foot p {
+    color: var(--wg-text-secondary);
+    margin: 0 0 var(--wg-sp-5);
+  }
+
+  .unnyc-guide__foot-links {
+    display: flex;
+    justify-content: center;
+    gap: var(--wg-sp-4);
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 640px) {
+    .unnyc-guide__title {
+      font-size: var(--wg-fs-3xl);
+    }
+
+    .unnyc-guide__prose table {
+      display: block;
+      overflow-x: auto;
+    }
+  }
+}
