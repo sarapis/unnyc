@@ -33,6 +33,10 @@ resourceGroups:
   groups:
   - title: "Start Here"
     links:
+    - text: "The UN System & NYC Government Technology"
+      url: "/resources/guide"
+      internal: true
+      desc: "Our long-form briefing for city technology leadership — the programs, events and frameworks NYC can join, and what to do first."
     - text: "UN Open Source Week"
       url: "https://www.unopensource.org/"
       desc: "The annual convening at UN HQ — agenda, recordings, and community."

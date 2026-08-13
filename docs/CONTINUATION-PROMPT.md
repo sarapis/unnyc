@@ -157,9 +157,15 @@ guessed, but invalid HTML nesting. See above.)*
 
 ## Things that are true and easy to get wrong
 
-- `old-unnyc.wegov.nyc` is **load-bearing**: `wegov.nyc/unnyc/guide` redirects to
-  `unnyc.wegov.nyc/resources`, and the only live copy of that article is on the
-  old site.
+- `old-unnyc.wegov.nyc` is **no longer load-bearing, as of 2026-08-11.** Its one
+  unique asset — the long-form "UN System & NYC Government Technology" guide — now
+  lives here at `/resources/guide`, ported and diffed word-for-word against the
+  original. Nothing on either live site links to the old host any more. It was
+  never as load-bearing as the docs claimed, either: `wegov.nyc/unnyc/guide`
+  redirects to `unnyc.wegov.nyc/resources`, NOT to the old site, so no traffic was
+  ever routed there. **Still to do:** repoint that redirect at `/resources/guide`
+  (one line in `wegovnyc_front`'s `next.config.mjs`), then the old site can be
+  retired whenever you want it gone.
 - **Never write a colour literal or read `--db-*`** in a CSS rule — both are
   invisible to the brand variant.
 - **Never write `*/` inside a CSS comment.** It closes the comment and Turbopack
