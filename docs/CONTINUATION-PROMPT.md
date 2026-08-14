@@ -135,20 +135,14 @@ Nothing is blocking. In rough order of value:
 1. **Decide the CTFG directory question.** The map layer is live, so the open
    question about linking into the Civic Tech Field Guide while it is de-indexed
    pre-launch is current, not deferred. Hub task `168a959d`.
-2. **`/crosswalk` reason 1 says fifteen agencies hold their own Microsoft Premier
-   Support contracts "today".** The count is right and conservative — Databook
-   shows **17** distinct agencies — but almost every one of those contracts ended
-   between 2022 and 2024, so "today" is the one word on the page that the records
-   do not support. The underlying point (fragmented buying) is solid; only the
-   tense is loose. A one-word fix, left alone because it is a copy call.
-3. **The roadmap doc needs a named ask.** `sarapis/open-source-by-default`
+2. **The roadmap doc needs a named ask.** `sarapis/open-source-by-default`
    explains a sequence but never says who should do what next.
-4. **Watch for the first real endorsement.** `published` defaults to false, so a
+3. **Watch for the first real endorsement.** `published` defaults to false, so a
    new signature needs ticking in the Payload admin before it reaches the wall.
-5. **A shared component package.** Token *values* are unified across wegov.nyc and
+4. **A shared component package.** Token *values* are unified across wegov.nyc and
    this site; the *implementations* — button, card, nav — are still separate. Hub
    task `7656df36` (Backburner).
-6. **Exposed keys in `wegovnyc_front`'s git history** — Hub task `51968fc0`. Lower
+5. **Exposed keys in `wegovnyc_front`'s git history** — Hub task `51968fc0`. Lower
    urgency after triage, but the purge needs coordinating because a fork keeps the
    blobs reachable.
 
@@ -158,8 +152,12 @@ almost certainly a garbled memory of — SHI $1.2B and CDW $800M, exactly $2B
 together, each linked to its Databook record. The same sentence in the **open
 letter** (`content/sign.md`) carried the identical claim and was fixed with it;
 the briefing had flagged only `/crosswalk`, so check both surfaces for any figure
-you change. Also struck: **the fourth homepage card**, confirmed as a deliberate
-logo treatment rather than a photo awaiting purchase. Struck earlier the same
+you change. The page's Microsoft Premier Support count went the other way — the
+records support **more** than was claimed, so "at least fifteen agencies … today"
+became "seventeen agencies have each bought their own", which is both tense-accurate
+(most of those contracts ended 2022–2024) and stronger. Also struck: **the fourth
+homepage card**, confirmed as a deliberate logo treatment rather than a photo
+awaiting purchase. Struck earlier the same
 day: Olivia's PR #12 merged — three org names aligned to their CTFG listings, with two of the three redirected to
 `content/principles.md` because the endorsers list had moved; her PR #15
 (site-wide dark mode) CLOSED as a product decision, with the reasoning recorded
