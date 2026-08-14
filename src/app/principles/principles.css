@@ -36,7 +36,7 @@
 
   /* The title carries the accent on hover, so the card reads as one target
      rather than a box that happens to contain a link. */
-  .unnyc-principles__card:hover .unnyc-start-principle__title {
+  .unnyc-principles__card:hover .unnyc-principles__tile-title {
     color: var(--wg-accent-strong);
   }
 
@@ -99,32 +99,40 @@
      list only because each card still carried a description; compressing
      the grid removed those and made the missing layout obvious.
 
-     /start no longer renders a single one of these classes, so this is a
-     MOVE, not a copy. The `unnyc-start-` prefix is now a misnomer kept
-     deliberately: renaming it is a separate change, and a rename that
-     silently misses a selector reintroduces exactly this bug.
+     /start no longer renders a single one of these classes, so this was a
+     MOVE, not a copy. They carried a `unnyc-start-` prefix until the
+     rename later the same day; the card block is `unnyc-principles__tile`
+     and its children are `-tile-title` / `-tile-desc` / `-tile-icon`,
+     which is why they are NOT `__tile__title` — the tile is an element of
+     this page, not a block of its own.
+
+     `unnyc-principles__tile` and `unnyc-principles__card` are both applied
+     to every card and are deliberately separate: `__tile` is the visual
+     box (surface, border, padding, shadow) and `__card` is the jump-link
+     behaviour (block display, inherited colour, hover). Merging them would
+     couple "looks like a card" to "is a link".
 
      Column counts come from auto-fit, not hardcoded per group: 3 items
      give three columns, 2 give two, and the lead card sits outside the
      grid at full width.
      ------------------------------------------------------------------ */
 
-  .unnyc-start-principles__intro {
+  .unnyc-principles__intro {
     font-size: var(--wg-fs-lg);
     color: var(--wg-text-secondary);
     line-height: 1.6;
     margin: 0 0 var(--wg-sp-6);
   }
 
-  .unnyc-start-principles__intro--committed {
+  .unnyc-principles__intro--committed {
     margin-top: var(--wg-sp-10);
   }
 
-  .unnyc-start-principles__group {
+  .unnyc-principles__group {
     margin-top: var(--wg-sp-8);
   }
 
-  .unnyc-start-principles__group-title {
+  .unnyc-principles__group-title {
     font-family: var(--wg-font-display);
     font-weight: 400;
     font-size: var(--wg-fs-lg);
@@ -132,19 +140,13 @@
     margin: 0 0 var(--wg-sp-5);
   }
 
-  .unnyc-start-principles__cta {
-    display: flex;
-    justify-content: center;
-    margin-top: var(--wg-sp-10);
-  }
-
-  .unnyc-start-principles__grid {
+  .unnyc-principles__grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: var(--wg-sp-5);
   }
 
-  .unnyc-start-principle {
+  .unnyc-principles__tile {
     background: var(--wg-surface);
     border: 1px solid var(--wg-border);
     border-radius: var(--wg-radius-md);
@@ -152,23 +154,23 @@
     box-shadow: var(--wg-shadow-sm);
   }
 
-  .unnyc-start-principle--primary {
+  .unnyc-principles__tile--primary {
     border-left: 4px solid var(--wg-accent-warm);
     margin-bottom: var(--wg-sp-2);
   }
 
-  .unnyc-start-principle--primary .unnyc-start-principle__title {
+  .unnyc-principles__tile--primary .unnyc-principles__tile-title {
     font-size: var(--wg-fs-xl);
   }
 
-  .unnyc-start-principle--primary .unnyc-start-principle__desc + .unnyc-start-principle__desc {
+  .unnyc-principles__tile--primary .unnyc-principles__tile-desc + .unnyc-principles__tile-desc {
     margin-top: var(--wg-sp-3);
   }
 
   /* Inline SVG (UnnycIcon) — `color` drives the stroke, so no object-fit or
      object-position needed; the box is the artwork now. UN blue, matching the
      crosswalk's treatment of the same eight icons. */
-  .unnyc-start-principle__icon {
+  .unnyc-principles__tile-icon {
     display: block;
     width: 56px;
     height: 56px;
@@ -176,7 +178,7 @@
     color: var(--wg-accent);
   }
 
-  .unnyc-start-principle__title {
+  .unnyc-principles__tile-title {
     font-family: var(--wg-font-body);
     font-size: var(--wg-fs-base);
     font-weight: 700;
@@ -184,7 +186,7 @@
     margin: 0 0 var(--wg-sp-2);
   }
 
-  .unnyc-start-principle__desc {
+  .unnyc-principles__tile-desc {
     font-size: var(--wg-fs-sm);
     color: var(--wg-text-secondary);
     line-height: 1.6;
@@ -192,7 +194,7 @@
   }
 
   @media (max-width: 640px) {
-    .unnyc-start-principles__grid {
+    .unnyc-principles__grid {
       grid-template-columns: 1fr;
     }
   }

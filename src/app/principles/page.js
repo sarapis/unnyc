@@ -66,42 +66,42 @@ export default function PrinciplesPage() {
                         Rendered only if the key comes back — an empty <p> would
                         otherwise leave a stranded margin above the lead card. */}
                     {doc.gridIntro && (
-                        <p className="unnyc-start-principles__intro">{doc.gridIntro}</p>
+                        <p className="unnyc-principles__intro">{doc.gridIntro}</p>
                     )}
 
                     <Link
                         href={`#${lead.slug}`}
-                        className="unnyc-start-principle unnyc-start-principle--primary unnyc-principles__card"
+                        className="unnyc-principles__tile unnyc-principles__tile--primary unnyc-principles__card"
                     >
-                        <UnnycIcon name={lead.icon} size={56} className="unnyc-start-principle__icon" />
-                        <h2 className="unnyc-start-principle__title">{lead.title}.</h2>
+                        <UnnycIcon name={lead.icon} size={56} className="unnyc-principles__tile-icon" />
+                        <h2 className="unnyc-principles__tile-title">{lead.title}.</h2>
                         {lead.body.map((p, i) => (
-                            <p key={i} className="unnyc-start-principle__desc">{p}</p>
+                            <p key={i} className="unnyc-principles__tile-desc">{p}</p>
                         ))}
                     </Link>
 
                     {doc.gridCommitted && (
-                        <p className="unnyc-start-principles__intro unnyc-start-principles__intro--committed">
+                        <p className="unnyc-principles__intro unnyc-principles__intro--committed">
                             {doc.gridCommitted}
                         </p>
                     )}
 
                     {groups.map((group) => (
-                        <div className="unnyc-start-principles__group" key={group.title}>
-                            <h2 className="unnyc-start-principles__group-title">{group.title}</h2>
-                            <div className="unnyc-start-principles__grid">
+                        <div className="unnyc-principles__group" key={group.title}>
+                            <h2 className="unnyc-principles__group-title">{group.title}</h2>
+                            <div className="unnyc-principles__grid">
                                 {group.items.map((item) => (
                                     <Link
                                         key={item.slug}
                                         href={`#${item.slug}`}
-                                        className="unnyc-start-principle unnyc-principles__card"
+                                        className="unnyc-principles__tile unnyc-principles__card"
                                     >
                                         <UnnycIcon
                                             name={item.icon}
                                             size={56}
-                                            className="unnyc-start-principle__icon"
+                                            className="unnyc-principles__tile-icon"
                                         />
-                                        <h3 className="unnyc-start-principle__title">{item.title}</h3>
+                                        <h3 className="unnyc-principles__tile-title">{item.title}</h3>
                                         {/* `item.desc` is deliberately NOT rendered here
                                             (2026-08-14): the grid is a scannable list of
                                             the eight names, and the full description is
