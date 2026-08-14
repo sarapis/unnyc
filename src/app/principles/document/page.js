@@ -55,7 +55,13 @@ export default function PrinciplesDocumentPage() {
                         <UnnycIcon name={lead.icon} size={28} className="unnyc-doc-page__icon" />
                         <p className="unnyc-doc-page__primary-title">{lead.title}</p>
                     </div>
-                    {lead.body.map((p, i) => (
+                    {/* `bodyDocument` falls back to `body`. It exists because the
+                        /principles grid was cut to a one-line summary on
+                        2026-08-14 and this is a formal printable declaration —
+                        it keeps principle #1's actual argument, that vendors
+                        justify closed software rather than the reverse. Same
+                        variant mechanism as `descCity` / `titleDeclaration`. */}
+                    {(lead.bodyDocument || lead.body).map((p, i) => (
                         <p key={i} className="unnyc-doc-page__primary-desc">{p}</p>
                     ))}
                 </div>
