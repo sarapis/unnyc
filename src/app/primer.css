@@ -97,6 +97,23 @@
     object-position: center;
   }
 
+  /* A card whose art is a LOGO, not a photograph (`imageStyle: logo` in the
+     content file). `cover` is right for a photo and wrong for a mark: the
+     favicon is a 100x100 square, so covering a 560x160 band scaled it ~5.6x and
+     cropped away everything but a horizontal slice. Contain it on a brand tint
+     instead, scaled down so it sits inside the band rather than touching both
+     edges. `transform` does the insetting because next/image's `fill` writes
+     inset/width/height as INLINE styles, which a class cannot override. */
+  .unnyc-pr-path__image--logo {
+    background: var(--wg-surface-alt);
+    border-bottom: 1px solid var(--wg-border);
+  }
+
+  .unnyc-pr-path__image--logo .unnyc-pr-path__image-img {
+    object-fit: contain;
+    transform: scale(0.42);
+  }
+
   .unnyc-pr-path__question {
     font-family: var(--wg-font-display);
     font-weight: 400;

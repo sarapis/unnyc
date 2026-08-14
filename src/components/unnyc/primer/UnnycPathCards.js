@@ -18,10 +18,18 @@ export default function UnnycPathCards({ paths = [] }) {
                     {paths.map((path) => (
                         <Link key={path.href} href={path.href} className="unnyc-pr-path">
                             {path.image && (
-                                <div className="unnyc-pr-path__image">
+                                <div
+                                    className={`unnyc-pr-path__image${
+                                        path.imageStyle === 'logo'
+                                            ? ' unnyc-pr-path__image--logo'
+                                            : ''
+                                    }`}
+                                >
                                     {/* next/image rather than a CSS background so the
                                         card strip gets WebP and a right-sized variant —
-                                        the sources are far larger than the 160px band. */}
+                                        the sources are far larger than the 160px band.
+                                        `imageStyle: logo` opts a card out of the
+                                        photo treatment — see the CSS modifier. */}
                                     <Image
                                         src={path.image}
                                         alt=""
