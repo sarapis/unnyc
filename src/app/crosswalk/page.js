@@ -88,21 +88,14 @@ export default function CrosswalkPage() {
                 reliance costs New York, and why the city is central to the
                 movement. The foot CTA hands off. */}
 
-            {/* Closing — why NYC is central to the movement */}
-            <section className="unnyc-pr-cw__closing">
-                <div className="unnyc-container unnyc-container--narrow">
-                    <h2 className="unnyc-pr-cw__closing-title">{doc.closingTitle}</h2>
-                    <div
-                        className="unnyc-pr-cw__closing-body"
-                        dangerouslySetInnerHTML={{ __html: sections.closing.html }}
-                    />
-                </div>
-            </section>
+            {/* No closing section — removed 2026-08-14. The page ends on reason 6
+                (whose last paragraph carries the center-of-the-world line) and
+                hands off through the foot buttons. */}
 
             {/* Foot nav */}
             <section className="unnyc-pr-cw__foot">
                 <div className="unnyc-container unnyc-container--narrow">
-                    <p>{doc.foot.text}</p>
+                    {doc.foot.text && <p>{doc.foot.text}</p>}
                     <div className="unnyc-pr-cw__foot-ctas">
                         {doc.foot.ctas.map((c) => (
                             <Link
