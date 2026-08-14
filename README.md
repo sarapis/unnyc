@@ -36,7 +36,8 @@ this order, so it reads as a funnel *or* as a pick-your-entry-point.
 |---|---|
 | `/` | Hub — what UNNYC is, then four cards routing to the paths below |
 | `/start` | "I'm new to government open source" — orientation, the movement, key concepts, case studies, the global map |
-| `/start/principles` | The Eight Principles, standalone + printable |
+| `/principles` | The UN Open Source Principles + what each means for NYC |
+| `/principles/document` | The principles, standalone + printable |
 | `/crosswalk` | "Why it matters to NYC" — the persuasive core |
 | `/success` | "What success looks like" |
 | `/campaign` | Chooser: sign the public letter, or formally endorse |
@@ -57,7 +58,8 @@ no CMS, no sync step.
 |---|---|
 | `/` | `content/home.md` |
 | `/start` | `content/start.md` |
-| `/start/principles` | `content/principles.md` (shared with `/start`) |
+| `/principles` | `content/principles.md` |
+| `/principles/document` | `content/principles.md` (shared with `/principles`) |
 | `/crosswalk` | `content/crosswalk.md` |
 | `/success` | `content/success.md` |
 | `/campaign` | `content/campaign.md` |

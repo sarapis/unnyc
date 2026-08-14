@@ -13,10 +13,13 @@ import { useEffect, useRef, useState } from 'react';
  *    /campaign/sign (733) fit in a screen or two, so there is nothing to jump
  *    past. The `items.length < 3` guard below is the backstop, but the real
  *    rule is simply not to mount it on a page that doesn't need it.
- *  - /crosswalk doesn't get one either, despite being the longest page. Its
- *    sections ARE the eight principles, so the bar could only ever be a list
+ *  - /principles doesn't get one, despite being long and having eight sections.
+ *    Its sections ARE the eight principles, so the bar could only ever be a list
  *    of all eight — too dense to scan, and a restatement of the page's own
- *    structure rather than a way through it.
+ *    structure rather than a way through it. That page navigates itself: the
+ *    grid at the top is eight jump links, which is the same affordance shaped
+ *    to the content. (This note described /crosswalk until 2026-08-13, when
+ *    those eight sections moved to /principles.)
  *
  * The pages that keep it have a handful of genuinely different chunks
  * (a glossary, a timeline, three city case studies, three directories) where

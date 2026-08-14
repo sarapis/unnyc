@@ -1,31 +1,32 @@
 ---
-lede: "All modern digital infrastructure is built on top of open source tools, maintained globally by developers serving the public good. Open information is a practice, a movement, and it’s gaining traction on the international stage with the UN and some of the strongest city governments."
+lede: "Many of the world’s best performing national, regional and local governments have realized that to meet the needs of the 21st century they must transition from licensing proprietary technical systems from corporations to owning and controlling their own systems built on open source technology."
 next:
   text: "Now that you know the basics —"
-  href: /crosswalk
-  label: "Why does this matter to NYC? →"
+  href: /principles
+  label: "Learn about the UN Open Source Principles →"
 meta:
   title: "The Global Movement in Government Open Source — UNNYC"
   description: "New to government open source? Learn the key vocabulary, the eight UN Open Source Principles, how the movement reached the UN, and who has already signed on."
   ogTitle: "The Global Movement in Government Open Source — UNNYC"
   ogDescription: "The vocabulary, the principles, the history, and the map — everything you need to follow the UNNYC campaign from the beginning."
-title: "Let’s Get You Oriented"
+title: "A Movement for Government Use of Open Source"
 # Jump menu (UnnycSectionNav). Short labels on purpose — these sit in a one-line
 # bar, where the section headings ("How the UN Came to Champion Open Source")
 # are far too long. `id` must match an id rendered on the page.
+# Order matches the page: vocabulary, then who is already doing it, then how the
+# UN got here. "The Eight Principles" left this bar on 2026-08-13 with the
+# section itself — the principles are their own top-level page now (/principles).
 sectionNav:
   - id: concepts
     label: "Vocabulary"
-  - id: principles
-    label: "The Eight Principles"
-  - id: movement
-    label: "Timeline"
   - id: going-open-source
-    label: "Who’s Signed On"
+    label: "World Going Open Source"
+  - id: movement
+    label: "UN’s Timeline"
 basicsLink: "Are you entirely new to open source? [Start with the basics ↗](https://en.wikipedia.org/wiki/Open-source_software)"
 concepts:
   title: "The Vocabulary of the Movement"
-  lede: "Terms that recur across UN Open Source Week and government open source programs."
+  lede: "Over 50% of the open source technologies used by governments all over the world were developed in the United States, and yet US government technologists are much less familiar with the terms and concepts of the global open source government movement than their counterparts around the world."
   terms:
   - slug: "open-source-foss"
     term: "Open Source (FOSS)"
@@ -95,6 +96,12 @@ movement:
   - year: "June 2026"
     title: "UN OSW draws 2,600+ from 120+ countries"
     desc: "UN Open Source Week fills UN Headquarters with themed days on AI, digital public infrastructure, and OSPOs — the movement’s annual gathering, in New York."
+# The map + endorsers section. Its title and lede were hardcoded in
+# PrimerMovementNow.js until 2026-08-13 — the last copy this site kept in a
+# component. Editing them needed a developer; now they don't.
+movementNow:
+  title: "The World is Going Open Source"
+  lede: "Open source enables governments all over the world to create, strengthen and share solutions. Check out some of the open source catalogs, institutions and programs of the world’s leading governments."
 endorsers:
   title: "Who Has Already Signed On"
   lede: "The Open Source Initiative endorsed first; sixteen more organizations — foundations, industry, and public agencies — joined in March 2025."

@@ -9,7 +9,8 @@ commit. That's the live page.
 |---|---|
 | `/` | [`content/home.md`](../content/home.md) |
 | `/start` | [`content/start.md`](../content/start.md) |
-| `/start/principles` | [`content/principles.md`](../content/principles.md) |
+| `/principles` | [`content/principles.md`](../content/principles.md) |
+| `/principles/document` | [`content/principles.md`](../content/principles.md) (shared) |
 | `/crosswalk` | [`content/crosswalk.md`](../content/crosswalk.md) |
 | `/success` | [`content/success.md`](../content/success.md) |
 | `/campaign` | [`content/campaign.md`](../content/campaign.md) |
@@ -158,7 +159,7 @@ it and none holds a copy:
 
 | Surface | Shape it gets |
 |---|---|
-| `/start`, `/start/principles` | Grouped, `title` (gerund), `desc` |
+| `/principles`, `/principles/document` | Grouped, `title` (gerund), `desc` |
 | `/campaign/sign` (the open letter) | Flat 1–8 by `n`, `titleCanonical`, `descShort` |
 | `/campaign/endorse/document` | Grouped, `titleDeclaration` headings, `titleCanonical`, `descCity` or `desc` |
 

@@ -11,10 +11,13 @@ import { useEffect, useState } from 'react';
  * switcher, and the five campaign paths are the whole nav. Collapses to a
  * hamburger drawer below 820px.
  */
+// Reads as the funnel: what the movement is, what it asks for, why NYC, who has
+// already done it, where to go next.
 const LINKS = [
     { href: '/start', label: 'The Global Movement' },
+    { href: '/principles', label: 'UN Open Source Principles' },
     { href: '/crosswalk', label: 'Open Source for NYC' },
-    { href: '/success', label: 'What Success Looks Like' },
+    { href: '/success', label: 'Cities Adopting Open Source' },
     { href: '/resources', label: 'Resources' },
 ];
 
