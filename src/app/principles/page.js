@@ -3,6 +3,7 @@ import UnnycIcon from '@/components/unnyc/UnnycIcon';
 import '../primer.css';
 import './principles.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
+import PrimerEndorsers from '@/components/unnyc/primer/PrimerEndorsers';
 import { getContent, inlineMd } from '@/lib/content';
 
 // Read per call, NOT at module scope — see the note in crosswalk/page.js.
@@ -144,6 +145,10 @@ export default function PrinciplesPage() {
                     );
                 })}
             </div>
+
+            {/* The organizations that endorsed the Principles — moved here from
+                /start's map section on 2026-08-14. */}
+            <PrimerEndorsers endorsers={doc.endorsers} />
 
             <section className="unnyc-principles__foot">
                 <div className="unnyc-container unnyc-container--narrow">

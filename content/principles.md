@@ -11,15 +11,63 @@ gridIntro: "The software built for the city ought to be:"
 gridCommitted: "As leaders in the global open source movement, we are committed to the following:"
 detailTitle: "What each principle would mean for New York"
 detailLede: "The same eight, paired with the city’s own reality — what NYC already does, and what endorsement would change."
+# The organizations that endorsed the Principles. MOVED here from
+# content/start.md on 2026-08-14 — they endorsed *these*, so they close this
+# page instead of sitting under /start's map of government programs.
+endorsers:
+  # "Who Has Already Signed On" until 2026-08-14 — but that value was DEAD: the
+  # old component hardcoded its own <h3>, so the rendered heading was always
+  # "The organizations that have signed on". Set to the string that actually
+  # shipped, so moving the section didn't silently retitle it.
+  title: "The organizations that have signed on"
+  lede: "The Open Source Initiative endorsed first; sixteen more organizations — foundations, industry, and public agencies — joined in March 2025."
+  orgs:
+  - name: "Open Source Initiative (first endorser)"
+    url: "https://opensource.org/"
+  - name: "The Linux Foundation"
+    url: "https://www.linuxfoundation.org/"
+  - name: "Eclipse Foundation"
+    url: "https://www.eclipse.org/"
+  - name: "GNOME Foundation"
+    url: "https://foundation.gnome.org/"
+  - name: "The Document Foundation"
+    url: "https://www.documentfoundation.org/"
+  - name: "Open Knowledge Foundation"
+    url: "https://okfn.org/"
+  - name: "Open Forum Europe"
+    url: "https://openforumeurope.org/"
+  - name: "OpenInfra Foundation"
+    url: "https://openinfra.dev/"
+  - name: "Matrix.org Foundation"
+    url: "https://matrix.org/"
+  - name: "Sovereign Tech Agency"
+    url: "https://www.sovereign.tech/"
+  - name: "ZenDiS — Centre for Digital Sovereignty"
+    url: "https://zendis.de/"
+  - name: "Nextcloud"
+    url: "https://nextcloud.com/"
+  - name: "Rocket.Chat"
+    url: "https://www.rocket.chat/"
+  - name: "Linagora"
+    url: "https://www.linagora.com/"
+  - name: "RTE (Réseau de Transport d’Électricité)"
+    url: "https://www.rte-france.com/"
+  - name: "Linux Professional Institute"
+    url: "https://www.lpi.org/"
+  - name: "European Open Source Academy"
+    url: "https://opensource.academy/"
 foot:
   text: "Ready to ask the city to adopt them?"
   ctas:
     - href: /campaign
       label: "Sign the open letter →"
       style: primary
+    # outline-dark, NOT outline: `.unnyc-btn--outline` is white text on a white
+    # border, built for the dark hero/CTA bands. On this page's light foot it was
+    # invisible — white on white. outline-dark is the light-background variant.
     - href: /crosswalk
       label: "Why this matters to NYC"
-      style: outline
+      style: outline-dark
 
 # ============================================================================
 # THE EIGHT UN OPEN SOURCE PRINCIPLES — THE SINGLE SOURCE

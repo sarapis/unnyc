@@ -762,6 +762,15 @@
   grid-template-columns: 1fr 220px;
   gap: var(--wg-sp-6);
   min-height: 480px;
+  /* Leaflet ships high z-indexes of its own — panes 400-700, controls 800, and
+     the .leaflet-top/.leaflet-bottom corners 1000 — none of which know about our
+     sticky header at z-index 50. Without a stacking context here, those numbers
+     compete directly with the header in the root context and the map paints over
+     the nav on scroll. `isolation: isolate` contains all of it: Leaflet's
+     internal ordering still works, but the whole map now stacks as one box at
+     this element's level, below the header. Do not "fix" a future overlap by
+     raising the header's z-index — contain the offender instead. */
+  isolation: isolate;
 }
 
 .unnyc-page .unnyc-map-container {

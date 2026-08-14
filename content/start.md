@@ -96,50 +96,12 @@ movement:
   - year: "June 2026"
     title: "UN OSW draws 2,600+ from 120+ countries"
     desc: "UN Open Source Week fills UN Headquarters with themed days on AI, digital public infrastructure, and OSPOs — the movement’s annual gathering, in New York."
-# The map + endorsers section. Its title and lede were hardcoded in
+# The map section. Its title and lede were hardcoded in
 # PrimerMovementNow.js until 2026-08-13 — the last copy this site kept in a
 # component. Editing them needed a developer; now they don't.
 movementNow:
   title: "The World is Going Open Source"
   lede: "Open source enables governments all over the world to create, strengthen and share solutions. Check out some of the open source catalogs, institutions and programs of the world’s leading governments."
-endorsers:
-  title: "Who Has Already Signed On"
-  lede: "The Open Source Initiative endorsed first; sixteen more organizations — foundations, industry, and public agencies — joined in March 2025."
-  orgs:
-  - name: "Open Source Initiative (first endorser)"
-    url: "https://opensource.org/"
-  - name: "The Linux Foundation"
-    url: "https://www.linuxfoundation.org/"
-  - name: "Eclipse Foundation"
-    url: "https://www.eclipse.org/"
-  - name: "GNOME Foundation"
-    url: "https://foundation.gnome.org/"
-  - name: "The Document Foundation"
-    url: "https://www.documentfoundation.org/"
-  - name: "Open Knowledge Foundation"
-    url: "https://okfn.org/"
-  - name: "Open Forum Europe"
-    url: "https://openforumeurope.org/"
-  - name: "OpenInfra Foundation"
-    url: "https://openinfra.dev/"
-  - name: "Matrix.org Foundation"
-    url: "https://matrix.org/"
-  - name: "Sovereign Tech Agency"
-    url: "https://www.sovereign.tech/"
-  - name: "ZenDiS — Centre for Digital Sovereignty"
-    url: "https://zendis.de/"
-  - name: "Nextcloud"
-    url: "https://nextcloud.com/"
-  - name: "Rocket.Chat"
-    url: "https://www.rocket.chat/"
-  - name: "Linagora"
-    url: "https://www.linagora.com/"
-  - name: "RTE (Réseau de Transport d’Électricité)"
-    url: "https://www.rte-france.com/"
-  - name: "Linux Professional Institute"
-    url: "https://www.lpi.org/"
-  - name: "European Open Source Academy"
-    url: "https://opensource.academy/"
 mapMarkers:
 - type: "ask"
   lat: 40.7489
