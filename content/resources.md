@@ -117,7 +117,7 @@ contacts:
       role: "The global community of OSPO practitioners, hosted at the Linux Foundation."
       helps: "Playbooks, templates, and peer mentors for standing up an NYC OSPO."
       url: "https://todogroup.org/"
-    - org: "Open Forum Europe"
+    - org: "OpenForum Europe"
       role: "Policy think tank on open technologies; among the sixteen endorsers of the UN Principles."
       helps: "Policy language and precedent from European open source legislation."
       url: "https://openforumeurope.org/"
@@ -191,7 +191,7 @@ ospoDirectory:
       email: "opentech@auth.gr"
   - country: "France"
     items:
-    - name: "Pôle Open Source et Communs Numériques de la DINUM"
+    - name: "Pôle open source et communs numériques de la DINUM"
       url: "https://code.gouv.fr"
       description: "A mission dedicated to the use, development, and promotion of Free Software and digital commons in public administration."
       email: "floss@numerique.gouv.fr"
