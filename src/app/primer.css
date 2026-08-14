@@ -20,7 +20,13 @@
      The combined hero carries a full two-sentence campaign headline, so dial
      the display size down from the hub hero's clamp and cap the measure. */
   .unnyc-pr-hero .unnyc-hero__title {
-    font-size: clamp(var(--wg-fs-2xl), 3.4vw, var(--wg-fs-4xl));
+    /* The FLOOR is --wg-fs-3xl (2rem), not --wg-fs-2xl (1.5rem). 3.4vw only
+       clears 32px above ~941px wide, so every phone and tablet hit the floor —
+       and a 1.5rem floor rendered this h1 at 24px on a 375px screen, smaller
+       than the h1 on every other page (they run 32-44px). Raising only the
+       floor leaves desktop untouched: at 1280px both the old and new clamp
+       compute 43.52px, because the vw term and the cap are unchanged. */
+    font-size: clamp(var(--wg-fs-3xl), 3.4vw, var(--wg-fs-4xl));
     /* Wide measure: the headline is two full sentences, and a narrow column
        (it was 20ch) stacked it into five cramped lines. */
     max-width: 34ch;
@@ -678,6 +684,18 @@
   @media (prefers-reduced-motion: reduce) {
     .unnyc-pr-cases__track {
       animation: none;
+    }
+
+    /* Stopping the marquee is only half the job. The viewport is
+       `overflow: hidden` and the track is `width: max-content` — 3340px against
+       a 375px screen — so with the animation off every card past the first was
+       clipped with no way to reach it. Anyone who sets reduce-motion simply lost
+       the case studies. Let the viewport scroll instead, and drop the edge mask
+       so the region reads as scrollable rather than faded-out. */
+    .unnyc-pr-cases__viewport {
+      overflow-x: auto;
+      -webkit-mask-image: none;
+      mask-image: none;
     }
   }
 
