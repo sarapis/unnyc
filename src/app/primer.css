@@ -959,6 +959,11 @@
 
   .unnyc-pr-contact__link {
     margin-top: auto;
+    /* 4px top/bottom takes a 22px line to a 30px target, clearing the 24px
+       WCAG 2.5.8 minimum for a NON-INLINE target. Padding rather than
+       min-height or line-height: it grows the hit area without moving the type
+       or opening a gap between the link and the card's other rows. */
+    padding: 4px 0;
     font-size: var(--wg-fs-sm);
     font-weight: 600;
     color: var(--wg-accent-strong);
@@ -1072,7 +1077,12 @@
     margin-top: auto;
   }
 
+  /* 44 of these on /resources — the largest block of undersized targets on the
+     site. Same 4px as .unnyc-pr-contact__link above: 22px -> 30px, clearing
+     WCAG 2.5.8's 24px. These are flex items in a row, so the padding widens the
+     row's height only, not the gap between the two links. */
   .unnyc-pr-ospo__links a {
+    padding: 4px 0;
     font-size: var(--wg-fs-sm);
     font-weight: 600;
     color: var(--wg-accent-strong);
