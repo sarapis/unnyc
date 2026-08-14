@@ -14,10 +14,10 @@ import { useEffect, useState } from 'react';
 // Reads as the funnel: what the movement is, what it asks for, why NYC, who has
 // already done it, where to go next.
 const LINKS = [
-    { href: '/start', label: 'The Global Movement' },
-    { href: '/principles', label: 'UN Open Source Principles' },
+    { href: '/start', label: 'A Global Movement' },
+    { href: '/principles', label: 'UN Principles' },
     { href: '/crosswalk', label: 'Open Source for NYC' },
-    { href: '/success', label: 'Cities Adopting Open Source' },
+    { href: '/success', label: 'Case Studies' },
     { href: '/resources', label: 'Resources' },
 ];
 
