@@ -135,6 +135,26 @@ source. Also: `/success` says "Sovereign Tech **Fund**"; it renamed to **Agency*
 (`un.org`, `nyc.gov`, `github.com`, `ec.europa.eu`) — a domain hit there proves nothing and produced
 several false positives on the first pass.
 
+## Page structure as of 2026-08-14
+
+Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/crosswalk`
+→ `/success` → `/resources`, which is also the nav order.
+
+Two restructures landed this day and the docs above/below assume them:
+
+- **`/principles` is a top-level page** (was the `#principles` section of `/start`).
+  It pairs the plain-English grid — now eight jump links — with the per-principle
+  NYC argument that used to be the *body of `/crosswalk`*. That prose MOVED; it is
+  not duplicated. `/start/principles` (the printable one-pager) moved to
+  `/principles/document` behind a 308.
+- **`/crosswalk` is six numbered reasons**, not a principle-by-principle
+  crosswalk. It kept only what is its own: what vendor reliance costs, and why NYC
+  is central. Its dollar figures link to Databook.NYC contract records — keep new
+  claims checkable the same way.
+
+`/resources/guide` is the long-form UN-system briefing, ported from the retired
+`old-unnyc.wegov.nyc` hub. **That host is no longer load-bearing.**
+
 ## Non-obvious things that will bite you
 
 - **`getContent()` must be called inside the component or `generateMetadata`, not
@@ -143,6 +163,36 @@ several false positives on the first pass.
   This was a real bug; don't "optimise" it back.
 - **`getContent()` is server-only** (uses `node:fs`). Never import it in a
   `"use client"` file.
+- **`.unnyc-page button` is a 0-1-1 reset that beats every single-class component
+  rule.** `unnyc.css` resets `border: none; background: none` on every button under
+  `.unnyc-page`. A component rule like `.unnyc-cmp-form__tab--active` is 0-1-0, in
+  the SAME `@layer`, so the reset wins. On 2026-08-14 that made the sign-form's
+  active tab render navy text on the navy panel — dark blue on dark blue — because
+  only `color` survived (the reset doesn't set it) while the background and border
+  were stripped. **Scope any styled `<button>` with `.unnyc-page` (0-2-0)**, the way
+  `.unnyc-page .unnyc-btn` already does. Symptom to recognise: a control whose text
+  colour is right and whose background/border silently isn't.
+- **`--outline` is for DARK backgrounds; `--outline-dark` is for light ones.**
+  `.unnyc-btn--outline` is white text on a white border. On a light section it is
+  invisible, not misplaced — a button that looks "missing" from a layout is usually
+  this. Bit `/principles`' foot on 2026-08-14.
+- **A frontmatter key is not proof the value reaches the page.**
+  `endorsers.title` sat in `content/start.md` for months reading "Who Has Already
+  Signed On" while the component hardcoded its own `<h3>`. Rendering the "real"
+  value would have silently retitled a section. Grep the component first.
+- **`getContent()` returns `{...frontmatter, sections}` — so a frontmatter key
+  named `sections` is silently overwritten** by the parsed body. `content/guide.md`
+  calls its section list `outline:` for exactly this reason.
+- **Contain third-party z-indexes; don't escalate ours.** Leaflet ships panes at
+  400-700, controls at 800 and `.leaflet-top`/`.leaflet-bottom` at 1000. The nav is
+  50. The map painted over the header until `.unnyc-map-wrapper` got
+  `isolation: isolate`, which confines Leaflet's ordering to one box. Raising the
+  nav's z-index would have worked until the next widget.
+- **`animation: none` under `prefers-reduced-motion` is only half a fix if the
+  container is `overflow: hidden`.** `/success`'s marquee track is `max-content`
+  (3340px); stopping it clipped every card past the first with no way to reach
+  them, so reduce-motion users lost the section entirely. That media query now also
+  makes the viewport scrollable. Check reachability, not just stillness.
 - **`sections.*.html` goes in a `<div>`; `inlineMd()` goes in a `<p>`/`<h*>`/`<li>`.**
   `sections.*.html` is block-level output — it already carries its own `<p>`. Put it
   inside a `<p>` and you get `<p><p>…</p></p>`, which is invalid: the browser closes

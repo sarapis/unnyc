@@ -29,22 +29,24 @@ live CMS. Copy `.env.example` to `.env.local` if you need to point elsewhere.
 
 ## Site structure
 
-The site is a hub plus four reader paths. Each page also leads into the next in
-this order, so it reads as a funnel *or* as a pick-your-entry-point.
+A hub plus five reader paths. Each page leads into the next, so it reads as a
+funnel *or* as a pick-your-entry-point:
+`/` → `/start` → `/principles` → `/crosswalk` → `/success` → `/resources`.
 
 | Route | Purpose |
 |---|---|
 | `/` | Hub — what UNNYC is, then four cards routing to the paths below |
-| `/start` | "I'm new to government open source" — orientation, the movement, key concepts, case studies, the global map |
+| `/start` | "I'm new to government open source" — vocabulary, the global map, the UN's timeline |
 | `/principles` | The UN Open Source Principles + what each means for NYC |
 | `/principles/document` | The principles, standalone + printable |
-| `/crosswalk` | "Why it matters to NYC" — the persuasive core |
+| `/crosswalk` | "Why it matters to NYC" — six reasons the city should adopt open source |
 | `/success` | "What success looks like" |
 | `/campaign` | Chooser: sign the public letter, or formally endorse |
 | `/campaign/sign` | The open letter + signature form + published endorser wall |
 | `/campaign/endorse` | Formal organizational endorsement form |
 | `/campaign/endorse/document` | Printable declaration for City officials |
 | `/resources` | Reference directory |
+| `/resources/guide` | Long-form briefing: the UN system & NYC government technology |
 | `/contact` | Contact form (name, email, message) — linked from the footer |
 
 ## Editing the words
@@ -66,6 +68,7 @@ no CMS, no sync step.
 | `/campaign/sign` | `content/sign.md` |
 | `/campaign/endorse` | `content/endorse.md` |
 | `/resources` | `content/resources.md` |
+| `/resources/guide` | `content/guide.md` |
 | `/contact` | `content/contact.md` |
 
 Full conventions, markers and gotchas: **[docs/EDITING-CONTENT.md](docs/EDITING-CONTENT.md)**.

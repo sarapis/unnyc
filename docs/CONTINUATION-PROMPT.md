@@ -3,12 +3,12 @@
 Paste the block below into a new session. Everything above the line is context for
 whoever is maintaining this file.
 
-**Last updated 2026-08-11, after PRs #8/#9/#10 merged.** This file drifted three
-times in that one day — it named an open PR that had landed, and listed a bug as
-unfixed with a guess at its cause that turned out to be wrong. **Rewrite this
-whenever something lands.** A continuation prompt describing a state that no longer
-exists is worse than none, because it is read as current; a wrong *diagnosis* left
-in it is worse still, because the next session starts by chasing it.
+**Last updated 2026-08-14, after a twelve-PR day.** This file drifted three times
+on 2026-08-11 alone, so it is now written to survive a busy day: the "what changed"
+section records *shapes and lessons*, not a PR-by-PR log. **Rewrite it whenever
+something lands.** A continuation prompt describing a state that no longer exists
+is worse than none, because it is read as current — and a wrong *diagnosis* left in
+it is worse still, because the next session starts by chasing it.
 
 ---
 
@@ -28,7 +28,8 @@ I'm continuing work on the **UNNYC campaign site**. Start by querying the Hub
 | `sarapis/wegovnyc-design-tokens` | `~/Antigravity/wegovnyc-design-tokens` | The design system both sites install |
 | `devinbalkind/sarapis-website` | `~/Antigravity/Sarapis/site` | The Payload CMS → https://next.sarapis.org |
 
-All clean and deployed as of 2026-08-11. No open PRs in either site repo.
+Both site repos are clean and deployed as of 2026-08-14. **But two of Olivia's PRs
+are open here — see "Open work" — and one of them conflicts with this day's work.**
 
 ## Read this part before you touch anything
 
@@ -41,9 +42,9 @@ All clean and deployed as of 2026-08-11. No open PRs in either site repo.
    parallel work use a worktree (`CLAUDE.md` lists the four gitignored things a new
    worktree does not inherit — `node_modules` at 350 MB is the main one).
 2. **Pushing `main` deploys to production.** No gate, no preview step.
-3. **Olivia Croteau pushes PRs from a fork** — seven merged. `git fetch` and check
-   open PRs **before** a broad edit. A rewrite once landed on top of her open PR
-   and had to be reconciled by hand.
+3. **Olivia Croteau pushes PRs from a fork** — nine merged, **two open**. `git fetch`
+   and check open PRs **before** a broad edit. A rewrite once landed on top of her
+   open PR and had to be reconciled by hand.
 4. **The CMS at next.sarapis.org is production for three brands.** The user
    approves go-live. Schema changes need out-of-band SQL.
 5. **`localhost` is not in Payload's CORS allowlist**, so every form on this site
@@ -54,129 +55,131 @@ All clean and deployed as of 2026-08-11. No open PRs in either site repo.
 
 This project keeps producing bugs that fail *silently* and look like "no data yet"
 or "working fine". A `catch` returning `[]`, a `default:` returning an empty list,
-a `var()` falling back, a missing CORS header, an unset CSS variable, a hook that
-never loaded. So:
+a `var()` falling back, a missing CORS header, an unset CSS variable, a dead
+frontmatter key, a reset out-specifying a component. So:
 
 - **Test through the real UI, not the API.** An endpoint returned 200 to `curl`
   for two days while every browser submission was blocked by CORS.
+- **Read the rendered DOM, not the source you just wrote.** Three paragraphs in the
+  open letter were being swallowed into a `<li>` for weeks; the markdown looked
+  right and the build was clean. `curl` the page and check which tag wraps the text.
+- **Selector matching is ground truth; computed styles in the preview pane are
+  not.** The Browser pane reports `visibilityState: hidden` and never paints, so it
+  runs no animation frames and does not flush a style recalc after React changes a
+  class. Post-interaction `getComputedStyle` reads come back **stale** — they told
+  me an active tab was orange when it wasn't, and that a subnav click didn't scroll
+  when on production it does. `el.matches(selector)` and the deployed CSS text are
+  reliable; ask the user to eyeball anything that only manifests on interaction.
+- **Poll for a string unique to the NEW version when waiting on a deploy.** I once
+  polled for "The undersigned", which also appears in the copy being replaced, so
+  the loop exited instantly and I "verified" the old page and reported nine false
+  failures.
 - **Test a guard by trying to defeat it.** Every `git commit` case in the staging
   hook silently passed at first — the regex ate the only space before the flag.
-  Two `wg-lint-tokens` bugs survived review the same way.
-- **Prefer structural checks over `grep`.** In one session grep produced three
-  confident wrong answers: matching across line-wrapped text, matching a word in a
-  comment it had just written, and a `?cb=` wait-loop pattern that could never
-  match. Query the DOM, the API, or `jq` instead.
 - **A green build is not a working page.** A Vercel project with no framework
   preset builds "successfully" and 404s every route.
-- **Re-verify dated claims before repeating them.** The roadmap draft was stamped
-  three days early once.
 
-## What changed most recently (2026-08-10 → 08-11)
+## What changed most recently (2026-08-11 → 08-14)
 
-All of the below is **merged and live** (PRs #8, #9, #10).
+Twelve PRs. The shape of the site changed; the details are in `CLAUDE.md` under
+"Page structure as of 2026-08-14".
 
-- **`/campaign/sign` was failing hydration on every visit** — the signoff fed
-  block-level markdown HTML into a `<p>`, giving `<p><p>…</p></p>`. The parser
-  splits that into three siblings, so the DOM never matched React's render and the
-  whole page silently fell back to client rendering. Wrapper is a `<div>` now.
-  **The rule, since this will recur:** `sections.*.html` goes in a `<div>`;
-  `inlineMd()` is what a `<p>`/`<h*>`/`<li>` takes. See `CLAUDE.md`.
-- **Three paragraphs in the open letter were being swallowed by the bullet lists
-  above them** — written with no blank line, so `marked` folded each into the last
-  `<li>`. One was the letter's closing argument ("New York does not need to
-  reinvent the model. It needs only to sign."). Confirmed on production before
-  fixing. Valid markdown, clean build, `lint:content` green, page looked fine at a
-  glance — `lint:content` does not check for this, so the pattern can come back.
-- **Copy defects fixed in `/crosswalk`**: two typos, one broken clause ("means is
-  the key to"), and four straight apostrophes in the two most-read strings on the
-  site — the home hero subtitle and the `/start` lede.
-- **File references in `docs/EDITING-CONTENT.md` and `docs/CONTENT-MAP.md` are now
-  clickable.** They were bare code spans, so the page-to-file table — the whole
-  point of that doc — could not be clicked through. 28 links, `../`-prefixed to
-  resolve from `docs/`.
-- **The CTFG teal literal is gone** (`#3f8f7b`, `unnyc.css`), which `wg-lint-tokens`
-  had warned about on every build since 2026-08-07. It was a hand-copied duplicate
-  of `COLORS.ctfg`; the checkbox now sets `accent-color` inline from that constant,
-  as the swatch beside it already did. **Both lints now report clean in both repos.**
-- **wegov.nyc finished its token migration and is deployed** (`80aeca4`): the last
-  92 colour literals in its `globals.css` are gone and `.wg-lint-baseline.json` was
-  deleted, so that lint now reports against zero in BOTH repos. Verified live —
-  every `--wg-*` semantic resolves on wegov.nyc.
-
-### Before that (2026-08-06 → 08-10)
-
-- **Content rewrite**: 7,484 → 5,655 reader-visible words (−24%), interior pages
-  re-pointed at the home page's performance/cost framing. "Pays billions" is now
-  grounded in the Comptroller's *Monty Hall Contracts* finding.
-- **New `/contact`** page and form → Payload `contact-submissions`. No CMS change
-  was needed. Nothing emails you; messages sit in the admin.
-- **Nav CTA is "Take Action"**; footer cut to logo + WeGovNYC/DatabookNYC/Sarapis
-  + Contact + credit line.
-- **Per-page section subnav** on /start, /success, /resources — deliberately not
-  /crosswalk. Section offsets have one owner (`--pr-subnav-h`); do not add a
-  competing rule.
-- **`HeaderHeightVar` was querying `.site-header`**, a marketing-site class, so
-  every hash jump had been overshooting by ~134px. Fixed.
-- **Icons are one inline SVG set** (Lucide/ISC) and finally themeable; eight PNGs
-  and 364 KB deleted.
-- **All images go through `next/image`** (2,490 KB → 829 KB) and every one is
-  licence-recorded in `public/images/CREDITS.md`.
-- **CTFG map layer is MERGED and live** — the docs previously said it was held on
-  a branch.
-- **A content validator** (`npm run lint:content`) and a **PreToolUse hook** that
-  refuses blanket git staging.
+- **`/principles` is now a top-level page.** It pairs the plain-English grid that
+  was `/start#principles` — every icon+title is a jump link — with the
+  per-principle NYC argument that was the *body of `/crosswalk`*. That prose
+  **moved, it is not duplicated**: this repo already spent a day untangling three
+  drifted copies of the principles. The jump target is a new `slug` on each
+  principle in `content/principles.md`, which is also its `## slug` section, so the
+  id is defined once. The printable one-pager moved `/start/principles` →
+  `/principles/document` behind a 308.
+- **`/crosswalk` is six numbered reasons to adopt open source**, ~1,250 words,
+  titled "New York Rents the Software It Should Own". Its dollar claims link to
+  **Databook.NYC contract records** (SurveyMonkey $210k/renewal, the $57M citywide
+  Microsoft agreement) — keep new claims checkable that way. Two figures are still
+  unsourced assertions: "$2B/yr on technology" and "~30% is licensing".
+- **The open letter is addressed to OTI alone** and built on three asks: endorse
+  the Principles, establish an OSPO, evaluate an open source alternative in every
+  technology contract. **All Barcelona and first-in-the-Americas framing is gone
+  from it.**
+- **Nav is five items**: A Global Movement · UN Principles · Open Source for NYC ·
+  Case Studies · Resources. `/start` is reordered to vocabulary → world going open
+  source → UN's timeline, and its subnav is now at exactly **3 items — the boundary
+  of `UnnycSectionNav`'s `items.length < 3` guard.** Remove one more section and
+  the bar silently disappears.
+- **The endorsing-organizations list moved** from under `/start`'s map to the
+  bottom of `/principles` (`#endorsers`), where the things being endorsed are.
+- **`/success` lost the Tokyo case**; Olivia added Munich. The grid is retitled
+  "Recent Government Open Source Successes".
+- **`/resources/guide`** is the long-form UN-system briefing, ported from the
+  retired hub and diffed word-for-word against the original.
+- **Four CSS bugs fixed**, each with a general lesson now in `CLAUDE.md`: a global
+  button reset out-specifying component rules (navy-on-navy tabs), `--outline` on a
+  light background (an invisible button that read as a layout bug), Leaflet's
+  z-indexes painting over the nav, and a 24px hero headline on mobile.
 
 ## Open work
 
 Nothing is blocking. In rough order of value:
 
-1. **Decide the CTFG directory question.** The layer is live, so the open question
-   about linking into the Civic Tech Field Guide while it is de-indexed pre-launch
-   is current, not deferred. Hub task `168a959d` — the only open task on the board
-   for this workspace.
-2. **The roadmap doc needs a named ask.** `sarapis/open-source-by-default`
-   explains a sequence but never says who should do what next. Its own *How this
-   document grows* section lists five other gaps, the most valuable being a worked
-   contract-expiry example.
-3. **`/resources` is the only home path card without an image** — a favicon
-   placeholder was removed rather than replaced. Needs a licensed image, and an
-   entry in `public/images/CREDITS.md` in the same commit.
-4. **Watch for the first real endorsement.** `published` defaults to false, so a
+1. **Decide Olivia's PR #15 — site-wide dark mode** (+846/-44). It touches
+   `UnnycNav.js`, `crosswalk/page.js`, `start/page.js`, `base.css` and `layout.js`
+   — **three of those were rewritten on 2026-08-14, so it will conflict.** It is
+   also an architectural call, not just a merge: the design system has been
+   deliberately single-theme since 2026-08-05, and this reintroduces theming.
+   Decide the direction before reconciling the diff.
+2. **Olivia's PR #12** — aligns three org names with their CTFG listings
+   (+4/-4, content only). Small; just needs a look.
+3. **Decide the CTFG directory question.** The map layer is live, so the open
+   question about linking into the Civic Tech Field Guide while it is de-indexed
+   pre-launch is current, not deferred. Hub task `168a959d`.
+4. **Source or soften two figures on `/crosswalk`** — "$2B/yr on technology" and
+   "~30% is licensing" are the only claims on that page without a link behind them.
+   Databook may be able to substantiate them directly.
+5. **54 links on `/resources` render 22px tall** (12 more on `/success`), under the
+   24px WCAG 2.5.8 minimum for non-inline targets. The fix is vertical padding
+   across many cards — a design call, which is why it was reported not done.
+6. **`/resources` is the only home path card with a placeholder image** — Olivia
+   put the favicon back in as a stopgap. Needs a licensed image plus a
+   `public/images/CREDITS.md` entry in the same commit.
+7. **The roadmap doc needs a named ask.** `sarapis/open-source-by-default`
+   explains a sequence but never says who should do what next.
+8. **Watch for the first real endorsement.** `published` defaults to false, so a
    new signature needs ticking in the Payload admin before it reaches the wall.
-5. **A shared component package.** Token *values* are unified across wegov.nyc and
+9. **A shared component package.** Token *values* are unified across wegov.nyc and
    this site; the *implementations* — button, card, nav — are still separate. Hub
-   task `7656df36` (Backburner) — the only live item left on that roadmap.
-6. **Exposed keys in `wegovnyc_front`'s git history** — Hub task `51968fc0`. Lower
-   urgency after triage, but the purge needs coordinating because a fork keeps the
-   blobs reachable.
+   task `7656df36` (Backburner).
+10. **Exposed keys in `wegovnyc_front`'s git history** — Hub task `51968fc0`. Lower
+    urgency after triage, but the purge needs coordinating because a fork keeps the
+    blobs reachable.
 
-*(Struck 2026-08-11, all done and deployed: the ~90 baselined colour literals in
-wegov.nyc's `globals.css`; PR #8; the `/campaign/sign` hydration mismatch — which
-turned out NOT to be the endorser wall's Payload fetch, as this file previously
-guessed, but invalid HTML nesting. See above.)*
+*(Struck 2026-08-14, all done and deployed: PR #8; the `/campaign/sign` hydration
+mismatch — which was invalid HTML nesting, NOT the endorser wall's Payload fetch as
+this file once guessed; the `~90` baselined colour literals in wegov.nyc's
+`globals.css`; the `#3f8f7b` CTFG teal literal; repointing `wegov.nyc/unnyc/guide`
+at the ported article.)*
 
 ## Things that are true and easy to get wrong
 
-- `old-unnyc.wegov.nyc` is **no longer load-bearing, as of 2026-08-11.** Its one
-  unique asset — the long-form "UN System & NYC Government Technology" guide — now
-  lives here at `/resources/guide`, ported and diffed word-for-word against the
-  original. Nothing on either live site links to the old host any more. It was
-  never as load-bearing as the docs claimed, either: `wegov.nyc/unnyc/guide`
-  redirects to `unnyc.wegov.nyc/resources`, NOT to the old site, so no traffic was
-  ever routed there. **Still to do:** repoint that redirect at `/resources/guide`
-  (one line in `wegovnyc_front`'s `next.config.mjs`), then the old site can be
-  retired whenever you want it gone.
+- `old-unnyc.wegov.nyc` is **no longer load-bearing.** Its one unique asset, the
+  UN-system guide, is now at `/resources/guide`, and `wegov.nyc/unnyc/guide`
+  redirects straight there. It was never quite as load-bearing as the docs claimed
+  either — that redirect always pointed at the *campaign* site, never at the old
+  host. **The old site can be retired whenever someone wants it gone.**
 - **Never write a colour literal or read `--db-*`** in a CSS rule — both are
-  invisible to the brand variant.
+  invisible to the brand variant. Note `--wg-accent-warm` resolves to `#d4a843` at
+  `:root` but `#f60` inside `.wg-unnyc`: that is the variant working, not a stale
+  install.
+- **`.unnyc-page button` (0-1-1) beats any single-class component rule** in the same
+  layer. Scope styled buttons with `.unnyc-page`.
 - **Never write `*/` inside a CSS comment.** It closes the comment and Turbopack
   fails with a confusing parse error.
 - **`getContent()` must be called inside the component or `generateMetadata`,**
-  never at module scope.
+  never at module scope — and a frontmatter key named `sections` is silently
+  overwritten by the parsed body.
 - **CSS layer order `reset < components < unnyc < site`** must be preserved here.
   wegov.nyc's is different.
 - **A paragraph written directly under a bullet with no blank line becomes part of
-  that bullet.** Markdown lazy-continuation, and it shipped three times in the open
-  letter without anyone noticing, because the build is clean, `lint:content` passes
-  and the page looks plausible. Blank line between a list and the paragraph after
-  it, always. To check: `curl` the page and look at which tag actually wraps the
-  text — reading the markdown is what missed it for weeks.
+  that bullet.** Markdown lazy-continuation. It shipped three times in the open
+  letter because the build is clean, `lint:content` passes and the page looks
+  plausible. Blank line between a list and the paragraph after it, always. To
+  check: `curl` the page and look at which tag wraps the text.
