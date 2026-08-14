@@ -491,7 +491,12 @@
     clear: both;
   }
 
-  .unnyc-pr-why__prose {
+  /* Two-column only when there is actually a pull-quote to sit beside. The 56%
+     was sized against `.unnyc-pr-why__quote`'s 40%; when /crosswalk's Barcelona
+     quote was removed on 2026-08-14 every block kept the narrow column with
+     nothing in the other half. `:has()` ties the layout to the content instead
+     of to a page. */
+  .unnyc-pr-why__block:has(blockquote) .unnyc-pr-why__prose {
     float: left;
     width: 56%;
   }

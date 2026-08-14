@@ -59,7 +59,6 @@ export default function StartPage() {
                 and the foot CTA below is the hand-off. */}
             <PrimerConcepts concepts={doc.concepts} />
             <PrimerMovementNow
-                endorsers={doc.endorsers}
                 mapMarkers={doc.mapMarkers}
                 mapLegend={doc.mapLegend}
                 ctfg={getCtfgProjects()}
