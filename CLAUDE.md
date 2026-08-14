@@ -193,6 +193,15 @@ Two restructures landed this day and the docs above/below assume them:
   (3340px); stopping it clipped every card past the first with no way to reach
   them, so reduce-motion users lost the section entirely. That media query now also
   makes the viewport scrollable. Check reachability, not just stillness.
+- **A card link needs `padding: 4px 0` to be a legal tap target.** The four
+  card-link rules (`.unnyc-pr-ospo__links a`, `.unnyc-pr-contact__link`,
+  `.unnyc-pr-concept__link`, `.unnyc-pr-case__link`) are `display: block` with a
+  22px line box, under WCAG 2.5.8's 24px minimum for a NON-INLINE target. All
+  four carry the padding now and cross-reference each other; copy the pattern for
+  a new one. Inline links in prose are exempt, so do not "fix" those.
+- **next/image `fill` writes position/inset/width/height as INLINE styles**, so a
+  class cannot override them. To inset or shrink a filled image, use `transform`
+  (see `.unnyc-pr-path__image--logo`) — not `padding`, `inset` or `width`.
 - **`sections.*.html` goes in a `<div>`; `inlineMd()` goes in a `<p>`/`<h*>`/`<li>`.**
   `sections.*.html` is block-level output — it already carries its own `<p>`. Put it
   inside a `<p>` and you get `<p><p>…</p></p>`, which is invalid: the browser closes
