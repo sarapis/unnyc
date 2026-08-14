@@ -10,21 +10,23 @@ meta:
 # on 2026-08-13 (the /principles page). This page was then rewritten 2026-08-14
 # around six REASONS to adopt — organized by reason, not by principle (that is
 # /principles) and not by city (that is /success).
-closingTitle: "Why New York Is Central to This Movement"
+# No closing section — the page ends on reason 6 and hands off. (The "Why New
+# York Is Central" closing was removed 2026-08-14; its center-of-the-world line
+# survives as reason 6's final paragraph.)
 foot:
-  text: "Convinced? Here’s the standard NYC would be signing up to."
   ctas:
-    - href: /principles
-      label: "The UN Open Source Principles →"
-      style: primary
     - href: /success
-      label: "See what success looks like"
+      label: "See How Other Cities Adopted Open Source"
       style: outline
+    - href: /campaign
+      label: "Let’s Take Action"
+      style: primary
 ---
 
 <!-- Prose below. `## intro` opens the page; each `### N. Reason` renders as a
-     numbered argument block; `## closing` ends it. Dollar figures link to the
-     Databook.NYC contract record they come from — keep claims checkable. -->
+     numbered argument block; the page ends on reason 6 and the foot buttons.
+     Dollar figures link to the Databook.NYC contract record they come from —
+     keep claims checkable. -->
 
 ## intro
 
@@ -71,15 +73,5 @@ Now look inward: New York is not one buyer, it is 130-plus agencies buying separ
 Every June, the world’s open source government movement meets at UN Headquarters — a subway ride from City Hall. Barcelona endorsed the UN Open Source Principles and became the reference point for cities worldwide. That role was New York’s for the taking, and still is.
 
 A city that runs on open source doesn’t just serve its own residents better; it exports better government. NYC’s benefits screeners, permit systems and data tools — published openly — become starting points for Lagos, Jakarta and São Paulo, with the UN’s own networks as the distribution channel. No other city on earth has the UN in its backyard. Using that proximity to help cities everywhere govern better is a kind of leadership no one else can offer.
-
-> Barcelona framed its own endorsement in terms that echo NYC’s civic tech mission: a “desire to put technology in the hands of citizens and reduce reliance on large tech companies,” through “a collaborative model in which cities control their own data and infrastructure.”
->
-> — Barcelona’s endorsement of the UN Open Source Principles, as reported by [the EU Open Source Observatory](https://interoperable-europe.ec.europa.eu/collection/open-source-observatory-osor/news/barcelona-first-city-globally-adopt-un-open-source-principles)
-
-## closing
-
-Every June, UN Open Source Week brings more than 2,600 participants from over 120 countries to UN Headquarters — a standing global table on public-interest technology, a subway ride from City Hall, at which New York is host but not participant.
-
-New York has a habit of being first to tables like this: first U.S. city to submit a Voluntary Local Review to the UN, first to join Safe Cities. No city in the Americas has yet endorsed the Principles. Endorsing them is the same move applied to technology — low cost, high signal, and a seat in the network where the world’s best performing governments trade what works.
 
 New York calls itself the center of the world. That carries a responsibility — to its residents, and to the world centered on it — to be a leader in good, open source government.
