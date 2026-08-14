@@ -3,7 +3,7 @@
 Paste the block below into a new session. Everything above the line is context for
 whoever is maintaining this file.
 
-**Last updated 2026-08-14, after a twelve-PR day.** This file drifted three times
+**Last updated 2026-08-14, at the end of a sixteen-PR day.** This file drifted three times
 on 2026-08-11 alone, so it is now written to survive a busy day: the "what changed"
 section records *shapes and lessons*, not a PR-by-PR log. **Rewrite it whenever
 something lands.** A continuation prompt describing a state that no longer exists
@@ -28,8 +28,9 @@ I'm continuing work on the **UNNYC campaign site**. Start by querying the Hub
 | `sarapis/wegovnyc-design-tokens` | `~/Antigravity/wegovnyc-design-tokens` | The design system both sites install |
 | `devinbalkind/sarapis-website` | `~/Antigravity/Sarapis/site` | The Payload CMS → https://next.sarapis.org |
 
-Both site repos are clean and deployed as of 2026-08-14. **But two of Olivia's PRs
-are open here — see "Open work" — and one of them conflicts with this day's work.**
+Both site repos are clean and deployed as of 2026-08-14, with **no open PRs**.
+`origin/working` still exists on the remote — it is the branch behind Olivia's
+closed dark-mode PR, hers to remove, not ours.
 
 ## Read this part before you touch anything
 
@@ -42,7 +43,7 @@ are open here — see "Open work" — and one of them conflicts with this day's 
    parallel work use a worktree (`CLAUDE.md` lists the four gitignored things a new
    worktree does not inherit — `node_modules` at 350 MB is the main one).
 2. **Pushing `main` deploys to production.** No gate, no preview step.
-3. **Olivia Croteau pushes PRs from a fork** — nine merged, **two open**. `git fetch`
+3. **Olivia Croteau pushes PRs from a fork** — ten merged, one closed, **none open**. `git fetch`
    and check open PRs **before** a broad edit. A rewrite once landed on top of her
    open PR and had to be reconciled by hand.
 4. **The CMS at next.sarapis.org is production for three brands.** The user
@@ -112,6 +113,16 @@ Twelve PRs. The shape of the site changed; the details are in `CLAUDE.md` under
   "Recent Government Open Source Successes".
 - **`/resources/guide`** is the long-form UN-system briefing, ported from the
   retired hub and diffed word-for-word against the original.
+- **Accessibility: all 73 undersized card links now clear 24px.** Four rules
+  (`.unnyc-pr-ospo__links a`, `.unnyc-pr-contact__link`, `.unnyc-pr-concept__link`,
+  `.unnyc-pr-case__link`) were 22px block targets; each gained `padding: 4px 0`
+  and they cross-reference each other, so a new card link has a precedent to
+  copy. Inline prose links, the footer credit line and Leaflet's attribution are
+  exempt under WCAG 2.5.8 and untouched.
+- **The fourth homepage card renders its favicon as a logo, not a photo**
+  (`imageStyle: logo` in `content/home.md`): contained and centred on a tint
+  instead of a 100x100 square cover-cropped into a 560x160 band. Still a
+  placeholder — see Open work.
 - **Four CSS bugs fixed**, each with a general lesson now in `CLAUDE.md`: a global
   button reset out-specifying component rules (navy-on-navy tabs), `--outline` on a
   light background (an invisible button that read as a layout bug), Leaflet's
@@ -121,38 +132,37 @@ Twelve PRs. The shape of the site changed; the details are in `CLAUDE.md` under
 
 Nothing is blocking. In rough order of value:
 
-1. **Decide Olivia's PR #15 — site-wide dark mode** (+846/-44). It touches
-   `UnnycNav.js`, `crosswalk/page.js`, `start/page.js`, `base.css` and `layout.js`
-   — **three of those were rewritten on 2026-08-14, so it will conflict.** It is
-   also an architectural call, not just a merge: the design system has been
-   deliberately single-theme since 2026-08-05, and this reintroduces theming.
-   Decide the direction before reconciling the diff.
-2. **Olivia's PR #12** — aligns three org names with their CTFG listings
-   (+4/-4, content only). Small; just needs a look.
-3. **Decide the CTFG directory question.** The map layer is live, so the open
+1. **Decide the CTFG directory question.** The map layer is live, so the open
    question about linking into the Civic Tech Field Guide while it is de-indexed
    pre-launch is current, not deferred. Hub task `168a959d`.
-4. **Source or soften two figures on `/crosswalk`** — "$2B/yr on technology" and
-   "~30% is licensing" are the only claims on that page without a link behind them.
+2. **Source or soften two figures on `/crosswalk`** — "$2B/yr on technology" and
+   "~30% is licensing" are the only claims on that page without a link behind
+   them, and they sit beside two that DO link to Databook.NYC contract records.
    Databook may be able to substantiate them directly.
-5. **54 links on `/resources` render 22px tall** (12 more on `/success`), under the
-   24px WCAG 2.5.8 minimum for non-inline targets. The fix is vertical padding
-   across many cards — a design call, which is why it was reported not done.
-6. **`/resources` is the only home path card with a placeholder image** — Olivia
-   put the favicon back in as a stopgap. Needs a licensed image plus a
-   `public/images/CREDITS.md` entry in the same commit.
-7. **The roadmap doc needs a named ask.** `sarapis/open-source-by-default`
+3. **Buy a photo for the fourth homepage card, or reuse one you own.** It still
+   shows the in-house favicon — now rendered deliberately as a centred logo on a
+   tint rather than a cover-cropped square, but a placeholder all the same.
+   **`public/images/success/tokyo.jpeg` is a paid-for Adobe Stock image sitting
+   unused** since the Tokyo case was removed; if a city photo suits, the licence
+   is already yours. Swap procedure is in `public/images/CREDITS.md`.
+4. **The roadmap doc needs a named ask.** `sarapis/open-source-by-default`
    explains a sequence but never says who should do what next.
-8. **Watch for the first real endorsement.** `published` defaults to false, so a
+5. **Watch for the first real endorsement.** `published` defaults to false, so a
    new signature needs ticking in the Payload admin before it reaches the wall.
-9. **A shared component package.** Token *values* are unified across wegov.nyc and
+6. **A shared component package.** Token *values* are unified across wegov.nyc and
    this site; the *implementations* — button, card, nav — are still separate. Hub
    task `7656df36` (Backburner).
-10. **Exposed keys in `wegovnyc_front`'s git history** — Hub task `51968fc0`. Lower
-    urgency after triage, but the purge needs coordinating because a fork keeps the
-    blobs reachable.
+7. **Exposed keys in `wegovnyc_front`'s git history** — Hub task `51968fc0`. Lower
+   urgency after triage, but the purge needs coordinating because a fork keeps the
+   blobs reachable.
 
-*(Struck 2026-08-14, all done and deployed: PR #8; the `/campaign/sign` hydration
+*(Struck 2026-08-14, later in the same day: Olivia's PR #12 merged — three org
+names aligned to their CTFG listings, with two of the three redirected to
+`content/principles.md` because the endorsers list had moved; her PR #15
+(site-wide dark mode) CLOSED as a product decision, with the reasoning recorded
+on the PR so it survives the branch; all 73 undersized card links raised from
+22px to 30px across four rules; and the favicon card given a deliberate logo
+treatment. Struck earlier the same day: PR #8; the `/campaign/sign` hydration
 mismatch — which was invalid HTML nesting, NOT the endorser wall's Payload fetch as
 this file once guessed; the `~90` baselined colour literals in wegov.nyc's
 `globals.css`; the `#3f8f7b` CTFG teal literal; repointing `wegov.nyc/unnyc/guide`
