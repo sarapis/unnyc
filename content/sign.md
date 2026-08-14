@@ -35,7 +35,7 @@ Every June, the United Nations convenes **UN Open Source Week** at its Headquart
 
 The case is practical, not ideological:
 
-- The city spends around **$2 billion a year on technology**, roughly a third of it on proprietary licensing — and the Comptroller found [nearly $4 billion in master-agreement spending](https://comptroller.nyc.gov/reports/the-monty-hall-contracts-unchecked-spending-across-the-citys-master-agreements/) whose records reveal almost nothing about what was bought.
+- **The city rents proprietary software at enormous scale.** Two citywide IT purchasing contracts are being put in place right now — [$1.2 billion with SHI](https://databook.nyc/procurement/contract/5364919) and [$800 million with CDW](https://databook.nyc/procurement/contract/5363428) — and the Comptroller found [nearly $4 billion in master-agreement spending](https://comptroller.nyc.gov/reports/the-monty-hall-contracts-unchecked-spending-across-the-citys-master-agreements/) whose records reveal almost nothing about what was bought.
 - **Government programs run on software.** When the city can’t change the software, it can’t change the program — every new idea becomes a change order, priced by the only vendor who can implement it.
 - **Open code can be audited by inspection**, extending the trust the city already builds through its Vulnerability Disclosure Program from policy to proof.
 - **Software adopted or built openly can serve all 130-plus city agencies** at no additional licensing cost — the first agency solves the problem, every other agency inherits the solution.

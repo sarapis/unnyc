@@ -15,7 +15,7 @@ free use**, which covers web use. See [Adobe Stock's license terms](https://stoc
 | `home/NYC02.jpeg` | `/` — homepage path card #2 | olivia@sarapis.org | 08/10/2026 |
 | `success/barcelona.jpeg` | `/success` — Barcelona case hero (also reused on the homepage path card #3) | olivia@sarapis.org | 08/10/2026 |
 | `success/paris.jpeg` | `/success` — Paris case hero | olivia@sarapis.org | 08/10/2026 |
-| `success/tokyo.jpeg` | **currently unused** — was the `/success` Tokyo case hero until that case was removed 2026-08-14 | olivia@sarapis.org | 08/10/2026 |
+| `success/tokyo.jpeg` | **currently unused** — was the `/success` Tokyo case hero until that case was removed 2026-08-14. Considered for the fourth homepage card and rejected the same day; see "Not covered by this file" below | olivia@sarapis.org | 08/10/2026 |
 | `success/munich.jpeg` | `/success` — Munich case hero | olivia@sarapis.org | 08/11/2026 |
 
 ## Other licenses
@@ -41,13 +41,20 @@ Linux Foundation [OSPO Book](https://ospobook.todogroup.org/01-chapter/)) on
 A few other image assets live outside `public/images/` and aren't Adobe
 Stock purchases:
 
-- `public/favicon.svg` — created in-house, no external license. Also stands in as
-  the art for the **fourth homepage path card** (`/resources`), rendered as a
-  centred logo on a tint via `imageStyle: logo` rather than cover-cropped like
-  the three photographs beside it. It is a placeholder: if a licensed photo is
-  bought for that card, swap the `image:` in `content/home.md`, drop the
-  `imageStyle: logo` line, and add a row above. `success/tokyo.jpeg` is a
-  paid-for Adobe Stock image now sitting unused, if a city photo would do.
+- `public/favicon.svg` — created in-house, no external license. Also the art for
+  the **fourth homepage path card** (`/resources`), rendered as a centred logo on
+  a tint via `imageStyle: logo` rather than cover-cropped like the three
+  photographs beside it.
+
+  **This is a decision as of 2026-08-14, not a placeholder.** A city photo was
+  considered and rejected: card 3 is a Barcelona skyline meaning "cities that
+  did this", so a second skyline beside it meaning "our resource library" reads
+  as a fourth case study. `success/tokyo.jpeg` — paid for and unused — is
+  doubly wrong for it, since Tokyo is the case `/success` deliberately dropped
+  that same day. The mark reads as "this one is ours, not a place", which is
+  what the card means. If the card ever does get a photograph it should depict a
+  library, directory or archive, not a city: swap the `image:` in
+  `content/home.md`, drop the `imageStyle: logo` line, and add a row above.
 - `public/case-images/*` (the "Governments Doing This Now" grid on
   `/success`) — these are each project's own logo or branded marketing
   graphic (Munich's city crest, X-Road's promotional lockup, the Sovereign
