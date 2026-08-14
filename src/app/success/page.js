@@ -20,8 +20,9 @@ export async function generateMetadata() {
 const STATS_MARKER = '<p>{{stats}}</p>';
 
 /**
- * /success — "what success looks like." Three long-form case studies
- * (Barcelona, Paris, Tokyo), then the shorter shared PrimerCases grid.
+ * /success — "what success looks like." Long-form case studies driven by the
+ * `cases` list in the frontmatter (Barcelona, Munich, Paris as of 2026-08-14 —
+ * Tokyo was removed that day), then the shorter shared PrimerCases grid.
  *
  * ALL COPY LIVES IN content/success.md. See docs/EDITING-CONTENT.md.
  */

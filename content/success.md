@@ -1,9 +1,9 @@
 ---
 meta:
   title: "What Success Looks Like — UNNYC"
-  description: "Barcelona, Paris, France, and Tokyo already show what building on open source wins a government — real tools other cities adopt, and real international standing."
+  description: "Barcelona, Munich, and Paris already show what building on open source wins a government — real tools other cities adopt, and real international standing."
   ogTitle: "What Success Looks Like — UNNYC"
-  ogDescription: "What Barcelona, Paris, France, and Tokyo have already won by going open source — and what it would mean for New York."
+  ogDescription: "What Barcelona, Munich, Paris, and France have already won by going open source — and what it would mean for New York."
 title: "A Roadmap for NYC to Follow"
 # Jump menu (UnnycSectionNav) — `id` must match an id rendered on the page.
 sectionNav:
@@ -13,10 +13,8 @@ sectionNav:
     label: "Munich"
   - id: paris
     label: "Paris"
-  - id: tokyo
-    label: "Tokyo"
   - id: cases
-    label: "Governments Doing This Now"
+    label: "Recent Successes"
 lede: "Cities around the world have already seen success endorsing the principles and adopting open source infrastructure. New York should join them."
 cases:
   - id: barcelona
@@ -71,22 +69,6 @@ cases:
       - "[Technical.ly](https://technical.ly/civic-news/paris-lutece-open-source-platform-city-services-west-baltimore-community-center-st-francis/)"
       - "[unite.un.org](https://unite.un.org/en/news/france-becomes-first-government-endorse-un-open-source-principles)"
       - "[code.gouv.fr](https://code.gouv.fr/en/expenditure-staff-impact/)"
-  - id: tokyo
-    alt: true
-    title: "Tokyo: When Transparency Becomes Infrastructure"
-    banner:
-      src: "/images/success/tokyo.jpeg"
-      alt: "Tokyo Tower and skyline at sunset"
-    stats:
-      - number: "47/47"
-        label: "Japanese prefectures that adopted Tokyo’s dashboard"
-      - number: "2020"
-        label: "Built in the open, in weeks, during a live crisis"
-      - number: "0"
-        label: "National mandates needed to make it the standard"
-    sources:
-      - "[Tokyo-Metro-Gov/covid19 (GitHub)](https://github.com/Tokyo-Metro-Gov/covid19)"
-      - "[official fork registry](https://github.com/Tokyo-Metro-Gov/covid19/blob/development/FORKED_SITES.md)"
 foot:
   text: "Ready to add New York to this list?"
   ctas:
@@ -97,7 +79,7 @@ foot:
       label: "Sign the open letter →"
       style: primary
 caseGrid:
-  title: "Governments Doing This Now"
+  title: "Recent Government Open Source Successes"
   lede: "Cities and nations have run open source programs for years, increasingly sharing one codebase across dozens of governments instead of each buying its own."
   items:
   - place: "Munich"
@@ -171,8 +153,3 @@ Then the model scaled. In May 2025, France became the first national government 
 
 For New York, the parallel is direct: being first isn’t a press moment, it’s a starting point other institutions build on.
 
-## tokyo
-
-In March 2020, with COVID-19 spreading and no time for normal procurement, the Tokyo Metropolitan Government worked with Code for Japan to build its COVID-19 dashboard entirely in the open on GitHub — public code anyone could inspect, question, or copy, built in weeks instead of months.
-
-Every one of Japan’s 47 prefectures forked it rather than building their own. No national mandate required it — the code being open and well-built was enough. One city’s transparency became the country’s de facto standard for a public-health emergency.
