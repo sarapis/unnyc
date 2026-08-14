@@ -6,9 +6,12 @@ meta:
   ogDescription: "Eight commitments adopted by the UN in 2025 — what each means, and what each would change for New York."
 title: "The UN Open Source Principles"
 lede: "Adopted by the UN’s Digital and Technology Network in 2025, these eight commitments articulate a global consensus around how institutions should adopt and interact with open source software."
-# Intro above the clickable grid, and the line before the seven committed ones.
-gridIntro: "The software built for the city ought to be:"
-gridCommitted: "As leaders in the global open source movement, we are committed to the following:"
+# The grid opens straight on the lead principle as of 2026-08-14. It used to
+# carry two framing lines — `gridIntro` ("The software built for the city ought
+# to be:") and `gridCommitted` ("As leaders in the global open source movement,
+# we are committed to the following:") — both cut to let the eight principles
+# read as a scannable list rather than a prose preamble. The component still
+# renders either key if it comes back, so restoring one is a content edit.
 detailTitle: "What each principle would mean for New York"
 detailLede: "The same eight, paired with the city’s own reality — what NYC already does, and what endorsement would change."
 # The organizations that endorsed the Principles. MOVED here from
@@ -85,9 +88,15 @@ foot:
 #
 #   n               The UN's own number. Drives the icon AND the letter's order
 #                   (the groups deliberately reorder them: 3,5,6 / 4,7 / 2,8).
-#   title           Gerund form. REQUIRED by the group headings, which only
-#                   parse grammatically that way — "Building Good Software that
-#                   is… Well documented".
+#   title           The GRID's wording, and the grid's alone. Was the gerund form
+#                   ("Contributing back") because the group headings used to
+#                   demand it — "Building Good Software that is… Well
+#                   documented". The headings were shortened on 2026-08-14
+#                   ("Build software that is:"), so these are now the plain
+#                   forms and mostly match `titleCanonical`. They are still a
+#                   SEPARATE field: #6 reads "Well documented" in the grid but
+#                   is canonically "Provide documentation", and collapsing the
+#                   two would silently retitle it on three other surfaces.
 #   titleCanonical  The UN's own name for the principle. Used anywhere the
 #                   principle is named on its own, with no heading to agree with.
 #   desc            The full description.
@@ -107,14 +116,22 @@ principlesDoc:
     icon: unlock
     title: "Open by default"
     titleCanonical: "Open by default"
+    # Grid copy only. The letter uses `descShort`, the declaration `descCity` —
+    # both still carry the full "vendors ought to justify why their solutions
+    # should be closed" argument that this line no longer states.
     body:
+    - "Make open source the standard approach for projects."
+    # The printable declaration at /principles/document keeps the full argument —
+    # it is a formal document, and the burden-of-proof sentence IS principle #1.
+    # Falls back to `body` if removed.
+    bodyDocument:
     - "Making the use of open source software components to build city solutions the standard and default approach to creating software."
     - "There are very few scenarios when open source isn’t appropriate, and vendors ought to justify why their solutions should be closed, not the other way around."
     descShort: "Open source as the standard approach for projects"
     # The declaration states this as the City's own commitment, in one paragraph.
     descCity: "Using open source software components to build solutions for the city is the standard and default approach to creating software. There are very few scenarios when open source isn’t appropriate."
   groups:
-  - title: "Building Good Software that is…"
+  - title: "Build software that is:"
     titleDeclaration: "We Build Good Software"
     items:
     - n: 3
@@ -127,7 +144,7 @@ principlesDoc:
     - n: 5
       slug: design-for-reusability
       icon: recycle
-      title: "Designed for reusability"
+      title: "Design for reusability"
       titleCanonical: "Design for reusability"
       desc: "Designing projects to be interoperable across various platforms and ecosystems."
       descShort: "Interoperable across platforms and contexts"
@@ -138,13 +155,13 @@ principlesDoc:
       titleCanonical: "Provide documentation"
       desc: "Providing thorough documentation for end-users, integrators and developers."
       descShort: "Thorough documentation for end users"
-  - title: "Cocreating our Solutions with our Users through…"
+  - title: "Create solutions that:"
     titleDeclaration: "Our Solutions are Cocreated with our Users"
     items:
     - n: 4
       slug: foster-inclusion
       icon: users
-      title: "Fostering inclusive participation and community building"
+      title: "Foster inclusive participation and community building"
       titleCanonical: "Foster inclusive participation and community building"
       desc: "Enabling and facilitating diverse and inclusive contributions."
       descShort: "Inclusive participation and community building"
@@ -155,20 +172,20 @@ principlesDoc:
       titleCanonical: "RISE (recognize, incentivize, support and empower)"
       desc: "Empowering individuals and communities to actively participate."
       descShort: "Recognize, incentivize, support, and empower communities"
-  - title: "Collaborating Globally and Delivering Locally by…"
+  - title: "Be collaborative:"
     titleDeclaration: "Collaborating globally to deliver locally"
     items:
     - n: 2
       slug: contribute-back
       icon: git-pull-request
-      title: "Contributing back"
+      title: "Contribute back"
       titleCanonical: "Contribute back"
       desc: "Encouraging active participation in the Open Source ecosystem."
       descShort: "Active participation in the open source ecosystem"
     - n: 8
       slug: sustain-and-scale
       icon: trending-up
-      title: "Sustaining and scaling"
+      title: "Sustain and scale"
       titleCanonical: "Sustain and scale"
       desc: "Supporting the development of solutions that meet the evolving needs of the UN system and beyond."
       descShort: "Solutions that meet evolving needs over time"

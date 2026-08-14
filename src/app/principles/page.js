@@ -61,7 +61,13 @@ export default function PrinciplesPage() {
             {/* 1 — the eight, in the UN's own grouping. Every card is a jump link. */}
             <section className="unnyc-section unnyc-section--alt">
                 <div className="unnyc-container">
-                    <p className="unnyc-start-principles__intro">{doc.gridIntro}</p>
+                    {/* Both framing lines were cut from the content on
+                        2026-08-14 so the grid reads as a list, not a preamble.
+                        Rendered only if the key comes back — an empty <p> would
+                        otherwise leave a stranded margin above the lead card. */}
+                    {doc.gridIntro && (
+                        <p className="unnyc-start-principles__intro">{doc.gridIntro}</p>
+                    )}
 
                     <Link
                         href={`#${lead.slug}`}
@@ -74,9 +80,11 @@ export default function PrinciplesPage() {
                         ))}
                     </Link>
 
-                    <p className="unnyc-start-principles__intro unnyc-start-principles__intro--committed">
-                        {doc.gridCommitted}
-                    </p>
+                    {doc.gridCommitted && (
+                        <p className="unnyc-start-principles__intro unnyc-start-principles__intro--committed">
+                            {doc.gridCommitted}
+                        </p>
+                    )}
 
                     {groups.map((group) => (
                         <div className="unnyc-start-principles__group" key={group.title}>
@@ -94,7 +102,15 @@ export default function PrinciplesPage() {
                                             className="unnyc-start-principle__icon"
                                         />
                                         <h3 className="unnyc-start-principle__title">{item.title}</h3>
-                                        <p className="unnyc-start-principle__desc">{item.desc}</p>
+                                        {/* `item.desc` is deliberately NOT rendered here
+                                            (2026-08-14): the grid is a scannable list of
+                                            the eight names, and the full description is
+                                            two screens down in this page's own detail
+                                            section. Do NOT delete `desc` from the content
+                                            to match — /principles/document and
+                                            /campaign/endorse/document fall back to it
+                                            whenever `descCity` is absent, which is six of
+                                            the seven items. */}
                                     </Link>
                                 ))}
                             </div>

@@ -21,7 +21,10 @@ const LINKS = [
     { href: '/resources', label: 'Resources' },
 ];
 
-const CTA = { href: '/campaign', label: 'Take Action' };
+// Points at the signing form itself, not the /campaign hub (2026-08-14) — the
+// header CTA is the one place a reader has already decided to act, so it skips
+// the landing page. /campaign is still linked from the page bodies.
+const CTA = { href: '/campaign/sign', label: 'Take Action' };
 
 export default function UnnycNav() {
     const pathname = usePathname();
