@@ -313,7 +313,16 @@
     margin-bottom: var(--wg-sp-6);
   }
 
-  .unnyc-cmp-form__tab {
+  /* ⚠ These three are scoped with `.unnyc-page` ON PURPOSE — do not "simplify"
+     them back to a bare class. unnyc.css carries a global `.unnyc-page button`
+     reset (border: none; background: none) at specificity 0-1-1, in this same
+     @layer. A bare `.unnyc-cmp-form__tab` is 0-1-0, so the reset WINS: it
+     stripped the pill border off both tabs and the gold fill off the active
+     one, leaving --wg-brand-deep text on the navy form panel — dark blue on
+     dark blue, unreadable. Only `color` survived, because the reset doesn't
+     set it. `.unnyc-page .unnyc-cmp-form__tab` is 0-2-0 and clears it, which
+     is the same reason `.unnyc-page .unnyc-btn` is written that way. */
+  .unnyc-page .unnyc-cmp-form__tab {
     flex: 1;
     padding: var(--wg-sp-3) var(--wg-sp-4);
     font-size: var(--wg-fs-sm);
@@ -327,11 +336,11 @@
     transition: all 0.2s var(--wg-ease);
   }
 
-  .unnyc-cmp-form__tab:hover {
+  .unnyc-page .unnyc-cmp-form__tab:hover {
     border-color: rgba(255, 255, 255, 0.5);
   }
 
-  .unnyc-cmp-form__tab--active {
+  .unnyc-page .unnyc-cmp-form__tab--active {
     background: var(--wg-accent-warm);
     border-color: var(--wg-accent-warm);
     color: var(--wg-brand-deep);
