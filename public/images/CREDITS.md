@@ -15,7 +15,7 @@ free use**, which covers web use. See [Adobe Stock's license terms](https://stoc
 | `home/NYC02.jpeg` | `/` — homepage path card #2 | olivia@sarapis.org | 08/10/2026 |
 | `success/barcelona.jpeg` | `/success` — Barcelona case hero (also reused on the homepage path card #3) | olivia@sarapis.org | 08/10/2026 |
 | `success/paris.jpeg` | `/success` — Paris case hero | olivia@sarapis.org | 08/10/2026 |
-| `success/tokyo.jpeg` | `/success` — Tokyo case hero | olivia@sarapis.org | 08/10/2026 |
+| `success/tokyo.jpeg` | **currently unused** — was the `/success` Tokyo case hero until that case was removed 2026-08-14 | olivia@sarapis.org | 08/10/2026 |
 | `success/munich.jpeg` | `/success` — Munich case hero | olivia@sarapis.org | 08/11/2026 |
 
 ## Other licenses
@@ -41,7 +41,13 @@ Linux Foundation [OSPO Book](https://ospobook.todogroup.org/01-chapter/)) on
 A few other image assets live outside `public/images/` and aren't Adobe
 Stock purchases:
 
-- `public/favicon.svg` — created in-house, no external license.
+- `public/favicon.svg` — created in-house, no external license. Also stands in as
+  the art for the **fourth homepage path card** (`/resources`), rendered as a
+  centred logo on a tint via `imageStyle: logo` rather than cover-cropped like
+  the three photographs beside it. It is a placeholder: if a licensed photo is
+  bought for that card, swap the `image:` in `content/home.md`, drop the
+  `imageStyle: logo` line, and add a row above. `success/tokyo.jpeg` is a
+  paid-for Adobe Stock image now sitting unused, if a city photo would do.
 - `public/case-images/*` (the "Governments Doing This Now" grid on
   `/success`) — these are each project's own logo or branded marketing
   graphic (Munich's city crest, X-Road's promotional lockup, the Sovereign
