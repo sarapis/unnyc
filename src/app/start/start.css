@@ -52,87 +52,6 @@
     margin-top: var(--wg-sp-5);
   }
 
-  .unnyc-start-principles__intro {
-    font-size: var(--wg-fs-lg);
-    color: var(--wg-text-secondary);
-    line-height: 1.6;
-    margin: 0 0 var(--wg-sp-6);
-  }
-
-  .unnyc-start-principles__intro--committed {
-    margin-top: var(--wg-sp-10);
-  }
-
-  .unnyc-start-principles__group {
-    margin-top: var(--wg-sp-8);
-  }
-
-  .unnyc-start-principles__group-title {
-    font-family: var(--wg-font-display);
-    font-weight: 400;
-    font-size: var(--wg-fs-lg);
-    color: var(--wg-brand);
-    margin: 0 0 var(--wg-sp-5);
-  }
-
-  .unnyc-start-principles__cta {
-    display: flex;
-    justify-content: center;
-    margin-top: var(--wg-sp-10);
-  }
-
-  .unnyc-start-principles__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: var(--wg-sp-5);
-  }
-
-  .unnyc-start-principle {
-    background: var(--wg-surface);
-    border: 1px solid var(--wg-border);
-    border-radius: var(--wg-radius-md);
-    padding: var(--wg-sp-6);
-    box-shadow: var(--wg-shadow-sm);
-  }
-
-  .unnyc-start-principle--primary {
-    border-left: 4px solid var(--wg-accent-warm);
-    margin-bottom: var(--wg-sp-2);
-  }
-
-  .unnyc-start-principle--primary .unnyc-start-principle__title {
-    font-size: var(--wg-fs-xl);
-  }
-
-  .unnyc-start-principle--primary .unnyc-start-principle__desc + .unnyc-start-principle__desc {
-    margin-top: var(--wg-sp-3);
-  }
-
-  /* Inline SVG (UnnycIcon) — `color` drives the stroke, so no object-fit or
-     object-position needed; the box is the artwork now. UN blue, matching the
-     crosswalk's treatment of the same eight icons. */
-  .unnyc-start-principle__icon {
-    display: block;
-    width: 56px;
-    height: 56px;
-    margin-bottom: var(--wg-sp-3);
-    color: var(--wg-accent);
-  }
-
-  .unnyc-start-principle__title {
-    font-family: var(--wg-font-body);
-    font-size: var(--wg-fs-base);
-    font-weight: 700;
-    color: var(--wg-brand);
-    margin: 0 0 var(--wg-sp-2);
-  }
-
-  .unnyc-start-principle__desc {
-    font-size: var(--wg-fs-sm);
-    color: var(--wg-text-secondary);
-    line-height: 1.6;
-    margin: 0;
-  }
 
   .unnyc-start__next {
     padding: var(--wg-sp-16) 0;
@@ -146,9 +65,4 @@
     margin: 0 0 var(--wg-sp-6);
   }
 
-  @media (max-width: 640px) {
-    .unnyc-start-principles__grid {
-      grid-template-columns: 1fr;
-    }
-  }
 }
