@@ -18,6 +18,7 @@ commit. That's the live page.
 | `/campaign/endorse` | [`content/endorse.md`](../content/endorse.md) |
 | `/campaign/endorse/document` | [`content/principles.md`](../content/principles.md) (shares the principles) |
 | `/resources` | [`content/resources.md`](../content/resources.md) |
+| `/resources/guide` | [`content/guide.md`](../content/guide.md) |
 | `/contact` | [`content/contact.md`](../content/contact.md) |
 
 Site chrome (nav labels, footer) is still in components — see

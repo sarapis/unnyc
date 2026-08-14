@@ -15,6 +15,22 @@ These are short strings tied to structure rather than prose:
 | Form labels, validation + success messages | [`CampaignSignForm.js`](../src/components/unnyc/CampaignSignForm.js), [`EndorseForm.js`](../src/components/unnyc/EndorseForm.js), [`ContactForm.js`](../src/components/unnyc/ContactForm.js) — all in `src/components/unnyc/` |
 | Site-wide default title/description | [`src/app/layout.js`](../src/app/layout.js) (per-page titles are in each content file's `meta:`) |
 
+## Recently moved OUT of components
+
+Two strings left the JSX on 2026-08-13/14, both because changing them needed a
+developer:
+
+| Copy | Was | Now |
+|---|---|---|
+| `/start` map section title + lede | hardcoded in `PrimerMovementNow.js` | `content/start.md` (`movementNow`) |
+| "The organizations that have signed on" heading | hardcoded `<h3>` in `PrimerMovementNow.js` | `content/principles.md` (`endorsers.title`) |
+
+⚠ That second one is a lesson, not just a move. `endorsers.title` already existed
+in the frontmatter, reading "Who Has Already Signed On" — and it was **dead**,
+because the component ignored it and hardcoded its own heading. Anyone rendering
+the "real" value would have silently retitled the section. **A frontmatter key is
+not proof that it reaches the page**; grep the component before trusting one.
+
 ## No data files
 
 `src/data/` was **deleted 2026-08-06** (1,001 lines). `unnyc.js` and
