@@ -1,24 +1,24 @@
 ---
 meta:
   title: "Sign the Open Letter — NYC Should Endorse the UN Open Source Principles"
-  description: "An open letter calling on New York City to formally endorse the UN Open Source Principles and become the first city in the Americas to do so. Sign as an individual or endorse as an organization."
+  description: "An open letter calling on the New York City Office of Technology & Innovation to endorse the UN Open Source Principles, establish an OSPO, and evaluate open source alternatives in every city technology contract."
   ogTitle: "NYC Should Endorse the UN Open Source Principles — Sign the Open Letter"
-  ogDescription: "Join the campaign to make New York the first city in the Americas to endorse the UN Open Source Principles."
+  ogDescription: "Three asks of the city's Office of Technology & Innovation: endorse the UN Open Source Principles, establish an OSPO, and weigh an open source alternative in every technology contract."
 title: "New York City Should Endorse the UN Open Source Principles"
 addressed:
   - label: "To"
-    value: "The NYC Mayor’s Office of Technology & Innovation and the Mayor’s Office for International Affairs"
+    value: "The New York City Office of Technology & Innovation"
   - label: "From"
-    value: "WeGovNYC / Sarapis, and the undersigned"
+    value: "The undersigned"
   - label: "Re"
-    value: "Formally endorsing the United Nations Open Source Principles — and making New York the first city in the Americas to do so"
+    value: "Endorsing the United Nations Open Source Principles and making a transition to open source a goal of New York City government"
 signTitle: "Add your name"
 signLede: "Sign the letter as an individual, or endorse it on behalf of your organization. Every signature strengthens the case that New York’s civic community wants the city to lead."
 refsTitle: "References"
 references:
   - "[UN Open Source Principles (announcement)](https://unite.un.org/en/news/sixteen-organizations-endorse-un-open-source-principles)"
-  - "[Barcelona’s endorsement (OSOR)](https://interoperable-europe.ec.europa.eu/collection/open-source-observatory-osor/news/barcelona-first-city-globally-adopt-un-open-source-principles)"
   - "[UN Open Source Week](https://www.unopensource.org/)"
+  - "[NYC Comptroller — The Monty Hall Contracts](https://comptroller.nyc.gov/reports/the-monty-hall-contracts-unchecked-spending-across-the-citys-master-agreements/)"
 wall:
   orgsTitle: "Endorsing organizations"
   peopleTitle: "Individual signatories"
@@ -29,30 +29,18 @@ wall:
 
 ## letter
 
-Dear Chief Technology Officer and Commissioner for International Affairs,
+Dear Chief Technology Officer,
 
-Every June, the United Nations convenes **UN Open Source Week** at its Headquarters — here, in New York City. In 2026 it drew more than **2,600 participants from over 120 countries**. New York provides the stage on which the world’s open source movement gathers; it has not yet joined that movement.
+Every June, the United Nations convenes **UN Open Source Week** at its Headquarters — here, in New York City. It gathers more than **2,600 participants from over 120 countries**: the governments, institutions and builders organizing the world’s transition to open source. New York provides the stage. City government should join what happens on it.
 
-We are writing to ask you to change that: to **formally endorse the UN Open Source Principles**, making New York the **first city in the Americas** to align its digital governance with the standard the UN itself has set.
+The case is practical, not ideological:
 
-### The precedent is already set
+- The city spends around **$2 billion a year on technology**, roughly a third of it on proprietary licensing — and the Comptroller found [nearly $4 billion in master-agreement spending](https://comptroller.nyc.gov/reports/the-monty-hall-contracts-unchecked-spending-across-the-citys-master-agreements/) whose records reveal almost nothing about what was bought.
+- **Government programs run on software.** When the city can’t change the software, it can’t change the program — every new idea becomes a change order, priced by the only vendor who can implement it.
+- **Open code can be audited by inspection**, extending the trust the city already builds through its Vulnerability Disclosure Program from policy to proof.
+- **Software adopted or built openly can serve all 130-plus city agencies** at no additional licensing cost — the first agency solves the problem, every other agency inherits the solution.
 
-In November 2025, **Barcelona became the first city in the world to endorse the Principles** — a decision sparked by attending UN Open Source Week. It was not a procurement overhaul. It was a signature paired with three commitments:
-
-- A **Citizen Agreement for Democratic Technologies and Digital Rights**.
-- An **Open Source Programme Office (OSPO)**, modeled on those in Paris and Munich.
-- A **municipal fund** for open source digital innovation.
-
-The move cost Barcelona little and signaled a great deal: that a city can commit, publicly and concretely, to building and sharing technology as a public good.
-
-### New York is ready — and has a habit of being first
-
-- **First U.S. city to submit a Voluntary Local Review** of its Sustainable Development Goal progress to the UN (2018).
-- **First U.S. city to join the UN’s Safe Cities Global Initiative.**
-- An **Open Data Law since 2012**, one of the strongest in the nation, with city code already published on GitHub.
-- An **Office of Technology & Innovation** positioned to house an NYC OSPO.
-
-Endorsing the Principles formalizes values the City already professes, and gives its technologists a shared, internationally recognized framework.
+New York already lives by this instinct for data: the Open Data Law has made publication the default since 2012. The step before you extends the same standard to code.
 
 ### The eight principles
 
@@ -62,14 +50,14 @@ The UN Open Source Principles — endorsed in March 2025 by seventeen organizati
 
 ### The ask
 
-We respectfully call on the **Mayor’s Office of Technology & Innovation**, together with the **Mayor’s Office for International Affairs**, to:
+We respectfully call on the **Office of Technology & Innovation** to:
 
-- **Formally endorse the UN Open Source Principles**, publicly and by name.
-- **Announce a light-touch roadmap** in the spirit of Barcelona’s, beginning with a commitment to explore an **NYC Open Source Programme Office** within OTI.
-- **Do so before or during UN Open Source Week**, so the city that hosts the world’s open source community can welcome it as a member.
+1. **Endorse the UN Open Source Principles**, publicly and by name.
+2. **Establish an Open Source Program Office (OSPO)** to facilitate adoption across city government — coordinating what the city uses, what it publishes, how it contributes back, and how it stays secure doing so.
+3. **Evaluate an open source alternative in every city technology contract**, so no proprietary license is signed or renewed without first asking whether an open solution would serve New Yorkers better.
 
-New York does not need to reinvent the model. It needs only to sign — and to lead the Americas in doing so.
+None of this requires new technology — the tools exist, and peer governments run them today. It requires a decision: that the city hosting the world’s open source movement should also run on it.
 
 ## signoff
 
-Respectfully, **WeGovNYC / Sarapis**, and the undersigned
+Respectfully, **the undersigned**
