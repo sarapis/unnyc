@@ -1082,16 +1082,29 @@
   color: var(--wg-accent-warm-light);
 }
 
-/* --- Reveal Animation --- */
-.unnyc-page .unnyc-reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s var(--wg-ease), transform 0.7s var(--wg-ease);
-}
+/* --- Reveal-on-scroll animation ---
+   The `.unnyc-reveal` class is added by ScrollReveal.js (IntersectionObserver,
+   mounted once in layout.js) to a curated list of card/grid-item selectors —
+   never hardcoded in JSX. That order matters: if JS is disabled or errors,
+   elements simply never get the class and render normally visible, instead
+   of getting stuck at opacity: 0. `--reveal-delay` staggers siblings within
+   the same grid; ScrollReveal.js sets it per element.
 
-.unnyc-page .unnyc-reveal.unnyc-visible {
-  opacity: 1;
-  transform: translateY(0);
+   Guarded by prefers-reduced-motion so a visitor who has that on never even
+   sees the opacity: 0 starting state — ScrollReveal.js also skips attaching
+   the observer entirely for them, this is the CSS-side half of that. */
+@media (prefers-reduced-motion: no-preference) {
+  .unnyc-page .unnyc-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s var(--wg-ease), transform 0.7s var(--wg-ease);
+    transition-delay: var(--reveal-delay, 0s);
+  }
+
+  .unnyc-page .unnyc-reveal.unnyc-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* --- Responsive --- */

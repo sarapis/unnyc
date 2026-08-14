@@ -2,6 +2,7 @@ import './base.css';
 import './unnyc.css';
 import UnnycNav from '@/components/unnyc/UnnycNav';
 import UnnycFooter from '@/components/unnyc/UnnycFooter';
+import ScrollReveal from '@/components/unnyc/ScrollReveal';
 
 export const metadata = {
     metadataBase: new URL('https://unnyc.wegov.nyc'),
@@ -25,6 +26,10 @@ export const metadata = {
  * --unnyc-* palette/spacing/type tokens — so the nav and footer pick them up
  * too. This replaces the marketing site's root layout: no CMS `/global` fetch
  * for nav/footer, no ThemeProvider, no theme switcher.
+ *
+ * ScrollReveal fades cards/grid-items in as they scroll into view (see that
+ * component + unnyc.css's `.unnyc-reveal` rules); mounted once here so it
+ * applies site-wide without every page needing to remember to include it.
  */
 export default function RootLayout({ children }) {
     return (
@@ -34,6 +39,7 @@ export default function RootLayout({ children }) {
                     <UnnycNav />
                     <main>{children}</main>
                     <UnnycFooter />
+                    <ScrollReveal />
                 </div>
             </body>
         </html>
