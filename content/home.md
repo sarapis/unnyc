@@ -29,11 +29,20 @@ paths:
     answer: "Cases of the open source principles operationalized, building a global network of innovation and reform."
   - href: /resources
     image: "/favicon.svg"
-    # The other three cards are photographs; this one is the in-house mark,
-    # standing in until a licensed photo is bought for it. `imageStyle: logo`
-    # makes the band render it as a centred logo on a brand tint instead of
-    # cover-cropping a 100x100 square into a 560x160 strip — which is what it did
-    # until 2026-08-14, and why it read as a broken image rather than a choice.
+    # The other three cards are photographs; this one is the in-house mark.
+    # `imageStyle: logo` makes the band render it as a centred logo on a brand
+    # tint instead of cover-cropping a 100x100 square into a 560x160 strip —
+    # which is what it did until 2026-08-14, and why it read as a broken image
+    # rather than a choice.
+    #
+    # KEEPING THE MARK IS A DECISION (2026-08-14), not a stopgap awaiting a
+    # purchase. Card 3 is a Barcelona skyline meaning "cities that did this";
+    # a second skyline beside it, meaning "our resource library", reads as a
+    # fourth case study. The unused paid-for `success/tokyo.jpeg` was weighed
+    # and rejected for exactly that reason — and Tokyo is the case /success
+    # deliberately dropped the same day. The mark says "this one is ours, not
+    # a place", which is what the card actually means. Don't "finish" it with
+    # a city photo; a library/directory image is the only kind that would fit.
     imageStyle: logo
     question: "4. How can I find more information?"
     answer: "People, places, projects, OSPOs — and maybe a bumper sticker? Check out our resource library to find out more!"

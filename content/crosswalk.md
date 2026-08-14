@@ -1,6 +1,6 @@
 ---
 title: "New York Rents the Software It Should Own"
-lede: "The city spends around $2 billion a year on technology, and roughly a third of it is licensing — proprietary software rented year after year, with nothing owned at the end, nothing the city can inspect or fix, and nothing it can afford to walk away from. Cities around the world have replaced these systems with faster, better and cheaper open source alternatives. Here are six reasons New York should do the same."
+lede: "The city is putting two citywide IT purchasing contracts in place right now — [$1.2 billion with SHI](https://databook.nyc/procurement/contract/5364919) and [$800 million with CDW](https://databook.nyc/procurement/contract/5363428) — to go on renting proprietary software year after year, with nothing owned at the end, nothing the city can inspect or fix, and nothing it can afford to walk away from. Cities around the world have replaced these systems with faster, better and cheaper open source alternatives. Here are six reasons New York should do the same."
 meta:
   title: "Open Source for NYC: Six Reasons — UNNYC"
   description: "Six reasons New York City should switch from renting proprietary software to owning open source systems — savings, control, security, talent, reuse, and global leadership."
@@ -40,7 +40,7 @@ The easiest place to start counting is also the first reason to switch.
 
 ### 1. Save Money — and Change Every Negotiation
 
-Start with the easy ones. The Department of Health pays [$210,000 per two-year renewal](https://databook.nyc/procurement/contract/4843244) for SurveyMonkey licenses — one agency, one survey tool. LimeSurvey, its open source equivalent, has no per-seat license at all. Multiply that pattern across 130-plus agencies each buying their own copy of the same category of tool and the number stops being a rounding error: at least fifteen agencies hold their own separate Microsoft Premier Support contracts today.
+Start with the easy ones. The Department of Health pays [$210,000 per two-year renewal](https://databook.nyc/procurement/contract/4843244) for SurveyMonkey licenses — one agency, one survey tool. LimeSurvey, its open source equivalent, has no per-seat license at all. Multiply that pattern across 130-plus agencies each buying their own copy of the same category of tool and the number stops being a rounding error: seventeen agencies have each bought their own separate Microsoft Premier Support contract, several of them through different resellers.
 
 And the savings start before a single system is replaced. Vendors price against your alternatives. A city that pilots LibreOffice in one bureau — that demonstrably *can* leave — walks into its next Microsoft negotiation as a different customer. The city’s [three-year, $57 million citywide Microsoft agreement](https://databook.nyc/procurement/contract/5128452) was negotiated by a buyer with no credible exit. Speaking open source fluently is worth money even where the city never switches.
 
@@ -66,7 +66,7 @@ Open source changes what a city technology job *is*. Your work is public, portab
 
 Paris has run its open source Lutèce platform since 2002 — it now powers [more than 300 city services](https://opensource.paris.fr/ossparis/english.html), from permits to participatory budgeting, and Paris’s own IT staff helped a [Baltimore neighborhood nonprofit deploy it](https://technical.ly/civic-news/paris-lutece-open-source-platform-city-services-west-baltimore-community-center-st-francis/). One city’s software, reused across an ocean, because it was built to be reused.
 
-Now look inward: New York is not one buyer, it is 130-plus agencies buying separately — fifteen support contracts for the same vendor’s products. Software the city builds or adopts openly can be deployed by every agency that needs it, at no additional licensing cost. The first agency pays to solve the problem; every other agency gets the solution for free. No proprietary contract has ever worked that way.
+Now look inward: New York is not one buyer, it is 130-plus agencies buying separately — seventeen of them with their own support contracts for the same vendor’s products. Software the city builds or adopts openly can be deployed by every agency that needs it, at no additional licensing cost. The first agency pays to solve the problem; every other agency gets the solution for free. No proprietary contract has ever worked that way.
 
 ### 6. The Center of Global Good Government
 

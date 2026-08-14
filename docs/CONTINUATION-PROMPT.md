@@ -96,8 +96,8 @@ Twelve PRs. The shape of the site changed; the details are in `CLAUDE.md` under
 - **`/crosswalk` is six numbered reasons to adopt open source**, ~1,250 words,
   titled "New York Rents the Software It Should Own". Its dollar claims link to
   **Databook.NYC contract records** (SurveyMonkey $210k/renewal, the $57M citywide
-  Microsoft agreement) — keep new claims checkable that way. Two figures are still
-  unsourced assertions: "$2B/yr on technology" and "~30% is licensing".
+  Microsoft agreement) — keep new claims checkable that way. **Every figure on the
+  page now links to a record** (fixed 2026-08-14, see below).
 - **The open letter is addressed to OTI alone** and built on three asks: endorse
   the Principles, establish an OSPO, evaluate an open source alternative in every
   technology contract. **All Barcelona and first-in-the-Americas framing is gone
@@ -121,8 +121,8 @@ Twelve PRs. The shape of the site changed; the details are in `CLAUDE.md` under
   exempt under WCAG 2.5.8 and untouched.
 - **The fourth homepage card renders its favicon as a logo, not a photo**
   (`imageStyle: logo` in `content/home.md`): contained and centred on a tint
-  instead of a 100x100 square cover-cropped into a 560x160 band. Still a
-  placeholder — see Open work.
+  instead of a 100x100 square cover-cropped into a 560x160 band. **Confirmed as
+  the final treatment, not a placeholder** — see "Things that are true".
 - **Four CSS bugs fixed**, each with a general lesson now in `CLAUDE.md`: a global
   button reset out-specifying component rules (navy-on-navy tabs), `--outline` on a
   light background (an invisible button that read as a layout bug), Leaflet's
@@ -135,29 +135,30 @@ Nothing is blocking. In rough order of value:
 1. **Decide the CTFG directory question.** The map layer is live, so the open
    question about linking into the Civic Tech Field Guide while it is de-indexed
    pre-launch is current, not deferred. Hub task `168a959d`.
-2. **Source or soften two figures on `/crosswalk`** — "$2B/yr on technology" and
-   "~30% is licensing" are the only claims on that page without a link behind
-   them, and they sit beside two that DO link to Databook.NYC contract records.
-   Databook may be able to substantiate them directly.
-3. **Buy a photo for the fourth homepage card, or reuse one you own.** It still
-   shows the in-house favicon — now rendered deliberately as a centred logo on a
-   tint rather than a cover-cropped square, but a placeholder all the same.
-   **`public/images/success/tokyo.jpeg` is a paid-for Adobe Stock image sitting
-   unused** since the Tokyo case was removed; if a city photo suits, the licence
-   is already yours. Swap procedure is in `public/images/CREDITS.md`.
-4. **The roadmap doc needs a named ask.** `sarapis/open-source-by-default`
+2. **The roadmap doc needs a named ask.** `sarapis/open-source-by-default`
    explains a sequence but never says who should do what next.
-5. **Watch for the first real endorsement.** `published` defaults to false, so a
+3. **Watch for the first real endorsement.** `published` defaults to false, so a
    new signature needs ticking in the Payload admin before it reaches the wall.
-6. **A shared component package.** Token *values* are unified across wegov.nyc and
+4. **A shared component package.** Token *values* are unified across wegov.nyc and
    this site; the *implementations* — button, card, nav — are still separate. Hub
    task `7656df36` (Backburner).
-7. **Exposed keys in `wegovnyc_front`'s git history** — Hub task `51968fc0`. Lower
+5. **Exposed keys in `wegovnyc_front`'s git history** — Hub task `51968fc0`. Lower
    urgency after triage, but the purge needs coordinating because a fork keeps the
    blobs reachable.
 
-*(Struck 2026-08-14, later in the same day: Olivia's PR #12 merged — three org
-names aligned to their CTFG listings, with two of the three redirected to
+*(Struck 2026-08-14, last thing in the day: **the two unsourced `/crosswalk`
+figures**, replaced with the two citywide IT purchasing contracts they were
+almost certainly a garbled memory of — SHI $1.2B and CDW $800M, exactly $2B
+together, each linked to its Databook record. The same sentence in the **open
+letter** (`content/sign.md`) carried the identical claim and was fixed with it;
+the briefing had flagged only `/crosswalk`, so check both surfaces for any figure
+you change. The page's Microsoft Premier Support count went the other way — the
+records support **more** than was claimed, so "at least fifteen agencies … today"
+became "seventeen agencies have each bought their own", which is both tense-accurate
+(most of those contracts ended 2022–2024) and stronger. Also struck: **the fourth
+homepage card**, confirmed as a deliberate logo treatment rather than a photo
+awaiting purchase. Struck earlier the same
+day: Olivia's PR #12 merged — three org names aligned to their CTFG listings, with two of the three redirected to
 `content/principles.md` because the endorsers list had moved; her PR #15
 (site-wide dark mode) CLOSED as a product decision, with the reasoning recorded
 on the PR so it survives the branch; all 73 undersized card links raised from
