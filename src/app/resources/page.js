@@ -27,7 +27,7 @@ export default function ResourcesPage() {
     const doc = getContent('resources');
 
     return (
-        <div className="unnyc-pr">
+        <div className="unnyc-pr unnyc-resources">
             <HeaderHeightVar />
 
             <UnnycSectionNav items={doc.sectionNav} />

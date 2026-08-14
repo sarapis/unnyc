@@ -2,14 +2,21 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import UnnycIcon from './UnnycIcon';
 
 /**
  * UnnycNav — the standalone site's header.
  *
  * Replaces the CMS-driven WeGovNYC marketing navbar this site used before it
- * was split out: the links are static (no /global CMS call), there is no theme
- * switcher, and the five campaign paths are the whole nav. Collapses to a
- * hamburger drawer below 820px.
+ * was split out: the links are static (no /global CMS call), and the five
+ * campaign paths are the whole nav. Collapses to a hamburger drawer below
+ * 820px.
+ *
+ * Carries the dark-mode toggle. The actual theme is a `data-theme` attribute
+ * on <html> (set before paint in layout.js, see THEME_INIT_SCRIPT) — this
+ * component just reflects and flips it, syncing its own icon from the DOM on
+ * mount rather than assuming a value, since the server can't know the
+ * visitor's saved preference.
  */
 const LINKS = [
     { href: '/start', label: 'The Global Movement' },
@@ -23,6 +30,21 @@ const CTA = { href: '/campaign', label: 'Take Action' };
 export default function UnnycNav() {
     const pathname = usePathname();
     const [menuOpen, setMenuOpen] = useState(false);
+    // Starts 'light' to match the server-rendered markup, then syncs from the
+    // DOM on mount — THEME_INIT_SCRIPT (layout.js) has already set the real
+    // attribute by then, before first paint, so this never causes a flash.
+    const [theme, setTheme] = useState('light');
+
+    useEffect(() => {
+        setTheme(document.documentElement.getAttribute('data-theme') || 'light');
+    }, []);
+
+    function toggleTheme() {
+        const next = theme === 'dark' ? 'light' : 'dark';
+        setTheme(next);
+        document.documentElement.setAttribute('data-theme', next);
+        try { localStorage.setItem('unnyc-theme', next); } catch { /* private browsing, etc. */ }
+    }
 
     // Close the drawer on navigation.
     useEffect(() => { setMenuOpen(false); }, [pathname]);
@@ -45,45 +67,56 @@ export default function UnnycNav() {
                     <span className="unnyc-nav__logo-nyc">NYC</span>
                 </Link>
 
-                <button
-                    type="button"
-                    className={`unnyc-nav__toggle${menuOpen ? ' unnyc-nav__toggle--open' : ''}`}
-                    aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-                    aria-expanded={menuOpen}
-                    aria-controls="unnyc-nav-menu"
-                    onClick={() => setMenuOpen((o) => !o)}
-                >
-                    <span className="unnyc-nav__bar" />
-                    <span className="unnyc-nav__bar" />
-                    <span className="unnyc-nav__bar" />
-                </button>
-
-                <div
-                    id="unnyc-nav-menu"
-                    className={`unnyc-nav__menu${menuOpen ? ' unnyc-nav__menu--open' : ''}`}
-                >
-                    <ul className="unnyc-nav__links">
-                        {LINKS.map((l) => (
-                            <li key={l.href}>
-                                <Link
-                                    href={l.href}
-                                    className={`unnyc-nav__link${isActive(l.href) ? ' unnyc-nav__link--active' : ''}`}
-                                    aria-current={isActive(l.href) ? 'page' : undefined}
-                                    onClick={() => setMenuOpen(false)}
-                                >
-                                    {l.label}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-
-                    <Link
-                        href={CTA.href}
-                        className="unnyc-btn unnyc-btn--primary unnyc-nav__cta"
-                        onClick={() => setMenuOpen(false)}
+                <div className="unnyc-nav__actions">
+                    <button
+                        type="button"
+                        className="unnyc-nav__theme-toggle"
+                        aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                        onClick={toggleTheme}
                     >
-                        {CTA.label}
-                    </Link>
+                        <UnnycIcon name={theme === 'dark' ? 'sun' : 'moon'} size={20} />
+                    </button>
+
+                    <button
+                        type="button"
+                        className={`unnyc-nav__toggle${menuOpen ? ' unnyc-nav__toggle--open' : ''}`}
+                        aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+                        aria-expanded={menuOpen}
+                        aria-controls="unnyc-nav-menu"
+                        onClick={() => setMenuOpen((o) => !o)}
+                    >
+                        <span className="unnyc-nav__bar" />
+                        <span className="unnyc-nav__bar" />
+                        <span className="unnyc-nav__bar" />
+                    </button>
+
+                    <div
+                        id="unnyc-nav-menu"
+                        className={`unnyc-nav__menu${menuOpen ? ' unnyc-nav__menu--open' : ''}`}
+                    >
+                        <ul className="unnyc-nav__links">
+                            {LINKS.map((l) => (
+                                <li key={l.href}>
+                                    <Link
+                                        href={l.href}
+                                        className={`unnyc-nav__link${isActive(l.href) ? ' unnyc-nav__link--active' : ''}`}
+                                        aria-current={isActive(l.href) ? 'page' : undefined}
+                                        onClick={() => setMenuOpen(false)}
+                                    >
+                                        {l.label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+
+                        <Link
+                            href={CTA.href}
+                            className="unnyc-btn unnyc-btn--primary unnyc-nav__cta"
+                            onClick={() => setMenuOpen(false)}
+                        >
+                            {CTA.label}
+                        </Link>
+                    </div>
                 </div>
             </div>
         </header>

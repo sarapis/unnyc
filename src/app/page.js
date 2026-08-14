@@ -23,7 +23,9 @@ export default function UnnycPage() {
     const doc = getContent('home');
 
     return (
-        <div className="unnyc-pr">
+        // `unnyc-home` scopes dark-mode.css to just this page for now — see
+        // that file for why (other pages don't have dark styling yet).
+        <div className="unnyc-pr unnyc-home">
             <HeaderHeightVar />
             <PrimerHero hero={doc.hero} />
             <UnnycPathCards paths={doc.paths} />

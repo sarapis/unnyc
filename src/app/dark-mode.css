@@ -1,0 +1,709 @@
+/* ============================================================================
+   UNNYC — Dark mode
+   ----------------------------------------------------------------------------
+   Toggled by UnnycNav (the sun/moon button in the top bar), which flips
+   `data-theme="dark"|"light"` on <html>. THEME_INIT_SCRIPT in layout.js sets
+   that attribute before first paint (reading localStorage, falling back to
+   the OS preference), so there's no flash of the wrong theme.
+
+   COVERAGE: every page except the two "printable document" pages
+   (/start/principles and /campaign/endorse/document, wrapper `.unnyc-doc-wrap`)
+   — those are deliberately styled to look like paper regardless of site
+   theme, same as a PDF would be, so they're excluded on purpose, not an
+   oversight. The embedded Leaflet map's own tiles/popups on /start are also
+   unchanged (a genuine dark tile layer is a separate, bigger effort); only
+   its wrapper/legend chrome goes dark here.
+
+   Marker classes per page (added to that page's own root wrapper div):
+     /                          .unnyc-home
+     /start                     .unnyc-start
+     /crosswalk                 .unnyc-crosswalk
+     /success                   .unnyc-success       (pre-existing class)
+     /resources                 .unnyc-resources
+     /resources/guide           .unnyc-guide          (pre-existing class)
+     /campaign, /campaign/sign,
+     /campaign/endorse, /contact .unnyc-cmp           (pre-existing, shared)
+
+   Shared unnyc.css components (buttons, .unnyc-section, policy cards, map
+   chrome) are scoped once under `.unnyc-pr` — every page above except the
+   campaign family renders `.unnyc-pr` as its own wrapper class (verified: the
+   two printable pages use `.unnyc-doc-wrap` instead, never `.unnyc-pr`, so
+   this doesn't leak into them) — plus `.unnyc-cmp` for the campaign family,
+   which uses several of the same shared button variants.
+
+   Everything below is deliberately NOT a blanket redefinition of the shared
+   --wg-* semantic tokens: those tokens do double duty (e.g. --wg-brand is
+   both "the dark navy background" on chrome like the hero AND "dark navy
+   heading text" on light cards), so reassigning them would also repaint
+   components that were never meant to change. Each dark-mode rule below sets
+   literal colors (mostly existing reference/semantic tokens used in a
+   different role — e.g. --wg-text-inverse, meant for text on a dark brand
+   surface, reused here for card headings on a dark card) rather than
+   touching the shared tokens themselves.
+
+   PALETTE (kept consistent everywhere below — don't invent new shades):
+     page background            --db-gray-900   (#171717) — neutral, not navy.
+     card / box background      --db-gray-800   (#2d3239) — one reference
+       step lighter than the page for visible elevation; also neutral, not
+       navy — cards use the same shade whether their section is
+       "alt"-striped or not in dark mode (see the note above
+       .unnyc-success__case--alt below for why); the 1px light border still
+       separates a card from an alt section visually. Accent colors (gold,
+       UN-blue) still carry all the "brand color" weight against this
+       grayscale backdrop — see the accent/link/label rows below.
+     border                     rgba(255,255,255,.12)
+     hover shadow (was a navy-tinted shadow — invisible on a dark backdrop)
+                                0 12px 40px rgba(0,0,0,.35)
+     heading / title text       var(--wg-text-inverse)   (white)
+     body text                  var(--wg-text-on-brand)  (#eef3f9)
+     secondary text             rgba(238,243,249,.72)
+     muted / label text         rgba(238,243,249,.5)
+     link / arrow accent (was --wg-accent-strong, tuned for light surfaces)
+                                var(--wg-accent-soft)        (light UN-blue)
+     gold label/eyebrow text (was --wg-accent-warm-dark, too dark here)
+                                var(--wg-accent-warm-light)
+
+   When adding a new page's dark mode: give that page's own wrapper a marker
+   class (as / does with `unnyc-home`) unless it already has one, then add
+   rules here scoped under `[data-theme="dark"] .your-marker-class`, reusing
+   the palette above. Don't add another blanket `[data-theme="dark"]
+   .unnyc-page { ... }` rule — that's exactly the cross-page leakage this
+   file's structure is designed to avoid.
+
+   CONTRAST: chosen pairs clear WCAG AA (4.5:1 body text, 3:1 UI/large text)
+   against --db-gray-900 (page) / --db-gray-800 (cards) — both extremely dark,
+   so ratios are comfortably similar either way —
+     --wg-text-inverse / --wg-text-on-brand (near-white):        ~14:1 / ~13:1
+     rgba(238,243,249,.72) / rgba(238,243,249,.5) (secondary/muted): ~9:1 / ~6:1
+     --wg-accent-warm / --wg-accent-warm-light (gold) / --wg-accent-soft (blue):
+       ~6:1 / ~8:1 / ~5:1
+   all comfortably clear both thresholds.
+   ========================================================================== */
+
+@layer unnyc {
+
+  /* Global, low-risk: only affects the <body> fallback color visible during
+     mobile overscroll bounce or if a page is shorter than the viewport — it
+     does not touch any page's actual content colors, so it's safe ahead of
+     per-page rollout. */
+  html[data-theme='dark'] body {
+    background: var(--db-gray-900);
+  }
+
+  /* --- Homepage (/) --------------------------------------------------- */
+
+  [data-theme='dark'] .unnyc-home {
+    background: var(--db-gray-900);
+    color: var(--wg-text-on-brand);
+  }
+
+  /* PrimerHero needs no dark rules: .unnyc-hero__bg is always the dark brand
+     navy gradient (--wg-brand-deep/--wg-brand/--wg-brand-light), and its text
+     is already --wg-text-inverse / white-on-brand — it doesn't change with
+     the page theme today, so there's nothing to override here. */
+
+  /* Path cards: light surface -> dark surface, one reference step lighter
+     than the page background for elevation instead of the light-mode shadow
+     (a navy-tinted shadow doesn't read against a dark backdrop). */
+  [data-theme='dark'] .unnyc-home .unnyc-pr-path {
+    background: var(--db-gray-800);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: none;
+  }
+
+  [data-theme='dark'] .unnyc-home .unnyc-pr-path:hover {
+    border-color: var(--wg-accent-warm);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  [data-theme='dark'] .unnyc-home .unnyc-pr-path__question {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-home .unnyc-pr-path__answer {
+    color: var(--wg-text-on-brand);
+  }
+
+  /* --wg-accent-strong (UN-blue-dark) is tuned for light surfaces; on a dark
+     card it loses too much contrast, so this swaps to the lighter step in
+     the same UN-blue family instead of a different color entirely. */
+  [data-theme='dark'] .unnyc-home .unnyc-pr-path__arrow {
+    color: var(--wg-accent-soft);
+  }
+
+  /* ======================================================================
+     Shared components (unnyc.css) — scoped to .unnyc-pr (every non-campaign
+     page above) and .unnyc-cmp (the campaign family), so this block doesn't
+     need repeating per page.
+     ====================================================================== */
+
+  [data-theme='dark'] .unnyc-pr .unnyc-section,
+  [data-theme='dark'] .unnyc-pr .unnyc-section--alt {
+    background: var(--db-gray-900);
+  }
+
+  [data-theme='dark'] .unnyc-pr .unnyc-section__title {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-pr .unnyc-section__desc {
+    color: rgba(238, 243, 249, 0.72);
+  }
+
+  /* outline-dark is the one button variant tuned for a LIGHT surface (navy
+     border/text, hover fills navy) — everything else already targets a dark
+     surface and is unaffected by the page theme. */
+  [data-theme='dark'] .unnyc-pr .unnyc-btn--outline-dark,
+  [data-theme='dark'] .unnyc-cmp .unnyc-btn--outline-dark {
+    border-color: var(--wg-text-inverse);
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-pr .unnyc-btn--outline-dark:hover,
+  [data-theme='dark'] .unnyc-cmp .unnyc-btn--outline-dark:hover {
+    background: var(--wg-text-inverse);
+    color: var(--db-gray-900);
+  }
+
+  /* Several footers re-color the (otherwise light-on-dark) --outline variant
+     to navy-on-light for their light-mode surface — same fix as
+     outline-dark above, just via a different class combination. */
+  [data-theme='dark'] .unnyc-pr .unnyc-pr-cw__foot-ctas .unnyc-btn--outline,
+  [data-theme='dark'] .unnyc-pr .unnyc-success__foot-ctas .unnyc-btn--outline,
+  [data-theme='dark'] .unnyc-pr .unnyc-resources__foot-links .unnyc-btn--outline {
+    color: var(--wg-text-inverse);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  [data-theme='dark'] .unnyc-pr .unnyc-policy__card {
+    background: var(--db-gray-800);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-pr .unnyc-policy__card:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  [data-theme='dark'] .unnyc-pr .unnyc-policy__card-icon {
+    background: var(--db-gray-900);
+  }
+
+  [data-theme='dark'] .unnyc-pr .unnyc-policy__card-title,
+  [data-theme='dark'] .unnyc-pr .unnyc-policy__framework-label {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-pr .unnyc-policy__framework p {
+    color: rgba(238, 243, 249, 0.72);
+  }
+
+  /* Map wrapper/legend chrome only — the Leaflet tiles and popups underneath
+     stay their own (light) style; a true dark tile layer is a separate,
+     bigger effort than this pass. */
+  [data-theme='dark'] .unnyc-pr .unnyc-map-legend {
+    background: var(--db-gray-800);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-pr .unnyc-map-legend-item {
+    color: rgba(238, 243, 249, 0.72);
+  }
+
+  [data-theme='dark'] .unnyc-pr .unnyc-map-legend-item:hover {
+    background: var(--db-gray-900);
+  }
+
+  [data-theme='dark'] .unnyc-pr .unnyc-map-legend-label {
+    color: rgba(238, 243, 249, 0.72);
+  }
+
+  /* ======================================================================
+     /start — .unnyc-start
+     ====================================================================== */
+
+  /* Base page background — sections with no explicit light-mode background
+     of their own (e.g. .unnyc-pr-cw__section, .unnyc-guide__section) inherit
+     whatever sits underneath them, so without this they'd fall through to
+     .unnyc-page's default white regardless of the rules below. */
+  [data-theme='dark'] .unnyc-start {
+    background: var(--db-gray-900);
+    color: var(--wg-text-on-brand);
+  }
+
+  [data-theme='dark'] .unnyc-start .unnyc-start__header {
+    background: var(--db-gray-900);
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-start .unnyc-start__title {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-start .unnyc-start__lede,
+  [data-theme='dark'] .unnyc-start .unnyc-start-principles__intro {
+    color: rgba(238, 243, 249, 0.72);
+  }
+
+  [data-theme='dark'] .unnyc-start .unnyc-start__basics-link {
+    color: rgba(238, 243, 249, 0.5);
+  }
+
+  [data-theme='dark'] .unnyc-start .unnyc-start-principles__group-title,
+  [data-theme='dark'] .unnyc-start .unnyc-start-principle__title,
+  [data-theme='dark'] .unnyc-start .unnyc-start__next p {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-start .unnyc-start-principle {
+    background: var(--db-gray-800);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-start .unnyc-start-principle__desc {
+    color: rgba(238, 243, 249, 0.72);
+  }
+
+  /* Vocabulary/concept cards (.unnyc-pr-concept) and the two colour-coded
+     callouts inside them. */
+  [data-theme='dark'] .unnyc-start .unnyc-pr-concept {
+    background: var(--db-gray-800);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-start .unnyc-pr-concept__term {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-start .unnyc-pr-concept__def {
+    color: rgba(238, 243, 249, 0.72);
+  }
+
+  [data-theme='dark'] .unnyc-start .unnyc-pr-concept__nyc {
+    color: rgba(238, 243, 249, 0.85);
+    background: rgba(75, 146, 219, 0.15);
+  }
+
+  /* Timeline text + endorsers wall */
+  [data-theme='dark'] .unnyc-start .unnyc-pr-timeline__title {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-start .unnyc-pr-timeline__desc,
+  [data-theme='dark'] .unnyc-start .unnyc-pr-mn__lede,
+  [data-theme='dark'] .unnyc-start .unnyc-pr-map__source {
+    color: rgba(238, 243, 249, 0.72);
+  }
+
+  [data-theme='dark'] .unnyc-start .unnyc-pr-mn__subhead {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-start .unnyc-pr-endorsers__org,
+  [data-theme='dark'] .unnyc-start .unnyc-pr-mn__barcelona {
+    background: var(--db-gray-800);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-start .unnyc-pr-endorsers__org a {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-start .unnyc-pr-mn__barcelona p {
+    color: rgba(238, 243, 249, 0.85);
+  }
+
+  /* ======================================================================
+     /crosswalk — .unnyc-crosswalk
+     ====================================================================== */
+
+  [data-theme='dark'] .unnyc-crosswalk {
+    background: var(--db-gray-900);
+    color: var(--wg-text-on-brand);
+  }
+
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-cw__header {
+    background: var(--db-gray-900);
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-cw__header-title,
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-cw__title,
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-why__heading,
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-cw__closing-title,
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-cw__foot p {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-cw__lede,
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-why p,
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-cw__part p,
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-cw__closing p {
+    color: rgba(238, 243, 249, 0.85);
+  }
+
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-cw__section,
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-why {
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-cw__part-label {
+    color: rgba(238, 243, 249, 0.5);
+  }
+
+  /* The pull-quote and the Gap box both keep their gold-tinted treatment —
+     the tint reads fine over navy, only the opaque endpoints need to change. */
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-why__quote {
+    background: var(--db-gray-800);
+  }
+
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-why__quote p {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-why__quote cite {
+    color: rgba(238, 243, 249, 0.72);
+  }
+
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-cw__part--gap {
+    background: rgba(212, 168, 67, 0.14);
+  }
+
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-cw__part--gap p {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-cw__part-label--gap {
+    color: var(--wg-accent-warm-light);
+  }
+
+  [data-theme='dark'] .unnyc-crosswalk .unnyc-pr-cw__closing {
+    background: var(--db-gray-900);
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+
+  /* Glossary hover tooltip (GlossaryTerm.js) is already dark (--wg-brand-deep
+     bg, --wg-text-inverse text) — theme-invariant, no rule needed here. */
+
+  /* ======================================================================
+     /success — .unnyc-success (pre-existing wrapper class)
+     ====================================================================== */
+
+  [data-theme='dark'] .unnyc-success {
+    background: var(--db-gray-900);
+    color: var(--wg-text-on-brand);
+  }
+
+  [data-theme='dark'] .unnyc-success .unnyc-success__header {
+    background: var(--db-gray-900);
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-success .unnyc-success__title,
+  [data-theme='dark'] .unnyc-success .unnyc-success__foot p {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-success .unnyc-success__lede {
+    color: rgba(238, 243, 249, 0.72);
+  }
+
+  [data-theme='dark'] .unnyc-success .unnyc-success__case {
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+
+  /* Cards use the same gray-800 in both the default and "alt" cases in dark
+     mode (see the PALETTE note up top) — the alt stripe itself just becomes
+     the ordinary dark page background instead of a second distinct shade. */
+  [data-theme='dark'] .unnyc-success .unnyc-success__case--alt {
+    background: var(--db-gray-900);
+  }
+
+  /* The hero photo's scrim was built to fade to a LIGHT opaque zone so DARK
+     text could sit on it (see success.css). In dark mode the text goes back
+     to white-on-photo, so the scrim fades to dark (the page's neutral gray,
+     rgb(23,23,23) = --db-gray-900) instead of white — otherwise the fade-out
+     itself would paint a bright patch on the photo. Kept navy-tinted through
+     the early/mid stops on purpose: a photo dissolving into a flat gray reads
+     as murky, where a hint of navy in the transition still feels intentional;
+     only the final opaque stop needs to actually match the page background. */
+  [data-theme='dark'] .unnyc-success .unnyc-success__case-hero-scrim {
+    background: linear-gradient(
+      270deg,
+      rgba(11, 31, 58, 0) 0%,
+      rgba(11, 31, 58, 0.15) 15%,
+      rgba(11, 31, 58, 0.4) 30%,
+      rgba(11, 31, 58, 0.7) 45%,
+      rgba(20, 27, 34, 0.9) 60%,
+      var(--db-gray-900) 80%
+    );
+  }
+
+  [data-theme='dark'] .unnyc-success .unnyc-success__case--alt .unnyc-success__case-hero-scrim {
+    background: linear-gradient(
+      270deg,
+      rgba(11, 31, 58, 0) 0%,
+      rgba(11, 31, 58, 0.15) 15%,
+      rgba(11, 31, 58, 0.4) 30%,
+      rgba(11, 31, 58, 0.7) 45%,
+      rgba(20, 27, 34, 0.9) 60%,
+      var(--db-gray-900) 80%
+    );
+  }
+
+  [data-theme='dark'] .unnyc-success .unnyc-success__case-hero .unnyc-success__case-title,
+  [data-theme='dark'] .unnyc-success .unnyc-success__case-hero p {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-success .unnyc-success__case-title {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-success .unnyc-success__case p {
+    color: rgba(238, 243, 249, 0.85);
+  }
+
+  [data-theme='dark'] .unnyc-success .unnyc-success__stat {
+    background: var(--db-gray-800);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-success .unnyc-success__stat-number {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-success .unnyc-success__stat-label,
+  [data-theme='dark'] .unnyc-success .unnyc-success__sources {
+    color: rgba(238, 243, 249, 0.5);
+  }
+
+  /* Case-study carousel ("Governments Doing This Now", PrimerCases) — lives
+     only on /success, not /crosswalk, despite the shared primer.css class
+     names. */
+  [data-theme='dark'] .unnyc-success .unnyc-pr-case {
+    background: var(--db-gray-800);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-success .unnyc-pr-case__image-wrap {
+    background: var(--db-gray-900);
+  }
+
+  [data-theme='dark'] .unnyc-success .unnyc-pr-case__headline {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-success .unnyc-pr-case__body {
+    color: rgba(238, 243, 249, 0.72);
+  }
+
+  [data-theme='dark'] .unnyc-success .unnyc-pr-case__lesson {
+    color: rgba(238, 243, 249, 0.85);
+    background: rgba(212, 168, 67, 0.14);
+  }
+
+  /* ======================================================================
+     /resources — .unnyc-resources
+     ====================================================================== */
+
+  [data-theme='dark'] .unnyc-resources {
+    background: var(--db-gray-900);
+    color: var(--wg-text-on-brand);
+  }
+
+  [data-theme='dark'] .unnyc-resources .unnyc-resources__foot p {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-resources .unnyc-pr-resources__group,
+  [data-theme='dark'] .unnyc-resources .unnyc-pr-contact,
+  [data-theme='dark'] .unnyc-resources .unnyc-pr-ospo__card {
+    background: var(--db-gray-800);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-resources .unnyc-pr-resources__group-title,
+  [data-theme='dark'] .unnyc-resources .unnyc-pr-contact__org,
+  [data-theme='dark'] .unnyc-resources .unnyc-pr-ospo__name {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-resources .unnyc-pr-resources__links p,
+  [data-theme='dark'] .unnyc-resources .unnyc-pr-contact__role,
+  [data-theme='dark'] .unnyc-resources .unnyc-pr-contact__helps,
+  [data-theme='dark'] .unnyc-resources .unnyc-pr-ospo__desc,
+  [data-theme='dark'] .unnyc-resources .unnyc-pr-ospo__source,
+  [data-theme='dark'] .unnyc-resources .unnyc-pr-ospo__intro,
+  [data-theme='dark'] .unnyc-resources .unnyc-pr-ospo__diagram figcaption,
+  [data-theme='dark'] .unnyc-resources .unnyc-pr-contacts__group-title,
+  [data-theme='dark'] .unnyc-resources .unnyc-pr-contacts__note {
+    color: rgba(238, 243, 249, 0.72);
+  }
+
+  [data-theme='dark'] .unnyc-resources .unnyc-pr-ospo__diagram img {
+    background: var(--db-gray-800);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  /* ======================================================================
+     /resources/guide — .unnyc-guide (pre-existing wrapper class)
+     ====================================================================== */
+
+  [data-theme='dark'] .unnyc-guide {
+    background: var(--db-gray-900);
+    color: var(--wg-text-on-brand);
+  }
+
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__header {
+    background: var(--db-gray-900);
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__title,
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__section-title {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__subtitle,
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__prose p,
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__prose li,
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__foot p {
+    color: rgba(238, 243, 249, 0.85);
+  }
+
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__meta,
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__block-label {
+    color: rgba(238, 243, 249, 0.5);
+  }
+
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__section {
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__block {
+    border-left-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__badge {
+    background: var(--db-gray-800);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: var(--wg-accent-warm-light);
+  }
+
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__prose table,
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__prose th,
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__prose td {
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__prose th {
+    background: var(--db-gray-800);
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-guide .unnyc-guide__foot {
+    border-top-color: rgba(255, 255, 255, 0.12);
+  }
+
+  /* ======================================================================
+     Campaign family — .unnyc-cmp (/campaign, /campaign/sign,
+     /campaign/endorse, /contact — pre-existing, shared wrapper class)
+
+     The sign/endorse FORM PANEL (.unnyc-cmp-sign, .unnyc-cmp-form) needs no
+     rules: it's already a dark navy gradient with white-on-translucent-white
+     styling, same as the hero — theme-invariant by design already.
+     ====================================================================== */
+
+  [data-theme='dark'] .unnyc-cmp {
+    background: var(--db-gray-900);
+    color: var(--wg-text-on-brand);
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-chooser__header,
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-header {
+    background: var(--db-gray-900);
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+
+  /* "Ready to Act?" (/campaign) reuses UnnycPathCards — the same component
+     and .unnyc-pr-path class as the homepage — but on .unnyc-cmp instead of
+     .unnyc-pr, so the homepage's dark rules for it don't reach here. */
+  [data-theme='dark'] .unnyc-cmp .unnyc-pr-path {
+    background: var(--db-gray-800);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: none;
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-pr-path:hover {
+    border-color: var(--wg-accent-warm);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-pr-path__question {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-pr-path__answer {
+    color: var(--wg-text-on-brand);
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-pr-path__arrow {
+    color: var(--wg-accent-soft);
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-chooser__title,
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-header__title,
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-letter h2,
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-wall__title {
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-chooser__lede,
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-header__lede {
+    color: rgba(238, 243, 249, 0.72);
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-header__meta {
+    background: var(--db-gray-800);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-header__meta dd {
+    color: rgba(238, 243, 249, 0.72);
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-header__meta dt {
+    color: rgba(238, 243, 249, 0.5);
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-letter p,
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-letter li {
+    color: rgba(238, 243, 249, 0.85);
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-letter__salutation {
+    color: rgba(238, 243, 249, 0.6);
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-letter__refs {
+    background: var(--db-gray-800);
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-letter__refs h3 {
+    color: rgba(238, 243, 249, 0.5);
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-wall__org {
+    background: var(--db-gray-800);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: var(--wg-text-inverse);
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-wall__people li {
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+
+  [data-theme='dark'] .unnyc-cmp .unnyc-cmp-wall__people span {
+    color: rgba(238, 243, 249, 0.72);
+  }
+}

@@ -220,6 +220,38 @@
     white-space: nowrap;
   }
 
+  /* Wraps the theme toggle, hamburger, and menu so .unnyc-nav__inner keeps
+     exactly two space-between items (logo, this) at every width — adding the
+     toggle as a third top-level flex child would throw off that spacing. */
+  .unnyc-nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  /* Dark-mode toggle — visible at every width, unlike the hamburger. Its own
+     look doesn't change with the theme (nav is always the dark brand navy);
+     only the icon it shows changes, driven by UnnycNav's React state. */
+  .unnyc-nav__theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: var(--wg-radius-pill);
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .unnyc-nav__theme-toggle:hover {
+    color: var(--wg-accent-warm-light);
+    border-color: var(--wg-accent-warm);
+  }
+
   /* Hamburger — hidden on desktop */
   .unnyc-nav__toggle {
     display: none;

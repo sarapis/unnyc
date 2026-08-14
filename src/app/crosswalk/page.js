@@ -38,7 +38,7 @@ export default function CrosswalkPage() {
     const { sections } = doc;
 
     return (
-        <div className="unnyc-pr">
+        <div className="unnyc-pr unnyc-crosswalk">
             <HeaderHeightVar />
 
             {/* Header */}

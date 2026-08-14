@@ -32,7 +32,7 @@ export default function StartPage() {
     const { principlesDoc } = getContent('principles');
 
     return (
-        <div className="unnyc-pr">
+        <div className="unnyc-pr unnyc-start">
             <HeaderHeightVar />
 
             <UnnycSectionNav items={doc.sectionNav} />

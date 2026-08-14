@@ -1,7 +1,21 @@
 import './base.css';
 import './unnyc.css';
+import './dark-mode.css';
 import UnnycNav from '@/components/unnyc/UnnycNav';
 import UnnycFooter from '@/components/unnyc/UnnycFooter';
+
+/** Runs before paint so the toggle's saved choice applies with no flash of
+ * the wrong theme. Defaults to the OS preference on a first visit (no saved
+ * choice yet); the toggle's own choice always wins after that. */
+const THEME_INIT_SCRIPT = `
+(function () {
+  try {
+    var saved = localStorage.getItem('unnyc-theme');
+    var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {}
+})();
+`;
 
 export const metadata = {
     metadataBase: new URL('https://unnyc.wegov.nyc'),
@@ -24,11 +38,19 @@ export const metadata = {
  * Everything lives inside `.unnyc-page`, which is where unnyc.css defines the
  * --unnyc-* palette/spacing/type tokens — so the nav and footer pick them up
  * too. This replaces the marketing site's root layout: no CMS `/global` fetch
- * for nav/footer, no ThemeProvider, no theme switcher.
+ * for nav/footer, no ThemeProvider.
+ *
+ * Dark mode: `data-theme` on <html> (read by dark-mode.css), toggled by
+ * UnnycNav and set here before paint via THEME_INIT_SCRIPT so there's no
+ * flash of the wrong theme. Rolling out page by page — see dark-mode.css
+ * for which pages currently have dark rules (just `/` so far).
  */
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
+            <head>
+                <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+            </head>
             <body>
                 <div className="unnyc-page wg-unnyc" data-brand="unnyc">
                     <UnnycNav />
