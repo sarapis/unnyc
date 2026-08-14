@@ -88,4 +88,112 @@
   .unnyc-principles__doc-link a {
     color: var(--wg-accent-strong);
   }
+
+  /* ------------------------------------------------------------------
+     THE EIGHT-PRINCIPLE GRID
+     Moved here from start.css on 2026-08-14. The markup moved to this
+     page in the 2026-08-13 restructure but the stylesheet did not, and
+     /principles never imported start.css — so every one of these rules
+     was dead for a day: `display: grid` never applied, and all eight
+     cards rendered as full-width stacked blocks. It read as a deliberate
+     list only because each card still carried a description; compressing
+     the grid removed those and made the missing layout obvious.
+
+     /start no longer renders a single one of these classes, so this is a
+     MOVE, not a copy. The `unnyc-start-` prefix is now a misnomer kept
+     deliberately: renaming it is a separate change, and a rename that
+     silently misses a selector reintroduces exactly this bug.
+
+     Column counts come from auto-fit, not hardcoded per group: 3 items
+     give three columns, 2 give two, and the lead card sits outside the
+     grid at full width.
+     ------------------------------------------------------------------ */
+
+  .unnyc-start-principles__intro {
+    font-size: var(--wg-fs-lg);
+    color: var(--wg-text-secondary);
+    line-height: 1.6;
+    margin: 0 0 var(--wg-sp-6);
+  }
+
+  .unnyc-start-principles__intro--committed {
+    margin-top: var(--wg-sp-10);
+  }
+
+  .unnyc-start-principles__group {
+    margin-top: var(--wg-sp-8);
+  }
+
+  .unnyc-start-principles__group-title {
+    font-family: var(--wg-font-display);
+    font-weight: 400;
+    font-size: var(--wg-fs-lg);
+    color: var(--wg-brand);
+    margin: 0 0 var(--wg-sp-5);
+  }
+
+  .unnyc-start-principles__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--wg-sp-10);
+  }
+
+  .unnyc-start-principles__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--wg-sp-5);
+  }
+
+  .unnyc-start-principle {
+    background: var(--wg-surface);
+    border: 1px solid var(--wg-border);
+    border-radius: var(--wg-radius-md);
+    padding: var(--wg-sp-6);
+    box-shadow: var(--wg-shadow-sm);
+  }
+
+  .unnyc-start-principle--primary {
+    border-left: 4px solid var(--wg-accent-warm);
+    margin-bottom: var(--wg-sp-2);
+  }
+
+  .unnyc-start-principle--primary .unnyc-start-principle__title {
+    font-size: var(--wg-fs-xl);
+  }
+
+  .unnyc-start-principle--primary .unnyc-start-principle__desc + .unnyc-start-principle__desc {
+    margin-top: var(--wg-sp-3);
+  }
+
+  /* Inline SVG (UnnycIcon) — `color` drives the stroke, so no object-fit or
+     object-position needed; the box is the artwork now. UN blue, matching the
+     crosswalk's treatment of the same eight icons. */
+  .unnyc-start-principle__icon {
+    display: block;
+    width: 56px;
+    height: 56px;
+    margin-bottom: var(--wg-sp-3);
+    color: var(--wg-accent);
+  }
+
+  .unnyc-start-principle__title {
+    font-family: var(--wg-font-body);
+    font-size: var(--wg-fs-base);
+    font-weight: 700;
+    color: var(--wg-brand);
+    margin: 0 0 var(--wg-sp-2);
+  }
+
+  .unnyc-start-principle__desc {
+    font-size: var(--wg-fs-sm);
+    color: var(--wg-text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  @media (max-width: 640px) {
+    .unnyc-start-principles__grid {
+      grid-template-columns: 1fr;
+    }
+  }
 }
