@@ -14,6 +14,12 @@ lede: "Adopted by the UN’s Digital and Technology Network in 2025, these eight
 # renders either key if it comes back, so restoring one is a content edit.
 detailTitle: "What each principle would mean for New York"
 detailLede: "The same eight, paired with the city’s own reality — what NYC already does, and what endorsement would change."
+# Copy for the sticky side rail beside the detail sections
+# (UnnycPrinciplesRail). The rail's LABELS are not here — it uses each
+# principle's `titleCanonical`, so there is no ninth wording variant to keep
+# in step. Only the heading and the accessible name live here.
+railTitle: "The eight"
+railLabel: "The eight principles"
 # The endorsing organizations. They close this page rather than sitting under
 # /start's map, because they endorsed *these* principles (moved here from
 # content/start.md on 2026-08-14).

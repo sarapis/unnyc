@@ -4,6 +4,7 @@ import '../primer.css';
 import './principles.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import UnnycEndorserDirectory from '@/components/unnyc/primer/UnnycEndorserDirectory';
+import UnnycPrinciplesRail from '@/components/unnyc/UnnycPrinciplesRail';
 import { getContent, getUnEndorsers, inlineMd } from '@/lib/content';
 
 // Read per call, NOT at module scope — see the note in crosswalk/page.js.
@@ -128,6 +129,24 @@ export default function PrinciplesPage() {
                 </div>
             </section>
 
+            {/* The rail is a SIBLING of the sections, absolutely positioned into
+                space principles.css makes by narrowing the float container —
+                these sections are FLOATS (56% prose / 40% gap panel), not a
+                grid, so there was no empty gutter to drop it into. Its sticky
+                inner element is bounded by this wrapper, which is what stops it
+                at the end of the eight rather than following you down into the
+                endorser directory. */}
+            <div className="unnyc-principles__detail">
+            <UnnycPrinciplesRail
+                items={detailOrder.map((p) => ({
+                    id: p.slug,
+                    n: p.n,
+                    label: p.titleCanonical || p.title,
+                }))}
+                title={doc.railTitle}
+                ariaLabel={doc.railLabel}
+            />
+
             <div className="unnyc-pr-cw">
                 {detailOrder.map((p) => {
                     const section = sections[p.slug];
@@ -161,6 +180,7 @@ export default function PrinciplesPage() {
                         </section>
                     );
                 })}
+            </div>
             </div>
 
             {/* The organizations that endorsed the Principles. The list is DATA
