@@ -424,6 +424,19 @@
 
   .unnyc-principles__detail {
     position: relative;
+    /* One source for the rail's width and the room made for it, so the two
+       cannot drift apart and leave the rail touching the gap panel — which is
+       what the first pass did: both edges landed on 984px with nothing between
+       them.
+
+       The offset is rail + ITS OWN CONTAINER PADDING + gutter. That middle term
+       is easy to miss: .unnyc-principles__rail carries `padding: 0 var(--wg-sp-6)`
+       to line up with .unnyc-container, so the rail's box stops 24px short of
+       the 1200px edge. Leaving it out of the sum costs exactly 24px of gutter —
+       asking for 32px produced 8px. */
+    --rail-w: 232px;
+    --rail-gutter: var(--wg-sp-8);
+    --rail-offset: calc(var(--rail-w) + var(--wg-sp-6) + var(--rail-gutter));
   }
 
   .unnyc-principles__rail {
@@ -434,7 +447,7 @@
     /* Make the room. Scoped to this wrapper so /crosswalk and anything
        else reusing .unnyc-pr-cw is untouched. */
     .unnyc-principles__detail .unnyc-pr-cw__section .unnyc-container--narrow {
-      padding-right: 256px;
+      padding-right: var(--rail-offset);
     }
 
     /* Spans the whole detail block so the sticky child is bounded by it —
@@ -460,7 +473,7 @@
          ever added, rather than silently sitting under it. */
       top: calc(var(--pr-header-h, 68px) + var(--pr-subnav-h, 0px) + var(--wg-sp-10));
       margin-left: auto;
-      width: 232px;
+      width: var(--rail-w);
       pointer-events: auto;
     }
   }
