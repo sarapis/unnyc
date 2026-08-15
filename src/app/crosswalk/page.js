@@ -1,7 +1,22 @@
 import Link from 'next/link';
 import '../primer.css';
+import './crosswalk.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
+import UnnycPrinciplesRail from '@/components/unnyc/UnnycPrinciplesRail';
 import { getContent, inlineMd } from '@/lib/content';
+
+/** Each reason heading is `### N. Title` (see content/crosswalk.md); split that
+ * into the rail's {id, n, label} shape once, up front, so both the rail and
+ * the block below it stay in sync from one source instead of two. Falls back
+ * to the raw label if a heading is ever written without a leading number. */
+function reasonToRailItem(block, i) {
+    const m = block.label.match(/^(\d+)\.\s*(.+)$/);
+    return {
+        id: m ? `reason-${m[1]}` : `reason-${i + 1}`,
+        n: m ? m[1] : i + 1,
+        label: m ? m[2] : block.label,
+    };
+}
 
 // Read per call, NOT once at module scope: content/crosswalk.md isn't a module
 // dependency, so a module-level `const doc = getContent(...)` is evaluated once
@@ -40,6 +55,7 @@ export async function generateMetadata() {
 export default function CrosswalkPage() {
     const doc = getContent('crosswalk');
     const { sections } = doc;
+    const railItems = sections.intro.blocks.map(reasonToRailItem);
 
     return (
         <div className="unnyc-pr">
@@ -64,20 +80,38 @@ export default function CrosswalkPage() {
             <section className="unnyc-pr-why">
                 <div className="unnyc-container unnyc-container--narrow">
                     <div dangerouslySetInnerHTML={{ __html: sections.intro.html }} />
-                    {sections.intro.blocks.map((b) => {
-                        // Splits the trailing pull-quote (if any) out of the prose so
-                        // the two can float side by side instead of stacking.
-                        const match = b.html.match(/^([\s\S]*?)(<blockquote[\s\S]*<\/blockquote>)\s*$/);
-                        const prose = match ? match[1] : b.html;
-                        const quote = match ? match[2] : null;
-                        return (
-                            <div key={b.label} className="unnyc-pr-why__block">
-                                <h2 className="unnyc-pr-why__heading">{b.label}</h2>
-                                <div className="unnyc-pr-why__prose" dangerouslySetInnerHTML={{ __html: prose }} />
-                                {quote && <div dangerouslySetInnerHTML={{ __html: quote }} />}
-                            </div>
-                        );
-                    })}
+
+                    {/* The rail is a SIBLING of the six blocks, absolutely positioned
+                        into room this wrapper's padding-right makes above 1200px —
+                        see crosswalk.css. Its sticky inner element is bounded by
+                        this wrapper, which is what parks it at reason 6 instead of
+                        following the reader into the foot CTAs. Reuses the same
+                        UnnycPrinciplesRail component /principles uses; it is
+                        generic (an {id, n, label} list), not principles-specific. */}
+                    <div className="unnyc-pr-why__detail">
+                        <UnnycPrinciplesRail
+                            items={railItems}
+                            title="The Six Reasons"
+                            ariaLabel="Jump to a reason"
+                        />
+
+                        <div className="unnyc-pr-why__blocks">
+                            {sections.intro.blocks.map((b, i) => {
+                                // Splits the trailing pull-quote (if any) out of the prose so
+                                // the two can float side by side instead of stacking.
+                                const match = b.html.match(/^([\s\S]*?)(<blockquote[\s\S]*<\/blockquote>)\s*$/);
+                                const prose = match ? match[1] : b.html;
+                                const quote = match ? match[2] : null;
+                                return (
+                                    <div key={b.label} id={railItems[i].id} className="unnyc-pr-why__block">
+                                        <h2 className="unnyc-pr-why__heading">{b.label}</h2>
+                                        <div className="unnyc-pr-why__prose" dangerouslySetInnerHTML={{ __html: prose }} />
+                                        {quote && <div dangerouslySetInnerHTML={{ __html: quote }} />}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
                 </div>
             </section>
 
