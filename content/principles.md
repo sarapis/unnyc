@@ -18,10 +18,11 @@ detailLede: "The same eight, paired with the city’s own reality — what NYC a
 # /start's map, because they endorsed *these* principles (moved here from
 # content/start.md on 2026-08-14).
 #
-# Replaced the 17 hand-maintained entries on
-# 2026-08-14 with the 152-organization snapshot in content/un-endorsers.json,
-# rendered by UnnycEndorserDirectory. Only the COPY lives here now; the list
-# itself is data.
+# Replaced the 17 hand-maintained entries on 2026-08-14 with the
+# 150-organization snapshot in content/un-endorsers.json, rendered by
+# UnnycEndorserDirectory. Only the COPY lives here now; the list itself is
+# data. Four of the source's 154 are excluded, each with a reason in the
+# JSON's `excluded` array.
 #
 # ⚠ 10 organizations this page used to name are NOT in that snapshot — Open
 # Knowledge Foundation, OpenInfra, Matrix, Sovereign Tech Agency, ZenDiS,
@@ -35,11 +36,23 @@ detailLede: "The same eight, paired with the city’s own reality — what NYC a
 # the data, so an authored total is the one thing that can go stale.
 endorsers:
   title: "These Organizations have Endorsed the Principles"
-  lede: "Foundations, companies, universities, national and city governments — the organizations that have publicly endorsed the UN Open Source Principles. Filter by sector to see who."
+  # ⚠ "Hundreds" is the client's wording, kept as given. The directory shows
+  # 150, and 68+36+32+8+6 is countable from the chips, so a reader can check
+  # it. If that matters, "150 organizations" or "More than 150 organizations"
+  # is accurate and no weaker — the count is derived, so it cannot go stale.
+  lede: "Hundreds of organizations that have publicly endorsed the UN Open Source Principles."
   allLabel: "All sectors"
   filterLabel: "Filter endorsing organizations by sector"
   unitOne: "organization"
   unitMany: "organizations"
+  # Pagination copy. 16 per page was asked for; the component derives the page
+  # count, so changing PAGE_SIZE there needs no edit here.
+  prevLabel: "Previous"
+  nextLabel: "Next"
+  pageLabel: "Page"
+  paginationLabel: "Endorsing organizations, pages"
+  showingLabel: "Showing"
+  ofLabel: "of"
   note: "Snapshot of the UN's endorsement page taken 6 August 2026; endorsements are still being added. The UN publishes these as logos without names, so the names here are transcribed and may contain errors — tell us about any you spot."
 foot:
   text: "Ready to ask the city to adopt them?"

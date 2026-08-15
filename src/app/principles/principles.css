@@ -300,4 +300,81 @@
     margin: var(--wg-sp-6) 0 0;
     max-width: 70ch;
   }
+
+  .unnyc-endorsers__pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--wg-sp-2);
+    margin-top: var(--wg-sp-6);
+  }
+
+  .unnyc-endorsers__pages {
+    display: flex;
+    align-items: center;
+    gap: var(--wg-sp-1);
+  }
+
+  /* Scoped with .unnyc-page for the same reason as the chips — unnyc.css's
+     `.unnyc-page button` reset (0-1-1) beats a single-class rule in this
+     layer and would strip the border and background. */
+  .unnyc-page .unnyc-endorsers__page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0 var(--wg-sp-3);
+    border: 1px solid var(--wg-border);
+    border-radius: var(--wg-radius-sm);
+    background: var(--wg-surface);
+    color: var(--wg-brand);
+    font-family: var(--wg-font-body);
+    font-size: var(--wg-fs-sm);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    transition: background 0.15s var(--wg-ease), border-color 0.15s var(--wg-ease),
+      color 0.15s var(--wg-ease);
+  }
+
+  .unnyc-page .unnyc-endorsers__page:hover:not(:disabled) {
+    border-color: var(--wg-accent);
+    color: var(--wg-accent-strong);
+  }
+
+  .unnyc-page .unnyc-endorsers__page:focus-visible {
+    outline: 2px solid var(--wg-accent);
+    outline-offset: 2px;
+  }
+
+  .unnyc-page .unnyc-endorsers__page--active {
+    background: var(--wg-accent);
+    border-color: var(--wg-accent);
+    color: var(--wg-text-inverse);
+  }
+
+  /* Disabled, not hidden: the control keeps its width as you page, so the
+     grid above it does not shift sideways on the first and last page. */
+  .unnyc-page .unnyc-endorsers__page:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+
+  .unnyc-endorsers__gap {
+    padding: 0 var(--wg-sp-1);
+    color: var(--wg-text-secondary);
+  }
+
+  @media (max-width: 640px) {
+    /* Numbered pages wrap badly at this width; Previous/Next carry it. */
+    .unnyc-endorsers__pages {
+      display: none;
+    }
+
+    .unnyc-endorsers__pagination {
+      justify-content: space-between;
+    }
+  }
 }

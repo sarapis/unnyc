@@ -3,6 +3,7 @@
  "sourceUrl": "https://opensource.un.org/en/news/united-nations-open-source-principles",
  "extracted": "2026-08-06",
  "note": "Names are a TRANSCRIPTION read off the endorsers' logos, not a UN export: the source page carries 154 logos and zero organization names (every card title element is empty). Spot-check against an organization's own site before relying on a name. Logos are deliberately NOT included — they are third-party trademarks and the UN displaying them grants no onward rights.",
+ "sectorNote": "Sectors are an editorial classification from the names alone, not UN data. Media & culture was folded into Civil society on 2026-08-14 to reduce the filter count; both entries are public-interest institutions.",
  "corrections": [
   {
    "n": 143,
@@ -13,24 +14,30 @@
  ],
  "excluded": [
   {
+   "n": 3,
+   "reason": "recorded as \"BIT\" from the alt slug bit_logo; a Bitcoin-style symbol with no wordmark, so neither the name nor a sector could be established"
+  },
+  {
+   "n": 21,
+   "reason": "ESMERALDA — name read off the logo, but no identifiable organization behind it, so no sector could be established"
+  },
+  {
    "n": 114,
    "reason": "duplicate of #57 KDE e.V."
   },
   {
    "n": 121,
-   "reason": "unidentified wordless mark — no name to publish"
+   "reason": "unidentified wordless mark — alt text is just \"logo\", no name to publish"
   }
  ],
  "countRaw": 154,
- "count": 152,
+ "count": 150,
  "sectors": {
   "Companies": 68,
   "Foundations & projects": 36,
-  "Civil society": 30,
+  "Civil society": 32,
   "Academia & research": 8,
-  "Government": 6,
-  "Unclassified": 2,
-  "Media & culture": 2
+  "Government": 6
  },
  "organizations": [
   {
@@ -42,11 +49,6 @@
    "n": 2,
    "organization": "SR2 Communications",
    "sector": "Companies"
-  },
-  {
-   "n": 3,
-   "organization": "BIT",
-   "sector": "Unclassified"
   },
   {
    "n": 4,
@@ -106,7 +108,7 @@
   {
    "n": 15,
    "organization": "FOSS Force",
-   "sector": "Media & culture"
+   "sector": "Civil society"
   },
   {
    "n": 16,
@@ -132,11 +134,6 @@
    "n": 20,
    "organization": "Ethical Computing",
    "sector": "Companies"
-  },
-  {
-   "n": 21,
-   "organization": "ESMERALDA",
-   "sector": "Unclassified"
   },
   {
    "n": 22,
@@ -596,7 +593,7 @@
   {
    "n": 113,
    "organization": "National Library of Wales (LLGC/NLW)",
-   "sector": "Media & culture"
+   "sector": "Civil society"
   },
   {
    "n": 115,
