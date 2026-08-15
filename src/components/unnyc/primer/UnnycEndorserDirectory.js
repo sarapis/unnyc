@@ -208,7 +208,23 @@ export default function UnnycEndorserDirectory({ organizations, copy }) {
                     </nav>
                 )}
 
-                {copy?.note && <p className="unnyc-endorsers__note">{copy.note}</p>}
+                {(copy?.note || copy?.sourceUrl) && (
+                    <p className="unnyc-endorsers__note">
+                        {copy?.note}
+                        {copy?.sourceUrl && (
+                            <>
+                                {copy?.note ? ' ' : null}
+                                <a
+                                    href={copy.sourceUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {copy.sourceLabel || copy.sourceUrl} ↗
+                                </a>
+                            </>
+                        )}
+                    </p>
+                )}
             </div>
         </section>
     );
