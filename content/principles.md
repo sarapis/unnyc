@@ -54,6 +54,11 @@ endorsers:
   showingLabel: "Showing"
   ofLabel: "of"
   note: "Snapshot of the UN's endorsement page taken 6 August 2026; endorsements are still being added. The UN publishes these as logos without names, so the names here are transcribed and may contain errors — tell us about any you spot."
+  # The citation renders as a real link after the note. Kept as separate keys
+  # rather than markdown inside `note`, because the component is a client
+  # component and inlineMd() is server-only — it reads the filesystem.
+  sourceLabel: "Source: United Nations Open Source Principles"
+  sourceUrl: "https://opensource.un.org/en/news/united-nations-open-source-principles"
 foot:
   text: "Ready to ask the city to adopt them?"
   ctas:

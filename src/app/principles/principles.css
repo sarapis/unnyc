@@ -234,7 +234,11 @@
       color 0.15s var(--wg-ease);
   }
 
-  .unnyc-page .unnyc-endorsers__chip:hover {
+  /* :not(--active) matters. `:hover` is (0,3,0) and `--active` only (0,2,0),
+     so without it an ACTIVE chip under the cursor repainted its text
+     --wg-accent-strong over the --wg-accent fill: dark blue on blue. The
+     active chip gets its own hover below, darkening the FILL instead. */
+  .unnyc-page .unnyc-endorsers__chip:hover:not(.unnyc-endorsers__chip--active) {
     border-color: var(--wg-accent);
     color: var(--wg-accent-strong);
   }
@@ -247,6 +251,12 @@
   .unnyc-page .unnyc-endorsers__chip--active {
     background: var(--wg-accent);
     border-color: var(--wg-accent);
+    color: var(--wg-text-inverse);
+  }
+
+  .unnyc-page .unnyc-endorsers__chip--active:hover {
+    background: var(--wg-accent-strong);
+    border-color: var(--wg-accent-strong);
     color: var(--wg-text-inverse);
   }
 
@@ -293,12 +303,18 @@
     color: var(--wg-text-secondary);
   }
 
+  /* Full width, not the 70ch measure it had — it reads as a footnote to the
+     whole directory rather than a paragraph of prose. */
   .unnyc-endorsers__note {
     font-size: var(--wg-fs-xs);
     color: var(--wg-text-secondary);
     line-height: 1.6;
     margin: var(--wg-sp-6) 0 0;
-    max-width: 70ch;
+    max-width: none;
+  }
+
+  .unnyc-endorsers__note a {
+    color: var(--wg-accent-strong);
   }
 
   .unnyc-endorsers__pagination {
@@ -339,7 +355,8 @@
       color 0.15s var(--wg-ease);
   }
 
-  .unnyc-page .unnyc-endorsers__page:hover:not(:disabled) {
+  /* Same specificity trap as the chips — see the note there. */
+  .unnyc-page .unnyc-endorsers__page:hover:not(:disabled):not(.unnyc-endorsers__page--active) {
     border-color: var(--wg-accent);
     color: var(--wg-accent-strong);
   }
@@ -352,6 +369,12 @@
   .unnyc-page .unnyc-endorsers__page--active {
     background: var(--wg-accent);
     border-color: var(--wg-accent);
+    color: var(--wg-text-inverse);
+  }
+
+  .unnyc-page .unnyc-endorsers__page--active:hover {
+    background: var(--wg-accent-strong);
+    border-color: var(--wg-accent-strong);
     color: var(--wg-text-inverse);
   }
 
