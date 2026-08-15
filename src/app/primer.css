@@ -813,35 +813,6 @@
     text-decoration: underline;
   }
 
-  /* --- Endorsers --- */
-  .unnyc-pr-endorsers__grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--wg-sp-3);
-    list-style: none;
-    margin: 0 0 var(--wg-sp-8);
-    padding: 0;
-  }
-
-  .unnyc-pr-endorsers__org {
-    background: var(--wg-surface);
-    border: 1px solid var(--wg-border);
-    border-radius: var(--wg-radius-sm);
-    padding: var(--wg-sp-3) var(--wg-sp-4);
-    font-size: var(--wg-fs-sm);
-    font-weight: 600;
-  }
-
-  .unnyc-pr-endorsers__org a {
-    color: var(--wg-brand);
-    text-decoration: none;
-  }
-
-  .unnyc-pr-endorsers__org a:hover {
-    color: var(--wg-accent-strong);
-    text-decoration: underline;
-  }
-
   /* --- Barcelona-first / NYC-should-follow callout, combined with the map --- */
   .unnyc-pr-mn__barcelona {
     max-width: 720px;
@@ -1125,10 +1096,6 @@
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .unnyc-pr-endorsers__grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
     .unnyc-pr-why__prose,
     .unnyc-pr-why__quote,
     .unnyc-pr-cw__part,
@@ -1155,7 +1122,6 @@
     .unnyc-pr-resources__grid,
     .unnyc-pr-contacts__grid,
     .unnyc-pr-ospo__grid,
-    .unnyc-pr-endorsers__grid,
     .unnyc-pr-paths__grid {
       grid-template-columns: 1fr;
     }

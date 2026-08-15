@@ -14,51 +14,46 @@ lede: "Adopted by the UN’s Digital and Technology Network in 2025, these eight
 # renders either key if it comes back, so restoring one is a content edit.
 detailTitle: "What each principle would mean for New York"
 detailLede: "The same eight, paired with the city’s own reality — what NYC already does, and what endorsement would change."
-# The organizations that endorsed the Principles. MOVED here from
-# content/start.md on 2026-08-14 — they endorsed *these*, so they close this
-# page instead of sitting under /start's map of government programs.
+# The endorsing organizations. They close this page rather than sitting under
+# /start's map, because they endorsed *these* principles (moved here from
+# content/start.md on 2026-08-14).
+#
+# Replaced the 17 hand-maintained entries on 2026-08-14 with the
+# 150-organization snapshot in content/un-endorsers.json, rendered by
+# UnnycEndorserDirectory. Only the COPY lives here now; the list itself is
+# data. Four of the source's 154 are excluded, each with a reason in the
+# JSON's `excluded` array.
+#
+# ⚠ 10 organizations this page used to name are NOT in that snapshot — Open
+# Knowledge Foundation, OpenInfra, Matrix, Sovereign Tech Agency, ZenDiS,
+# Nextcloud, Rocket.Chat, Linagora, Linux Professional Institute and the
+# European Open Source Academy. They were checked for by name, by the UN's
+# own alt-text slugs and by source URL, and appear under none of them. If they
+# belong in the directory they need a second source; do not re-add them here,
+# because this key no longer holds a list.
+#
+# Do NOT state a count in this copy. The component derives every number from
+# the data, so an authored total is the one thing that can go stale.
 endorsers:
-  # "Who Has Already Signed On" until 2026-08-14 — but that value was DEAD: the
-  # old component hardcoded its own <h3>, so the rendered heading was always
-  # "The organizations that have signed on". Set to the string that actually
-  # shipped, so moving the section didn't silently retitle it.
-  title: "The organizations that have signed on"
-  lede: "The Open Source Initiative endorsed first; sixteen more organizations — foundations, industry, and public agencies — joined in March 2025."
-  orgs:
-  - name: "Open Source Initiative (first endorser)"
-    url: "https://opensource.org/"
-  - name: "The Linux Foundation"
-    url: "https://www.linuxfoundation.org/"
-  - name: "Eclipse Foundation"
-    url: "https://www.eclipse.org/"
-  - name: "GNOME Foundation"
-    url: "https://foundation.gnome.org/"
-  - name: "The Document Foundation"
-    url: "https://www.documentfoundation.org/"
-  - name: "Open Knowledge Foundation"
-    url: "https://okfn.org/"
-  - name: "OpenForum Europe"
-    url: "https://openforumeurope.org/"
-  - name: "OpenInfra Foundation"
-    url: "https://openinfra.dev/"
-  - name: "Matrix"
-    url: "https://matrix.org/"
-  - name: "Sovereign Tech Agency"
-    url: "https://www.sovereign.tech/"
-  - name: "ZenDiS — Centre for Digital Sovereignty"
-    url: "https://zendis.de/"
-  - name: "Nextcloud"
-    url: "https://nextcloud.com/"
-  - name: "Rocket.Chat"
-    url: "https://www.rocket.chat/"
-  - name: "Linagora"
-    url: "https://www.linagora.com/"
-  - name: "RTE (Réseau de Transport d’Électricité)"
-    url: "https://www.rte-france.com/"
-  - name: "Linux Professional Institute"
-    url: "https://www.lpi.org/"
-  - name: "European Open Source Academy"
-    url: "https://opensource.academy/"
+  title: "These Organizations have Endorsed the Principles"
+  # ⚠ "Hundreds" is the client's wording, kept as given. The directory shows
+  # 150, and 68+36+32+8+6 is countable from the chips, so a reader can check
+  # it. If that matters, "150 organizations" or "More than 150 organizations"
+  # is accurate and no weaker — the count is derived, so it cannot go stale.
+  lede: "Hundreds of organizations that have publicly endorsed the UN Open Source Principles."
+  allLabel: "All sectors"
+  filterLabel: "Filter endorsing organizations by sector"
+  unitOne: "organization"
+  unitMany: "organizations"
+  # Pagination copy. 16 per page was asked for; the component derives the page
+  # count, so changing PAGE_SIZE there needs no edit here.
+  prevLabel: "Previous"
+  nextLabel: "Next"
+  pageLabel: "Page"
+  paginationLabel: "Endorsing organizations, pages"
+  showingLabel: "Showing"
+  ofLabel: "of"
+  note: "Snapshot of the UN's endorsement page taken 6 August 2026; endorsements are still being added. The UN publishes these as logos without names, so the names here are transcribed and may contain errors — tell us about any you spot."
 foot:
   text: "Ready to ask the city to adopt them?"
   ctas:

@@ -1,0 +1,794 @@
+{
+ "source": "United Nations Open Source Principles — endorsing organizations",
+ "sourceUrl": "https://opensource.un.org/en/news/united-nations-open-source-principles",
+ "extracted": "2026-08-06",
+ "note": "Names are a TRANSCRIPTION read off the endorsers' logos, not a UN export: the source page carries 154 logos and zero organization names (every card title element is empty). Spot-check against an organization's own site before relying on a name. Logos are deliberately NOT included — they are third-party trademarks and the UN displaying them grants no onward rights.",
+ "sectorNote": "Sectors are an editorial classification from the names alone, not UN data. Media & culture was folded into Civil society on 2026-08-14 to reduce the filter count; both entries are public-interest institutions.",
+ "corrections": [
+  {
+   "n": 143,
+   "from": "RTÉ",
+   "to": "RTE (Réseau de Transport d’Électricité)",
+   "why": "the logo is the white Rte wordmark on a blue disc — the French grid operator, not the Irish broadcaster. An acute accent had changed the organization."
+  }
+ ],
+ "excluded": [
+  {
+   "n": 3,
+   "reason": "recorded as \"BIT\" from the alt slug bit_logo; a Bitcoin-style symbol with no wordmark, so neither the name nor a sector could be established"
+  },
+  {
+   "n": 21,
+   "reason": "ESMERALDA — name read off the logo, but no identifiable organization behind it, so no sector could be established"
+  },
+  {
+   "n": 114,
+   "reason": "duplicate of #57 KDE e.V."
+  },
+  {
+   "n": 121,
+   "reason": "unidentified wordless mark — alt text is just \"logo\", no name to publish"
+  }
+ ],
+ "countRaw": 154,
+ "count": 150,
+ "sectors": {
+  "Companies": 68,
+  "Foundations & projects": 36,
+  "Civil society": 32,
+  "Academia & research": 8,
+  "Government": 6
+ },
+ "organizations": [
+  {
+   "n": 1,
+   "organization": "Source Code Control",
+   "sector": "Companies"
+  },
+  {
+   "n": 2,
+   "organization": "SR2 Communications",
+   "sector": "Companies"
+  },
+  {
+   "n": 4,
+   "organization": "Webbplatsen",
+   "sector": "Companies"
+  },
+  {
+   "n": 5,
+   "organization": "XWiki",
+   "sector": "Companies"
+  },
+  {
+   "n": 6,
+   "organization": "Annatarian",
+   "sector": "Companies"
+  },
+  {
+   "n": 7,
+   "organization": "NoScript",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 8,
+   "organization": "Internet Society Libya Chapter",
+   "sector": "Civil society"
+  },
+  {
+   "n": 9,
+   "organization": "gute IT",
+   "sector": "Companies"
+  },
+  {
+   "n": 10,
+   "organization": "OpenDenmark",
+   "sector": "Civil society"
+  },
+  {
+   "n": 11,
+   "organization": "ApoCoach",
+   "sector": "Companies"
+  },
+  {
+   "n": 12,
+   "organization": "Digital Service",
+   "sector": "Companies"
+  },
+  {
+   "n": 13,
+   "organization": "Earth ICT, SPC",
+   "sector": "Companies"
+  },
+  {
+   "n": 14,
+   "organization": "Senckenberg Naturforschung",
+   "sector": "Academia & research"
+  },
+  {
+   "n": 15,
+   "organization": "FOSS Force",
+   "sector": "Civil society"
+  },
+  {
+   "n": 16,
+   "organization": "Open Risk",
+   "sector": "Companies"
+  },
+  {
+   "n": 17,
+   "organization": "Fundación Repoblación",
+   "sector": "Civil society"
+  },
+  {
+   "n": 18,
+   "organization": "Coopérative Code Commun",
+   "sector": "Companies"
+  },
+  {
+   "n": 19,
+   "organization": "Xnet",
+   "sector": "Civil society"
+  },
+  {
+   "n": 20,
+   "organization": "Ethical Computing",
+   "sector": "Companies"
+  },
+  {
+   "n": 22,
+   "organization": "Data Immigrant",
+   "sector": "Companies"
+  },
+  {
+   "n": 23,
+   "organization": "Hallo Welt! GmbH",
+   "sector": "Companies"
+  },
+  {
+   "n": 24,
+   "organization": "J-Soft Technology",
+   "sector": "Companies"
+  },
+  {
+   "n": 25,
+   "organization": "Hush Line",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 26,
+   "organization": "Abil'I.T.",
+   "sector": "Companies"
+  },
+  {
+   "n": 27,
+   "organization": "MariaDB",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 28,
+   "organization": "Tor Project",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 29,
+   "organization": "SMILE",
+   "sector": "Companies"
+  },
+  {
+   "n": 30,
+   "organization": "WordPress",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 31,
+   "organization": "GravityKit",
+   "sector": "Companies"
+  },
+  {
+   "n": 32,
+   "organization": "NLnet Foundation",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 33,
+   "organization": "Mercedes-Benz",
+   "sector": "Companies"
+  },
+  {
+   "n": 34,
+   "organization": "Abilian",
+   "sector": "Companies"
+  },
+  {
+   "n": 35,
+   "organization": "Logilab",
+   "sector": "Companies"
+  },
+  {
+   "n": 36,
+   "organization": "Open by Default",
+   "sector": "Civil society"
+  },
+  {
+   "n": 37,
+   "organization": "Kalamuna",
+   "sector": "Companies"
+  },
+  {
+   "n": 38,
+   "organization": "Carnegie Mellon University Libraries",
+   "sector": "Academia & research"
+  },
+  {
+   "n": 39,
+   "organization": "Joomla!",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 40,
+   "organization": "Ente",
+   "sector": "Companies"
+  },
+  {
+   "n": 41,
+   "organization": "La Digitale",
+   "sector": "Civil society"
+  },
+  {
+   "n": 42,
+   "organization": "SORMAS Foundation",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 43,
+   "organization": "OpenSaar",
+   "sector": "Civil society"
+  },
+  {
+   "n": 44,
+   "organization": "Dilolabs",
+   "sector": "Companies"
+  },
+  {
+   "n": 45,
+   "organization": "Drupal",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 46,
+   "organization": "doubleOpen",
+   "sector": "Companies"
+  },
+  {
+   "n": 47,
+   "organization": "HeiGIT",
+   "sector": "Academia & research"
+  },
+  {
+   "n": 48,
+   "organization": "GISPO",
+   "sector": "Companies"
+  },
+  {
+   "n": 49,
+   "organization": "AboutCode",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 50,
+   "organization": "Adfinis",
+   "sector": "Companies"
+  },
+  {
+   "n": 51,
+   "organization": "Artefactual Systems",
+   "sector": "Companies"
+  },
+  {
+   "n": 52,
+   "organization": "CIRCL",
+   "sector": "Government"
+  },
+  {
+   "n": 53,
+   "organization": "Blue Fox",
+   "sector": "Companies"
+  },
+  {
+   "n": 54,
+   "organization": "Akretion",
+   "sector": "Companies"
+  },
+  {
+   "n": 55,
+   "organization": "Cluetail",
+   "sector": "Companies"
+  },
+  {
+   "n": 56,
+   "organization": "Decidim",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 57,
+   "organization": "KDE e.V.",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 58,
+   "organization": "Processing Foundation",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 59,
+   "organization": "Ellofant",
+   "sector": "Companies"
+  },
+  {
+   "n": 60,
+   "organization": "France Numérique Libre",
+   "sector": "Civil society"
+  },
+  {
+   "n": 61,
+   "organization": "Open Source Politics",
+   "sector": "Companies"
+  },
+  {
+   "n": 62,
+   "organization": "Free Knowledge Institute",
+   "sector": "Civil society"
+  },
+  {
+   "n": 63,
+   "organization": "IREX",
+   "sector": "Civil society"
+  },
+  {
+   "n": 64,
+   "organization": "Helpful",
+   "sector": "Companies"
+  },
+  {
+   "n": 65,
+   "organization": "Innovation Value Institute",
+   "sector": "Academia & research"
+  },
+  {
+   "n": 66,
+   "organization": "Lareira Digital",
+   "sector": "Companies"
+  },
+  {
+   "n": 67,
+   "organization": "CH Open",
+   "sector": "Civil society"
+  },
+  {
+   "n": 68,
+   "organization": "Infotec",
+   "sector": "Academia & research"
+  },
+  {
+   "n": 69,
+   "organization": "Software Heritage",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 70,
+   "organization": "Margosa Environmental Solutions",
+   "sector": "Companies"
+  },
+  {
+   "n": 71,
+   "organization": "Mautic",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 72,
+   "organization": "Mercury HMI",
+   "sector": "Companies"
+  },
+  {
+   "n": 73,
+   "organization": "Mifos",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 74,
+   "organization": "mundialis",
+   "sector": "Companies"
+  },
+  {
+   "n": 75,
+   "organization": "Open Analytics",
+   "sector": "Companies"
+  },
+  {
+   "n": 76,
+   "organization": "OpenProject",
+   "sector": "Companies"
+  },
+  {
+   "n": 77,
+   "organization": "OpenStreetMap Foundation",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 78,
+   "organization": "Open Source Collective",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 79,
+   "organization": "Open Source Experts",
+   "sector": "Companies"
+  },
+  {
+   "n": 80,
+   "organization": "Open Source Imaging",
+   "sector": "Civil society"
+  },
+  {
+   "n": 81,
+   "organization": "Open Source Group Japan (OSG-JP)",
+   "sector": "Civil society"
+  },
+  {
+   "n": 82,
+   "organization": "University of California Network of OSPOs",
+   "sector": "Academia & research"
+  },
+  {
+   "n": 83,
+   "organization": "passbolt",
+   "sector": "Companies"
+  },
+  {
+   "n": 84,
+   "organization": "Regento",
+   "sector": "Companies"
+  },
+  {
+   "n": 85,
+   "organization": "Salus",
+   "sector": "Companies"
+  },
+  {
+   "n": 86,
+   "organization": "Mockoon",
+   "sector": "Companies"
+  },
+  {
+   "n": 87,
+   "organization": "STEM Garage",
+   "sector": "Civil society"
+  },
+  {
+   "n": 88,
+   "organization": "SUSE",
+   "sector": "Companies"
+  },
+  {
+   "n": 89,
+   "organization": "TelNowEdge",
+   "sector": "Companies"
+  },
+  {
+   "n": 90,
+   "organization": "Tuta",
+   "sector": "Companies"
+  },
+  {
+   "n": 91,
+   "organization": "terrestris",
+   "sector": "Companies"
+  },
+  {
+   "n": 92,
+   "organization": "Wilde IT",
+   "sector": "Companies"
+  },
+  {
+   "n": 93,
+   "organization": "VictoriaMetrics",
+   "sector": "Companies"
+  },
+  {
+   "n": 94,
+   "organization": "Apereo",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 95,
+   "organization": "Centreon",
+   "sector": "Companies"
+  },
+  {
+   "n": 96,
+   "organization": "Carnegie Mellon University Africa",
+   "sector": "Academia & research"
+  },
+  {
+   "n": 97,
+   "organization": "Continuity Group",
+   "sector": "Companies"
+  },
+  {
+   "n": 98,
+   "organization": "Data in Motion",
+   "sector": "Companies"
+  },
+  {
+   "n": 99,
+   "organization": "Digital Freedom Foundation",
+   "sector": "Civil society"
+  },
+  {
+   "n": 100,
+   "organization": "Element",
+   "sector": "Companies"
+  },
+  {
+   "n": 101,
+   "organization": "Oslandia",
+   "sector": "Companies"
+  },
+  {
+   "n": 102,
+   "organization": "Exchange Point",
+   "sector": "Companies"
+  },
+  {
+   "n": 103,
+   "organization": "FreeBSD Foundation",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 104,
+   "organization": "Gallehr + Partner",
+   "sector": "Companies"
+  },
+  {
+   "n": 105,
+   "organization": "Global Innovation Gathering",
+   "sector": "Civil society"
+  },
+  {
+   "n": 106,
+   "organization": "GlobaLeaks",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 107,
+   "organization": "Hackerspace Brussels (HSBXL)",
+   "sector": "Civil society"
+  },
+  {
+   "n": 108,
+   "organization": "Grist",
+   "sector": "Companies"
+  },
+  {
+   "n": 109,
+   "organization": "INHOPE",
+   "sector": "Civil society"
+  },
+  {
+   "n": 110,
+   "organization": "Humanitarian OpenStreetMap Team",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 111,
+   "organization": "Link Digital",
+   "sector": "Companies"
+  },
+  {
+   "n": 112,
+   "organization": "Open Preservation Foundation",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 113,
+   "organization": "National Library of Wales (LLGC/NLW)",
+   "sector": "Civil society"
+  },
+  {
+   "n": 115,
+   "organization": "FIWARE",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 116,
+   "organization": "OpenCulture Foundation",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 117,
+   "organization": "OISF",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 118,
+   "organization": "Medic",
+   "sector": "Civil society"
+  },
+  {
+   "n": 119,
+   "organization": "OpenUK",
+   "sector": "Civil society"
+  },
+  {
+   "n": 120,
+   "organization": "OW2",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 122,
+   "organization": "The Roots of Change Agency",
+   "sector": "Civil society"
+  },
+  {
+   "n": 123,
+   "organization": "Cloud Carib",
+   "sector": "Companies"
+  },
+  {
+   "n": 124,
+   "organization": "the First Person Project",
+   "sector": "Civil society"
+  },
+  {
+   "n": 125,
+   "organization": "Hanko",
+   "sector": "Companies"
+  },
+  {
+   "n": 126,
+   "organization": "Pirate Party (Пиратская партия)",
+   "sector": "Civil society"
+  },
+  {
+   "n": 127,
+   "organization": "BNNRC",
+   "sector": "Civil society"
+  },
+  {
+   "n": 128,
+   "organization": "TYPO3",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 129,
+   "organization": "Van Rooijen Organisatieadvies",
+   "sector": "Companies"
+  },
+  {
+   "n": 130,
+   "organization": "Red Hat",
+   "sector": "Companies"
+  },
+  {
+   "n": 131,
+   "organization": "Eclipse Foundation",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 132,
+   "organization": "Open Source Initiative",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 133,
+   "organization": "The Linux Foundation",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 134,
+   "organization": "Gouvernement (France)",
+   "sector": "Government"
+  },
+  {
+   "n": 135,
+   "organization": "OpenForum Europe",
+   "sector": "Civil society"
+  },
+  {
+   "n": 136,
+   "organization": "Schleswig-Holstein",
+   "sector": "Government"
+  },
+  {
+   "n": 137,
+   "organization": "Republic of South Africa",
+   "sector": "Government"
+  },
+  {
+   "n": 138,
+   "organization": "OSPO Alliance",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 139,
+   "organization": "Rocky Linux",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 140,
+   "organization": "Open Source Werken",
+   "sector": "Civil society"
+  },
+  {
+   "n": 141,
+   "organization": "RESF",
+   "sector": "Civil society"
+  },
+  {
+   "n": 142,
+   "organization": "Open Access India",
+   "sector": "Civil society"
+  },
+  {
+   "n": 143,
+   "organization": "RTE (Réseau de Transport d’Électricité)",
+   "sector": "Companies"
+  },
+  {
+   "n": 144,
+   "organization": "GNOME",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 145,
+   "organization": "LibreOffice / The Document Foundation",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 146,
+   "organization": "OpenElements",
+   "sector": "Companies"
+  },
+  {
+   "n": 147,
+   "organization": "digihub.li",
+   "sector": "Companies"
+  },
+  {
+   "n": 148,
+   "organization": "Exybris",
+   "sector": "Companies"
+  },
+  {
+   "n": 149,
+   "organization": "Republic of Türkiye – Ministry of Justice",
+   "sector": "Government"
+  },
+  {
+   "n": 150,
+   "organization": "House of Africa",
+   "sector": "Civil society"
+  },
+  {
+   "n": 151,
+   "organization": "University of Botswana",
+   "sector": "Academia & research"
+  },
+  {
+   "n": 152,
+   "organization": "International Association of World Peace Advocates",
+   "sector": "Civil society"
+  },
+  {
+   "n": 153,
+   "organization": "AOSSIE",
+   "sector": "Foundations & projects"
+  },
+  {
+   "n": 154,
+   "organization": "République et Canton de Genève",
+   "sector": "Government"
+  }
+ ]
+}
