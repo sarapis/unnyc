@@ -3,8 +3,8 @@ import UnnycIcon from '@/components/unnyc/UnnycIcon';
 import '../primer.css';
 import './principles.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
-import PrimerEndorsers from '@/components/unnyc/primer/PrimerEndorsers';
-import { getContent, inlineMd } from '@/lib/content';
+import UnnycEndorserDirectory from '@/components/unnyc/primer/UnnycEndorserDirectory';
+import { getContent, getUnEndorsers, inlineMd } from '@/lib/content';
 
 // Read per call, NOT at module scope — see the note in crosswalk/page.js.
 export async function generateMetadata() {
@@ -37,6 +37,7 @@ export async function generateMetadata() {
  */
 export default function PrinciplesPage() {
     const doc = getContent('principles');
+    const endorsers = getUnEndorsers();
     const { principlesDoc, sections } = doc;
     const { lead, groups } = principlesDoc;
 
@@ -162,9 +163,12 @@ export default function PrinciplesPage() {
                 })}
             </div>
 
-            {/* The organizations that endorsed the Principles — moved here from
-                /start's map section on 2026-08-14. */}
-            <PrimerEndorsers endorsers={doc.endorsers} />
+            {/* The organizations that endorsed the Principles. The list is DATA
+                (content/un-endorsers.json), read here on the server and passed
+                down — UnnycEndorserDirectory is a client component for the
+                sector filter and cannot read the filesystem itself. Copy still
+                comes from the markdown. */}
+            <UnnycEndorserDirectory organizations={endorsers?.organizations} copy={doc.endorsers} />
 
             <section className="unnyc-principles__foot">
                 <div className="unnyc-container unnyc-container--narrow">

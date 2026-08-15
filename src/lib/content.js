@@ -159,6 +159,38 @@ export function getCtfgProjects() {
     }
 }
 
+/**
+ * The organizations that have endorsed the UN Open Source Principles — a
+ * 2026-08-06 snapshot of the UN's own endorsement page, 152 organizations with
+ * a sector on each.
+ *
+ * Fail-soft, for the same reason as getCtfgProjects: the directory is evidence
+ * that the movement is broad, so a missing file should cost the directory, not
+ * the page that argues NYC should join it.
+ *
+ * NAMES ARE A TRANSCRIPTION, not a UN export. The source page carries 154 logos
+ * and zero names — every card's title element is empty — so the names were read
+ * off the logos themselves. One error has already been corrected in the data
+ * (#143 was "RTÉ", the Irish broadcaster; the logo is RTE, the French grid
+ * operator). Spot-check against an organization's own site before relying on a
+ * name, and record any fix in the file's `corrections` array rather than
+ * silently editing it.
+ *
+ * NO LOGOS. They are third-party trademarks and the UN displaying them grants
+ * no onward rights, so the directory is names and sectors only. Do not add an
+ * image column without a human decision on usage rights — the full-size
+ * originals also run to 16 MB, which is a second reason.
+ */
+export function getUnEndorsers() {
+    const file = path.join(CONTENT_DIR, 'un-endorsers.json');
+    try {
+        const d = JSON.parse(fs.readFileSync(file, 'utf8'));
+        return Array.isArray(d?.organizations) && d.organizations.length ? d : null;
+    } catch {
+        return null;
+    }
+}
+
 /* ---------------------------------------------------------------------------
    The eight principles, derived
    ---------------------------------------------------------------------------

@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
  * open source, with NYC marked as "the ask."
  *
  * The endorsing-organizations list used to sit under this map. It MOVED to the
- * bottom of /principles on 2026-08-14 (see PrimerEndorsers) — those are the
+ * bottom of /principles on 2026-08-14 (see UnnycEndorserDirectory) — those are the
  * organizations that endorsed the Principles, so they belong with the
  * Principles rather than under a map of government programs.
  *
