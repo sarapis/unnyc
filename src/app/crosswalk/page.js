@@ -91,7 +91,6 @@ export default function CrosswalkPage() {
                     <div className="unnyc-pr-why__detail">
                         <UnnycPrinciplesRail
                             items={railItems}
-                            title="The Six Reasons"
                             ariaLabel="Jump to a reason"
                         />
 
