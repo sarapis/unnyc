@@ -46,39 +46,45 @@ export default function PrinciplesDocumentPage() {
                     supported.
                 </p>
 
-                <p className="unnyc-doc-page__lead-in">
-                    The software built for the city ought to be:
-                </p>
-
+                {/* The two lead-in lines that sat here — "The software built for
+                    the city ought to be:" and "As leaders in the global open
+                    source movement, we are committed to the following:" — were
+                    cut on 2026-08-14, when the document's body text was supplied
+                    as a complete list that did not include them. They were
+                    hardcoded here rather than in the content, which is why they
+                    are deleted rather than emptied. */}
                 <div className="unnyc-doc-page__primary">
                     <div className="unnyc-doc-page__primary-header">
                         <UnnycIcon name={lead.icon} size={28} className="unnyc-doc-page__icon" />
-                        <p className="unnyc-doc-page__primary-title">{lead.title}</p>
+                        <p className="unnyc-doc-page__primary-title">
+                            {lead.titleDocument || lead.title}
+                        </p>
                     </div>
-                    {/* `bodyDocument` falls back to `body`. It exists because the
-                        /principles grid was cut to a one-line summary on
-                        2026-08-14 and this is a formal printable declaration —
-                        it keeps principle #1's actual argument, that vendors
-                        justify closed software rather than the reverse. Same
-                        variant mechanism as `descCity` / `titleDeclaration`. */}
                     {(lead.bodyDocument || lead.body).map((p, i) => (
                         <p key={i} className="unnyc-doc-page__primary-desc">{p}</p>
                     ))}
                 </div>
 
-                <p className="unnyc-doc-page__lead-in">
-                    As leaders in the global open source movement, we are committed to the
-                    following:
-                </p>
-
+                {/* `titleDocument` / `descDocument` fall back to `title` / `desc`.
+                    This page is the ONLY consumer of them: it was rewritten into
+                    the imperative on 2026-08-14 and retitles four principles, and
+                    without these fields that edit would also have rewritten the
+                    /principles grid and /campaign/endorse/document, which read
+                    `title` and `descCity || desc`. See the field contract in
+                    content/principles.md. */}
                 {groups.map((group) => (
                     <div className="unnyc-doc-page__group" key={group.title}>
-                        <h2 className="unnyc-doc-page__group-title">{group.title}</h2>
+                        <h2 className="unnyc-doc-page__group-title">
+                            {group.titleDocument || group.title}
+                        </h2>
                         <ul className="unnyc-doc-page__group-list">
                             {group.items.map((item) => (
-                                <li key={item.title}>
+                                <li key={item.slug}>
                                     <UnnycIcon name={item.icon} size={28} className="unnyc-doc-page__icon" />
-                                    <span><strong>{item.title}.</strong> {item.desc}</span>
+                                    <span>
+                                        <strong>{item.titleDocument || item.title}.</strong>{' '}
+                                        {item.descDocument || item.desc}
+                                    </span>
                                 </li>
                             ))}
                         </ul>

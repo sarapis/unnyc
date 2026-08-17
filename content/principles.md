@@ -85,7 +85,9 @@ foot:
 # had drifted: the open letter said "Foster inclusion" and a bare "RISE", and an
 # Oxford comma had crept into the declaration. Editing one changed one page.
 #
-#   /principles + its document  grouped, `title` (gerund), `desc`
+#   /principles (the grid)       grouped, `title`
+#   /principles/document         grouped, `titleDocument || title`,
+#                                `descDocument || desc`, group `titleDocument`
 #   /campaign/sign (the letter)  flat 1-8 by `n`, `titleCanonical`, `descShort`
 #   /campaign/endorse/document   grouped, `titleCanonical`, `descCity || desc`
 #
@@ -112,6 +114,14 @@ foot:
 #                   the City is the one committing rather than the UN. Only #8
 #                   needs it today ("the City" not "the UN system"). Falls back
 #                   to `desc`.
+#   titleDocument   OPTIONAL. /principles/document only. Falls back to `title`.
+#   descDocument    OPTIONAL. /principles/document only. Falls back to `desc`.
+#                   The printable document was rewritten into the IMPERATIVE on
+#                   2026-08-14 ("Make security a priority", not "Making") and
+#                   retitles four principles. Those two fields are why that did
+#                   not also rewrite the grid, the letter and the endorsement
+#                   declaration, which all still read the gerund forms.
+#                   Groups take `titleDocument` too.
 #
 # ⚠ To change a principle's wording, change it HERE. Nothing else holds a copy.
 # ============================================================================
@@ -122,37 +132,42 @@ principlesDoc:
     icon: unlock
     title: "Open by default"
     titleCanonical: "Open by default"
+    # The printable document capitalises it. Grid and letter do not.
+    titleDocument: "Open by Default"
     # Grid copy only. The letter uses `descShort`, the declaration `descCity` —
     # both still carry the full "vendors ought to justify why their solutions
     # should be closed" argument that this line no longer states.
     body:
     - "Make open source the standard approach for projects."
-    # The printable declaration at /principles/document keeps the full argument —
-    # it is a formal document, and the burden-of-proof sentence IS principle #1.
-    # Falls back to `body` if removed.
-    bodyDocument:
-    - "Making the use of open source software components to build city solutions the standard and default approach to creating software."
-    - "There are very few scenarios when open source isn’t appropriate, and vendors ought to justify why their solutions should be closed, not the other way around."
+    # ⚠ REVERSES the 2026-08-14 decision to keep the full burden-of-proof
+    # argument on the printable document. Asked for explicitly later the same
+    # day, so the document now carries the same one-liner as the grid. The long
+    # form is still on /campaign/endorse/document via `descCity`, and in git.
     descShort: "Open source as the standard approach for projects"
     # The declaration states this as the City's own commitment, in one paragraph.
     descCity: "Using open source software components to build solutions for the city is the standard and default approach to creating software. There are very few scenarios when open source isn’t appropriate."
   groups:
   - title: "Build software that is:"
     titleDeclaration: "We Build Good Software"
+    titleDocument: "Build software that is"
     items:
     - n: 3
       slug: secure-by-design
       icon: shield-check
       title: "Secure by design"
       titleCanonical: "Secure by design"
+      titleDocument: "Secure by Design"
       desc: "Making security a priority in all software projects."
+      descDocument: "Make security a priority in all software projects."
       descShort: "Security as a priority in all software projects"
     - n: 5
       slug: design-for-reusability
       icon: recycle
       title: "Design for reusability"
       titleCanonical: "Design for reusability"
+      titleDocument: "Designed for reusability"
       desc: "Designing projects to be interoperable across various platforms and ecosystems."
+      descDocument: "Design projects to be interoperable across various platforms and ecosystems."
       descShort: "Interoperable across platforms and contexts"
     - n: 6
       slug: provide-documentation
@@ -160,34 +175,40 @@ principlesDoc:
       title: "Well documented"
       titleCanonical: "Provide documentation"
       desc: "Providing thorough documentation for end-users, integrators and developers."
+      # titleDocument omitted — "Well documented" is already the `title`.
+      descDocument: "Provide thorough documentation for end-users, integrators and developers."
       descShort: "Thorough documentation for end users"
   - title: "Create solutions that:"
     titleDeclaration: "Our Solutions are Cocreated with our Users"
+    titleDocument: "Create solutions that"
     items:
     - n: 4
       slug: foster-inclusion
       icon: users
       title: "Foster inclusive participation and community building"
       titleCanonical: "Foster inclusive participation and community building"
+      titleDocument: "Foster inclusive participation"
       desc: "Enabling and facilitating diverse and inclusive contributions."
+      descDocument: "Enable and facilitate diverse and inclusive contributions."
       descShort: "Inclusive participation and community building"
     - n: 7
       slug: rise
       icon: award
       title: "RISE (recognize, incentivize, support and empower)"
       titleCanonical: "RISE (recognize, incentivize, support and empower)"
+      titleDocument: "RISE (recognize, incentivize, support, empower)"
       desc: "Empowering individuals and communities to actively participate."
+      descDocument: "Empower individuals and communities to actively participate."
       descShort: "Recognize, incentivize, support, and empower communities"
   - title: "Be collaborative:"
     titleDeclaration: "Collaborating globally to deliver locally"
+    titleDocument: "Participate in the community"
+    # ⚠ ORDER SWAPPED 2026-08-14 — #8 now precedes #2, as listed for the
+    # printable document. Array order is what the /principles grid and
+    # /campaign/endorse/document render too, so both show the same new order.
+    # It is NOT what the letter shows: principlesFlat() sorts by `n`, so the
+    # letter still runs 1-8.
     items:
-    - n: 2
-      slug: contribute-back
-      icon: git-pull-request
-      title: "Contribute back"
-      titleCanonical: "Contribute back"
-      desc: "Encouraging active participation in the Open Source ecosystem."
-      descShort: "Active participation in the open source ecosystem"
     - n: 8
       slug: sustain-and-scale
       icon: trending-up
@@ -196,6 +217,17 @@ principlesDoc:
       desc: "Supporting the development of solutions that meet the evolving needs of the UN system and beyond."
       descShort: "Solutions that meet evolving needs over time"
       descCity: "Supporting the development of solutions that meet the evolving needs of the City and beyond."
+      # Trailing period added — the supplied line had none, and every sibling
+      # in the printed list ends with one.
+      descDocument: "Support the development of solutions that meet evolving needs."
+    - n: 2
+      slug: contribute-back
+      icon: git-pull-request
+      title: "Contribute back"
+      titleCanonical: "Contribute back"
+      desc: "Encouraging active participation in the Open Source ecosystem."
+      descShort: "Active participation in the open source ecosystem"
+      descDocument: "Encourage active participation in the open source ecosystem."
 ---
 
 <!-- Per-principle prose MOVED here from content/crosswalk.md on 2026-08-13.
