@@ -121,11 +121,39 @@ foot:
 #                   retitles four principles. Those two fields are why that did
 #                   not also rewrite the grid, the letter and the endorsement
 #                   declaration, which all still read the gerund forms.
-#                   Groups take `titleDocument` too.
+#                   The document's GROUPING is separate again — see
+#                   `groupsDocument` at the top of principlesDoc.
 #
 # ⚠ To change a principle's wording, change it HERE. Nothing else holds a copy.
 # ============================================================================
 principlesDoc:
+  # ------------------------------------------------------------------------
+  # THE PRINTABLE DOCUMENT'S OWN GROUPING (/principles/document only).
+  #
+  # It is TWO groups, not the UN's three: "Participate in the community" was
+  # dropped on 2026-08-14 and its two principles redistributed — #8 to the end
+  # of Build software, #2 to the end of Create community.
+  #
+  # It lives here, as slugs, rather than by rearranging `groups` below, because
+  # that array is read by FOUR surfaces: the /principles grid, the endorsement
+  # declaration (via principlesDeclaration), the open letter and the detail
+  # sections (both via a flatten). Moving items between groups there would
+  # restructure the grid and the declaration too — and would break the grid
+  # grammatically, since its headings still read "Build software that is:",
+  # which does not lead into "Sustain and scale".
+  #
+  # ⚠ This means the document presents a DIFFERENT structure from the rest of
+  # the site and from the UN's own published grouping, under a footer citing
+  # the UN as source. That was asked for; it is worth re-reading before print.
+  #
+  # Slugs resolve against every principle below. An unknown one FAILS THE
+  # BUILD rather than silently dropping a principle from the printed page.
+  # ------------------------------------------------------------------------
+  groupsDocument:
+  - title: "Build software"
+    items: [secure-by-design, design-for-reusability, provide-documentation, sustain-and-scale]
+  - title: "Create community"
+    items: [foster-inclusion, rise, contribute-back]
   lead:
     n: 1
     slug: open-by-default
@@ -149,7 +177,6 @@ principlesDoc:
   groups:
   - title: "Build software that is:"
     titleDeclaration: "We Build Good Software"
-    titleDocument: "Build software that is"
     items:
     - n: 3
       slug: secure-by-design
@@ -180,7 +207,6 @@ principlesDoc:
       descShort: "Thorough documentation for end users"
   - title: "Create solutions that:"
     titleDeclaration: "Our Solutions are Cocreated with our Users"
-    titleDocument: "Create solutions that"
     items:
     - n: 4
       slug: foster-inclusion
@@ -202,13 +228,15 @@ principlesDoc:
       descShort: "Recognize, incentivize, support, and empower communities"
   - title: "Be collaborative:"
     titleDeclaration: "Collaborating globally to deliver locally"
-    titleDocument: "Participate in the community"
-    # ⚠ ORDER SWAPPED 2026-08-14 — #8 now precedes #2, as listed for the
-    # printable document. Array order is what the /principles grid and
-    # /campaign/endorse/document render too, so both show the same new order.
-    # It is NOT what the letter shows: principlesFlat() sorts by `n`, so the
-    # letter still runs 1-8.
     items:
+    - n: 2
+      slug: contribute-back
+      icon: git-pull-request
+      title: "Contribute back"
+      titleCanonical: "Contribute back"
+      desc: "Encouraging active participation in the Open Source ecosystem."
+      descShort: "Active participation in the open source ecosystem"
+      descDocument: "Encourage active participation in the open source ecosystem."
     - n: 8
       slug: sustain-and-scale
       icon: trending-up
@@ -220,14 +248,6 @@ principlesDoc:
       # Trailing period added — the supplied line had none, and every sibling
       # in the printed list ends with one.
       descDocument: "Support the development of solutions that meet evolving needs."
-    - n: 2
-      slug: contribute-back
-      icon: git-pull-request
-      title: "Contribute back"
-      titleCanonical: "Contribute back"
-      desc: "Encouraging active participation in the Open Source ecosystem."
-      descShort: "Active participation in the open source ecosystem"
-      descDocument: "Encourage active participation in the open source ecosystem."
 ---
 
 <!-- Per-principle prose MOVED here from content/crosswalk.md on 2026-08-13.

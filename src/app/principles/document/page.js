@@ -25,7 +25,33 @@ export async function generateMetadata() {
  */
 export default function PrinciplesDocumentPage() {
     const { principlesDoc } = getContent('principles');
-    const { lead, groups } = principlesDoc;
+    const { lead, groups, groupsDocument } = principlesDoc;
+
+    // This page groups the principles its OWN way — two groups, not the UN's
+    // three — because `groups` is read by four other surfaces and rearranging
+    // it there would restructure the grid and the endorsement declaration too.
+    // See the note above `groupsDocument` in content/principles.md.
+    //
+    // Throws rather than filtering: a slug typo would otherwise drop a
+    // principle from a printed document silently, and lint:content does not
+    // check these refs.
+    const bySlug = new Map(
+        [lead, ...groups.flatMap((g) => g.items)].map((p) => [p.slug, p]),
+    );
+    const docGroups = groupsDocument
+        ? groupsDocument.map((g) => ({
+            title: g.title,
+            items: g.items.map((slug) => {
+                const p = bySlug.get(slug);
+                if (!p) {
+                    throw new Error(
+                        `content/principles.md: groupsDocument references unknown slug "${slug}"`,
+                    );
+                }
+                return p;
+            }),
+        }))
+        : groups.map((g) => ({ title: g.titleDocument || g.title, items: g.items }));
 
     return (
         <div className="unnyc-doc-wrap">
@@ -72,11 +98,9 @@ export default function PrinciplesDocumentPage() {
                     /principles grid and /campaign/endorse/document, which read
                     `title` and `descCity || desc`. See the field contract in
                     content/principles.md. */}
-                {groups.map((group) => (
+                {docGroups.map((group) => (
                     <div className="unnyc-doc-page__group" key={group.title}>
-                        <h2 className="unnyc-doc-page__group-title">
-                            {group.titleDocument || group.title}
-                        </h2>
+                        <h2 className="unnyc-doc-page__group-title">{group.title}</h2>
                         <ul className="unnyc-doc-page__group-list">
                             {group.items.map((item) => (
                                 <li key={item.slug}>
