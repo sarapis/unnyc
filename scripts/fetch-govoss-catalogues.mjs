@@ -167,6 +167,10 @@ const data = {
     sourceApi: `${GOVOSS}/meta.json`,
     licence: 'CC BY 4.0',
     boundaries: 'Natural Earth 1:110m (public domain)',
+    // Short form for the credit line. Public domain carries no attribution
+    // requirement, so the UI names the source as a courtesy and leaves the version
+    // and licence to this file. Stored rather than derived by string surgery in JSX.
+    boundariesShort: 'Natural Earth',
     generatedBy: 'scripts/fetch-govoss-catalogues.mjs',
     generated: new Date().toISOString().slice(0, 10),
     govossGenerated: meta.generated_at.slice(0, 10),

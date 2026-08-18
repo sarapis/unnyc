@@ -4,6 +4,7 @@
   "sourceApi": "https://govoss-catalog.vercel.app/meta.json",
   "licence": "CC BY 4.0",
   "boundaries": "Natural Earth 1:110m (public domain)",
+  "boundariesShort": "Natural Earth",
   "generatedBy": "scripts/fetch-govoss-catalogues.mjs",
   "generated": "2026-08-18",
   "govossGenerated": "2026-08-17",

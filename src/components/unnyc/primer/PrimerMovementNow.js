@@ -40,40 +40,74 @@ export default function PrimerMovementNow({ mapMarkers, mapLegend, ctfg, govoss,
                     ospoLabel={mapSource?.ospoLegendLabel}
                 />
 
-                {/* GovOSS is CC BY 4.0 — a DIFFERENT licence from the CTFG credit below,
-                    so the two lines are not interchangeable. Counts come from the snapshot.
-                    `countryAttributedEntries` is used, never a sum of the fills: 256 entries
-                    sit under GLOBAL/EU with no polygon, and an entry listed in two countries
-                    counts under each, so adding the countries up matches neither total. */}
-                {govoss && (
-                    <p className="unnyc-pr-map__source">
-                        {mapSource?.govossCredit || 'Country shading counts open source projects listed by'}{' '}
-                        <a href={govoss.sourceUrl} target="_blank" rel="noopener noreferrer">
-                            {govoss.source}
-                        </a>{' '}
-                        — {govoss.countryAttributedEntries.toLocaleString()} projects in{' '}
-                        {govoss.catalogueCount} public catalogues across {govoss.countryCount} countries. A
-                        further {govoss.excluded.reduce((n, e) => n + e.entries, 0)} sit in
-                        cross-border catalogues that no single country can be shaded for. Data licensed{' '}
-                        {govoss.licence}; boundaries {govoss.boundaries}; snapshot taken {govoss.generated}.
-                    </p>
-                )}
+                {/* ONE credit line for the whole map (2026-08-17). It was two
+                    paragraphs restating each layer's counts; the counts are now in the
+                    popups and the key, so repeating them here only gave a reader more
+                    numbers to reconcile.
 
-                {/* CTFG directory content is CC BY-NC-SA 4.0 — the credit is a licence
-                    term, not a courtesy. Copy lives in content/start.md; the counts and
-                    the link come from the snapshot so they can't drift from the data. */}
-                {ctfg && (
-                    <p className="unnyc-pr-map__source">
-                        {mapSource?.ctfgCredit ||
-                            'Government open source programs are drawn from the'}{' '}
-                        <a href={ctfg.sourceUrl} target="_blank" rel="noopener noreferrer">
-                            {ctfg.source}
-                        </a>{' '}
-                        — {ctfg.count} open source programs built by public bodies across{' '}
-                        {ctfg.countries} countries. Each dot links to its full profile.
-                        Data licensed {ctfg.licence}; snapshot taken {ctfg.generated}.
-                    </p>
-                )}
+                    ⚠ What could NOT be shortened away: attribution is a LICENCE TERM
+                    for two of these, and the two licences differ — GovOSS is CC BY 4.0,
+                    CTFG is CC BY-NC-SA 4.0. Source name, link and licence stay for
+                    both, and the licence strings are read from the snapshots so they
+                    cannot drift from the data they describe.
+
+                    Dropping the counts also retired a caveat: the old line had to
+                    explain that 256 entries sit in cross-border catalogues no country
+                    can be shaded for, because it claimed a total. Making no numeric
+                    claim removes the need to qualify one.
+
+                    Built as parts so a missing snapshot drops its own clause instead of
+                    the whole line — same fail-soft posture as the loaders. */}
+                {(() => {
+                    const parts = [];
+                    if (govoss)
+                        parts.push(
+                            <span key="govoss">
+                                catalogs:{' '}
+                                <a href={govoss.sourceUrl} target="_blank" rel="noopener noreferrer">
+                                    {govoss.source}
+                                </a>{' '}
+                                ({govoss.licence})
+                            </span>
+                        );
+                    if (ctfg)
+                        parts.push(
+                            <span key="ctfg">
+                                programs:{' '}
+                                <a href={ctfg.sourceUrl} target="_blank" rel="noopener noreferrer">
+                                    {ctfg.source}
+                                </a>{' '}
+                                ({ctfg.licence})
+                            </span>
+                        );
+                    if (ospos)
+                        parts.push(
+                            <span key="ospo">
+                                OSPOs: <a href="/resources#ospos">this site</a>
+                            </span>
+                        );
+                    if (govoss)
+                        parts.push(
+                            <span key="ne">boundaries: {govoss.boundariesShort || govoss.boundaries}</span>
+                        );
+                    if (!parts.length) return null;
+                    return (
+                        <p className="unnyc-pr-map__source">
+                            {mapSource?.creditLead || 'Map data:'}{' '}
+                            {parts.map((el, i) => (
+                                <span key={i}>
+                                    {i > 0 && ' · '}
+                                    {el}
+                                </span>
+                            ))}
+                            {(govoss || ctfg) && (
+                                <>
+                                    {' · '}snapshots {[govoss?.generated, ctfg?.generated].filter(Boolean).join(', ')}
+                                </>
+                            )}
+                        </p>
+                    );
+                })()}
 
             </div>
         </section>

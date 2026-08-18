@@ -161,6 +161,26 @@ Leone, Jamaica** — precisely because GovOSS has no catalogue for them, so drop
 them would have deleted governments from the map rather than re-drawn them. Estonia's
 X-Road is the case that makes the rule worth keeping.
 
+### One credit line
+
+The two credit paragraphs under the map became one (2026-08-17). They restated each
+layer's counts; those now live in the popups and the key, so repeating them under the
+map only gave a reader more numbers to reconcile. Two lines instead of six or so.
+
+⚠ **What cannot be shortened away is attribution — it is a LICENCE TERM for two of
+these, and the licences differ.** GovOSS is **CC BY 4.0**; the Civic Tech Field Guide
+is **CC BY-NC-SA 4.0**. Source name, link and licence stay for both. Everything after
+the lead-in is read from the snapshots (`licence`, `sourceUrl`, `generated`,
+`boundariesShort`) so it cannot drift from the data it describes; only the lead-in is
+copy, in `mapSource.creditLead`.
+
+Dropping the counts also retired a caveat: the old line had to explain that 256
+entries sit in cross-border catalogues no country can be shaded for, *because it
+claimed a total*. Make no numeric claim and there is nothing to qualify.
+
+The line is built from parts, so a missing snapshot drops its own clause rather than
+the whole credit — the same fail-soft posture as the loaders.
+
 ### The OSPO layer
 
 18 OSPOs → **12 map points**, built from `ospoDirectory` in `content/resources.md` —

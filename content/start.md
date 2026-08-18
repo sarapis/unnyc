@@ -149,10 +149,15 @@ mapMarkers:
 # from the dots. Only the wording lives here.
 mapSource:
   ctfgLegendLabel: "Government-built programs"
-  ctfgCredit: "Government open source programs on this map are drawn from the"
   govossLegendLabel: "National open source catalogs"
   ospoLegendLabel: "Public sector OSPOs"
-  govossCredit: "Country shading counts the open source projects each government's own catalogues publish, harvested by"
+  # Opening words of the SINGLE credit line under the map. Everything after it —
+  # source names, links, licences and snapshot dates — is read from the snapshots
+  # themselves so it cannot drift from the data it describes.
+  # ⚠ Attribution is a LICENCE TERM for two of these, and the licences differ:
+  # GovOSS is CC BY 4.0, the Civic Tech Field Guide is CC BY-NC-SA 4.0. Reword the
+  # lead-in freely; do not drop a source, its link or its licence.
+  creditLead: "Map data —"
 mapLegend:
 - type: "city"
   label: "Cities leading"
