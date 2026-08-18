@@ -126,6 +126,47 @@ to its CTFG profile. Toggleable, default on.
   `civictech.guide` link render under the map, counts read from the snapshot so they can't drift.
   Wording lives in `content/start.md` (`mapSource`) per the copy-in-markdown rule.
 
+## The four map layers (rescoped 2026-08-17)
+
+`/start#going-open-source` carries, bottom to top: the **GovOSS country fill**, the
+**CTFG programs**, the **public sector OSPOs**, and the curated **policy markers**.
+Three of the four are toggleable.
+
+**Removed the same day, by owner decision:** the crimson **NYC "the ask"** marker and
+both **UN system** markers. ⚠ Nothing is drawn on New York by the policy layer any
+more, so *the map no longer states the ask* — the surrounding copy carries it alone.
+If that copy is ever cut, the section loses its point entirely. (The UNDP's OSPO does
+put a violet pin on New York. That is the OSPO layer being correct, not the ask
+marker returning.)
+
+Also removed: the **Finland** and **Germany** `nation` markers, because the country
+fill already shows both. The other five stay — **Estonia, Iceland, India, Sierra
+Leone, Jamaica** — precisely because GovOSS has no catalogue for them, so dropping
+them would have deleted governments from the map rather than re-drawn them. Estonia's
+X-Road is the case that makes the rule worth keeping.
+
+### The OSPO layer
+
+18 OSPOs → **12 map points**, built from `ospoDirectory` in `content/resources.md` —
+the SAME list `/resources` renders, never a copy, because a second list drifts the
+first time somebody adds an OSPO to one of them.
+
+- **Coordinates are hand-placed on each item**, with `locationBasis`: `seat` where the
+  body's own city is unambiguous, `hq` where it sits at the parent organisation's
+  headquarters. The popup marks `(HQ)`, because "approximately here" and "here" are
+  different claims. ⚠ Two were nearly placed wrong and the **domain** settled both:
+  `pcll.ac-dijon.fr` is Dijon, not Paris; `echirolles.fr` is Échirolles, not Grenoble.
+- **Grouped by city, then cities within 25 km merged** (`OSPO_MERGE_KM`). Four French
+  OSPOs are in Paris and the IGN's is in Saint-Mandé 5 km away — at world zoom that is
+  one pixel, so separate markers would have silently hidden four of five. Each entry
+  keeps its real city in the popup: **merging changes what is drawn, never what is
+  claimed.**
+- **OSPO markers are squares**; every other layer is round. One city can hold five
+  OSPOs and a policy marker at the same pixel, and shape separates them where colour
+  alone would not — including for a red-green reader.
+- The static `mapLegend` row for `ospo` is filtered out when the layer loads, or the
+  legend would show it twice: once as a swatch, once as its checkbox.
+
 ## The GovOSS country fill (2026-08-17)
 
 `/start#going-open-source` now has a THIRD layer, painted beneath the other two: a

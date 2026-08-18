@@ -154,6 +154,10 @@ ospoDirectory:
   - country: "United States"
     items:
     - name: "OSPO at Digital Service at the Centers for Medicare and Medicaid Services"
+      city: "Woodlawn, Maryland"
+      lat: 39.3043
+      lng: -76.7519
+      locationBasis: "hq"
       url: "https://cms.gov/digital-service/open-source-program-office"
       description: "Guidance, policies, practices, and talent pipelines for working openly across CMS, HHS, and federal open source ecosystems."
       email: "opensource@cms.hhs.gov"
@@ -161,17 +165,29 @@ ospoDirectory:
   - country: "International"
     items:
     - name: "United Nations Development Programme (UNDP)"
+      city: "New York"
+      lat: 40.75
+      lng: -73.9686
+      locationBasis: "hq"
       url: "https://undp.org/digital"
       description: "UNDP Open Source Ecosystem Enablement."
       email: "opensource@undp.org"
   - country: "Germany"
     items:
     - name: "Open Source Program Office City of Munich"
+      city: "Munich"
+      lat: 48.1351
+      lng: 11.582
+      locationBasis: "seat"
       url: "https://opensource.muenchen.de/ospo.html"
       description: "Use – Improve – Publish: FOSS at the City of Munich."
       email: "opensource@muenchen.de"
       flossPolicy: "https://opensource.muenchen.de/principles.html"
     - name: "Open Source Program Office of the State of Schleswig-Holstein"
+      city: "Kiel"
+      lat: 54.3233
+      lng: 10.1228
+      locationBasis: "seat"
       url: "https://schleswig-holstein.de/open-source"
       description: "The state government’s coordination office for the strategic use of open source, aimed at digital sovereignty."
       email: "ospo-sh@stk.landsh.de"
@@ -179,6 +195,10 @@ ospoDirectory:
   - country: "Denmark"
     items:
     - name: "OS2 – Public Digitalization Network"
+      city: "Copenhagen"
+      lat: 55.6761
+      lng: 12.5683
+      locationBasis: "hq"
       url: "https://os2.eu"
       description: "An organisation of public bodies in Denmark that together develop, mature, and maintain public code."
       email: "os2@os2.eu"
@@ -186,62 +206,114 @@ ospoDirectory:
   - country: "Greece"
     items:
     - name: "Open Technologies Centre at the Aristotle University of Thessaloniki"
+      city: "Thessaloniki"
+      lat: 40.6318
+      lng: 22.956
+      locationBasis: "seat"
       url: "https://opentech.auth.gr/"
       description: "Promotes open technologies — free for any user to use, analyze, modify, and redistribute."
       email: "opentech@auth.gr"
   - country: "France"
     items:
     - name: "Pôle open source et communs numériques de la DINUM"
+      city: "Paris"
+      lat: 48.8566
+      lng: 2.3522
+      locationBasis: "seat"
       url: "https://code.gouv.fr"
       description: "A mission dedicated to the use, development, and promotion of Free Software and digital commons in public administration."
       email: "floss@numerique.gouv.fr"
       flossPolicy: "https://code.gouv.fr/fr/mission/#politique-logiciels-libres"
     - name: "ANSSI"
+      city: "Paris"
+      lat: 48.8566
+      lng: 2.3522
+      locationBasis: "seat"
       url: "https://cyber.gouv.fr/enjeux-technologiques/open-source/"
       description: "The team handling open source topics at the French Cybersecurity Agency (ANSSI)."
       email: "opensource@ssi.gouv.fr"
     - name: "OSPO de France Travail"
+      city: "Paris"
+      lat: 48.873
+      lng: 2.404
+      locationBasis: "hq"
       url: "https://francetravail.io/opportunites-innovation/participer-initiatives-open-source"
       description: "France Travail’s (the French employment agency) Open Source Programme Office."
       email: "oss.00619@francetravail.fr"
     - name: "OSPO de la Ville de Paris"
+      city: "Paris"
+      lat: 48.8566
+      lng: 2.3522
+      locationBasis: "seat"
       url: "https://opensource.paris.fr"
       description: "Open Source Program Office for the City of Paris."
       email: "opensource@paris.fr"
     - name: "Pôle de compétences Logiciels Libres de l’Éducation nationale"
+      city: "Dijon"
+      lat: 47.322
+      lng: 5.0415
+      locationBasis: "seat"
       url: "https://pcll.ac-dijon.fr"
       description: "Develops open source software for the French national education system."
       email: "eole@ac-dijon.fr"
     - name: "Cellule Codes Données Grenoble Alpes"
+      city: "Grenoble"
+      lat: 45.1885
+      lng: 5.7245
+      locationBasis: "seat"
       url: "https://scienceouverte.univ-grenoble-alpes.fr/a-propos/cellule-data-grenoble-alpes"
       description: "Supports the Grenoble area’s scientific communities on matters relating to research data and code."
       email: "sos-codes-recherche@univ-grenoble-alpes.fr"
     - name: "Direction de la stratégie et de la culture numériques (DSCN), Échirolles"
+      city: "Échirolles"
+      lat: 45.1436
+      lng: 5.7139
+      locationBasis: "seat"
       url: "https://www.echirolles.fr/territoire-numerique"
       description: "Responsible for digital technology and strategy for the city of Échirolles."
       email: "nicolas.vivant@echirolles.fr"
       flossPolicy: "https://www.echirolles.fr/sites/default/files/2022-09/Schema_directeur_numerique.pdf"
     - name: "OSPO de l’IGN"
+      city: "Saint-Mandé"
+      lat: 48.845
+      lng: 2.418
+      locationBasis: "seat"
       url: "https://www.ign.fr/institut/des-donnees-et-logiciels-ouverts-au-service-de-la-nation"
       description: "The Open Source Programme Office of the French National Institute for Geographic and Forestry Information."
       email: "opensource@ign.fr"
     - name: "RECIA"
+      city: "Orléans"
+      lat: 47.9029
+      lng: 1.9093
+      locationBasis: "seat"
       url: "https://www.recia.fr"
       description: "A Public Interest Group providing shared IT services to French schools."
       email: "contact@recia.fr"
       flossPolicy: "https://www.recia.fr/innovation-logiciels-libres"
     - name: "OSPO de la Ville et l’Eurométropole de Strasbourg"
+      city: "Strasbourg"
+      lat: 48.5734
+      lng: 7.7521
+      locationBasis: "seat"
       url: "https://www.strasbourg.eu/strategie-logiciels-libres"
       description: "The \"Free Software Strategy\" unit of the city and Eurometropole of Strasbourg, promoting the use and development of Free Software within the territory."
       email: "opensource@strasbourg.eu"
   - country: "Netherlands"
     items:
     - name: "OSPO National Government The Netherlands"
+      city: "The Hague"
+      lat: 52.0705
+      lng: 4.3007
+      locationBasis: "hq"
       url: "https://opensourcewerken.nl/"
       description: "The national OSPO of the Netherlands, currently housed at the Ministry of the Interior and Kingdom Relations (BZK)."
       email: "ospo@minbzk.nl"
       flossPolicy: "https://github.com/MinBZK/Open-Source-Program-Office"
     - name: "Developer.overheid.nl"
+      city: "The Hague"
+      lat: 52.0705
+      lng: 4.3007
+      locationBasis: "hq"
       url: "https://developer.overheid.nl"
       description: "The developer portal of the Dutch government."
       email: "developer.overheid@geonovum.nl"

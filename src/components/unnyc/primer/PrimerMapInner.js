@@ -32,10 +32,14 @@ import 'leaflet/dist/leaflet.css';
 const COLORS = {
     city: '#D4A843',   // cities leading — gold
     nation: '#4B92DB', // national programs — UN blue
-    un: '#2A3D63',     // UN system — navy
-    ask: '#C0453C',    // NYC, the ask — crimson
+    ospo: '#7A4FA3',   // public sector OSPOs — violet, the one hue not already spoken for
     ctfg: '#3F8F7B',   // government open source programs (CTFG) — teal, off the palette above
 };
+// `un` (navy) and `ask` (crimson) were retired on 2026-08-17 with their markers: the
+// map is now catalogues, cities, OSPOs and CTFG programs. NYC carried the crimson
+// "the ask" marker, so nothing is drawn on New York by the policy layer any more —
+// the ask is made by the surrounding copy instead. Note the UNDP's OSPO still puts a
+// violet pin on New York, which is correct and is not that marker returning.
 
 /**
  * The country-fill ramp. Deliberately a pale wash of the SAME UN blue as the
@@ -81,13 +85,18 @@ export default function PrimerMapInner({
     projectsLabel,
     govoss = null,
     govossLabel,
+    ospos = null,
+    ospoLabel,
 }) {
     const containerRef = useRef(null);
     const mapRef = useRef(null);
     const projectLayerRef = useRef(null);
     const fillLayerRef = useRef(null);
+    const ospoLayerRef = useRef(null);
     const [showProjects, setShowProjects] = useState(true);
     const [showFill, setShowFill] = useState(true);
+    const [showOspos, setShowOspos] = useState(true);
+    const hasOspos = Boolean(ospos?.points?.length);
 
     // The fill needs BOTH halves: counts to colour by, geometry to paint. They load
     // independently on purpose (getGovossCatalogues), so check both here rather than
@@ -103,6 +112,14 @@ export default function PrimerMapInner({
         if (showProjects) layer.addTo(map);
         else layer.remove();
     }, [showProjects]);
+
+    useEffect(() => {
+        const map = mapRef.current;
+        const layer = ospoLayerRef.current;
+        if (!map || !layer) return;
+        if (showOspos) layer.addTo(map);
+        else layer.remove();
+    }, [showOspos]);
 
     useEffect(() => {
         const map = mapRef.current;
@@ -243,10 +260,57 @@ export default function PrimerMapInner({
             if (showProjects) layer.addTo(map);
         }
 
+        // OSPO layer: above the fill and the CTFG dots, below the policy markers.
+        if (hasOspos) {
+            const layer = L.layerGroup();
+            ospos.points.forEach((pt) => {
+                const icon = L.divIcon({
+                    className: 'unnyc-map-marker',
+                    html: `<span style="
+          display:block;
+          width:11px;
+          height:11px;
+          border-radius:2px;
+          background:${COLORS.ospo};
+          border:1.5px solid #fff;
+          box-shadow:0 1px 3px rgba(0,0,0,0.3);
+        "></span>`,
+                    iconSize: [11, 11],
+                    iconAnchor: [5.5, 5.5],
+                });
+                // A square, where every other layer is round. One city can hold five
+                // OSPOs and one policy marker at the same pixel; shape separates them
+                // when colour alone would not, including for a red-green reader.
+                const list = pt.ospos
+                    .map((o) => {
+                        // The REAL city, even where the pin was merged into a nearby
+                        // one — merging changes what is drawn, never what is claimed.
+                        const where = o.city && o.city !== pt.city ? ` — ${esc(o.city)}` : '';
+                        const approx = o.locationBasis === 'hq' ? ' (HQ)' : '';
+                        return `<li><a href="${esc(o.url)}" target="_blank" rel="noopener noreferrer">${esc(
+                            o.name
+                        )} ↗</a>${where}${approx}</li>`;
+                    })
+                    .join('');
+                L.marker([pt.lat, pt.lng], { icon })
+                    .bindPopup(
+                        `<div class="unnyc-map-popup">
+          <strong>${esc(pt.city)}</strong>
+          <p class="unnyc-map-popup__meta">${pt.ospos.length} public sector ${
+              pt.ospos.length === 1 ? 'OSPO' : 'OSPOs'
+          }</p>
+          <ul class="unnyc-map-popup__list">${list}</ul>
+        </div>`
+                    )
+                    .addTo(layer);
+            });
+            ospoLayerRef.current = layer;
+            if (showOspos) layer.addTo(map);
+        }
+
         markers.forEach((m) => {
             const color = COLORS[m.type] || COLORS.nation;
-            const isAsk = m.type === 'ask';
-            const size = isAsk ? 20 : 14;
+            const size = 14;
 
             const icon = L.divIcon({
                 className: 'unnyc-map-marker',
@@ -257,7 +321,7 @@ export default function PrimerMapInner({
           border-radius:50%;
           background:${color};
           border:2px solid #fff;
-          box-shadow:0 1px 4px rgba(0,0,0,0.35)${isAsk ? `, 0 0 0 6px rgba(192,69,60,0.25)` : ''};
+          box-shadow:0 1px 4px rgba(0,0,0,0.35);
         "></span>`,
                 iconSize: [size, size],
                 iconAnchor: [size / 2, size / 2],
@@ -278,6 +342,7 @@ export default function PrimerMapInner({
             mapRef.current = null;
             projectLayerRef.current = null;
             fillLayerRef.current = null;
+            ospoLayerRef.current = null;
         };
     }, []);
 
@@ -286,7 +351,12 @@ export default function PrimerMapInner({
             <div ref={containerRef} className="unnyc-map-container" style={{ height: 480 }} />
 
             <div className="unnyc-map-legend">
-                {legend.map((item) => (
+                {/* `ospo` has its own checkbox below, so it must not also render as a
+                    static swatch here — mapLegend lists it because it is one of the
+                    section's three named layers, not because it needs two entries. */}
+                {legend
+                    .filter((item) => !(item.type === 'ospo' && hasOspos))
+                    .map((item) => (
                     <div key={item.type} className="unnyc-map-legend-item">
                         <span
                             className="unnyc-map-legend-swatch"
@@ -295,6 +365,24 @@ export default function PrimerMapInner({
                         <span className="unnyc-map-legend-label">{item.label}</span>
                     </div>
                 ))}
+
+                {hasOspos && (
+                    <label className="unnyc-map-legend-item unnyc-map-legend-item--toggle">
+                        <input
+                            type="checkbox"
+                            checked={showOspos}
+                            onChange={(e) => setShowOspos(e.target.checked)}
+                            style={{ accentColor: COLORS.ospo }}
+                        />
+                        <span
+                            className="unnyc-map-legend-swatch unnyc-map-legend-swatch--square"
+                            style={{ backgroundColor: COLORS.ospo }}
+                        />
+                        <span className="unnyc-map-legend-label">
+                            {ospoLabel || 'Public sector OSPOs'} ({ospos.count})
+                        </span>
+                    </label>
+                )}
 
                 {/* The two DATA layers are switchable, so they are real checkboxes rather
                     than swatches; each is absent when its snapshot is missing. The fill

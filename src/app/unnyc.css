@@ -863,6 +863,13 @@
   overflow: hidden;
 }
 
+/* OSPO markers are squares where every other layer is round — shape, not just
+   colour, separates them where five OSPOs and a policy marker share a pixel. The
+   legend has to match or the key stops being a key. */
+.unnyc-page .unnyc-map-legend-swatch--square {
+  border-radius: 2px;
+}
+
 .unnyc-page .unnyc-map-legend-swatch--ramp {
   width: 11px;
   height: 12px;

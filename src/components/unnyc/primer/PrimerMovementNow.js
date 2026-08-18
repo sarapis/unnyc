@@ -15,7 +15,7 @@ import dynamic from 'next/dynamic';
  */
 const PrimerMapInner = dynamic(() => import('./PrimerMapInner'), { ssr: false });
 
-export default function PrimerMovementNow({ mapMarkers, mapLegend, ctfg, govoss, mapSource, title, lede }) {
+export default function PrimerMovementNow({ mapMarkers, mapLegend, ctfg, govoss, ospos, mapSource, title, lede }) {
     if (!mapMarkers) return null;
     return (
         <section id="going-open-source" className="unnyc-section unnyc-section--alt unnyc-section--map">
@@ -36,6 +36,8 @@ export default function PrimerMovementNow({ mapMarkers, mapLegend, ctfg, govoss,
                     projectsLabel={mapSource?.ctfgLegendLabel}
                     govoss={govoss}
                     govossLabel={mapSource?.govossLegendLabel}
+                    ospos={ospos}
+                    ospoLabel={mapSource?.ospoLegendLabel}
                 />
 
                 {/* GovOSS is CC BY 4.0 — a DIFFERENT licence from the CTFG credit below,

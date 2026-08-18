@@ -103,11 +103,6 @@ movementNow:
   title: "The World is Going Open Source"
   lede: "Open source enables governments all over the world to create, strengthen and share solutions. Check out some of the open source catalogs, institutions and programs of the world’s leading governments."
 mapMarkers:
-- type: "ask"
-  lat: 40.7489
-  lng: -73.968
-  label: "New York City — next?"
-  desc: "Host of UN Open Source Week. The ask: become the first city in the Americas to endorse the Principles."
 - type: "city"
   lat: 41.3874
   lng: 2.1686
@@ -129,20 +124,10 @@ mapMarkers:
   label: "Estonia (Tallinn)"
   desc: "Open sourced X-Road, the data exchange layer of its digital state."
 - type: "nation"
-  lat: 60.1699
-  lng: 24.9384
-  label: "Finland (Helsinki)"
-  desc: "Federated its national data exchange with Estonia’s in 2018."
-- type: "nation"
   lat: 64.1466
   lng: -21.9426
   label: "Iceland (Reykjavík)"
   desc: "Runs Straumurinn, its national X-Road environment."
-- type: "nation"
-  lat: 52.52
-  lng: 13.405
-  label: "Germany (Berlin)"
-  desc: "Sovereign Tech Agency funds critical open source maintenance; ZenDiS builds openDesk. Both endorsed the UN Principles."
 - type: "nation"
   lat: 12.9716
   lng: 77.5946
@@ -158,16 +143,6 @@ mapMarkers:
   lng: -76.7931
   label: "Jamaica (Kingston)"
   desc: "At the ministerial table at UN OSW 2026 as the Caribbean engages open source."
-- type: "un"
-  lat: 46.2044
-  lng: 6.1432
-  label: "Geneva — UN system"
-  desc: "ITU, UNICC and the wider UN digital ecosystem driving open standards."
-- type: "un"
-  lat: 40.7505
-  lng: -73.9682
-  label: "UN Headquarters, NYC"
-  desc: "Where the eight Principles were adopted — and where the world’s open source movement meets every June."
 # Credit + legend label for the CTFG map layer. The layer's DATA is a snapshot at
 # content/ctfg-gov-open-source.json (refresh with scripts/fetch-ctfg-projects.mjs);
 # the counts, source name, link and licence come from that file so they can't drift
@@ -176,14 +151,13 @@ mapSource:
   ctfgLegendLabel: "Government open source programs"
   ctfgCredit: "Government open source programs on this map are drawn from the"
   govossLegendLabel: "Projects in national open source catalogues"
+  ospoLegendLabel: "Public sector OSPOs"
   govossCredit: "Country shading counts the open source projects each government's own catalogues publish, harvested by"
 mapLegend:
 - type: "city"
   label: "Cities leading"
 - type: "nation"
   label: "National programs"
-- type: "un"
-  label: "UN system"
-- type: "ask"
-  label: "NYC — the ask"
+- type: "ospo"
+  label: "Public sector OSPOs"
 ---

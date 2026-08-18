@@ -150,6 +150,70 @@ export function getContent(name) {
  * argument. Returns null and the map just renders the curated policy markers.
  */
 /**
+ * The public-sector OSPO map layer, built from the SAME directory that renders on
+ * /resources — `ospoDirectory` in content/resources.md — rather than a second list.
+ * A copy would drift the moment someone adds an OSPO to one and not the other, which
+ * is the failure `sources.py` exists to prevent in the sibling repo.
+ *
+ * Coordinates are hand-placed on each item, with `locationBasis`:
+ *   'seat' — the body's own city is unambiguous from its name or its domain
+ *            (pcll.ac-dijon.fr is Dijon, not Paris; echirolles.fr is Échirolles)
+ *   'hq'   — placed at the parent organisation's headquarters city
+ * The popup says which, because "approximately here" and "here" are different claims
+ * and this map should not present the second when it means the first.
+ *
+ * GROUPED BY CITY, then near-adjacent cities merged. Four French OSPOs sit in Paris
+ * and the IGN's is in Saint-Mandé 5 km away: at world zoom those are the same pixel,
+ * so separate markers would silently hide four of five. Each entry keeps its REAL
+ * city in the popup, so merging changes what is drawn, never what is claimed.
+ */
+const OSPO_MERGE_KM = 25;
+
+export function getOspoMapPoints() {
+    let groups;
+    try {
+        groups = matter(fs.readFileSync(path.join(CONTENT_DIR, 'resources.md'), 'utf8')).data
+            ?.ospoDirectory?.groups;
+    } catch {
+        return null;
+    }
+    if (!Array.isArray(groups)) return null;
+
+    const items = [];
+    for (const g of groups) {
+        for (const it of g.items || []) {
+            if (typeof it.lat !== 'number' || typeof it.lng !== 'number') continue;
+            items.push({ ...it, country: g.country });
+        }
+    }
+    if (!items.length) return null;
+
+    // ~111 km per degree of latitude; longitude shrinks by cos(lat). Good enough for a
+    // 25 km "same place at world zoom" test, and it avoids a geo dependency for it.
+    const km = (a, b) => {
+        const dLat = (a.lat - b.lat) * 111;
+        const dLng = (a.lng - b.lng) * 111 * Math.cos(((a.lat + b.lat) / 2) * (Math.PI / 180));
+        return Math.hypot(dLat, dLng);
+    };
+
+    const points = [];
+    for (const it of items) {
+        // Merge into the nearest existing point within the threshold, largest first, so
+        // Saint-Mandé joins Paris rather than Paris joining Saint-Mandé.
+        const near = points
+            .filter((p) => km(p, it) <= OSPO_MERGE_KM)
+            .sort((a, b) => b.ospos.length - a.ospos.length)[0];
+        if (near) {
+            near.ospos.push(it);
+            continue;
+        }
+        points.push({ city: it.city, country: it.country, lat: it.lat, lng: it.lng, ospos: [it] });
+    }
+
+    return { count: items.length, cities: points.length, points };
+}
+
+/**
  * The GovOSS country-fill layer: how many public-sector open source entries each
  * country's catalogues list, plus the boundaries to paint them on.
  *
