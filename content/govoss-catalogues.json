@@ -11,6 +11,15 @@
   "countryAttributedEntries": 2619,
   "countryCount": 13,
   "catalogueCount": 17,
+  "trimmed": [
+    {
+      "code": "FR",
+      "name": "France",
+      "partsDropped": 1,
+      "partsKept": 2,
+      "reason": "French Guiana (2°N, 53°W) is France and Natural Earth is correct to include it, but on a map arguing about European government catalogues a shaded patch in South America reads as an error. Metropolitan France and Corsica only."
+    }
+  ],
   "excluded": [
     {
       "code": "GLOBAL",

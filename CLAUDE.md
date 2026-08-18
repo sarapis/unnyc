@@ -160,10 +160,17 @@ ask. Invert it and the page argues something else.
   Matching on it alone silently drops the LARGEST catalogue here (676) and looks
   like a rendering bug. The fetch script falls through `ISO_A2_EH → ISO_A2 → WB_A2 →
   ADM0_A3` and **throws** if any country ends up without a polygon.
-- **France's polygon includes French Guiana**, so the fill also paints a patch in
-  South America. That is Natural Earth being correct — Guiana is France — but it
-  surprises readers of a map about European catalogues. Left as-is deliberately;
-  trimming it would be an editorial call about overseas departments, not a fix.
+- **France is trimmed to metropolitan + Corsica** (`TRIM` in the fetch script).
+  Natural Earth includes French Guiana and is correct to — Guiana is France — but a
+  shaded patch in South America reads as an error on a map about European
+  catalogues. An editorial call, so it is named per-country with its reason and the
+  dropped part is recorded in the snapshot's `trimmed[]`, beside the counts, rather
+  than hidden in the polygon file.
+  ⚠ **Never generalise this into a "drop distant parts" rule.** It would gut the
+  map: Canada is 30 parts and 27 sit >15° from the mainland — the Arctic
+  archipelago, Newfoundland, Nova Scotia, Vancouver Island — and Italy's outliers
+  are Sicily and Sardinia. The threshold that trims Guiana also trims most of
+  Canada, and would look like a rendering glitch rather than a decision.
 - **The fill is keyboard-reachable, and that took work.** Leaflet makes *markers*
   focusable but GeoJSON paths are bare SVG. The tabindex/aria/Enter wiring must run
   on the layer's **`add`** event — inside `onEachFeature` the path has no DOM element
