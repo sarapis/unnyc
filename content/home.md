@@ -26,25 +26,32 @@ hero:
 # meant renumbering every card below it whenever the order changed.
 paths:
   - href: /start
-    image: "/images/home/SDGs01.jpeg"
-    question: "What is the open source government movement?"
-    answer: "The basics of the open source movement, plus its relevance to city governments and the UN from inception to present."
-  - href: /principles
     image: "/favicon.svg"
     # `imageStyle: logo` centres the mark on a brand tint instead of
     # cover-cropping a 100x100 square into a 560x160 strip — which is what it
     # did until 2026-08-14, and why it read as a broken image rather than a
     # choice.
     #
-    # ⚠ THIS CARD WAS THE /resources CARD until 2026-08-14, and the mark was
-    # kept there on a specific argument: card 3 is a Barcelona skyline meaning
-    # "cities that did this", so a second skyline meaning "our resource
-    # library" would read as a fourth case study. THAT ARGUMENT DOES NOT
-    # TRANSFER. This card is now the UN Principles, and the image is an open
-    # question again rather than a settled decision. `home/SDGs01.jpeg` is UN
-    # imagery and would arguably suit the Principles better than it suits
-    # /start, if the two were swapped.
+    # The mark opens the sequence as of 2026-08-14, having swapped places with
+    # SDGs01.jpeg. It sat on the /resources card, then briefly on Principles;
+    # the UN photo went to Principles because it is UN imagery and that card is
+    # the UN's Principles. What is left for this card is the campaign's own
+    # mark, which at least reads as "this is us, here is the movement" rather
+    # than as a place.
+    #
+    # ⚠ It is still a placeholder, and it is now the FIRST card — more
+    # prominent than in either previous position. The remaining licensed asset
+    # is `success/tokyo.jpeg`, rejected twice: a city skyline beside card 4's
+    # Barcelona reads as a second case study, and Tokyo is the case /success
+    # deliberately dropped.
     imageStyle: logo
+    question: "What is the open source government movement?"
+    answer: "The basics of the open source movement, plus its relevance to city governments and the UN from inception to present."
+  - href: /principles
+    # Swapped in from the /start card 2026-08-14: it is UN imagery and this is
+    # the card about the UN's own Principles, which is a closer fit than
+    # "the open source government movement" in general.
+    image: "/images/home/SDGs01.jpeg"
     question: "What are the UN Open Source Principles?"
     answer: "The eight commitments the UN adopted in 2025, in plain English — and what each one would mean for New York City."
   - href: /crosswalk
