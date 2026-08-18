@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -42,27 +42,19 @@ const COLORS = {
 // violet pin on New York, which is correct and is not that marker returning.
 
 /**
- * The country-fill ramp. Deliberately a pale wash of the SAME UN blue as the
- * `nation` markers rather than a new hue: the fill and those markers are about the
- * same governments, and a fifth colour would read as a fifth kind of claim.
+ * The country fill is ONE flat tone, not a ramp (2026-08-17, owner decision).
  *
- * Opacity does the work instead of hue, so the markers on top keep their contrast —
- * every marker carries a white border, which survives any step of this ramp. The
- * top step stops at 0.42 for that reason; it looked better at 0.7 and buried the
- * gold city markers over France and Germany, which are exactly the ones the section
- * is arguing about.
+ * It was a four-step choropleth. A single-colour key over a graded map would have
+ * made the legend disagree with the map, so the grading went with it: the fill now
+ * says "this government publishes a catalogue", and how many projects is in the
+ * popup. That is a real loss of information at a glance, and a deliberate one --
+ * the layer is ground for the markers above it, not the subject.
  *
- * Four steps because four is what the data actually has. Counts run 2 → 676 and a
- * five-step ramp left a bucket empty, which reads as a missing category rather than
- * an absent one.
+ * 0.28 sits where the old ramp's middle steps did. It has to stay low enough that a
+ * gold city marker over France or Germany keeps its contrast; 0.7 was tried on the
+ * ramp's top step and buried them.
  */
-const FILL_STEPS = [
-    { min: 250, opacity: 0.42, label: '250+' },
-    { min: 100, opacity: 0.30, label: '100–249' },
-    { min: 50, opacity: 0.19, label: '50–99' },
-    { min: 0, opacity: 0.10, label: '1–49' },
-];
-const fillFor = (n) => FILL_STEPS.find((s) => n >= s.min) || FILL_STEPS[FILL_STEPS.length - 1];
+const FILL_OPACITY = 0.28;
 
 /**
  * Escape for interpolation into Leaflet popup HTML. The curated markers are
@@ -93,9 +85,6 @@ export default function PrimerMapInner({
     const projectLayerRef = useRef(null);
     const fillLayerRef = useRef(null);
     const ospoLayerRef = useRef(null);
-    const [showProjects, setShowProjects] = useState(true);
-    const [showFill, setShowFill] = useState(true);
-    const [showOspos, setShowOspos] = useState(true);
     const hasOspos = Boolean(ospos?.points?.length);
 
     // The fill needs BOTH halves: counts to colour by, geometry to paint. They load
@@ -103,37 +92,10 @@ export default function PrimerMapInner({
     // trusting one to imply the other.
     const hasFill = Boolean(govoss?.countries?.length && govoss?.geo?.features?.length);
 
-    // Build the CTFG layer once, then add/remove it as the toggle flips — cheaper
-    // and less flickery than recreating 62 markers on every toggle.
-    useEffect(() => {
-        const map = mapRef.current;
-        const layer = projectLayerRef.current;
-        if (!map || !layer) return;
-        if (showProjects) layer.addTo(map);
-        else layer.remove();
-    }, [showProjects]);
-
-    useEffect(() => {
-        const map = mapRef.current;
-        const layer = ospoLayerRef.current;
-        if (!map || !layer) return;
-        if (showOspos) layer.addTo(map);
-        else layer.remove();
-    }, [showOspos]);
-
-    useEffect(() => {
-        const map = mapRef.current;
-        const layer = fillLayerRef.current;
-        if (!map || !layer) return;
-        if (showFill) {
-            layer.addTo(map);
-            // Ordering against any FUTURE vector layer, not against the markers:
-            // Leaflet's panes already guarantee the markers win (overlayPane 400 vs
-            // markerPane 600, measured), so the fill can never cover a dot however
-            // it is re-added. An earlier comment here claimed otherwise.
-            layer.bringToBack();
-        } else layer.remove();
-    }, [showFill]);
+    // No layer toggles (2026-08-17, owner decision). Every layer is simply on, so the
+    // three useState/useEffect pairs that added and removed them are gone, and with
+    // them the reason bringToBack() was called on re-add. The legend is a key again
+    // rather than a control panel.
 
     useEffect(() => {
         if (!containerRef.current || mapRef.current) return;
@@ -166,7 +128,7 @@ export default function PrimerMapInner({
                         // than drawn empty — an unfilled outline reads as "zero
                         // entries", which is a claim the data does not make.
                         fillColor: COLORS.nation,
-                        fillOpacity: c ? fillFor(c.entries).opacity : 0,
+                        fillOpacity: c ? FILL_OPACITY : 0,
                         color: COLORS.nation,
                         weight: c ? 0.8 : 0,
                         opacity: c ? 0.45 : 0,
@@ -224,7 +186,8 @@ export default function PrimerMapInner({
                 },
             });
             fillLayerRef.current = layer;
-            if (showFill) layer.addTo(map);
+            layer.addTo(map);
+            layer.bringToBack();
         }
 
         // CTFG layer next, so the curated policy markers sit on top of both.
@@ -257,7 +220,7 @@ export default function PrimerMapInner({
                     .addTo(layer);
             });
             projectLayerRef.current = layer;
-            if (showProjects) layer.addTo(map);
+            layer.addTo(map);
         }
 
         // OSPO layer: above the fill and the CTFG dots, below the policy markers.
@@ -305,7 +268,7 @@ export default function PrimerMapInner({
                     .addTo(layer);
             });
             ospoLayerRef.current = layer;
-            if (showOspos) layer.addTo(map);
+            layer.addTo(map);
         }
 
         markers.forEach((m) => {
@@ -351,85 +314,46 @@ export default function PrimerMapInner({
             <div ref={containerRef} className="unnyc-map-container" style={{ height: 480 }} />
 
             <div className="unnyc-map-legend">
-                {/* `ospo` has its own checkbox below, so it must not also render as a
-                    static swatch here — mapLegend lists it because it is one of the
-                    section's three named layers, not because it needs two entries. */}
-                {legend
-                    .filter((item) => !(item.type === 'ospo' && hasOspos))
-                    .map((item) => (
+                {/* A KEY, not a control panel: no checkboxes, no counts, one line per
+                    row. Counts live in each popup, where a reader who wants a number is
+                    already asking for one. Rows are ordered as the map is painted,
+                    ground first. Layers absent from the page are absent from the key —
+                    a swatch for a layer that failed to load is worse than no swatch. */}
+                {hasFill && (
+                    <div className="unnyc-map-legend-item">
+                        <span
+                            className="unnyc-map-legend-swatch unnyc-map-legend-swatch--area"
+                            style={{ backgroundColor: COLORS.nation, opacity: FILL_OPACITY + 0.25 }}
+                        />
+                        <span className="unnyc-map-legend-label">
+                            {govossLabel || 'National open source catalogs'}
+                        </span>
+                    </div>
+                )}
+
+                {legend.map((item) => (
                     <div key={item.type} className="unnyc-map-legend-item">
                         <span
-                            className="unnyc-map-legend-swatch"
+                            className={
+                                'unnyc-map-legend-swatch' +
+                                (item.type === 'ospo' ? ' unnyc-map-legend-swatch--square' : '')
+                            }
                             style={{ backgroundColor: COLORS[item.type] || '#888' }}
                         />
                         <span className="unnyc-map-legend-label">{item.label}</span>
                     </div>
                 ))}
 
-                {hasOspos && (
-                    <label className="unnyc-map-legend-item unnyc-map-legend-item--toggle">
-                        <input
-                            type="checkbox"
-                            checked={showOspos}
-                            onChange={(e) => setShowOspos(e.target.checked)}
-                            style={{ accentColor: COLORS.ospo }}
-                        />
-                        <span
-                            className="unnyc-map-legend-swatch unnyc-map-legend-swatch--square"
-                            style={{ backgroundColor: COLORS.ospo }}
-                        />
-                        <span className="unnyc-map-legend-label">
-                            {ospoLabel || 'Public sector OSPOs'} ({ospos.count})
-                        </span>
-                    </label>
-                )}
-
-                {/* The two DATA layers are switchable, so they are real checkboxes rather
-                    than swatches; each is absent when its snapshot is missing. The fill
-                    shows its ramp instead of one swatch — a single colour would imply one
-                    value where the whole point is that the countries differ. */}
-                {hasFill && (
-                    <label className="unnyc-map-legend-item unnyc-map-legend-item--toggle">
-                        <input
-                            type="checkbox"
-                            checked={showFill}
-                            onChange={(e) => setShowFill(e.target.checked)}
-                            style={{ accentColor: COLORS.nation }}
-                        />
-                        <span className="unnyc-map-legend-ramp" aria-hidden="true">
-                            {[...FILL_STEPS].reverse().map((step) => (
-                                <span
-                                    key={step.min}
-                                    className="unnyc-map-legend-swatch unnyc-map-legend-swatch--ramp"
-                                    style={{ backgroundColor: COLORS.nation, opacity: step.opacity }}
-                                />
-                            ))}
-                        </span>
-                        <span className="unnyc-map-legend-label">
-                            {govossLabel || 'Open source projects in national catalogues'} (
-                            {govoss.countries.length} countries)
-                        </span>
-                    </label>
-                )}
-
-                {/* The CTFG layer is the one thing on this legend you can switch off, so it
-                    is a real checkbox rather than a swatch. Absent when there's no snapshot. */}
                 {projects.length > 0 && (
-                    <label className="unnyc-map-legend-item unnyc-map-legend-item--toggle">
-                        <input
-                            type="checkbox"
-                            checked={showProjects}
-                            onChange={(e) => setShowProjects(e.target.checked)}
-                            style={{ accentColor: COLORS.ctfg }}
-                        />
+                    <div className="unnyc-map-legend-item">
                         <span
                             className="unnyc-map-legend-swatch"
                             style={{ backgroundColor: COLORS.ctfg }}
                         />
                         <span className="unnyc-map-legend-label">
-                            {projectsLabel || 'Government open source programs'} ({projects.length})
+                            {projectsLabel || 'Government open source programs'}
                         </span>
-                    </label>
+                    </div>
                 )}
             </div>
         </div>

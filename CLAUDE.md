@@ -130,7 +130,23 @@ to its CTFG profile. Toggleable, default on.
 
 `/start#going-open-source` carries, bottom to top: the **GovOSS country fill**, the
 **CTFG programs**, the **public sector OSPOs**, and the curated **policy markers**.
-Three of the four are toggleable.
+
+**No toggles, no counts in the key, one line per row** (owner decision). The legend is
+a key, not a control panel: the three checkboxes and their `useState`/`useEffect`
+pairs are gone, every layer is simply on, and counts live in the popups where a
+reader asking for a number already is. Two consequences worth knowing:
+
+- **The country fill is ONE flat tone** (`FILL_OPACITY`), not the four-step ramp it
+  shipped with. A single-colour key over a graded map would make the legend disagree
+  with the map, so the grading went with it. The fill now says *this government
+  publishes a catalogue*; how many is in the popup. Real information lost at a
+  glance, deliberately — the layer is ground for the markers, not the subject.
+- **The legend column is `max-content`, not a fixed 220px.** `white-space: nowrap`
+  makes a label one line by pushing it OUT of a box it does not fit, which is worse
+  than wrapping — two labels overflowed the card that way before the column was
+  allowed to size to its content. "Fits one line" is now structural rather than a
+  number to re-tune whenever a label changes. The mobile breakpoint still drops to
+  one column and wraps the key into a row; checked at 375px, no overflow.
 
 **Removed the same day, by owner decision:** the crimson **NYC "the ask"** marker and
 both **UN system** markers. ⚠ Nothing is drawn on New York by the policy layer any

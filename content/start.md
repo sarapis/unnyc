@@ -148,9 +148,9 @@ mapMarkers:
 # the counts, source name, link and licence come from that file so they can't drift
 # from the dots. Only the wording lives here.
 mapSource:
-  ctfgLegendLabel: "Government open source programs"
+  ctfgLegendLabel: "Government-built programs"
   ctfgCredit: "Government open source programs on this map are drawn from the"
-  govossLegendLabel: "Projects in national open source catalogues"
+  govossLegendLabel: "National open source catalogs"
   ospoLegendLabel: "Public sector OSPOs"
   govossCredit: "Country shading counts the open source projects each government's own catalogues publish, harvested by"
 mapLegend:

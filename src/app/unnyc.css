@@ -759,7 +759,14 @@
 
 .unnyc-page .unnyc-map-wrapper {
   display: grid;
-  grid-template-columns: 1fr 220px;
+  /* The legend column sizes to its own content rather than a fixed 220px, so
+     "every label on one line" is structural instead of a number to re-tune each
+     time a label changes. It was 220px, and two labels overflowed the card
+     because `white-space: nowrap` makes text one line by pushing it OUT of a box
+     it does not fit -- which looks like a bug, not a tidy legend. The mobile
+     breakpoint drops to one column and wraps the key into a row, so this only
+     ever applies where there is room to spare. */
+  grid-template-columns: 1fr max-content;
   gap: var(--wg-sp-6);
   min-height: 480px;
   /* Leaflet ships high z-indexes of its own — panes 400-700, controls 800, and
@@ -806,29 +813,6 @@
   background: var(--wg-surface-alt);
 }
 
-/* The CTFG project layer is the one switchable legend entry, so it renders as a
-   label+checkbox. Cursor/user-select make it read as a control, not a caption. */
-.unnyc-page .unnyc-map-legend-item--toggle {
-  cursor: pointer;
-  user-select: none;
-}
-
-/* `accent-color` is set inline by PrimerMapInner from COLORS.ctfg — the same
-   source the swatch beside it already uses. It was a second hand-copy of that
-   hex here, which is both a drift risk and a colour literal the brand variant
-   cannot reach. The layer's palette is data, owned by the component, not theme. */
-.unnyc-page .unnyc-map-legend-item--toggle input {
-  width: 14px;
-  height: 14px;
-  margin: 0;
-  cursor: pointer;
-}
-
-.unnyc-page .unnyc-map-legend-item--toggle:has(input:focus-visible) {
-  outline: 2px solid var(--wg-focus, #4b92db);
-  outline-offset: 2px;
-}
-
 /* Country line inside a CTFG popup — quieter than the description. */
 .unnyc-page .unnyc-map-popup__meta,
 .leaflet-popup-content .unnyc-map-popup__meta {
@@ -851,18 +835,6 @@
   color: var(--wg-text-secondary);
 }
 
-/* The GovOSS country fill shows its RAMP, not one swatch: a single colour would
-   state one value where the point of a choropleth is that the countries differ.
-   Butted together into one bar, so it reads as a scale rather than four categories.
-   Opacities are set inline by PrimerMapInner from FILL_STEPS — the same array the
-   map paints from, so the key cannot disagree with the fill. */
-.unnyc-page .unnyc-map-legend-ramp {
-  display: inline-flex;
-  flex-shrink: 0;
-  border-radius: 2px;
-  overflow: hidden;
-}
-
 /* OSPO markers are squares where every other layer is round — shape, not just
    colour, separates them where five OSPOs and a policy marker share a pixel. The
    legend has to match or the key stops being a key. */
@@ -870,10 +842,18 @@
   border-radius: 2px;
 }
 
-.unnyc-page .unnyc-map-legend-swatch--ramp {
-  width: 11px;
-  height: 12px;
-  border-radius: 0;
+/* The country fill is an AREA, not a point, so its key is a rectangle. A circle
+   here read as a sixth kind of marker. */
+.unnyc-page .unnyc-map-legend-swatch--area {
+  width: 18px;
+  height: 11px;
+  border-radius: 2px;
+}
+
+/* One line per row is the rule (2026-08-17): the legend column is narrow and a
+   wrapped label made the key taller than the thing it explains. */
+.unnyc-page .unnyc-map-legend-label {
+  white-space: nowrap;
 }
 
 /* Catalogue links inside a country popup. A country can have more than one
