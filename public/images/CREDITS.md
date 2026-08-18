@@ -11,9 +11,9 @@ free use**, which covers web use. See [Adobe Stock's license terms](https://stoc
 
 | File | Used on | License holder | Date acquired |
 |---|---|---|---|
-| `home/SDGs01.jpeg` | `/` — homepage path card #1 | olivia@sarapis.org | 08/10/2026 |
-| `home/NYC02.jpeg` | `/` — homepage path card #2 | olivia@sarapis.org | 08/10/2026 |
-| `success/barcelona.jpeg` | `/success` — Barcelona case hero (also reused on the homepage path card #3) | olivia@sarapis.org | 08/10/2026 |
+| `home/SDGs01.jpeg` | `/` — homepage path card #2, the UN Principles card (was card #1 until 2026-08-14) | olivia@sarapis.org | 08/10/2026 |
+| `home/NYC02.jpeg` | `/` — homepage path card #3 (was #2 until the 2026-08-14 reorder) | olivia@sarapis.org | 08/10/2026 |
+| `success/barcelona.jpeg` | `/success` — Barcelona case hero (also reused on the homepage path card #4) | olivia@sarapis.org | 08/10/2026 |
 | `success/paris.jpeg` | `/success` — Paris case hero | olivia@sarapis.org | 08/10/2026 |
 | `success/tokyo.jpeg` | **currently unused** — was the `/success` Tokyo case hero until that case was removed 2026-08-14. Considered for the fourth homepage card and rejected the same day; see "Not covered by this file" below | olivia@sarapis.org | 08/10/2026 |
 | `success/munich.jpeg` | `/success` — Munich case hero | olivia@sarapis.org | 08/11/2026 |
@@ -42,19 +42,27 @@ A few other image assets live outside `public/images/` and aren't Adobe
 Stock purchases:
 
 - `public/favicon.svg` — created in-house, no external license. Also the art for
-  the **fourth homepage path card** (`/resources`), rendered as a centred logo on
-  a tint via `imageStyle: logo` rather than cover-cropped like the three
+  the **first homepage path card** (`/start`), rendered as a centred logo on a
+  tint via `imageStyle: logo` rather than cover-cropped like the three
   photographs beside it.
 
-  **This is a decision as of 2026-08-14, not a placeholder.** A city photo was
-  considered and rejected: card 3 is a Barcelona skyline meaning "cities that
-  did this", so a second skyline beside it meaning "our resource library" reads
-  as a fourth case study. `success/tokyo.jpeg` — paid for and unused — is
-  doubly wrong for it, since Tokyo is the case `/success` deliberately dropped
-  that same day. The mark reads as "this one is ours, not a place", which is
-  what the card means. If the card ever does get a photograph it should depict a
-  library, directory or archive, not a city: swap the `image:` in
-  `content/home.md`, drop the `imageStyle: logo` line, and add a row above.
+  ⚠ **It has moved twice on 2026-08-14, and it is a placeholder again.** It was
+  the `/resources` card's art, where keeping it WAS a decision: a city photo was
+  rejected because card #4 is a Barcelona skyline meaning "cities that did
+  this", so a second skyline meaning "our resource library" would read as a
+  second case study. Then `/resources` lost its card to the UN Principles, and
+  `home/SDGs01.jpeg` moved to Principles as the better-matched UN imagery —
+  leaving the mark on `/start`.
+
+  So the old justification no longer applies: this card is "the open source
+  government movement", not a resource library, and the mark now sits in the
+  FIRST position, the most prominent it has held. To finish it: buy a photo, set
+  `image:` in `content/home.md`, drop the `imageStyle: logo` line, and add a row
+  above.
+
+  `success/tokyo.jpeg` — paid for and unused — remains the wrong answer: a city
+  skyline beside card #4's Barcelona still reads as a second case study, and
+  Tokyo is the case `/success` deliberately dropped.
 - `public/case-images/*` (the "Governments Doing This Now" grid on
   `/success`) — these are each project's own logo or branded marketing
   graphic (Munich's city crest, X-Road's promotional lockup, the Sovereign
