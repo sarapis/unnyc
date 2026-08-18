@@ -6,7 +6,7 @@ import UnnycSectionNav from '@/components/unnyc/UnnycSectionNav';
 import PrimerConcepts from '@/components/unnyc/primer/PrimerConcepts';
 import PrimerMovement from '@/components/unnyc/primer/PrimerMovement';
 import PrimerMovementNow from '@/components/unnyc/primer/PrimerMovementNow';
-import { getContent, getCtfgProjects, inlineMd } from '@/lib/content';
+import { getContent, getCtfgProjects, getGovossCatalogues, inlineMd } from '@/lib/content';
 
 export async function generateMetadata() {
     const { meta } = getContent('start');
@@ -62,6 +62,7 @@ export default function StartPage() {
                 mapMarkers={doc.mapMarkers}
                 mapLegend={doc.mapLegend}
                 ctfg={getCtfgProjects()}
+                govoss={getGovossCatalogues()}
                 mapSource={doc.mapSource}
                 title={doc.movementNow?.title}
                 lede={doc.movementNow?.lede}

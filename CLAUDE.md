@@ -126,6 +126,53 @@ to its CTFG profile. Toggleable, default on.
   `civictech.guide` link render under the map, counts read from the snapshot so they can't drift.
   Wording lives in `content/start.md` (`mapSource`) per the copy-in-markdown rule.
 
+## The GovOSS country fill (2026-08-17)
+
+`/start#going-open-source` now has a THIRD layer, painted beneath the other two: a
+choropleth of how many open source projects each country's own public catalogues
+list, from **GovOSS** (`govoss-catalog.vercel.app`). 13 countries, 17 catalogues,
+2,619 country-attributed projects. Click or tab a country for its count and a link
+to each catalogue.
+
+**The stacking order is the argument, not a style choice.** Running a public code
+catalogue and endorsing the UN Principles are different claims and they disagree:
+Italy has one of the largest catalogues here and is not in the policy layer at all;
+Barcelona endorsed first and has no catalogue in GovOSS. Inventory as the ground and
+endorsement as the figure is what makes that gap legible — which is the case for the
+ask. Invert it and the page argues something else.
+
+- **Snapshot, not a live fetch** — `node scripts/fetch-govoss-catalogues.mjs`, same
+  three reasons as the CTFG layer. It writes **two** files on purpose:
+  `content/govoss-catalogues.json` (counts — meant to be read in a diff) and
+  `content/govoss-countries.geo.json` (19 KB of Natural Earth polygons — never
+  readable in a diff, and burying the counts inside it would hide the reviewable
+  half). `getGovossCatalogues()` loads them independently and fails soft on each.
+- **Licence differs from the layer beside it.** GovOSS is **CC BY 4.0**; CTFG is CC
+  BY-NC-SA 4.0. The two credit lines are not interchangeable. Boundaries are Natural
+  Earth, public domain.
+- ⚠ **Never render the sum of the country counts.** It matches neither total, in
+  both directions at once: 256 entries sit under `GLOBAL`/`EU` and get no polygon,
+  while an entry listed by catalogues in two countries counts under each. 2,619
+  summed against GovOSS's actual 2,772. Use `countryAttributedEntries` (what the
+  polygons cover) or `totalEntries` (GovOSS's headline), never arithmetic on the
+  fills.
+- ⚠ **Natural Earth's `ISO_A2` is `-99` for several countries, France among them.**
+  Matching on it alone silently drops the LARGEST catalogue here (676) and looks
+  like a rendering bug. The fetch script falls through `ISO_A2_EH → ISO_A2 → WB_A2 →
+  ADM0_A3` and **throws** if any country ends up without a polygon.
+- **France's polygon includes French Guiana**, so the fill also paints a patch in
+  South America. That is Natural Earth being correct — Guiana is France — but it
+  surprises readers of a map about European catalogues. Left as-is deliberately;
+  trimming it would be an editorial call about overseas departments, not a fix.
+- **The fill is keyboard-reachable, and that took work.** Leaflet makes *markers*
+  focusable but GeoJSON paths are bare SVG. The tabindex/aria/Enter wiring must run
+  on the layer's **`add`** event — inside `onEachFeature` the path has no DOM element
+  yet, `getElement()` returns null, and the whole block silently no-ops with a green
+  build. Counting `[tabindex]` in the rendered page is what caught it.
+- **Leaflet panes already keep the fill under the markers** (overlayPane 400 vs
+  markerPane 600, measured). The `bringToBack()` call orders it against future vector
+  layers; it is not what protects the dots.
+
 ### Coverage audit vs CTFG (2026-08-07)
 Every project/org/resource/OSPO on this site was cross-checked against the full CTFG directory:
 **61 entities — 20 have CTFG profiles, 41 don't** (30 civic/gov-tech, 11 general FOSS). Largest gap:

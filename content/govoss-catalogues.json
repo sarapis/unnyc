@@ -1,0 +1,196 @@
+{
+  "source": "GovOSS",
+  "sourceUrl": "https://govoss-catalog.vercel.app",
+  "sourceApi": "https://govoss-catalog.vercel.app/meta.json",
+  "licence": "CC BY 4.0",
+  "boundaries": "Natural Earth 1:110m (public domain)",
+  "generatedBy": "scripts/fetch-govoss-catalogues.mjs",
+  "generated": "2026-08-18",
+  "govossGenerated": "2026-08-17",
+  "totalEntries": 2772,
+  "countryAttributedEntries": 2619,
+  "countryCount": 13,
+  "catalogueCount": 17,
+  "excluded": [
+    {
+      "code": "GLOBAL",
+      "reason": "Digital Public Goods Registry — global, not a national catalogue",
+      "entries": 248
+    },
+    {
+      "code": "EU",
+      "reason": "code.europa.eu — EU institutions, not a member state",
+      "entries": 8
+    }
+  ],
+  "countries": [
+    {
+      "code": "FR",
+      "entries": 676,
+      "catalogues": [
+        {
+          "label": "SILL",
+          "site": "https://code.gouv.fr/sill",
+          "entries": 667,
+          "route": "bulk JSON"
+        },
+        {
+          "label": "awesome-codegouvfr",
+          "site": "https://code.gouv.fr/",
+          "entries": 19,
+          "route": "bulk JSON"
+        }
+      ]
+    },
+    {
+      "code": "DE",
+      "entries": 549,
+      "catalogues": [
+        {
+          "label": "openCode",
+          "site": "https://opencode.de/en/software",
+          "entries": 412,
+          "route": "GitLab API"
+        },
+        {
+          "label": "Munich Open Source",
+          "site": "https://opensource.muenchen.de/software/",
+          "entries": 141,
+          "route": "markdown files in git"
+        }
+      ]
+    },
+    {
+      "code": "IT",
+      "entries": 537,
+      "catalogues": [
+        {
+          "label": "Developers Italia",
+          "site": "https://developers.italia.it/en/software",
+          "entries": 537,
+          "route": "REST API"
+        }
+      ]
+    },
+    {
+      "code": "DK",
+      "entries": 214,
+      "catalogues": [
+        {
+          "label": "OS2 Denmark",
+          "site": "https://os2.eu/",
+          "entries": 214,
+          "route": "GitHub orgs (20)"
+        }
+      ]
+    },
+    {
+      "code": "BG",
+      "entries": 177,
+      "catalogues": [
+        {
+          "label": "e-Government Ministry",
+          "site": "https://github.com/governmentbg",
+          "entries": 177,
+          "route": "GitHub org"
+        }
+      ]
+    },
+    {
+      "code": "NL",
+      "entries": 103,
+      "catalogues": [
+        {
+          "label": "code.overheid.nl",
+          "site": "https://code.overheid.nl/",
+          "entries": 103,
+          "route": "Forgejo API"
+        }
+      ]
+    },
+    {
+      "code": "BE",
+      "entries": 101,
+      "catalogues": [
+        {
+          "label": "iMio",
+          "site": "https://www.imio.be/",
+          "entries": 101,
+          "route": "GitHub org"
+        }
+      ]
+    },
+    {
+      "code": "CA",
+      "entries": 66,
+      "catalogues": [
+        {
+          "label": "Open Resource Exchange",
+          "site": "https://code.open.canada.ca/en/index.html",
+          "entries": 66,
+          "route": "code.json"
+        }
+      ]
+    },
+    {
+      "code": "TW",
+      "entries": 57,
+      "catalogues": [
+        {
+          "label": "Public Code Platform (moda)",
+          "site": "https://code.gov.tw/",
+          "entries": 57,
+          "route": "official open-data export"
+        }
+      ]
+    },
+    {
+      "code": "FI",
+      "entries": 54,
+      "catalogues": [
+        {
+          "label": "Avoinkoodi",
+          "site": "https://avoinkoodi.fi/",
+          "entries": 54,
+          "route": "static JSON"
+        }
+      ]
+    },
+    {
+      "code": "SE",
+      "entries": 44,
+      "catalogues": [
+        {
+          "label": "Offentligkod",
+          "site": "https://offentligkod.se/",
+          "entries": 44,
+          "route": "GNU recutils in git"
+        }
+      ]
+    },
+    {
+      "code": "PT",
+      "entries": 39,
+      "catalogues": [
+        {
+          "label": "ARTE Portugal",
+          "site": "https://github.com/amagovpt",
+          "entries": 39,
+          "route": "GitHub org"
+        }
+      ]
+    },
+    {
+      "code": "IE",
+      "entries": 2,
+      "catalogues": [
+        {
+          "label": "OGCIO Ireland",
+          "site": "https://github.com/ogcio",
+          "entries": 2,
+          "route": "GitHub org"
+        }
+      ]
+    }
+  ]
+}

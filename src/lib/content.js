@@ -149,6 +149,35 @@ export function getContent(name) {
  * a missing file should cost you the extra dots, not the whole page and its
  * argument. Returns null and the map just renders the curated policy markers.
  */
+/**
+ * The GovOSS country-fill layer: how many public-sector open source entries each
+ * country's catalogues list, plus the boundaries to paint them on.
+ *
+ * TWO files on purpose (see scripts/fetch-govoss-catalogues.mjs): the counts are
+ * meant to be read in a diff, the polygons never are. Both fail soft, for the same
+ * reason as getCtfgProjects — a missing snapshot should cost the fill, not the page.
+ * They fail INDEPENDENTLY too: counts without geometry still render the credit line
+ * and the totals, which is more useful than an all-or-nothing blank.
+ *
+ * GovOSS data is CC BY 4.0 — note that is a DIFFERENT licence from the CTFG layer
+ * beside it (CC BY-NC-SA 4.0), so the two credits are not interchangeable.
+ */
+export function getGovossCatalogues() {
+    const file = path.join(CONTENT_DIR, 'govoss-catalogues.json');
+    try {
+        const d = JSON.parse(fs.readFileSync(file, 'utf8'));
+        if (!Array.isArray(d?.countries) || !d.countries.length) return null;
+        try {
+            d.geo = JSON.parse(fs.readFileSync(path.join(CONTENT_DIR, 'govoss-countries.geo.json'), 'utf8'));
+        } catch {
+            d.geo = null;
+        }
+        return d;
+    } catch {
+        return null;
+    }
+}
+
 export function getCtfgProjects() {
     const file = path.join(CONTENT_DIR, 'ctfg-gov-open-source.json');
     try {

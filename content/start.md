@@ -175,6 +175,8 @@ mapMarkers:
 mapSource:
   ctfgLegendLabel: "Government open source programs"
   ctfgCredit: "Government open source programs on this map are drawn from the"
+  govossLegendLabel: "Projects in national open source catalogues"
+  govossCredit: "Country shading counts the open source projects each government's own catalogues publish, harvested by"
 mapLegend:
 - type: "city"
   label: "Cities leading"

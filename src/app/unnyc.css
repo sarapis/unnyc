@@ -851,6 +851,48 @@
   color: var(--wg-text-secondary);
 }
 
+/* The GovOSS country fill shows its RAMP, not one swatch: a single colour would
+   state one value where the point of a choropleth is that the countries differ.
+   Butted together into one bar, so it reads as a scale rather than four categories.
+   Opacities are set inline by PrimerMapInner from FILL_STEPS — the same array the
+   map paints from, so the key cannot disagree with the fill. */
+.unnyc-page .unnyc-map-legend-ramp {
+  display: inline-flex;
+  flex-shrink: 0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.unnyc-page .unnyc-map-legend-swatch--ramp {
+  width: 11px;
+  height: 12px;
+  border-radius: 0;
+}
+
+/* Catalogue links inside a country popup. A country can have more than one
+   catalogue — France and Germany both do — so this is a list, not a single link. */
+.unnyc-page .unnyc-map-popup__list,
+.leaflet-popup-content .unnyc-map-popup__list {
+  margin: 0;
+  padding: 0 0 0 1rem;
+  font-size: var(--wg-fs-sm, 0.875rem);
+}
+
+.unnyc-page .unnyc-map-popup__list li,
+.leaflet-popup-content .unnyc-map-popup__list li {
+  margin: 0.15rem 0;
+}
+
+/* The fill is made keyboard-reachable in PrimerMapInner (SVG paths get tabindex;
+   Leaflet only does that for markers). A focused path needs a VISIBLE ring, and
+   `outline` on an SVG path is unreliable across browsers — stroke is not. */
+.unnyc-page .leaflet-interactive:focus-visible {
+  outline: none;
+  stroke: var(--wg-text, #162e51);
+  stroke-width: 2.5;
+  stroke-opacity: 1;
+}
+
 /* --- News --- */
 .unnyc-page .unnyc-news__grid {
   display: grid;
