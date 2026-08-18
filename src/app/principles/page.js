@@ -101,7 +101,11 @@ export default function PrinciplesPage() {
                                 </Link>
                             )}
 
-                            {/* Community Principles deliberately has none. */}
+                            {/* No section carries one today — Software's "Build
+                                software that is:" was removed on 2026-08-14 and
+                                the two sections are symmetric now. Guarded, not
+                                deleted, so restoring one stays a content edit
+                                (same as gridIntro/gridCommitted). */}
                             {section.subhead && (
                                 <h3 className="unnyc-principles__group-title">{section.subhead}</h3>
                             )}

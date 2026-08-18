@@ -128,10 +128,8 @@
     margin-top: var(--wg-sp-10);
   }
 
-  .unnyc-principles__group {
-    margin-top: var(--wg-sp-8);
-  }
-
+  /* The optional per-section SUB-heading. Its own name is a leftover from when
+     this class titled a group; nothing renders one today. */
   .unnyc-principles__group-title {
     font-family: var(--wg-font-display);
     font-weight: 400;

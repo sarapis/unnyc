@@ -157,9 +157,11 @@ principlesDoc:
   # then three in columns. Added 2026-08-14, replacing the UN's three groups on
   # both surfaces.
   #
-  # ⚠ `Community Principles` deliberately has NO sub-heading while
-  # `Software Principles` keeps one. Asked for explicitly; the two sections are
-  # not the same shape.
+  # NEITHER section has a sub-heading. Software briefly carried "Build software
+  # that is:" and it was removed the same day, so the two are symmetric: title,
+  # full-width lead, three columns. An optional `subhead:` on a section still
+  # renders if one comes back — same arrangement as `gridIntro`/`gridCommitted`
+  # above, kept in the component so restoring one is a content edit.
   #
   # ⚠ It also elevates #2 Contribute back to a section lead. The UN designates
   # only #1 as its lead, so this is OUR editorial reading of which principle
@@ -174,7 +176,6 @@ principlesDoc:
   groupsGrid:
   - title: "Software Principles"
     lead: open-by-default
-    subhead: "Build software that is:"
     items: [secure-by-design, design-for-reusability, provide-documentation]
   - title: "Community Principles"
     lead: contribute-back
