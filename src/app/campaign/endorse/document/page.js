@@ -55,15 +55,27 @@ export default function EndorsementDocumentPage() {
                     By this endorsement, the City commits to the following:
                 </p>
 
-                <div className="unnyc-doc-page__primary">
-                    <p className="unnyc-doc-page__primary-label">The Foundation</p>
-                    <p className="unnyc-doc-page__primary-title">{lead.title}</p>
-                    <p className="unnyc-doc-page__primary-desc">{lead.desc}</p>
-                </div>
+                {/* `lead` is only set when the content falls back to the UN's
+                    three groups. Under `groupsGrid` each section carries its own
+                    lead, so the standalone "The Foundation" block is not used —
+                    #1 opens the Software section instead. */}
+                {lead && (
+                    <div className="unnyc-doc-page__primary">
+                        <p className="unnyc-doc-page__primary-label">The Foundation</p>
+                        <p className="unnyc-doc-page__primary-title">{lead.title}</p>
+                        <p className="unnyc-doc-page__primary-desc">{lead.desc}</p>
+                    </div>
+                )}
 
                 {groups.map((group) => (
                     <div className="unnyc-doc-page__group" key={group.title}>
                         <h2 className="unnyc-doc-page__group-title">{group.title}</h2>
+                        {group.lead && (
+                            <div className="unnyc-doc-page__primary">
+                                <p className="unnyc-doc-page__primary-title">{group.lead.title}</p>
+                                <p className="unnyc-doc-page__primary-desc">{group.lead.desc}</p>
+                            </div>
+                        )}
                         <ul className="unnyc-doc-page__group-list">
                             {group.items.map((item) => (
                                 <li key={item.title}>

@@ -149,6 +149,37 @@ principlesDoc:
   # Slugs resolve against every principle below. An unknown one FAILS THE
   # BUILD rather than silently dropping a principle from the printed page.
   # ------------------------------------------------------------------------
+  # ------------------------------------------------------------------------
+  # THE TWO-SECTION GROUPING — /principles (the grid) and the printable
+  # endorsement declaration (/campaign/endorse/document).
+  #
+  # Two named sections, each opening on one principle as a FULL-WIDTH card and
+  # then three in columns. Added 2026-08-14, replacing the UN's three groups on
+  # both surfaces.
+  #
+  # NEITHER section has a sub-heading. Software briefly carried "Build software
+  # that is:" and it was removed the same day, so the two are symmetric: title,
+  # full-width lead, three columns. An optional `subhead:` on a section still
+  # renders if one comes back — same arrangement as `gridIntro`/`gridCommitted`
+  # above, kept in the component so restoring one is a content edit.
+  #
+  # ⚠ It also elevates #2 Contribute back to a section lead. The UN designates
+  # only #1 as its lead, so this is OUR editorial reading of which principle
+  # anchors the community half — not the UN's.
+  #
+  # Slug refs, NOT a rearrangement of `groups` below, because that array holds
+  # the principle objects and is flattened by principlesFlat() for the open
+  # letter and by /principles' own detail sections and rail. Moving objects
+  # between groups there risks dropping one from a surface that only flattens.
+  # An unknown slug FAILS THE BUILD.
+  # ------------------------------------------------------------------------
+  groupsGrid:
+  - title: "Software Principles"
+    lead: open-by-default
+    items: [secure-by-design, design-for-reusability, provide-documentation]
+  - title: "Community Principles"
+    lead: contribute-back
+    items: [foster-inclusion, rise, sustain-and-scale]
   groupsDocument:
   - title: "Build software"
     items: [secure-by-design, design-for-reusability, provide-documentation, sustain-and-scale]
@@ -234,6 +265,11 @@ principlesDoc:
       icon: git-pull-request
       title: "Contribute back"
       titleCanonical: "Contribute back"
+      # `body` is the line shown when a principle is rendered as a FULL-WIDTH
+      # lead card — Open by default has one for the same reason. Contribute back
+      # became the Community section's lead on 2026-08-14.
+      body:
+      - "Encourage active participation in the open source ecosystem."
       desc: "Encouraging active participation in the Open Source ecosystem."
       descShort: "Active participation in the open source ecosystem"
       descDocument: "Encourage active participation in the open source ecosystem."

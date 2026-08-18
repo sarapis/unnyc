@@ -128,10 +128,8 @@
     margin-top: var(--wg-sp-10);
   }
 
-  .unnyc-principles__group {
-    margin-top: var(--wg-sp-8);
-  }
-
+  /* The optional per-section SUB-heading. Its own name is a leftover from when
+     this class titled a group; nothing renders one today. */
   .unnyc-principles__group-title {
     font-family: var(--wg-font-display);
     font-weight: 400;
@@ -550,5 +548,29 @@
     .unnyc-page .unnyc-principles__rail-link {
       transition: none;
     }
+  }
+
+  /* Two named sections ("Software Principles" / "Community Principles"), each
+     opening on a full-width lead card. Added 2026-08-14. The section title is
+     the h2; `__group-title` is now the optional SUB-heading inside a section
+     ("Build software that is:"), which is why Community — deliberately without
+     one — needs no rule of its own. */
+  .unnyc-principles__section + .unnyc-principles__section {
+    margin-top: var(--wg-sp-12);
+  }
+
+  .unnyc-principles__section-title {
+    font-family: var(--wg-font-display);
+    font-weight: 400;
+    font-size: var(--wg-fs-2xl);
+    color: var(--wg-brand);
+    margin: 0 0 var(--wg-sp-5);
+    padding-bottom: var(--wg-sp-3);
+    border-bottom: 1px solid var(--wg-border);
+  }
+
+  /* The sub-heading sits between the lead card and the columns. */
+  .unnyc-principles__section .unnyc-principles__group-title {
+    margin-top: var(--wg-sp-6);
   }
 }

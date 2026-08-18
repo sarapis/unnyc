@@ -5,7 +5,7 @@ import './principles.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import UnnycEndorserDirectory from '@/components/unnyc/primer/UnnycEndorserDirectory';
 import UnnycPrinciplesRail from '@/components/unnyc/UnnycPrinciplesRail';
-import { getContent, getUnEndorsers, inlineMd } from '@/lib/content';
+import { getContent, getUnEndorsers, inlineMd, principlesResolve } from '@/lib/content';
 
 // Read per call, NOT at module scope — see the note in crosswalk/page.js.
 export async function generateMetadata() {
@@ -41,6 +41,10 @@ export default function PrinciplesPage() {
     const endorsers = getUnEndorsers();
     const { principlesDoc, sections } = doc;
     const { lead, groups } = principlesDoc;
+    // Two named sections, each opening on one principle as a full-width card.
+    // Slug refs resolved from `groups`, which still holds the objects — see the
+    // note above `groupsGrid` in content/principles.md.
+    const gridSections = principlesResolve(principlesDoc, 'groupsGrid');
 
     // Grid order = the UN's own grouping. Detail order = 1-8, which reads as a
     // list rather than as three thematic clusters.
@@ -71,28 +75,43 @@ export default function PrinciplesPage() {
                         <p className="unnyc-principles__intro">{doc.gridIntro}</p>
                     )}
 
-                    <Link
-                        href={`#${lead.slug}`}
-                        className="unnyc-principles__tile unnyc-principles__tile--primary unnyc-principles__card"
-                    >
-                        <UnnycIcon name={lead.icon} size={56} className="unnyc-principles__tile-icon" />
-                        <h2 className="unnyc-principles__tile-title">{lead.title}.</h2>
-                        {lead.body.map((p, i) => (
-                            <p key={i} className="unnyc-principles__tile-desc">{p}</p>
-                        ))}
-                    </Link>
-
                     {doc.gridCommitted && (
                         <p className="unnyc-principles__intro unnyc-principles__intro--committed">
                             {doc.gridCommitted}
                         </p>
                     )}
 
-                    {groups.map((group) => (
-                        <div className="unnyc-principles__group" key={group.title}>
-                            <h2 className="unnyc-principles__group-title">{group.title}</h2>
+                    {gridSections.map((section) => (
+                        <div className="unnyc-principles__section" key={section.title}>
+                            <h2 className="unnyc-principles__section-title">{section.title}</h2>
+
+                            {/* The section's lead, full width. `body` is the line a
+                                principle shows in this treatment; #2 gained one when
+                                it became the Community lead. */}
+                            {section.lead && (
+                                <Link
+                                    href={`#${section.lead.slug}`}
+                                    className="unnyc-principles__tile unnyc-principles__tile--primary unnyc-principles__card"
+                                >
+                                    <UnnycIcon name={section.lead.icon} size={56} className="unnyc-principles__tile-icon" />
+                                    <h3 className="unnyc-principles__tile-title">{section.lead.title}.</h3>
+                                    {(section.lead.body || [section.lead.desc]).filter(Boolean).map((p, i) => (
+                                        <p key={i} className="unnyc-principles__tile-desc">{p}</p>
+                                    ))}
+                                </Link>
+                            )}
+
+                            {/* No section carries one today — Software's "Build
+                                software that is:" was removed on 2026-08-14 and
+                                the two sections are symmetric now. Guarded, not
+                                deleted, so restoring one stays a content edit
+                                (same as gridIntro/gridCommitted). */}
+                            {section.subhead && (
+                                <h3 className="unnyc-principles__group-title">{section.subhead}</h3>
+                            )}
+
                             <div className="unnyc-principles__grid">
-                                {group.items.map((item) => (
+                                {section.items.map((item) => (
                                     <Link
                                         key={item.slug}
                                         href={`#${item.slug}`}
@@ -103,7 +122,7 @@ export default function PrinciplesPage() {
                                             size={56}
                                             className="unnyc-principles__tile-icon"
                                         />
-                                        <h3 className="unnyc-principles__tile-title">{item.title}</h3>
+                                        <h4 className="unnyc-principles__tile-title">{item.title}</h4>
                                         {/* `item.desc` is deliberately NOT rendered here
                                             (2026-08-14): the grid is a scannable list of
                                             the eight names, and the full description is
