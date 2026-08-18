@@ -311,22 +311,76 @@ export function principlesFlat(principlesDoc) {
 }
 
 /**
- * Grouped for the printable declaration: the declaration's own group headings,
- * canonical principle names, and the City-facing description where one exists.
+ * Resolve a slug-referencing grouping (`groupsGrid`, `groupsDocument`) against
+ * the principle objects, which live once in `lead` + `groups[].items`.
+ *
+ * The groupings are slug refs rather than rearrangements of `groups` because
+ * that array is ALSO flattened — by principlesFlat() for the open letter, and
+ * by /principles for its detail sections and rail. Moving objects between
+ * groups there risks a principle vanishing from a surface that only flattens,
+ * which is the silent failure this repo keeps producing.
+ *
+ * THROWS on an unknown slug. lint:content does not check these refs, and a typo
+ * would otherwise drop a principle from a printed page with a green build.
+ */
+export function principlesResolve(principlesDoc, key) {
+  const { lead, groups = [] } = principlesDoc || {};
+  const spec = principlesDoc?.[key];
+  if (!Array.isArray(spec) || !spec.length) return null;
+
+  const bySlug = new Map(
+    [lead, ...groups.flatMap((g) => g.items || [])]
+      .filter(Boolean)
+      .map((p) => [p.slug, p]),
+  );
+  const pick = (slug) => {
+    const p = bySlug.get(slug);
+    if (!p) {
+      throw new Error(`content/principles.md: ${key} references unknown slug "${slug}"`);
+    }
+    return p;
+  };
+
+  return spec.map((g) => ({
+    title: g.title,
+    subhead: g.subhead || null,
+    lead: g.lead ? pick(g.lead) : null,
+    items: (g.items || []).map(pick),
+  }));
+}
+
+/**
+ * Grouped for the printable declaration: canonical principle names and the
+ * City-facing description where one exists.
+ *
+ * Follows `groupsGrid` as of 2026-08-14 — two named sections, each opening on
+ * one principle. Falls back to the UN's three `groups` if that key is removed,
+ * in which case there is no per-section lead and the caller's own "The
+ * Foundation" block carries #1.
  */
 export function principlesDeclaration(principlesDoc) {
+  const say = (p) => p && {
+    title: p.titleCanonical || p.title,
+    desc: p.descCity || p.desc || (p.body || []).join(' '),
+  };
+  const resolved = principlesResolve(principlesDoc, 'groupsGrid');
+  if (resolved) {
+    return {
+      lead: null,
+      groups: resolved.map((g) => ({
+        title: g.title,
+        lead: say(g.lead),
+        items: g.items.map(say),
+      })),
+    };
+  }
   const { lead, groups = [] } = principlesDoc || {};
   return {
-    lead: lead && {
-      title: lead.titleCanonical || lead.title,
-      desc: lead.descCity || lead.desc || (lead.body || []).join(' '),
-    },
+    lead: say(lead),
     groups: groups.map((g) => ({
       title: g.titleDeclaration || g.title,
-      items: (g.items || []).map((p) => ({
-        title: p.titleCanonical || p.title,
-        desc: p.descCity || p.desc || '',
-      })),
+      lead: null,
+      items: (g.items || []).map(say),
     })),
   };
 }
