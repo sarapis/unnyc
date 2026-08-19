@@ -28,6 +28,18 @@ const nextConfig = {
                 destination: 'https://opensource.nyc/:path*',
                 permanent: false,
             },
+            // www folds into the apex. Both are attached to this Vercel project
+            // and www was answering 200, so the site was reachable on two
+            // hostnames serving identical content — and this app emits NO
+            // canonical tag on any route, so nothing told a crawler which one
+            // wins. One host answering 200 is the fix that does not require
+            // adding canonicals first.
+            {
+                source: '/:path*',
+                has: [{ type: 'host', value: 'www.opensource.nyc' }],
+                destination: 'https://opensource.nyc/:path*',
+                permanent: false,
+            },
             // The eight principles became their own top-level page on 2026-08-13.
             // The printable one-pager moved with them, from /start/principles to
             // /principles/document — it had been linked from the old
