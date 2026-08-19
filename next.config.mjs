@@ -12,6 +12,22 @@ const nextConfig = {
     },
     async redirects() {
         return [
+            // opensource.nyc became the primary domain on 2026-08-19; both
+            // hostnames point at this one Vercel project, so the old one is
+            // folded into the new one here rather than at the DNS layer.
+            //
+            // ⚠ 307, NOT 308, deliberately. A permanent redirect is cached hard
+            // by browsers and is very difficult to walk back — if anything is
+            // wrong with opensource.nyc, a 308 would strand every visitor who
+            // had already hit it. Flip `permanent` to true once the new domain
+            // has been serving cleanly for a few days; SEO wants the 308
+            // eventually, but not on day one of a cutover.
+            {
+                source: '/:path*',
+                has: [{ type: 'host', value: 'unnyc.wegov.nyc' }],
+                destination: 'https://opensource.nyc/:path*',
+                permanent: false,
+            },
             // The eight principles became their own top-level page on 2026-08-13.
             // The printable one-pager moved with them, from /start/principles to
             // /principles/document — it had been linked from the old
