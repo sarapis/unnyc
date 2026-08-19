@@ -10,7 +10,9 @@ const EMPTY = { name: '', email: '', message: '', website: '' };
  * Posts to Payload's `contact-submissions` (anonymous create, admin-only read),
  * the same collection sarapis.org's own contact form uses. No CMS change was
  * needed: the collection already has exactly these three fields, and
- * next.sarapis.org's CORS list already includes unnyc.wegov.nyc.
+ * next.sarapis.org's CORS list must include opensource.nyc (and www) — the
+ * campaign's primary domain since 2026-08-19. A missing origin fails INVISIBLY:
+ * the browser blocks the POST and the form shows only the generic error.
  *
  * Two things worth knowing:
  *
@@ -65,7 +67,7 @@ export default function ContactForm() {
                 email,
                 // The collection has no per-site field; this line is what tells
                 // an admin the message came from the campaign site.
-                message: `${body}\n\n— Sent from unnyc.wegov.nyc`,
+                message: `${body}\n\n— Sent from opensource.nyc`,
                 ...(fields.website ? { website: fields.website } : {}),
             });
             setStatus('success');
