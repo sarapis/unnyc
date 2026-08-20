@@ -3,6 +3,7 @@ import './unnyc.css';
 import UnnycNav from '@/components/unnyc/UnnycNav';
 import UnnycFooter from '@/components/unnyc/UnnycFooter';
 import ScrollReveal from '@/components/unnyc/ScrollReveal';
+import { SITE_URL } from '@/lib/seo';
 
 export const metadata = {
     // The campaign's home as of 2026-08-20: a SUBDOMAIN, so the apex is free
@@ -13,13 +14,19 @@ export const metadata = {
     // It emits NOTHING on its own: it only resolves the relative paths that
     // `pageMetadata()` passes per route (src/lib/seo.js). Setting it without
     // those is how the site went live with no canonical tag on any page.
-    metadataBase: new URL('https://un.opensource.nyc'),
+    metadataBase: new URL(SITE_URL),
     // No `template` here on purpose: the page-level titles already carry their
     // own "— UNNYC" suffix, so a template would double it ("… — UNNYC | UNNYC").
     title: 'UNNYC — Make NYC the First City in the Americas to Endorse Open Source',
     description:
         'UNNYC is the campaign to make New York the first city in the Americas to endorse the UN Open Source Principles.',
     icons: { icon: '/favicon.svg' },
+    // ⚠ THIS BLOCK REACHES NO PAGE. Next merges metadata SHALLOWLY, so a page's
+    // `openGraph` REPLACES this object rather than extending it — and every
+    // route defines its own via `pageMetadata()`. That is why the live site had
+    // no og:site_name and no og:locale on any of its thirteen pages while this
+    // sat here looking authoritative. The real values are in src/lib/seo.js;
+    // these are the fallback for a route that somehow renders without it.
     openGraph: {
         siteName: 'UNNYC',
         type: 'website',

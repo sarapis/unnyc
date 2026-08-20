@@ -459,9 +459,25 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   `Unexpected token Delim('*')`.
 - **Don't add a `title.template`** in `src/app/layout.js` — page titles already end
   in "— UNNYC" and a template double-suffixes them.
+- **`ROUTES` in `src/lib/seo.js` is the one list of this site's URLs.** A new
+  route MUST be added there or the build throws — `pageMetadata()` rejects a
+  path it doesn't know, deliberately, because `sitemap.js` reads the same list.
+  A canonical the sitemap never mentions (or the reverse) is a contradiction a
+  crawler resolves for us. Redirects are NOT routes and must never be added:
+  `/start/principles` 308s to `/principles/document`, and three legacy hostnames
+  fold into this one. Verified at build: the set of sitemap URLs equals the set
+  of canonicals in the rendered HTML.
+  `robots.txt` and `sitemap.xml` are generated (`src/app/robots.js`,
+  `src/app/sitemap.js`) — both 404'd until 2026-08-20. Nothing is `Disallow`ed
+  on purpose: `Disallow` blocks the fetch, so a crawler never reads the
+  `noindex` it was sent to obey.
 - **Route metadata goes through `pageMetadata(meta, path)`** in
   `src/lib/seo.js` (added 2026-08-20), which is what sets each page's
   `alternates.canonical` and `openGraph.url` from ONE hand-written path.
+  ⚠ It also restates `siteName`/`locale`, which are NOT inherited: Next merges
+  metadata SHALLOWLY, so a page's `openGraph` REPLACES `layout.js`'s rather than
+  extending it. The site ran with no `og:site_name` on any page while the value
+  sat in `layout.js` looking authoritative.
   `metadataBase` in `layout.js` emits nothing by itself — it only resolves those
   relative paths, which is why the site ran for weeks with the base URL set and
   **no canonical tag on any route**: the field was simply absent from the

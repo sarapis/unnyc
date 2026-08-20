@@ -14,6 +14,15 @@ foot:
     - href: /campaign
       label: "Sign the open letter"
       style: primary
+# ⚠ `title` and `lede` render as the page's <h1> and intro paragraph. /resources
+# was the ONLY route with no header at all, so it had no <h1> — an outline that
+# opens at <h2> reads to a crawler and a screen reader as a page with no subject.
+# The title is the page's own `meta.title` minus the site suffix; the lede just
+# names the sections already on the page. Deliberately claim-free and number-free
+# — counts belong in the components that derive them, never in prose that can
+# drift. Reword freely, but don't delete them.
+title: "Related Resources"
+lede: "Where to read further, and who to call — primary sources from the UN and the City, the communities doing this work, and a directory of public sector open source programme offices."
 meta:
   title: "Related Resources — UNNYC"
   description: "A resource directory and the people to call. Looking for case studies? See what success looks like."
