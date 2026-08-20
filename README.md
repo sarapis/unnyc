@@ -3,7 +3,13 @@
 The campaign to make **New York the first city in the Americas to endorse the
 [UN Open Source Principles](https://unite.un.org/en/news/sixteen-organizations-endorse-un-open-source-principles)**.
 
-**Live: <https://unnyc.wegov.nyc>**
+**Live: <https://un.opensource.nyc>**
+
+The apex `opensource.nyc`, `www.opensource.nyc` and the old `unnyc.wegov.nyc` all
+**307** here (2026-08-20). The campaign sits on a subdomain deliberately, so the
+apex is free for a future `opensource.nyc` homepage. Every hop is a 307 and none is
+a 308 — the apex changed role twice in two days, and a cached permanent redirect
+would have been painful both times.
 
 Built by [WeGov.NYC](https://wegov.nyc) and [Sarapis](https://sarapis.org). Not
 affiliated with the United Nations or any government agency.
@@ -98,7 +104,7 @@ em-dash becomes a pull-quote with a `<cite>`.
 | **Individual signature** (`/campaign/sign`) | Payload CMS → `campaign-endorsements` | Arrives unpublished. **Publishing an entry in the Payload admin is the review step** that puts a name on the public endorser wall. Email is never exposed publicly. |
 | **"Get updates" email** | Payload CMS → `campaign-signups` | Best-effort; never blocks a signature. |
 | **Formal org endorsement** (`/campaign/endorse`) | Payload CMS → `campaign-endorsements` (`kind: organization`) | Same collection and review step as an individual signature. Approved entries appear on the public endorser wall. |
-| **Contact message** (`/contact`) | Payload CMS → `contact-submissions` | Added 2026-08-07. Needed **no CMS change** — the collection already existed for sarapis.org with exactly these fields. Its `website` field is a **honeypot**: Payload rejects any submission that fills it, so `.unnyc-cmp-form__hp` must stay `display:none`. Not brand-scoped, so `ContactForm.js` appends a "Sent from unnyc.wegov.nyc" line — the only thing distinguishing these from sarapis.org's. Nothing emails you; messages sit in the admin. |
+| **Contact message** (`/contact`) | Payload CMS → `contact-submissions` | Added 2026-08-07. Needed **no CMS change** — the collection already existed for sarapis.org with exactly these fields. Its `website` field is a **honeypot**: Payload rejects any submission that fills it, so `.unnyc-cmp-form__hp` must stay `display:none`. Not brand-scoped, so `ContactForm.js` appends a "Sent from un.opensource.nyc" line — the only thing distinguishing these from sarapis.org's. Nothing emails you; messages sit in the admin. |
 
 Both endorsement flows now land in the **same** Payload collection, separated by
 `kind`. They used to be split — org endorsements went to a Google Sheet via an
@@ -173,7 +179,7 @@ reset < components < unnyc < site
 ## Deploying
 
 **Pushing to `main` deploys to production.** Git integration was connected on
-2026-08-04, so a merge to `main` goes live at <https://unnyc.wegov.nyc> with no
+2026-08-04, so a merge to `main` goes live at <https://un.opensource.nyc> with no
 manual step. PRs get preview deployments.
 
 To force a deploy without a commit:

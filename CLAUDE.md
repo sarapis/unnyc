@@ -17,7 +17,7 @@ repo `wegovnyc_front`). Vercel's defaults work unchanged.
 ## ⚠️ Pushing to `main` deploys to production
 
 Git integration was connected 2026-08-04. **A push to `main` goes live at
-unnyc.wegov.nyc immediately** — there is no manual gate. Push deliberately.
+un.opensource.nyc immediately** — there is no manual gate. Push deliberately.
 
 `vercel deploy --prod` still works if you need to force a deploy without a commit
 (e.g. after a CMS change), but it's no longer required.
@@ -268,22 +268,60 @@ source. Also: `/success` says "Sovereign Tech **Fund**"; it renamed to **Agency*
 (`un.org`, `nyc.gov`, `github.com`, `ec.europa.eu`) — a domain hit there proves nothing and produced
 several false positives on the first pass.
 
-## Page structure as of 2026-08-14
+## Page structure as of 2026-08-20
 
 Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/crosswalk`
 → `/success` → `/resources`, which is also the nav order.
 
-Two restructures landed this day and the docs above/below assume them:
-
-- **`/principles` is a top-level page** (was the `#principles` section of `/start`).
-  It pairs the plain-English grid — now eight jump links — with the per-principle
-  NYC argument that used to be the *body of `/crosswalk`*. That prose MOVED; it is
-  not duplicated. `/start/principles` (the printable one-pager) moved to
-  `/principles/document` behind a 308.
+- **`/` is four cards matching the nav's first four** — `/start`, `/principles`,
+  `/crosswalk`, `/success` — reading left-to-right then top-to-bottom, with no
+  leading numbers (those were literal text in the content, so numbering a card
+  meant renumbering every card below it). ⚠ **Resources has NO card and is NOT in
+  the footer**, so the top nav is its only route in from the homepage. ⚠ Card 1
+  still shows the favicon-as-logo placeholder; it has moved three times and now
+  sits in the most prominent position it has held.
+- **`/principles` is TWO NAMED SECTIONS**, each opening on one principle as a
+  full-width card and then three in columns:
+  *Software Principles* — Open by default, then Secure by design / Design for
+  reusability / Well documented. *Community Principles* — Contribute back, then
+  Foster inclusive participation / RISE / Sustain and scale. No sub-headings.
+  ⚠ This elevates **#2 Contribute back** to a section lead, which the UN reserves
+  for #1 — our editorial reading, not theirs.
+  Below the sections: the eight per-principle NYC arguments (that prose MOVED off
+  `/crosswalk`, it is not duplicated) with a **sticky side rail**, then the
+  **endorser directory**. `/start/principles` → 308 → `/principles/document`.
 - **`/crosswalk` is six numbered reasons**, not a principle-by-principle
   crosswalk. It kept only what is its own: what vendor reliance costs, and why NYC
-  is central. Its dollar figures link to Databook.NYC contract records — keep new
-  claims checkable the same way.
+  is central. It has its own **sticky reasons rail** reusing the same component.
+  Its dollar figures link to Databook.NYC contract records — keep new claims
+  checkable the same way.
+- **Both printables diverge from the UN's structure.** `/principles/document` and
+  `/campaign/endorse/document` present TWO groups where the UN publishes three.
+  The declaration is the document intended for OTI and it cites the UN as source —
+  worth re-reading before it is sent.
+
+### The endorser directory (`/principles`, bottom)
+
+**150 organizations**, filterable by sector, paginated 16 a page, from
+`content/un-endorsers.json` — a 2026-08-06 snapshot of the UN's own page, read by
+`getUnEndorsers()` (fail-soft).
+
+- **NO LOGOS, deliberately.** Third-party trademarks; the UN displaying them grants
+  no onward rights. Names and sectors only, so the file is 14 KB.
+- **The names are a TRANSCRIPTION.** The source page carries 154 logos and zero
+  names — every card's title element is empty. One error is recorded in the file's
+  `corrections`: #143 was "RTÉ" (Irish broadcaster); the logo is RTE, the French
+  grid operator.
+- 154 → 150: #121 unnamed, #114 a KDE duplicate, #3 and #21 unclassifiable. Each
+  reason is in `excluded`.
+- **Counts are DERIVED in the component, never authored**, so a refreshed snapshot
+  cannot leave the page claiming a number it no longer shows. ⚠ The lede says
+  "Hundreds" over a countable 150 — owner's wording, flagged in the content.
+- ⚠ **10 organizations the page used to name are absent** from the snapshot (Open
+  Knowledge, OpenInfra, Matrix, Sovereign Tech Agency, ZenDiS, Nextcloud,
+  Rocket.Chat, Linagora, LPI, European Open Source Academy). Checked by name, by
+  the UN's alt-text slugs and by source URL. Probably means the logo wall is not
+  the authoritative list. Unresolved.
 
 `/resources/guide` is the long-form UN-system briefing, ported from the retired
 `old-unnyc.wegov.nyc` hub. **That host is no longer load-bearing.**
@@ -428,7 +466,7 @@ Two restructures landed this day and the docs above/below assume them:
   **honeypot** that makes Payload reject the submission, so `.unnyc-cmp-form__hp`
   must stay `display:none`; and the collection is **not brand-scoped** (no
   `sites` field), so UNNYC messages land in the same bucket as sarapis.org's —
-  `ContactForm.js` appends a "Sent from unnyc.wegov.nyc" line to the message
+  `ContactForm.js` appends a "Sent from un.opensource.nyc" line to the message
   because that is the only thing distinguishing them.
 - **`localhost` is NOT in Payload's CORS allowlist**, so *any* form on this site
   fails locally with a CORS error and the generic "Something went wrong" message.
@@ -460,13 +498,33 @@ Two restructures landed this day and the docs above/below assume them:
   anywhere is `openSource`; the remaining "unnyc-primer" hits are JSDoc comments
   and docs prose). Kept as a migration reference; safe to delete.
 - **The eight Principles ARE single-sourced** as of 2026-08-06 —
-  `content/principles.md`, reshaped by `principlesFlat()` /
-  `principlesDeclaration()` in `src/lib/content.js`. There were three
-  hand-maintained copies and they had drifted (the letter said "Foster inclusion"
-  and a bare "RISE"). Each principle now carries its surface variants explicitly:
-  `title` (gerund, required by the group headings), `titleCanonical`, `desc`,
-  `descShort` for the letter, optional `descCity` for the declaration. Variants
-  on purpose, not drift. Change the markdown; nothing else holds a copy.
+  `content/principles.md`, reshaped by `principlesFlat()`,
+  `principlesDeclaration()` and `principlesResolve()` in `src/lib/content.js`.
+  There were three hand-maintained copies and they had drifted (the letter said
+  "Foster inclusion" and a bare "RISE"). Each principle carries every surface form
+  it needs, EXPLICITLY — variants on purpose, which is a different thing from the
+  drift they replaced:
+
+  | field | who reads it |
+  |---|---|
+  | `title` | the `/principles` grid |
+  | `titleCanonical` | the UN's own name — letter, endorsement declaration, detail headings, both rails |
+  | `desc` | full description |
+  | `descShort` | the letter's numbered list |
+  | `descCity` | NYC-facing, the endorsement declaration |
+  | `titleDocument` / `descDocument` | `/principles/document` ONLY (it was rewritten into the imperative on 2026-08-14 and retitles four principles; without these that edit would have rewritten the grid, the letter and the declaration too) |
+  | `body` | the line shown when a principle renders as a full-width lead card — #1 and #2 have one |
+
+  **GROUPINGS ARE SLUG REFERENCES, never rearrangements of `groups`.** That array
+  holds the principle OBJECTS and is FLATTENED by `principlesFlat()` for the letter
+  and by `/principles` for its detail sections and rail — so moving an object
+  between groups is how a principle silently vanishes from a surface that only
+  flattens. `groupsGrid` drives `/principles` + the declaration; `groupsDocument`
+  drives `/principles/document`. `principlesResolve()` **throws** on an unknown
+  slug, because `lint:content` does not check these refs and a typo would otherwise
+  drop a principle from a printed page with a green build.
+
+  Change the markdown; nothing else holds a copy.
 - **`src/data/` is GONE** (2026-08-06) — both files were fully orphaned once the
   letter stopped importing `openSource.principles`. 1,001 lines of
   authoritative-looking but unused data is what allowed the drift in the first

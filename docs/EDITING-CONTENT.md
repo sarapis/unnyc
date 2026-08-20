@@ -160,9 +160,10 @@ it and none holds a copy:
 
 | Surface | Shape it gets |
 |---|---|
-| `/principles`, `/principles/document` | Grouped, `title` (gerund), `desc` |
+| `/principles` (the two sections) | `groupsGrid`, `title` |
+| `/principles/document` | `groupsDocument`, `titleDocument` or `title`, `descDocument` or `desc` |
 | `/campaign/sign` (the open letter) | Flat 1–8 by `n`, `titleCanonical`, `descShort` |
-| `/campaign/endorse/document` | Grouped, `titleDeclaration` headings, `titleCanonical`, `descCity` or `desc` |
+| `/campaign/endorse/document` | `groupsGrid`, `titleCanonical`, `descCity` or `desc` |
 
 Each principle carries several surface forms. **They are variants on purpose** —
 a different thing from the drift they replaced. Until 2026-08-06 these were three
@@ -173,11 +174,48 @@ had appeared in the declaration.
 | Field | Why it exists |
 |---|---|
 | `n` | The UN's own number — drives the icon and the letter's ordering (the groups deliberately reorder: 3,5,6 / 4,7 / 2,8) |
-| `title` | Gerund form, **required** by the group headings: "Building Good Software that is… *Well documented*" |
+| `title` | The `/principles` grid's wording, and its alone. Was the gerund form while the group headings demanded it ("Building Good Software that is… *Well documented*"); the headings were shortened on 2026-08-14, so these are now plain forms |
 | `titleCanonical` | The UN's own name, for anywhere the principle stands alone |
 | `desc` | The full description |
 | `descShort` | Terse one-liner for the letter's numbered list, where the full text would swamp the line |
 | `descCity` | Optional NYC rewording for the declaration, where the City commits rather than the UN. Only #8 needs it today; falls back to `desc` |
+| `titleDocument` / `descDocument` | Optional, **`/principles/document` only**. That page was rewritten into the imperative on 2026-08-14 ("Make security a priority", not "Making") and retitles four principles. Without these fields that edit would also have rewritten the grid, the letter and the declaration. Both fall back |
+| `body` | The line shown when a principle renders as a **full-width lead card**. #1 and #2 have one, because each opens a section of `/principles` |
+
+### Groupings are slug references
+
+Two keys decide how the eight are grouped, and both list **slugs**, not objects:
+
+| Key | Drives |
+|---|---|
+| `groupsGrid` | `/principles` (Software Principles / Community Principles) **and** `/campaign/endorse/document` |
+| `groupsDocument` | `/principles/document` only |
+
+⚠ **Never regroup by moving a principle between `groups[].items`.** That array holds
+the objects, and it is *flattened* for the open letter and for `/principles`' own
+detail sections and rail — so moving an object is how a principle silently vanishes
+from a surface that only flattens. Edit the slug lists instead. `principlesResolve()`
+**throws** on an unknown slug, because `lint:content` does not check these refs and a
+typo would otherwise drop a principle from a printed page with a green build.
 
 **To change a principle's wording, edit [`content/principles.md`](../content/principles.md).** The reshaping
-lives in `principlesFlat()` and `principlesDeclaration()` in [`src/lib/content.js`](../src/lib/content.js).
+lives in `principlesFlat()`, `principlesDeclaration()` and `principlesResolve()` in
+[`src/lib/content.js`](../src/lib/content.js).
+
+### The endorser directory — data, not copy
+
+`/principles` closes on **150 organizations** from
+[`content/un-endorsers.json`](../content/un-endorsers.json), filterable by sector and paginated 16 a page.
+
+Only the *copy* is in `content/principles.md` (`endorsers.title`, `lede`, the filter
+and pagination labels, the note and the source link). The list itself is data.
+
+- **Counts are DERIVED in the component, never authored.** Do not write a total into
+  the copy — a refreshed snapshot would leave the page claiming a number it no longer
+  shows. (The lede currently says "Hundreds" over a countable 150; that is a known
+  owner decision, not an oversight.)
+- **No logos**, deliberately: third-party trademarks, and the UN displaying them
+  grants no onward rights.
+- **The names are a transcription** read off the logos — the UN page publishes no
+  names at all. Spot-check anything user-facing, and record any fix in the file's
+  `corrections` array rather than editing silently.
