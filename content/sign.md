@@ -31,33 +31,35 @@ wall:
 
 Dear Chief Technology Officer,
 
-Every June, the United Nations convenes **UN Open Source Week** at its Headquarters — here, in New York City. It gathers more than **2,600 participants from over 120 countries**: the governments, institutions and builders organizing the world’s transition to open source. New York provides the stage. City government should join what happens on it.
+Cities around the world are leaving New York City behind in their adoption of open source software; they are spending their money more efficiently while building more sustainable and secure solutions.
 
-The case is practical, not ideological:
+Every June, the United Nations convenes UN Open Source Week at its Headquarters, right here in NYC. It gathers more than 2,600 participants from over 120 countries: the governments, institutions and builders organizing the world’s transition to open source. Our city provides the stage for this movement, is home to the critical technical prowess that would make it a leader on the global stage, but has yet to actually join in.
 
-- **The city rents proprietary software at enormous scale.** Two citywide IT purchasing contracts are being put in place right now — [$1.2 billion with SHI](https://databook.nyc/procurement/contract/5364919) and [$800 million with CDW](https://databook.nyc/procurement/contract/5363428) — and the Comptroller found [nearly $4 billion in master-agreement spending](https://comptroller.nyc.gov/reports/the-monty-hall-contracts-unchecked-spending-across-the-citys-master-agreements/) whose records reveal almost nothing about what was bought.
-- **Government programs run on software.** When the city can’t change the software, it can’t change the program — every new idea becomes a change order, priced by the only vendor who can implement it.
-- **Open code can be audited by inspection**, extending the trust the city already builds through its Vulnerability Disclosure Program from policy to proof.
-- **Software adopted or built openly can serve all 130-plus city agencies** at no additional licensing cost — the first agency solves the problem, every other agency inherits the solution.
+**Government programs run on software**, currently provided by vendors. When the city can’t improve the software, it can’t improve the programs — every new idea becomes a change order, priced by the only vendor who can implement it. A city that knows its open source options can credibly walk away from a vendor, granting it a far better negotiating position.
+
+- At present, **the city rents proprietary software at enormous scale**. Two citywide IT purchasing contracts are being put in place right now — [$1.2 billion with SHI](https://databook.nyc/procurement/contract/5364919) and [$800 million with CDW](https://databook.nyc/procurement/contract/5363428) — and the Comptroller found [nearly $4 billion in master-agreement spending](https://comptroller.nyc.gov/reports/the-monty-hall-contracts-unchecked-spending-across-the-citys-master-agreements/) whose records reveal almost nothing about what was bought, or if it was a secure and successful solution.
+- By contrast, **open code can be audited by inspection**, extending the trust the city already builds through its Vulnerability Disclosure Program from policy to proof.
+- **NYC has one of the most educated technical workforces on earth**; open work that is public and citable creates an avenue for continuous improvement.
+- **Software adopted or built openly can serve all 130-plus city agencies** at no additional licensing cost. The first agency solves the problem, every other agency inherits the solution.
 
 New York already lives by this instinct for data: the Open Data Law has made publication the default since 2012. The step before you extends the same standard to code.
 
-### The eight principles
+### 8 Open Source Principles
 
-The UN Open Source Principles — endorsed in March 2025 by seventeen organizations, from the Open Source Initiative to the Linux Foundation — are:
+The UN has formally backed this movement through the creation of its principles. Endorsed in March 2025 by seventeen organizations, from the Open Source Initiative to the Linux Foundation, they are:
 
 {{principles}}
 
-### The ask
+### Take Action
 
 We respectfully call on the **Office of Technology & Innovation** to:
 
-1. **Endorse the UN Open Source Principles**, publicly and by name.
-2. **Establish an Open Source Program Office (OSPO)** to facilitate adoption across city government — coordinating what the city uses, what it publishes, how it contributes back, and how it stays secure doing so.
-3. **Evaluate an open source alternative in every city technology contract**, so no proprietary license is signed or renewed without first asking whether an open solution would serve New Yorkers better.
+- **Endorse the UN Open Source Principles**, publicly and by name.
+- **Establish an Open Source Program Office (OSPO)** to facilitate adoption across city government — coordinating what the city uses, what it publishes, how it contributes back, and how it stays secure doing so.
+- **Evaluate an open source alternative in every city technology contract**, so no proprietary license is signed or renewed without first asking whether an open solution would serve New Yorkers better.
 
-None of this requires new technology — the tools exist, and peer governments run them today. It requires a decision: that the city hosting the world’s open source movement should also run on it.
+The tools to achieve these goals exist, and peer governments run them today. To fulfill their potential and improve NYC’s technology strategy, they need government backing.
 
 ## signoff
 
-Respectfully, **the undersigned**
+Respectfully, the undersigned
