@@ -110,7 +110,7 @@ export default async function CampaignSignPage() {
                 <article className="unnyc-cmp-letter unnyc-cmp-layout__main">
                     {chunks.map((c, i) => (
                         <div key={i}>
-                            {c.label && <h2>{c.label}</h2>}
+                            {c.label && <h2 dangerouslySetInnerHTML={{ __html: inlineMd(c.label) }} />}
                             <div dangerouslySetInnerHTML={{ __html: c.before }} />
                             {c.after !== null && (
                                 <>

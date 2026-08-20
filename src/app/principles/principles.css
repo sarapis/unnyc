@@ -401,7 +401,20 @@
 
   /* ------------------------------------------------------------------
      PRINCIPLE RAIL (UnnycPrinciplesRail)
-     A sticky list of the eight, beside the detail sections.
+     A sticky list of the eight, beside the detail sections. The nav LOOK
+     (title, list, link, active state) is shared with /crosswalk's rail and
+     lives in primer.css, which this page already imports — see the comment
+     there for why. Only this page's POSITIONING lives here.
+
+     ⚠ THE POSITIONING RULES ARE SCOPED TO `.unnyc-principles__detail`, and
+     that is load-bearing. /crosswalk reuses this same component with its own
+     positioning in crosswalk.css. Both stylesheets are in the DOM after a
+     client-side navigation between the two pages, so an unscoped
+     `.unnyc-principles__rail` positioning rule in either file would let
+     source order decide the winner — which is exactly how this page's
+     `left: 50%; transform: translateX(-50%)` once got applied on /crosswalk,
+     dropping the rail 400px into the prose. Scoping each page's positioning
+     to its own wrapper is what keeps them from colliding.
 
      ⚠ THIS IS NOT FREE SPACE. Those sections are a FLOAT layout —
      .unnyc-pr-cw__part is `float: left; width: 56%` and
@@ -437,7 +450,7 @@
     --rail-offset: calc(var(--rail-w) + var(--wg-sp-6) + var(--rail-gutter));
   }
 
-  .unnyc-principles__rail {
+  .unnyc-principles__detail .unnyc-principles__rail {
     display: none;
   }
 
@@ -451,7 +464,7 @@
     /* Spans the whole detail block so the sticky child is bounded by it —
        that is what parks the rail at the last section instead of letting
        it ride into the endorser directory. */
-    .unnyc-principles__rail {
+    .unnyc-principles__detail .unnyc-principles__rail {
       display: block;
       position: absolute;
       top: 0;
@@ -464,7 +477,7 @@
       pointer-events: none;
     }
 
-    .unnyc-principles__rail-inner {
+    .unnyc-principles__detail .unnyc-principles__rail-inner {
       position: sticky;
       /* Clears the header. --pr-subnav-h is 0px here (this page has no
          subnav bar) but is included so the rail stays correct if one is
@@ -473,80 +486,6 @@
       margin-left: auto;
       width: var(--rail-w);
       pointer-events: auto;
-    }
-  }
-
-  .unnyc-principles__rail-title {
-    font-size: var(--wg-fs-xs);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--wg-text-muted);
-    margin: 0 0 var(--wg-sp-3);
-  }
-
-  .unnyc-principles__rail-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-left: 2px solid var(--wg-border);
-  }
-
-  /* SCOPED WITH .unnyc-page (0-2-0) — required, not stylistic. unnyc.css's
-     `.unnyc-page a { color: inherit }` is (0,1,1) in this same layer, so an
-     unscoped `.unnyc-principles__rail-link` (0,1,0) LOSES and every item
-     renders navy: the muted/active distinction silently disappears and only
-     the weight and border differ. `.unnyc-page .unnyc-subnav__link` is scoped
-     the same way for the same reason.
-
-     display:flex, so the number and the label sit side by side and a
-     two-line label indents under itself rather than under the number.
-     #4 and #7 are the two that wrap — which is the whole reason this is a
-     rail and not a bar. */
-  .unnyc-page .unnyc-principles__rail-link {
-    display: flex;
-    gap: var(--wg-sp-2);
-    padding: var(--wg-sp-2) var(--wg-sp-3);
-    margin-left: -2px;
-    border-left: 2px solid transparent;
-    font-size: var(--wg-fs-sm);
-    line-height: 1.4;
-    color: var(--wg-text-muted);
-    text-decoration: none;
-    transition: color 0.2s var(--wg-ease), border-color 0.2s var(--wg-ease);
-  }
-
-  .unnyc-page .unnyc-principles__rail-link:hover:not(.unnyc-principles__rail-link--active) {
-    color: var(--wg-brand);
-  }
-
-  .unnyc-page .unnyc-principles__rail-link:focus-visible {
-    outline: 2px solid var(--wg-accent);
-    outline-offset: -2px;
-  }
-
-  .unnyc-principles__rail-n {
-    color: var(--wg-text-muted);
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* Scoped past :hover the way the endorser chips are — `:hover` is one
-     class more specific than a plain modifier and would otherwise repaint
-     the active item. That exact bug shipped on this page once already. */
-  .unnyc-page .unnyc-principles__rail-link--active,
-  .unnyc-page .unnyc-principles__rail-link--active:hover {
-    color: var(--wg-brand);
-    font-weight: 600;
-    border-left-color: var(--wg-accent);
-  }
-
-  .unnyc-page .unnyc-principles__rail-link--active .unnyc-principles__rail-n {
-    color: var(--wg-accent);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .unnyc-page .unnyc-principles__rail-link {
-      transition: none;
     }
   }
 

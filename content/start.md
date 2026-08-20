@@ -77,6 +77,13 @@ concepts:
     link:
       url: "https://publiccode.eu/"
       label: "FSFE"
+  - slug: "vendor-lock-in"
+    term: "Vendor Lock-in"
+    def: "A dependency on a single vendor’s proprietary products that makes switching to a competitor difficult and costly — created by incompatible data formats, patents, or an ecosystem built to work only with that vendor’s other tools."
+    nyc: "NYC’s three-year, $57 million Microsoft agreement was negotiated by a buyer with no credible exit — a textbook case of the lock-in open source is built to avoid."
+    link:
+      url: "https://en.wikipedia.org/wiki/Vendor_lock-in"
+      label: "Wikipedia"
 movement:
   title: "How the UN Came to Champion Open Source"
   lede: ""

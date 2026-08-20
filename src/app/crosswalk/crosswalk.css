@@ -1,0 +1,76 @@
+/* ============================================
+   /crosswalk — "Open Source for NYC: Six Reasons"
+   Scoped under `.unnyc-pr-why`, prefix `unnyc-pr-why-`.
+   This file only adds the sticky rail beside the six reasons; everything
+   else (`.unnyc-pr-why*` type/spacing, the pull-quote layout) lives in
+   primer.css, which this page already imports.
+
+   Colours read the SEMANTIC tier (--wg-*) only. See CLAUDE.md.
+   ============================================ */
+
+@layer unnyc {
+
+  /* ------------------------------------------------------------------
+     REASONS RAIL (UnnycPrinciplesRail, reused from /principles)
+     A sticky list of the six reasons, beside their detail blocks.
+
+     Unlike /principles' detail sections, these blocks are NOT a float
+     layout (no gap panel to preserve) — a reason only floats its own
+     pull-quote, via primer.css's `:has(blockquote)` rule, and none of the
+     six currently carry one. So making room for the rail is just
+     padding-right on this wrapper; there is no float percentage to
+     recompute.
+
+     Below 1200px the rail is display:none and the padding is not
+     applied, so the blocks render exactly as they did before; the six
+     headings read straight down the page with no fallback nav needed —
+     there are only six of them, not eight.
+     ------------------------------------------------------------------ */
+
+  .unnyc-pr-why__detail {
+    position: relative;
+    /* Same formula as /principles' rail (see principles.css) — kept in
+       sync by eye, not by a shared variable, since the two pages' wrapper
+       widths differ and a shared token would invite one to drift the
+       other silently. */
+    --rail-w: 232px;
+    --rail-gutter: var(--wg-sp-8);
+    --rail-offset: calc(var(--rail-w) + var(--wg-sp-6) + var(--rail-gutter));
+  }
+
+  .unnyc-pr-why__detail .unnyc-principles__rail {
+    display: none;
+  }
+
+  @media (min-width: 1200px) {
+    .unnyc-pr-why__detail {
+      padding-right: var(--rail-offset);
+    }
+
+    /* Spans the whole detail block so the sticky child is bounded by it —
+       that is what parks the rail at reason 6 instead of letting it ride
+       into the foot CTAs. */
+    .unnyc-pr-why__detail .unnyc-principles__rail {
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      width: var(--rail-offset);
+      pointer-events: none;
+    }
+
+    .unnyc-pr-why__detail .unnyc-principles__rail-inner {
+      position: sticky;
+      top: calc(var(--pr-header-h, 68px) + var(--pr-subnav-h, 0px) + var(--wg-sp-10));
+      width: var(--rail-w);
+      margin-left: auto;
+      pointer-events: auto;
+    }
+  }
+
+  /* Nav look (title, list, link, active state) now lives in primer.css,
+     shared with /principles' rail — this file only adds the positioning
+     above, which differs enough between the two pages (float layout vs.
+     not) that it isn't worth sharing. */
+}
