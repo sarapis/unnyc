@@ -459,6 +459,18 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   `Unexpected token Delim('*')`.
 - **Don't add a `title.template`** in `src/app/layout.js` — page titles already end
   in "— UNNYC" and a template double-suffixes them.
+- **Route metadata goes through `pageMetadata(meta, path)`** in
+  `src/lib/seo.js` (added 2026-08-20), which is what sets each page's
+  `alternates.canonical` and `openGraph.url` from ONE hand-written path.
+  `metadataBase` in `layout.js` emits nothing by itself — it only resolves those
+  relative paths, which is why the site ran for weeks with the base URL set and
+  **no canonical tag on any route**: the field was simply absent from the
+  metadata block every page had copied from its neighbour. A new route that
+  hand-rolls `generateMetadata` is how the next missing canonical happens.
+  ⚠ `/campaign/endorse/document` is the ONE deliberate exception — it is
+  `noindex`, and a self-referencing canonical on a noindex page tells a crawler
+  two contradictory things, so it keeps a hand-written block with a comment
+  saying exactly that. Don't "fix" it.
 - **The contact form is the third Payload write path** (`/contact`, added
   2026-08-07). It posts to `contact-submissions` — a collection that already
   existed for sarapis.org, with exactly the `name`/`email`/`message` fields

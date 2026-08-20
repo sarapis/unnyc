@@ -7,14 +7,11 @@ import PrimerConcepts from '@/components/unnyc/primer/PrimerConcepts';
 import PrimerMovement from '@/components/unnyc/primer/PrimerMovement';
 import PrimerMovementNow from '@/components/unnyc/primer/PrimerMovementNow';
 import { getContent, getCtfgProjects, getGovossCatalogues, getOspoMapPoints, inlineMd } from '@/lib/content';
+import { pageMetadata } from '@/lib/seo';
 
 export async function generateMetadata() {
     const { meta } = getContent('start');
-    return {
-        title: meta.title,
-        description: meta.description,
-        openGraph: { title: meta.ogTitle, description: meta.ogDescription, type: 'article' },
-    };
+    return pageMetadata(meta, '/start');
 }
 
 /**

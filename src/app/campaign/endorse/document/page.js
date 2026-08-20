@@ -2,6 +2,13 @@ import '../../../printable-doc.css';
 import PrintButton from '@/components/unnyc/PrintButton';
 import { getContent, principlesDeclaration } from '@/lib/content';
 
+// ⚠ NO CANONICAL HERE, DELIBERATELY — the only route without one, and this
+// comment is why it should stay that way. The page is `noindex`, and a
+// self-referencing canonical on a noindex page hands a crawler two
+// contradictory instructions: "don't index this" and "this is the URL to
+// index". Every other route builds its metadata through `pageMetadata()` in
+// src/lib/seo.js, which always sets one; this block stays hand-written so the
+// omission is a decision rather than the oversight it would otherwise look like.
 export const metadata = {
     title: 'Declaration of Endorsement — UN Open Source Principles',
     description:

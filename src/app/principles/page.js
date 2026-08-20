@@ -6,15 +6,12 @@ import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import UnnycEndorserDirectory from '@/components/unnyc/primer/UnnycEndorserDirectory';
 import UnnycPrinciplesRail from '@/components/unnyc/UnnycPrinciplesRail';
 import { getContent, getUnEndorsers, inlineMd, principlesResolve } from '@/lib/content';
+import { pageMetadata } from '@/lib/seo';
 
 // Read per call, NOT at module scope — see the note in crosswalk/page.js.
 export async function generateMetadata() {
     const { meta } = getContent('principles');
-    return {
-        title: meta.title,
-        description: meta.description,
-        openGraph: { title: meta.ogTitle, description: meta.ogDescription, type: 'article' },
-    };
+    return pageMetadata(meta, '/principles');
 }
 
 /**

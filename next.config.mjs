@@ -40,10 +40,12 @@ const nextConfig = {
             },
             // www folds into the apex. Both are attached to this Vercel project
             // and www was answering 200, so the site was reachable on two
-            // hostnames serving identical content — and this app emits NO
-            // canonical tag on any route, so nothing told a crawler which one
-            // wins. One host answering 200 is the fix that does not require
-            // adding canonicals first.
+            // hostnames serving identical content, with nothing telling a
+            // crawler which one wins. One host answering 200 was the fix that
+            // did not need canonicals first — and every route now states its
+            // own as well (2026-08-20, src/lib/seo.js), which matters because
+            // these are 307s: a temporary redirect passes no ranking signal, so
+            // the canonical is the durable half of the statement.
             {
                 source: '/:path*',
                 has: [{ type: 'host', value: 'opensource.nyc' }],

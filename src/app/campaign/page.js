@@ -2,14 +2,11 @@ import './campaign.css';
 import '../primer.css';
 import UnnycPathCards from '@/components/unnyc/primer/UnnycPathCards';
 import { getContent } from '@/lib/content';
+import { pageMetadata } from '@/lib/seo';
 
 export async function generateMetadata() {
     const { meta } = getContent('campaign');
-    return {
-        title: meta.title,
-        description: meta.description,
-        openGraph: { title: meta.ogTitle, description: meta.ogDescription, type: 'website' },
-    };
+    return pageMetadata(meta, '/campaign', 'website');
 }
 
 /**
