@@ -61,9 +61,12 @@ site it will be a different Vercel project and apex DNS repoints at it.
    silently dropped. All four campaign hosts are allowlisted, and the three that
    only redirect are NOT redundant: a redirect does not help a cross-origin POST,
    because the browser preflights the ORIGINAL host.
-   ⚠ It is currently live only as `CORS_ORIGINS` in `/opt/sarapis/.env`. The code
-   version is `devinbalkind/sarapis-website` **PR #1**, unmerged. A rebuild from
-   clean config before that ships breaks every form on the live domain.
+   The allowlist is in code as of 2026-08-20 (`sarapis-website` PR #1, merged).
+   ⚠ But `CORS_ORIGINS` in `/opt/sarapis/.env` is ALSO still set, and the running
+   image is `r43` — which predates the code change, so the env var is what is
+   actually serving it today. Both produce the same result. When r44 ships, drop
+   the env var so one place owns this; dropping it BEFORE r44 breaks the live
+   domain.
 6. **`localhost` is not in the CORS allowlist**, so every form fails locally with
    the generic error. That is expected, not a bug.
 
@@ -215,17 +218,16 @@ wrapper, then Olivia consolidated the shared nav-look into `primer.css`.
 
 Nothing is blocking.
 
-1. **Merge `sarapis-website` PR #1** so CORS is in code, not just an env var.
-2. **Add canonical tags.** `metadataBase` is set and unused; three hosts redirect
+1. **Add canonical tags.** `metadataBase` is set and unused; three hosts redirect
    into one and nothing declares the canonical.
-3. **A photo for homepage card 1** — still the favicon placeholder, now first.
+2. **A photo for homepage card 1** — still the favicon placeholder, now first.
    `public/images/success/tokyo.jpeg` is paid-for and unused but has been rejected
    twice: a skyline beside card 4's Barcelona reads as a case study.
-4. **Decide the two-sections-vs-the-UN's-three question** for the endorsement
+3. **Decide the two-sections-vs-the-UN's-three question** for the endorsement
    declaration before it goes to OTI.
-5. **Resolve the 10 missing endorsers** — union of both lists, or leave as is.
-6. **"Hundreds" vs 150** in the endorser lede.
-7. **Retire `old-unnyc.wegov.nyc`** whenever wanted; nothing depends on it.
-8. **The CTFG directory question** — Hub task `168a959d`.
-9. **A shared component package** — Hub task `7656df36` (Backburner).
-10. **Exposed keys in `wegovnyc_front` history** — Hub task `51968fc0`.
+4. **Resolve the 10 missing endorsers** — union of both lists, or leave as is.
+5. **"Hundreds" vs 150** in the endorser lede.
+6. **Retire `old-unnyc.wegov.nyc`** whenever wanted; nothing depends on it.
+7. **The CTFG directory question** — Hub task `168a959d`.
+8. **A shared component package** — Hub task `7656df36` (Backburner).
+9. **Exposed keys in `wegovnyc_front` history** — Hub task `51968fc0`.
