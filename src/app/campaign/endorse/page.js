@@ -2,14 +2,11 @@ import Link from 'next/link';
 import '../campaign.css';
 import EndorseForm from '@/components/unnyc/EndorseForm';
 import { getContent } from '@/lib/content';
+import { pageMetadata } from '@/lib/seo';
 
 export async function generateMetadata() {
     const { meta } = getContent('endorse');
-    return {
-        title: meta.title,
-        description: meta.description,
-        openGraph: { title: meta.ogTitle, description: meta.ogDescription, type: 'article' },
-    };
+    return pageMetadata(meta, '/campaign/endorse');
 }
 
 /**

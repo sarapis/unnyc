@@ -4,6 +4,7 @@ import './crosswalk.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import UnnycPrinciplesRail from '@/components/unnyc/UnnycPrinciplesRail';
 import { getContent, inlineMd } from '@/lib/content';
+import { pageMetadata } from '@/lib/seo';
 
 /** Each reason heading is `### N. Title` (see content/crosswalk.md); split that
  * into the rail's {id, n, label} shape once, up front, so both the rail and
@@ -25,15 +26,7 @@ function reasonToRailItem(block, i) {
 // file, so editing the markdown and refreshing just works.
 export async function generateMetadata() {
     const { meta } = getContent('crosswalk');
-    return {
-        title: meta.title,
-        description: meta.description,
-        openGraph: {
-            title: meta.ogTitle,
-            description: meta.ogDescription,
-            type: 'article',
-        },
-    };
+    return pageMetadata(meta, '/crosswalk');
 }
 
 /**

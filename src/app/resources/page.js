@@ -7,14 +7,11 @@ import PrimerResources from '@/components/unnyc/primer/PrimerResources';
 import PrimerContacts from '@/components/unnyc/primer/PrimerContacts';
 import PrimerOspoDirectory from '@/components/unnyc/primer/PrimerOspoDirectory';
 import { getContent } from '@/lib/content';
+import { pageMetadata } from '@/lib/seo';
 
 export async function generateMetadata() {
     const { meta } = getContent('resources');
-    return {
-        title: meta.title,
-        description: meta.description,
-        openGraph: { title: meta.ogTitle, description: meta.ogDescription, type: 'article' },
-    };
+    return pageMetadata(meta, '/resources');
 }
 
 /**

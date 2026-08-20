@@ -4,15 +4,12 @@ import './guide.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import UnnycSectionNav from '@/components/unnyc/UnnycSectionNav';
 import { getContent, inlineMd } from '@/lib/content';
+import { pageMetadata } from '@/lib/seo';
 
 // Read per call, NOT at module scope — see the note in crosswalk/page.js.
 export async function generateMetadata() {
     const { meta } = getContent('guide');
-    return {
-        title: meta.title,
-        description: meta.description,
-        openGraph: { title: meta.ogTitle, description: meta.ogDescription, type: 'article' },
-    };
+    return pageMetadata(meta, '/resources/guide');
 }
 
 /**

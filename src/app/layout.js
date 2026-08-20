@@ -9,6 +9,10 @@ export const metadata = {
     // for a future opensource.nyc homepage. Drives every canonical and og:url,
     // so it must match the host readers actually land on — the apex, www and
     // unnyc.wegov.nyc all redirect here.
+    //
+    // It emits NOTHING on its own: it only resolves the relative paths that
+    // `pageMetadata()` passes per route (src/lib/seo.js). Setting it without
+    // those is how the site went live with no canonical tag on any page.
     metadataBase: new URL('https://un.opensource.nyc'),
     // No `template` here on purpose: the page-level titles already carry their
     // own "— UNNYC" suffix, so a template would double it ("… — UNNYC | UNNYC").

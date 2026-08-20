@@ -6,14 +6,11 @@ import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import UnnycSectionNav from '@/components/unnyc/UnnycSectionNav';
 import PrimerCases from '@/components/unnyc/primer/PrimerCases';
 import { getContent, inlineMd } from '@/lib/content';
+import { pageMetadata } from '@/lib/seo';
 
 export async function generateMetadata() {
     const { meta } = getContent('success');
-    return {
-        title: meta.title,
-        description: meta.description,
-        openGraph: { title: meta.ogTitle, description: meta.ogDescription, type: 'article' },
-    };
+    return pageMetadata(meta, '/success');
 }
 
 /** Marker an editor writes on its own line to place the stats row mid-prose. */

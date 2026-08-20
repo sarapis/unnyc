@@ -3,14 +3,11 @@ import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import CampaignSignForm from '@/components/unnyc/CampaignSignForm';
 import { fetchAPI } from '@/lib/api';
 import { getContent, inlineMd, principlesFlat } from '@/lib/content';
+import { pageMetadata } from '@/lib/seo';
 
 export async function generateMetadata() {
     const { meta } = getContent('sign');
-    return {
-        title: meta.title,
-        description: meta.description,
-        openGraph: { title: meta.ogTitle, description: meta.ogDescription, type: 'article' },
-    };
+    return pageMetadata(meta, '/campaign/sign');
 }
 
 /**

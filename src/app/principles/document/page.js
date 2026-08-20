@@ -2,14 +2,11 @@ import '../../printable-doc.css';
 import UnnycIcon from '@/components/unnyc/UnnycIcon';
 import PrintButton from '@/components/unnyc/PrintButton';
 import { getContent } from '@/lib/content';
+import { pageMetadata } from '@/lib/seo';
 
 export async function generateMetadata() {
     const { meta } = getContent('principles');
-    return {
-        title: meta.title,
-        description: meta.description,
-        openGraph: { title: meta.ogTitle, description: meta.ogDescription, type: 'article' },
-    };
+    return pageMetadata(meta, '/principles/document');
 }
 
 /**

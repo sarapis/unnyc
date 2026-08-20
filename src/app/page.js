@@ -3,14 +3,11 @@ import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import PrimerHero from '@/components/unnyc/primer/PrimerHero';
 import UnnycPathCards from '@/components/unnyc/primer/UnnycPathCards';
 import { getContent } from '@/lib/content';
+import { pageMetadata } from '@/lib/seo';
 
 export async function generateMetadata() {
     const { meta } = getContent('home');
-    return {
-        title: meta.title,
-        description: meta.description,
-        openGraph: { title: meta.ogTitle, description: meta.ogDescription, type: 'website' },
-    };
+    return pageMetadata(meta, '/', 'website');
 }
 
 /**

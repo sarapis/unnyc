@@ -202,9 +202,15 @@ wrapper, then Olivia consolidated the shared nav-look into `primer.css`.
 - **`.unnyc-btn--outline` is white-on-white on light backgrounds** — use
   `--outline-dark`. A "missing" button is usually invisible, not misplaced.
 - **Never write `*/` inside a CSS comment.** Turbopack fails confusingly.
-- **`metadataBase` emits NOTHING today.** No page sets `openGraph.url` or
-  `alternates.canonical`, so the site has **no canonical tag on any route** — worth
-  fixing now that three hosts redirect into one.
+- **`metadataBase` emits NOTHING on its own** — it only resolves the relative
+  paths a page passes. Setting it without those is how the site ran for weeks with
+  no canonical tag on any route. Fixed 2026-08-20: every route builds its metadata
+  through `pageMetadata(meta, path)` in `src/lib/seo.js`, which sets
+  `alternates.canonical` AND `openGraph.url` from ONE hand-written path.
+  **`/campaign/endorse/document` is the deliberate exception** — it is `noindex`,
+  and a self-canonical on a noindex page contradicts itself, so that page keeps a
+  hand-written block with a comment saying so. A new route that hand-rolls its
+  metadata is how the next missing canonical happens.
 - **Adding a domain to Vercel does not bind it to the existing production
   deployment.** `un.opensource.nyc` was verified with a valid certificate, TLS
   completed, ALPN negotiated — and Vercel never answered. A no-op `vercel deploy
@@ -218,16 +224,14 @@ wrapper, then Olivia consolidated the shared nav-look into `primer.css`.
 
 Nothing is blocking.
 
-1. **Add canonical tags.** `metadataBase` is set and unused; three hosts redirect
-   into one and nothing declares the canonical.
-2. **A photo for homepage card 1** — still the favicon placeholder, now first.
+1. **A photo for homepage card 1** — still the favicon placeholder, now first.
    `public/images/success/tokyo.jpeg` is paid-for and unused but has been rejected
    twice: a skyline beside card 4's Barcelona reads as a case study.
-3. **Decide the two-sections-vs-the-UN's-three question** for the endorsement
+2. **Decide the two-sections-vs-the-UN's-three question** for the endorsement
    declaration before it goes to OTI.
-4. **Resolve the 10 missing endorsers** — union of both lists, or leave as is.
-5. **"Hundreds" vs 150** in the endorser lede.
-6. **Retire `old-unnyc.wegov.nyc`** whenever wanted; nothing depends on it.
-7. **The CTFG directory question** — Hub task `168a959d`.
-8. **A shared component package** — Hub task `7656df36` (Backburner).
-9. **Exposed keys in `wegovnyc_front` history** — Hub task `51968fc0`.
+3. **Resolve the 10 missing endorsers** — union of both lists, or leave as is.
+4. **"Hundreds" vs 150** in the endorser lede.
+5. **Retire `old-unnyc.wegov.nyc`** whenever wanted; nothing depends on it.
+6. **The CTFG directory question** — Hub task `168a959d`.
+7. **A shared component package** — Hub task `7656df36` (Backburner).
+8. **Exposed keys in `wegovnyc_front` history** — Hub task `51968fc0`.

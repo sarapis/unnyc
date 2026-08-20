@@ -3,14 +3,11 @@ import '../primer.css';
 import '../campaign/campaign.css';
 import ContactForm from '@/components/unnyc/ContactForm';
 import { getContent } from '@/lib/content';
+import { pageMetadata } from '@/lib/seo';
 
 export async function generateMetadata() {
     const { meta } = getContent('contact');
-    return {
-        title: meta.title,
-        description: meta.description,
-        openGraph: { title: meta.ogTitle, description: meta.ogDescription, type: 'website' },
-    };
+    return pageMetadata(meta, '/contact', 'website');
 }
 
 /**
