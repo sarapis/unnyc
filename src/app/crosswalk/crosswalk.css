@@ -38,7 +38,7 @@
     --rail-offset: calc(var(--rail-w) + var(--wg-sp-6) + var(--rail-gutter));
   }
 
-  .unnyc-principles__rail {
+  .unnyc-pr-why__detail .unnyc-principles__rail {
     display: none;
   }
 
@@ -50,7 +50,7 @@
     /* Spans the whole detail block so the sticky child is bounded by it —
        that is what parks the rail at reason 6 instead of letting it ride
        into the foot CTAs. */
-    .unnyc-principles__rail {
+    .unnyc-pr-why__detail .unnyc-principles__rail {
       display: block;
       position: absolute;
       top: 0;
@@ -60,7 +60,7 @@
       pointer-events: none;
     }
 
-    .unnyc-principles__rail-inner {
+    .unnyc-pr-why__detail .unnyc-principles__rail-inner {
       position: sticky;
       top: calc(var(--pr-header-h, 68px) + var(--pr-subnav-h, 0px) + var(--wg-sp-10));
       width: var(--rail-w);

@@ -403,6 +403,16 @@
      PRINCIPLE RAIL (UnnycPrinciplesRail)
      A sticky list of the eight, beside the detail sections.
 
+     ⚠ THE POSITIONING RULES ARE SCOPED TO `.unnyc-principles__detail`, and
+     that is load-bearing. /crosswalk reuses this same component with its own
+     positioning in crosswalk.css. Both stylesheets are in the DOM after a
+     client-side navigation between the two pages, and unscoped
+     `.unnyc-principles__rail` rules in both files are (0,1,0) inside the same
+     @media and @layer — so source order decided the winner and this page's
+     `left: 50%; transform: translateX(-50%)` was applied on /crosswalk,
+     dropping the rail 400px into the prose. Scoping each page's positioning
+     to its own wrapper is what keeps them from colliding.
+
      ⚠ THIS IS NOT FREE SPACE. Those sections are a FLOAT layout —
      .unnyc-pr-cw__part is `float: left; width: 56%` and
      .unnyc-pr-cw__part--gap is `float: right; width: 40%`, and all
@@ -437,7 +447,7 @@
     --rail-offset: calc(var(--rail-w) + var(--wg-sp-6) + var(--rail-gutter));
   }
 
-  .unnyc-principles__rail {
+  .unnyc-principles__detail .unnyc-principles__rail {
     display: none;
   }
 
@@ -451,7 +461,7 @@
     /* Spans the whole detail block so the sticky child is bounded by it —
        that is what parks the rail at the last section instead of letting
        it ride into the endorser directory. */
-    .unnyc-principles__rail {
+    .unnyc-principles__detail .unnyc-principles__rail {
       display: block;
       position: absolute;
       top: 0;
@@ -464,7 +474,7 @@
       pointer-events: none;
     }
 
-    .unnyc-principles__rail-inner {
+    .unnyc-principles__detail .unnyc-principles__rail-inner {
       position: sticky;
       /* Clears the header. --pr-subnav-h is 0px here (this page has no
          subnav bar) but is included so the rail stays correct if one is
