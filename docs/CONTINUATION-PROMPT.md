@@ -3,194 +3,229 @@
 Paste the block below into a new session. Everything above the line is context for
 whoever is maintaining this file.
 
-**Last updated 2026-08-14, at the end of a sixteen-PR day.** This file drifted three times
-on 2026-08-11 alone, so it is now written to survive a busy day: the "what changed"
-section records *shapes and lessons*, not a PR-by-PR log. **Rewrite it whenever
-something lands.** A continuation prompt describing a state that no longer exists
-is worse than none, because it is read as current — and a wrong *diagnosis* left in
-it is worse still, because the next session starts by chasing it.
+**Last updated 2026-08-20.** The stretch from #28 to #46 rebuilt `/principles`,
+added the endorser directory and both rails, and moved the site onto a new domain
+twice. This file is the one doc guaranteed to be read first,
+so it is the one most damaging to leave stale — it spent 2026-08-19 describing a
+homepage, a principles grid and a hostname that had all changed, which is exactly
+the failure its own header warns about. **Rewrite it whenever something lands.**
 
 ---
 
 I'm continuing work on the **UNNYC campaign site**. Start by querying the Hub
 (`get_workspace_detail("unnyc")`, `list_tasks(workspace="unnyc")`,
-`search_knowledge(topic="wegovnyc-design-system")`) and reading
+`search_knowledge(query="wegovnyc design system")`) and reading
 `~/vault/workspaces/unnyc.md`, then this repo's `CLAUDE.md`, `README.md` and
 `docs/EDITING-CONTENT.md`.
 
-## The repos
+## Where the site lives — CHANGED 2026-08-20
 
-| Repo | Local | What it is |
-|---|---|---|
-| `sarapis/unnyc` | `~/Antigravity/unnyc` | **This** campaign site → https://unnyc.wegov.nyc |
-| `sarapis/open-source-by-default` | `~/Antigravity/open-source-by-default` | **PRIVATE.** Draft roadmap doc, moved out of this repo |
-| `wegovnyc/wegovnyc_front` | `~/Antigravity/WeGovMarketing` | The marketing site → https://wegov.nyc |
-| `sarapis/wegovnyc-design-tokens` | `~/Antigravity/wegovnyc-design-tokens` | The design system both sites install |
-| `devinbalkind/sarapis-website` | `~/Antigravity/Sarapis/site` | The Payload CMS → https://next.sarapis.org |
+**The campaign is at `https://un.opensource.nyc`.** A subdomain, deliberately, so
+the apex is free for a future `opensource.nyc` homepage that does not exist yet.
 
-Both site repos are clean and deployed as of 2026-08-14, with **no open PRs**.
-`origin/working` still exists on the remote — it is the branch behind Olivia's
-closed dark-mode PR, hers to remove, not ours.
+    un.opensource.nyc     200, serves the campaign
+    opensource.nyc        307 -> un.opensource.nyc
+    www.opensource.nyc    307 -> un.opensource.nyc
+    unnyc.wegov.nyc       307 -> un.opensource.nyc
+
+All four are on the ONE Vercel project `unnyc-campaign`, so the folding happens in
+`next.config.mjs` host rules, not at DNS. DNS is Cloudflare (same account as
+wegov.nyc), **DNS-only / grey cloud** — proxying in front of Vercel is not how any
+of these are set up.
+
+**Every redirect is a 307, not a 308, on purpose.** The apex moved twice in two days
+(08-19 it became primary, 08-20 it became a redirect); a permanent redirect would
+have been cached hard and painful both times. The apex rule in particular is
+expected to be DELETED rather than promoted — when opensource.nyc becomes its own
+site it will be a different Vercel project and apex DNS repoints at it.
 
 ## Read this part before you touch anything
 
-1. **You are probably not the only session in this checkout.** On 2026-08-07 that
-   cost real effort three times in an afternoon: another session's files appeared
-   **staged** inside a commit being written, and a second session committed on top
-   of unpushed work so the two could not ship separately. **Never `git add -A`,
-   `git add .`, or `git commit -a`** — a PreToolUse hook now refuses them. Stage by
-   name, then read `git diff --cached --name-only` before every commit. For
-   parallel work use a worktree (`CLAUDE.md` lists the four gitignored things a new
-   worktree does not inherit — `node_modules` at 350 MB is the main one).
-2. **Pushing `main` deploys to production.** No gate, no preview step.
-3. **Olivia Croteau pushes PRs from a fork** — ten merged, one closed, **none open**. `git fetch`
-   and check open PRs **before** a broad edit. A rewrite once landed on top of her
-   open PR and had to be reconciled by hand.
-4. **The CMS at next.sarapis.org is production for three brands.** The user
-   approves go-live. Schema changes need out-of-band SQL.
-5. **`localhost` is not in Payload's CORS allowlist**, so every form on this site
-   fails locally with a generic error. That is expected — form submission can only
-   be tested from the deployed origin.
+1. **Pushing `main` deploys to production.** No gate, no preview step.
+2. **You are probably not the only session in this checkout.** Never `git add -A`,
+   `git add .`, or `git commit -a` — a PreToolUse hook refuses them. Stage by name
+   and read `git diff --cached --name-only` before every commit.
+3. **Olivia Croteau works IN THIS REPO, not a fork.** `CLAUDE.md` and this file both
+   said "PRs from a fork" for weeks; `gh pr view --json isCrossRepository` returns
+   false. It matters: you can push straight to her branches, which is the
+   difference between "comment and wait" and "fix it in place".
+4. **The CMS at next.sarapis.org is production.** Self-hosted Docker on Hetzner
+   `178.156.248.253`, image `sarapis-site:r43`, `--env-file /opt/sarapis/.env`.
+   ⚠ Its own workspace `CLAUDE.md` claims it "serves wegov.nyc + databook.nyc" —
+   IT DOES NOT. wegov.nyc is Vercel, databook.nyc is Cloudflare + PHP 7.4. They
+   READ from it. A container recreate is a measured ~1.5-2s 502 on next.sarapis.org
+   only. The user approves go-live.
+5. **CORS is the most expensive mistake available here.** A missing origin fails
+   INVISIBLY — the browser blocks the POST and the form shows a generic error.
+   unnyc.wegov.nyc was missing for two days in August and every submission was
+   silently dropped. All four campaign hosts are allowlisted, and the three that
+   only redirect are NOT redundant: a redirect does not help a cross-origin POST,
+   because the browser preflights the ORIGINAL host.
+   ⚠ It is currently live only as `CORS_ORIGINS` in `/opt/sarapis/.env`. The code
+   version is `devinbalkind/sarapis-website` **PR #1**, unmerged. A rebuild from
+   clean config before that ships breaks every form on the live domain.
+6. **`localhost` is not in the CORS allowlist**, so every form fails locally with
+   the generic error. That is expected, not a bug.
 
 ## How to verify anything here
 
 This project keeps producing bugs that fail *silently* and look like "no data yet"
-or "working fine". A `catch` returning `[]`, a `default:` returning an empty list,
-a `var()` falling back, a missing CORS header, an unset CSS variable, a dead
-frontmatter key, a reset out-specifying a component. So:
+or "working fine". Ranked by how much time each has cost:
 
-- **Test through the real UI, not the API.** An endpoint returned 200 to `curl`
-  for two days while every browser submission was blocked by CORS.
-- **Read the rendered DOM, not the source you just wrote.** Three paragraphs in the
-  open letter were being swallowed into a `<li>` for weeks; the markdown looked
-  right and the build was clean. `curl` the page and check which tag wraps the text.
 - **Selector matching is ground truth; computed styles in the preview pane are
-  not.** The Browser pane reports `visibilityState: hidden` and never paints, so it
-  runs no animation frames and does not flush a style recalc after React changes a
-  class. Post-interaction `getComputedStyle` reads come back **stale** — they told
-  me an active tab was orange when it wasn't, and that a subnav click didn't scroll
-  when on production it does. `el.matches(selector)` and the deployed CSS text are
-  reliable; ask the user to eyeball anything that only manifests on interaction.
-- **Poll for a string unique to the NEW version when waiting on a deploy.** I once
-  polled for "The undersigned", which also appears in the copy being replaced, so
-  the loop exited instantly and I "verified" the old page and reported nine false
-  failures.
-- **Test a guard by trying to defeat it.** Every `git commit` case in the staging
-  hook silently passed at first — the regex ate the only space before the flag.
-- **A green build is not a working page.** A Vercel project with no framework
-  preset builds "successfully" and 404s every route.
+  not.** Post-interaction `getComputedStyle` comes back stale — it reported an
+  endorser chip as white text when it was rendering dark blue, and the screenshot
+  the user sent was the only thing that caught it. `el.matches(selector)` and the
+  shipped CSS text are reliable.
+- **IntersectionObserver DOES NOT RUN in the preview pane, or in any page these
+  tools drive.** `document.visibilityState` is `hidden`, and a fresh observer with
+  no rootMargin fires ZERO callbacks — verified against production, not just the
+  dev server. So scroll-spy state cannot be exercised at all. Verify the CSS and
+  the class logic; ask the user to confirm the highlight tracks.
+- **Measure the whole set, never one element.** A rail was designed against "571px
+  of empty gutter" measured from a single paragraph; all eight sections actually
+  had a float panel there. Check every instance.
+- **A "CLEAN" mergeable status is not "both changes survived".** Two PRs touching
+  the same file on different lines merge without conflict and can still drop one
+  side's intent. Merge main in locally and grep for both.
+- **Read the rendered DOM, not the source you just wrote**, and `curl` the page to
+  see which tag wraps the text.
+- **Poll for a string unique to the NEW version** when waiting on a deploy.
+- **A green build is not a working page**, and a green CI check may have run
+  against an older base.
 
-## What changed most recently (2026-08-11 → 08-14)
+## Page structure as of 2026-08-20
 
-Twelve PRs. The shape of the site changed; the details are in `CLAUDE.md` under
-"Page structure as of 2026-08-14".
+Thirteen routes. Reader path and nav order: `/` -> `/start` -> `/principles` ->
+`/crosswalk` -> `/success` -> `/resources`, plus `/campaign*` and `/contact`.
 
-- **`/principles` is now a top-level page.** It pairs the plain-English grid that
-  was `/start#principles` — every icon+title is a jump link — with the
-  per-principle NYC argument that was the *body of `/crosswalk`*. That prose
-  **moved, it is not duplicated**: this repo already spent a day untangling three
-  drifted copies of the principles. The jump target is a new `slug` on each
-  principle in `content/principles.md`, which is also its `## slug` section, so the
-  id is defined once. The printable one-pager moved `/start/principles` →
-  `/principles/document` behind a 308.
-- **`/crosswalk` is six numbered reasons to adopt open source**, ~1,250 words,
-  titled "New York Rents the Software It Should Own". Its dollar claims link to
-  **Databook.NYC contract records** (SurveyMonkey $210k/renewal, the $57M citywide
-  Microsoft agreement) — keep new claims checkable that way. **Every figure on the
-  page now links to a record** (fixed 2026-08-14, see below).
-- **The open letter is addressed to OTI alone** and built on three asks: endorse
-  the Principles, establish an OSPO, evaluate an open source alternative in every
-  technology contract. **All Barcelona and first-in-the-Americas framing is gone
-  from it.**
-- **Nav is five items**: A Global Movement · UN Principles · Open Source for NYC ·
-  Case Studies · Resources. `/start` is reordered to vocabulary → world going open
-  source → UN's timeline, and its subnav is now at exactly **3 items — the boundary
-  of `UnnycSectionNav`'s `items.length < 3` guard.** Remove one more section and
-  the bar silently disappears.
-- **The endorsing-organizations list moved** from under `/start`'s map to the
-  bottom of `/principles` (`#endorsers`), where the things being endorsed are.
-- **`/success` lost the Tokyo case**; Olivia added Munich. The grid is retitled
-  "Recent Government Open Source Successes".
-- **`/resources/guide`** is the long-form UN-system briefing, ported from the
-  retired hub and diffed word-for-word against the original.
-- **Accessibility: all 73 undersized card links now clear 24px.** Four rules
-  (`.unnyc-pr-ospo__links a`, `.unnyc-pr-contact__link`, `.unnyc-pr-concept__link`,
-  `.unnyc-pr-case__link`) were 22px block targets; each gained `padding: 4px 0`
-  and they cross-reference each other, so a new card link has a precedent to
-  copy. Inline prose links, the footer credit line and Leaflet's attribution are
-  exempt under WCAG 2.5.8 and untouched.
-- **The fourth homepage card renders its favicon as a logo, not a photo**
-  (`imageStyle: logo` in `content/home.md`): contained and centred on a tint
-  instead of a 100x100 square cover-cropped into a 560x160 band. **Confirmed as
-  the final treatment, not a placeholder** — see "Things that are true".
-- **Four CSS bugs fixed**, each with a general lesson now in `CLAUDE.md`: a global
-  button reset out-specifying component rules (navy-on-navy tabs), `--outline` on a
-  light background (an invisible button that read as a layout bug), Leaflet's
-  z-indexes painting over the nav, and a 24px hero headline on mobile.
+- **`/` has four cards matching the nav's first four** (`/start`, `/principles`,
+  `/crosswalk`, `/success`), left-to-right then top-to-bottom, no numbers.
+  ⚠ Resources has NO card, and is NOT in the footer — the top nav is its only
+  link from the homepage. ⚠ Card 1 still shows the favicon-as-logo placeholder;
+  it has moved three times and is now the most prominent it has been.
+- **`/principles` is two named sections**, each opening on one principle as a
+  full-width card then three in columns: **Software Principles** (Open by default
+  + Secure by design / Design for reusability / Well documented) and **Community
+  Principles** (Contribute back + Foster inclusive participation / RISE / Sustain
+  and scale). No sub-headings. Below that, the eight NYC arguments with a
+  **sticky side rail**, then the **endorser directory**.
+- **`/crosswalk` is six numbered reasons** with its own sticky reasons rail,
+  reusing the same component. Dollar figures link to Databook.NYC records.
+- **`/principles/document`** and **`/campaign/endorse/document`** are printables.
+
+## The principles are single-sourced, and the variants are the whole design
+
+`content/principles.md` holds every principle ONCE. Four surfaces render them and
+each wants different words, so each principle carries its surface forms explicitly.
+There were three drifted copies before 2026-08-06; do not make a fourth.
+
+    title           the /principles grid
+    titleCanonical  the UN's own name — letter, endorse doc, detail headings, rail
+    desc            full description
+    descShort       the letter's numbered list
+    descCity        NYC-facing, the endorsement declaration
+    titleDocument   /principles/document ONLY
+    descDocument    /principles/document ONLY
+    body            the line shown when a principle is a full-width lead card
+    bodyDocument    (removed 08-20 — the document now uses `body`)
+
+**Groupings are slug references, not rearrangements**, because `groups` holds the
+objects and is FLATTENED by `principlesFlat()` for the letter and by `/principles`
+for its detail sections and rail. Moving objects between groups is how a principle
+vanishes from a surface that only flattens.
+
+    groupsGrid      /principles + the endorsement declaration (two sections)
+    groupsDocument  /principles/document (its own two groups)
+
+`principlesResolve()` in `src/lib/content.js` resolves either and **throws** on an
+unknown slug — `lint:content` does not check these refs.
+
+⚠ Both printables now present TWO sections where the UN publishes THREE, and give
+#2 Contribute back a lead treatment the UN reserves for #1. Owner decisions, but
+the endorsement declaration is the document intended for OTI and it cites the UN
+as its source.
+
+## The endorser directory
+
+`/principles` closes on **150 organizations**, filterable by sector, paginated 16 a
+page, from `content/un-endorsers.json` (a 2026-08-06 snapshot of the UN's page).
+
+- **NO LOGOS, deliberately.** They are third-party trademarks and the UN showing
+  them grants no onward rights. Names and sectors only; the file is 14 KB.
+- **The names are a TRANSCRIPTION.** The UN page carries 154 logos and zero names —
+  every card title element is empty. One error is already recorded in
+  `corrections`: #143 was "RTÉ", the Irish broadcaster; the logo is RTE, the French
+  grid operator.
+- 154 raw -> 150: #121 unnamed, #114 a KDE duplicate, #3 and #21 unclassifiable.
+- **Counts are DERIVED, never authored.** ⚠ The lede says "Hundreds" over a
+  countable 150 — owner's wording, noted in the content.
+- ⚠ **10 organizations the page used to name are absent** from the snapshot — Open
+  Knowledge, OpenInfra, Matrix, Sovereign Tech Agency, ZenDiS, Nextcloud,
+  Rocket.Chat, Linagora, LPI, European Open Source Academy. Checked by name, alt
+  slug and source URL. Probably means the UN's logo wall is not the authoritative
+  list; unresolved.
+
+## CSS: the one rule that would have saved five bugs
+
+**In `@layer unnyc`, scope any component rule that sets `color` on an `<a>` or
+`<button>` with `.unnyc-page`.** The resets are TWO-part selectors —
+`.unnyc-page a { color: inherit }` and `.unnyc-page button { border: none;
+background: none }` are both (0,1,1) — so a single-class component rule (0,1,0)
+LOSES to them in the same layer. Five collisions in two days, all this shape:
+
+1. navy-on-navy sign-form tabs (the button reset)
+2. endorser chips rendering as bare text (the button reset)
+3. rail links all navy, muted/active indistinguishable (the anchor reset)
+4. `:hover` (0,3,0) out-specifying `--active` (0,2,0), repainting the SELECTED
+   chip dark-on-dark — the one the user caught in a screenshot
+5. the same hover/active trap on the pagination buttons
+
+**And a sixth of a different kind:** `/principles` and `/crosswalk` both styled
+`.unnyc-principles__rail` in separate stylesheets at equal specificity. Next.js
+keeps both sheets in the DOM after a client-side navigation, so source order won
+and the rail landed 400px inside the prose — **only when arriving by nav click; a
+fresh load was always fine.** Fixed by scoping each page's positioning to its own
+wrapper, then Olivia consolidated the shared nav-look into `primer.css`.
+
+## Other things that will bite you
+
+- **`getContent()` is server-only and must be called inside the component or
+  `generateMetadata`**, never at module scope.
+- **A frontmatter key named `sections` is silently overwritten** by the parsed body.
+- **`sections.*.html` goes in a `<div>`; `inlineMd()` goes in a `<p>`.** Block-level
+  HTML inside a `<p>` splits the DOM and silently drops the page to client
+  rendering.
+- **`.unnyc-btn--outline` is white-on-white on light backgrounds** — use
+  `--outline-dark`. A "missing" button is usually invisible, not misplaced.
+- **Never write `*/` inside a CSS comment.** Turbopack fails confusingly.
+- **`metadataBase` emits NOTHING today.** No page sets `openGraph.url` or
+  `alternates.canonical`, so the site has **no canonical tag on any route** — worth
+  fixing now that three hosts redirect into one.
+- **Adding a domain to Vercel does not bind it to the existing production
+  deployment.** `un.opensource.nyc` was verified with a valid certificate, TLS
+  completed, ALPN negotiated — and Vercel never answered. A no-op `vercel deploy
+  --prod` of unchanged `main` fixed it instantly. A verified domain that hangs on
+  HTTP means "no deployment bound", not DNS or TLS.
+- **Content edits should go through a PR** so `lint:content` runs before deploy.
+- **`public/images/CREDITS.md` is a licence record** — update it in the same commit
+  as any image change, including when a card's "Used on" column moves.
 
 ## Open work
 
-Nothing is blocking. In rough order of value:
+Nothing is blocking.
 
-1. **Decide the CTFG directory question.** The map layer is live, so the open
-   question about linking into the Civic Tech Field Guide while it is de-indexed
-   pre-launch is current, not deferred. Hub task `168a959d`.
-2. **The roadmap doc needs a named ask.** `sarapis/open-source-by-default`
-   explains a sequence but never says who should do what next.
-3. **Watch for the first real endorsement.** `published` defaults to false, so a
-   new signature needs ticking in the Payload admin before it reaches the wall.
-4. **A shared component package.** Token *values* are unified across wegov.nyc and
-   this site; the *implementations* — button, card, nav — are still separate. Hub
-   task `7656df36` (Backburner).
-5. **Exposed keys in `wegovnyc_front`'s git history** — Hub task `51968fc0`. Lower
-   urgency after triage, but the purge needs coordinating because a fork keeps the
-   blobs reachable.
-
-*(Struck 2026-08-14, last thing in the day: **the two unsourced `/crosswalk`
-figures**, replaced with the two citywide IT purchasing contracts they were
-almost certainly a garbled memory of — SHI $1.2B and CDW $800M, exactly $2B
-together, each linked to its Databook record. The same sentence in the **open
-letter** (`content/sign.md`) carried the identical claim and was fixed with it;
-the briefing had flagged only `/crosswalk`, so check both surfaces for any figure
-you change. The page's Microsoft Premier Support count went the other way — the
-records support **more** than was claimed, so "at least fifteen agencies … today"
-became "seventeen agencies have each bought their own", which is both tense-accurate
-(most of those contracts ended 2022–2024) and stronger. Also struck: **the fourth
-homepage card**, confirmed as a deliberate logo treatment rather than a photo
-awaiting purchase. Struck earlier the same
-day: Olivia's PR #12 merged — three org names aligned to their CTFG listings, with two of the three redirected to
-`content/principles.md` because the endorsers list had moved; her PR #15
-(site-wide dark mode) CLOSED as a product decision, with the reasoning recorded
-on the PR so it survives the branch; all 73 undersized card links raised from
-22px to 30px across four rules; and the favicon card given a deliberate logo
-treatment. Struck earlier the same day: PR #8; the `/campaign/sign` hydration
-mismatch — which was invalid HTML nesting, NOT the endorser wall's Payload fetch as
-this file once guessed; the `~90` baselined colour literals in wegov.nyc's
-`globals.css`; the `#3f8f7b` CTFG teal literal; repointing `wegov.nyc/unnyc/guide`
-at the ported article.)*
-
-## Things that are true and easy to get wrong
-
-- `old-unnyc.wegov.nyc` is **no longer load-bearing.** Its one unique asset, the
-  UN-system guide, is now at `/resources/guide`, and `wegov.nyc/unnyc/guide`
-  redirects straight there. It was never quite as load-bearing as the docs claimed
-  either — that redirect always pointed at the *campaign* site, never at the old
-  host. **The old site can be retired whenever someone wants it gone.**
-- **Never write a colour literal or read `--db-*`** in a CSS rule — both are
-  invisible to the brand variant. Note `--wg-accent-warm` resolves to `#d4a843` at
-  `:root` but `#f60` inside `.wg-unnyc`: that is the variant working, not a stale
-  install.
-- **`.unnyc-page button` (0-1-1) beats any single-class component rule** in the same
-  layer. Scope styled buttons with `.unnyc-page`.
-- **Never write `*/` inside a CSS comment.** It closes the comment and Turbopack
-  fails with a confusing parse error.
-- **`getContent()` must be called inside the component or `generateMetadata`,**
-  never at module scope — and a frontmatter key named `sections` is silently
-  overwritten by the parsed body.
-- **CSS layer order `reset < components < unnyc < site`** must be preserved here.
-  wegov.nyc's is different.
-- **A paragraph written directly under a bullet with no blank line becomes part of
-  that bullet.** Markdown lazy-continuation. It shipped three times in the open
-  letter because the build is clean, `lint:content` passes and the page looks
-  plausible. Blank line between a list and the paragraph after it, always. To
-  check: `curl` the page and look at which tag wraps the text.
+1. **Merge `sarapis-website` PR #1** so CORS is in code, not just an env var.
+2. **Add canonical tags.** `metadataBase` is set and unused; three hosts redirect
+   into one and nothing declares the canonical.
+3. **A photo for homepage card 1** — still the favicon placeholder, now first.
+   `public/images/success/tokyo.jpeg` is paid-for and unused but has been rejected
+   twice: a skyline beside card 4's Barcelona reads as a case study.
+4. **Decide the two-sections-vs-the-UN's-three question** for the endorsement
+   declaration before it goes to OTI.
+5. **Resolve the 10 missing endorsers** — union of both lists, or leave as is.
+6. **"Hundreds" vs 150** in the endorser lede.
+7. **Retire `old-unnyc.wegov.nyc`** whenever wanted; nothing depends on it.
+8. **The CTFG directory question** — Hub task `168a959d`.
+9. **A shared component package** — Hub task `7656df36` (Backburner).
+10. **Exposed keys in `wegovnyc_front` history** — Hub task `51968fc0`.

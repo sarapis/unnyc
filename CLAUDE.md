@@ -1,7 +1,9 @@
 # UNNYC
 
 > Standalone campaign site: make NYC the first city in the Americas to endorse the
-> UN Open Source Principles. Next.js on Vercel, live at **https://unnyc.wegov.nyc**.
+> UN Open Source Principles. Next.js on Vercel, live at **https://un.opensource.nyc**
+> (the apex `opensource.nyc`, `www` and `unnyc.wegov.nyc` all 307 there — see
+> docs/CONTINUATION-PROMPT.md for the full map and why every hop is a 307).
 
 Read [README.md](README.md) first — routes, the two form paths, env, CSS layers.
 Read [docs/EDITING-CONTENT.md](docs/EDITING-CONTENT.md) before changing any copy.
@@ -294,6 +296,23 @@ Two restructures landed this day and the docs above/below assume them:
   This was a real bug; don't "optimise" it back.
 - **`getContent()` is server-only** (uses `node:fs`). Never import it in a
   `"use client"` file.
+- **⚠ THE ONE CSS RULE THAT WOULD HAVE PREVENTED FIVE BUGS: in `@layer unnyc`,
+  scope any component rule that sets `color` on an `<a>` or `<button>` with
+  `.unnyc-page`.** Both resets are TWO-part selectors — `.unnyc-page a { color:
+  inherit }` and `.unnyc-page button { border: none; background: none }` are
+  (0,1,1) — so a single-class component rule (0,1,0) LOSES in the same layer.
+  Five collisions, all this shape: navy-on-navy sign-form tabs; endorser chips
+  rendering as bare text; rail links all navy with the muted/active distinction
+  invisible; `:hover` (0,3,0) out-specifying `--active` (0,2,0) and repainting the
+  SELECTED chip dark-on-dark; and the same hover/active trap on the pagination
+  buttons. Symptom to recognise: a control whose text colour is right and whose
+  background/border silently isn't — or the reverse.
+  **A sixth, different in kind:** `/principles` and `/crosswalk` both styled
+  `.unnyc-principles__rail` in separate stylesheets at equal specificity. Next.js
+  keeps both sheets in the DOM after a CLIENT-SIDE navigation, so source order won
+  and the rail landed 400px inside the prose — only when arriving by nav click, a
+  fresh load was always fine. Two stylesheets styling one class is a latent bug
+  even when the rules are identical.
 - **`.unnyc-page button` is a 0-1-1 reset that beats every single-class component
   rule.** `unnyc.css` resets `border: none; background: none` on every button under
   `.unnyc-page`. A component rule like `.unnyc-cmp-form__tab--active` is 0-1-0, in
