@@ -12,9 +12,19 @@ const nextConfig = {
     },
     async redirects() {
         return [
-            // opensource.nyc became the primary domain on 2026-08-19; both
-            // hostnames point at this one Vercel project, so the old one is
-            // folded into the new one here rather than at the DNS layer.
+            // The campaign moved to the un.opensource.nyc SUBDOMAIN on
+            // 2026-08-20, so the apex is free for a future opensource.nyc
+            // homepage. Every other hostname folds into the subdomain.
+            //
+            // ⚠ EACH LEGACY HOST POINTS AT THE FINAL DESTINATION, never at
+            // the apex, so nothing chains two redirects.
+            //
+            // ⚠ THE APEX RULE IS TEMPORARY BY DESIGN and lives here only
+            // while this app owns the apex. The day opensource.nyc becomes
+            // its own site, that will be a different Vercel project, apex
+            // DNS repoints at it, and this rule becomes dead code — delete
+            // it then rather than leaving a campaign app routing an apex it
+            // no longer serves.
             //
             // ⚠ 307, NOT 308, deliberately. A permanent redirect is cached hard
             // by browsers and is very difficult to walk back — if anything is
@@ -25,7 +35,7 @@ const nextConfig = {
             {
                 source: '/:path*',
                 has: [{ type: 'host', value: 'unnyc.wegov.nyc' }],
-                destination: 'https://opensource.nyc/:path*',
+                destination: 'https://un.opensource.nyc/:path*',
                 permanent: false,
             },
             // www folds into the apex. Both are attached to this Vercel project
@@ -36,8 +46,14 @@ const nextConfig = {
             // adding canonicals first.
             {
                 source: '/:path*',
+                has: [{ type: 'host', value: 'opensource.nyc' }],
+                destination: 'https://un.opensource.nyc/:path*',
+                permanent: false,
+            },
+            {
+                source: '/:path*',
                 has: [{ type: 'host', value: 'www.opensource.nyc' }],
-                destination: 'https://opensource.nyc/:path*',
+                destination: 'https://un.opensource.nyc/:path*',
                 permanent: false,
             },
             // The eight principles became their own top-level page on 2026-08-13.
