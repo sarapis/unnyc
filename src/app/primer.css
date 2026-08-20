@@ -511,7 +511,14 @@
   /* Prose + pull-quote float side by side instead of stacking. Clearfix on
      the wrapping block so its floated children aren't collapsed out of the
      section's height. Stacks back to one column under 900px — see
-     Responsive at the bottom of this file. */
+     Responsive at the bottom of this file. Also the jump target for
+     crosswalk.css's reasons rail — same offset formula as
+     `.unnyc-pr-cw__section` below, so a rail click doesn't land the
+     heading under the sticky header. */
+  .unnyc-pr-why__block {
+    scroll-margin-top: calc(var(--pr-header-h, 68px) + var(--pr-subnav-h, 0px) + 28px);
+  }
+
   .unnyc-pr-why__block::after {
     content: '';
     display: table;

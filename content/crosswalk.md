@@ -25,53 +25,51 @@ foot:
 
 <!-- Prose below. `## intro` opens the page; each `### N. Reason` renders as a
      numbered argument block; the page ends on reason 6 and the foot buttons.
-     Dollar figures link to the Databook.NYC contract record they come from —
-     keep claims checkable. -->
+     Rewritten 2026-08-15 without inline sourcing links — verify claims
+     against Databook.NYC / the Comptroller's report before restoring any. -->
 
 ## intro
 
-Nobody can fully account for what the city pays. The City Comptroller’s 2026 review of the city’s master agreements found [nearly $4 billion in spending beyond the estimated value of OTI’s citywide IT contracts](https://comptroller.nyc.gov/reports/the-monty-hall-contracts-unchecked-spending-across-the-citys-master-agreements/) — with purchase records that reveal almost nothing about what was actually bought.
+According to the City Comptroller’s review of the city’s master agreements, nearly <b>$4 Billion</b> were spent beyond the estimated value of OTI’s citywide IT contracts in 2026. The purchase records reveal almost nothing about what was actually bought, making it near impossible to account for what the city is paying for and whether or not it is tax dollars well-spent.
 
-For scale: PIT Crew, the Mamdani Administration’s flagship program for rebuilding how New Yorkers reach city services, costs [$5 million](https://www.amny.com/politics/mamdani-tech-five-new-pit-crews/). The city spends that on proprietary licenses roughly every three days. Its celebrated bet on *building* costs three days of its habit of *renting*.
+To put that figure in perspective, PIT Crew, the Mamdani Administration’s flagship program for rebuilding how New Yorkers reach city services, costs <b>$5 Million</b>. The city spends that much on proprietary licenses roughly every three days, for tools that are essentially being rented, not built for ownership.
 
-An AI-assisted analysis by [Databook.NYC](https://databook.nyc), which processes nearly 100 city-produced open datasets, reaches the same conclusion from the ground up — agency by agency, contract by contract, there is real money on the table.
+Databook.NYC is an open source tool that aggregates and processes nearly 100 city-produced open datasets, providing analysis of the agencies, contracts, and money being spent by NYC on its IT services. Databook’s insights support this conclusion; there is city money to be saved by cancelling vendor contracts in favor of open source solutions.
 
-The easiest place to start counting is also the first reason to switch.
+The following is an explanation of those savings, as well as five other reasons why NYC should adopt open source software.
 
-### 1. Save Money — and Change Every Negotiation
+### 1. Save Money, and Change Every Negotiation
 
-Start with the easy ones. The Department of Health pays [$210,000 per two-year renewal](https://databook.nyc/procurement/contract/4843244) for SurveyMonkey licenses — one agency, one survey tool. LimeSurvey, its open source equivalent, has no per-seat license at all. Multiply that pattern across 130-plus agencies each buying their own copy of the same category of tool and the number stops being a rounding error: seventeen agencies have each bought their own separate Microsoft Premier Support contract, several of them through different resellers.
+The Department of Health pays <b>$210,000 per two-year renewal</b> for SurveyMonkey licenses — one agency, one survey tool. Multiply that pattern across 130-plus agencies each buying their own copy of the same category of tool and the spending total becomes rather staggering. Now put that up against LimeSurvey, its open source equivalent, which has no per-seat license at all. The potential savings speak for themselves.
 
-And the savings start before a single system is replaced. Vendors price against your alternatives. A city that pilots LibreOffice in one bureau — that demonstrably *can* leave — walks into its next Microsoft negotiation as a different customer. The city’s [three-year, $57 million citywide Microsoft agreement](https://databook.nyc/procurement/contract/5128452) was negotiated by a buyer with no credible exit. Speaking open source fluently is worth money even where the city never switches.
-
-The savings are real — and they are still the smallest of the six reasons.
+And the savings start before a single system is replaced. When you go “purchase” a software license, vendors price against your alternatives. A city that pilots LibreOffice, the open source alternative to Microsoft Office, in one bureau demonstrates that it can leave that contract, so walks into its next Microsoft negotiation as a different customer. The city’s three-year, $57 million citywide Microsoft agreement was negotiated by a buyer with no credible exit. Having a fluent understanding of open source options gives the city bargaining chips that could bring that price down.
 
 ### 2. Control Your Systems, Unlock Your Programs
 
-Government programs run on software. The benefits portal *is* the benefits program; the scheduling system *is* the appointment policy. When the software is closed, the program is frozen in whatever shape the vendor shipped it — every new idea becomes a change order, priced by the only company that can implement it.
+Government programs run on software. The benefits portal is the benefits program; the scheduling system is the appointment policy. When the software is closed, the program is frozen in whatever shape the vendor shipped it. Every needed fix and new idea becomes a change order, priced by the only company that can implement it.
 
-An administration that wants genuinely innovative programs — new ways to deliver childcare subsidies, small-business permits, housing applications — needs the legal and technical right to change the systems those programs run on. You can’t change the program if you can’t change the software. Open source is how a government keeps its policy options open.
+An administration that wants genuinely innovative programs — new ways to deliver childcare subsidies, small-business permits, housing applications — needs the legal and technical right to change the systems those programs run on. You can’t change the program if you can’t change the software. Open source is how a government keeps its policy options open and its programs working for the New Yorkers that rely on them.
 
 ### 3. Security You Can Verify
 
-New York already runs a citywide [Vulnerability Disclosure Program](https://nyc.responsibledisclosure.com/hc/en-us): outside researchers are invited to find flaws before attackers do. But for the vendor-purchased majority of city systems, the code is closed — nobody outside the vendor can check how well-built a system was to begin with. Open source extends the VDP’s logic from the city’s front doors to its foundations: trust by inspection, not by contract clause. Instead of taking a vendor’s word on security, the city — and the public — can check the work.
+New York already runs a citywide Vulnerability Disclosure Program: outside researchers are invited to find flaws before attackers do. But for the vendor-purchased majority of city systems, the code is closed, meaning nobody outside the vendor can check how well-built a system was to begin with. Open source extends the VDP’s logic from the city’s front doors to its foundations, allowing researchers to build trust in the systems by inspection, not by contract clause. Instead of taking a vendor’s word for it, the city — and the public — can verify the security of their data.
 
-### 4. Make City Government a Career-Defining Place to Build
+### 4. City Government as a Tech Career Goal
 
-New York has one of the most educated technical workforces on earth — and almost none of it ever works on the systems eight million people depend on. That is not a talent problem; it is an access problem. Closed vendor systems have no place for an outside contributor to start.
+Weaknesses in NYC’s digital public infrastructure are not due to a talent problem, but an access problem. New York has one of the most educated technical workforces on earth — and almost none of it ever works on the systems eight million people depend on, because closed vendor systems have no place for an outside contributor to start.
 
-Open source changes what a city technology job *is*. Your work is public, portable, citable — a commit history instead of a line on a résumé. The goal is a culture where a stint in New York City government technology is something the best engineers in the world seek out, the way the best lawyers clerk here and the best doctors do residencies here. The [nearly 2,800 applications](https://www.amny.com/politics/mamdanis-tech-pit-crews-2800-applicanants/) for PIT Crew’s first hiring round show the appetite. Open work is how you feed it.
+Open source changes what a city technology job is. Your work is public, portable, citable — it creates a verifiable commit history instead of just a line on a résumé. The goal is a culture where a stint in New York City government technology is something the best engineers in the world seek out, the way the best lawyers clerk here and the best doctors do residencies here. The nearly 2,800 applications for PIT Crew’s first hiring round show the appetite. Open work is how you feed it.
 
 ### 5. Build Once, Use It 130+ Times
 
-Paris has run its open source Lutèce platform since 2002 — it now powers [more than 300 city services](https://opensource.paris.fr/ossparis/english.html), from permits to participatory budgeting, and Paris’s own IT staff helped a [Baltimore neighborhood nonprofit deploy it](https://technical.ly/civic-news/paris-lutece-open-source-platform-city-services-west-baltimore-community-center-st-francis/). One city’s software, reused across an ocean, because it was built to be reused.
+Paris has run its open source Lutèce platform since 2002; in 2026 it powers <b>more than 300 city services</b>, from permits to participatory budgeting, and Paris’s own IT staff helped a Baltimore neighborhood nonprofit deploy it. One city’s software, reused across an ocean, because it was built to be reused.
 
-Now look inward: New York is not one buyer, it is 130-plus agencies buying separately — seventeen of them with their own support contracts for the same vendor’s products. Software the city builds or adopts openly can be deployed by every agency that needs it, at no additional licensing cost. The first agency pays to solve the problem; every other agency gets the solution for free. No proprietary contract has ever worked that way.
+Now look inward: New York is not a single buyer, it is 130-plus agencies buying separately. That system is how you end up with seventeen of them individually paying for support contracts of the exact same Microsoft products. Software the city builds or adopts openly can be deployed by every agency that needs it, at no additional licensing cost. The first agency pays to solve the problem, then every other agency gets the solution for free. No proprietary contract has ever worked that way.
 
-### 6. The Center of Global Good Government
+### 6. NYC: Nexus for Global Good Government
 
-Every June, the world’s open source government movement meets at UN Headquarters — a subway ride from City Hall. Barcelona endorsed the UN Open Source Principles and became the reference point for cities worldwide. That role was New York’s for the taking, and still is.
+Every June, the world’s open source government movement meets at UN Headquarters — a subway ride from City Hall. Barcelona endorsed the UN Open Source Principles and became the reference point for cities’ technological innovation worldwide. That role was New York’s for the taking, and still is.
 
 A city that runs on open source doesn’t just serve its own residents better; it exports better government. NYC’s benefits screeners, permit systems and data tools — published openly — become starting points for Lagos, Jakarta and São Paulo, with the UN’s own networks as the distribution channel. No other city on earth has the UN in its backyard. Using that proximity to help cities everywhere govern better is a kind of leadership no one else can offer.
 
-New York calls itself the center of the world. That carries a responsibility — to its residents, and to the world centered on it — to be a leader in good, open source government.
+New York calls itself the center of the world, and that carries a responsibility — to its residents, and to the world centered on it — to be a leader in good, open source government.
