@@ -4,10 +4,11 @@ import UnnycNav from '@/components/unnyc/UnnycNav';
 import UnnycFooter from '@/components/unnyc/UnnycFooter';
 
 export const metadata = {
-    // The campaign's primary domain as of 2026-08-19. Drives every canonical
-    // and og:url, so it must match the host readers actually land on —
-    // unnyc.wegov.nyc now redirects here.
-    metadataBase: new URL('https://opensource.nyc'),
+    // The campaign's home as of 2026-08-20: a SUBDOMAIN, so the apex is free
+    // for a future opensource.nyc homepage. Drives every canonical and og:url,
+    // so it must match the host readers actually land on — the apex, www and
+    // unnyc.wegov.nyc all redirect here.
+    metadataBase: new URL('https://un.opensource.nyc'),
     // No `template` here on purpose: the page-level titles already carry their
     // own "— UNNYC" suffix, so a template would double it ("… — UNNYC | UNNYC").
     title: 'UNNYC — Make NYC the First City in the Americas to Endorse Open Source',
