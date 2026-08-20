@@ -25,24 +25,26 @@ foot:
 
 <!-- Prose below. `## intro` opens the page; each `### N. Reason` renders as a
      numbered argument block; the page ends on reason 6 and the foot buttons.
-     Rewritten 2026-08-15 without inline sourcing links — verify claims
-     against Databook.NYC / the Comptroller's report before restoring any. -->
+     Rewritten 2026-08-15; the nine inline sourcing links were restored
+     2026-08-19 against the records they came from. Dollar figures link to
+     the Databook.NYC contract record or report they are drawn from — keep
+     new claims checkable the same way. -->
 
 ## intro
 
-According to the City Comptroller’s review of the city’s master agreements, nearly <b>$4 Billion</b> were spent beyond the estimated value of OTI’s citywide IT contracts in 2026. The purchase records reveal almost nothing about what was actually bought, making it near impossible to account for what the city is paying for and whether or not it is tax dollars well-spent.
+According to the City Comptroller’s 2026 review of the city’s master agreements, [nearly <b>$4 Billion</b> were spent beyond the estimated value of OTI’s citywide IT contracts](https://comptroller.nyc.gov/reports/the-monty-hall-contracts-unchecked-spending-across-the-citys-master-agreements/). The purchase records reveal almost nothing about what was actually bought, making it near impossible to account for what the city is paying for and whether or not it is tax dollars well-spent.
 
-To put that figure in perspective, PIT Crew, the Mamdani Administration’s flagship program for rebuilding how New Yorkers reach city services, costs <b>$5 Million</b>. The city spends that much on proprietary licenses roughly every three days, for tools that are essentially being rented, not built for ownership.
+To put that figure in perspective, PIT Crew, the Mamdani Administration’s flagship program for rebuilding how New Yorkers reach city services, costs [<b>$5 Million</b>](https://www.amny.com/politics/mamdani-tech-five-new-pit-crews/). The city spends that much on proprietary licenses roughly every three days, for tools that are essentially being rented, not built for ownership.
 
-Databook.NYC is an open source tool that aggregates and processes nearly 100 city-produced open datasets, providing analysis of the agencies, contracts, and money being spent by NYC on its IT services. Databook’s insights support this conclusion; there is city money to be saved by cancelling vendor contracts in favor of open source solutions.
+[Databook.NYC](https://databook.nyc) is an open source tool that aggregates and processes nearly 100 city-produced open datasets, providing analysis of the agencies, contracts, and money being spent by NYC on its IT services. Databook’s insights support this conclusion; there is city money to be saved by cancelling vendor contracts in favor of open source solutions.
 
 The following is an explanation of those savings, as well as five other reasons why NYC should adopt open source software.
 
 ### 1. Save Money, and Change Every Negotiation
 
-The Department of Health pays <b>$210,000 per two-year renewal</b> for SurveyMonkey licenses — one agency, one survey tool. Multiply that pattern across 130-plus agencies each buying their own copy of the same category of tool and the spending total becomes rather staggering. Now put that up against LimeSurvey, its open source equivalent, which has no per-seat license at all. The potential savings speak for themselves.
+The Department of Health pays [<b>$210,000 per two-year renewal</b>](https://databook.nyc/procurement/contract/4843244) for SurveyMonkey licenses — one agency, one survey tool. Multiply that pattern across 130-plus agencies each buying their own copy of the same category of tool and the spending total becomes rather staggering. Now put that up against LimeSurvey, its open source equivalent, which has no per-seat license at all. The potential savings speak for themselves.
 
-And the savings start before a single system is replaced. When you go “purchase” a software license, vendors price against your alternatives. A city that pilots LibreOffice, the open source alternative to Microsoft Office, in one bureau demonstrates that it can leave that contract, so walks into its next Microsoft negotiation as a different customer. The city’s three-year, $57 million citywide Microsoft agreement was negotiated by a buyer with no credible exit. Having a fluent understanding of open source options gives the city bargaining chips that could bring that price down.
+And the savings start before a single system is replaced. When you go “purchase” a software license, vendors price against your alternatives. A city that pilots LibreOffice, the open source alternative to Microsoft Office, in one bureau demonstrates that it can leave that contract, so walks into its next Microsoft negotiation as a different customer. The city’s [three-year, $57 million citywide Microsoft agreement](https://databook.nyc/procurement/contract/5128452) was negotiated by a buyer with no credible exit. Having a fluent understanding of open source options gives the city bargaining chips that could bring that price down.
 
 ### 2. Control Your Systems, Unlock Your Programs
 
@@ -52,17 +54,17 @@ An administration that wants genuinely innovative programs — new ways to deliv
 
 ### 3. Security You Can Verify
 
-New York already runs a citywide Vulnerability Disclosure Program: outside researchers are invited to find flaws before attackers do. But for the vendor-purchased majority of city systems, the code is closed, meaning nobody outside the vendor can check how well-built a system was to begin with. Open source extends the VDP’s logic from the city’s front doors to its foundations, allowing researchers to build trust in the systems by inspection, not by contract clause. Instead of taking a vendor’s word for it, the city — and the public — can verify the security of their data.
+New York already runs a citywide [Vulnerability Disclosure Program](https://nyc.responsibledisclosure.com/hc/en-us): outside researchers are invited to find flaws before attackers do. But for the vendor-purchased majority of city systems, the code is closed, meaning nobody outside the vendor can check how well-built a system was to begin with. Open source extends the VDP’s logic from the city’s front doors to its foundations, allowing researchers to build trust in the systems by inspection, not by contract clause. Instead of taking a vendor’s word for it, the city — and the public — can verify the security of their data.
 
 ### 4. City Government as a Tech Career Goal
 
 Weaknesses in NYC’s digital public infrastructure are not due to a talent problem, but an access problem. New York has one of the most educated technical workforces on earth — and almost none of it ever works on the systems eight million people depend on, because closed vendor systems have no place for an outside contributor to start.
 
-Open source changes what a city technology job is. Your work is public, portable, citable — it creates a verifiable commit history instead of just a line on a résumé. The goal is a culture where a stint in New York City government technology is something the best engineers in the world seek out, the way the best lawyers clerk here and the best doctors do residencies here. The nearly 2,800 applications for PIT Crew’s first hiring round show the appetite. Open work is how you feed it.
+Open source changes what a city technology job is. Your work is public, portable, citable — it creates a verifiable commit history instead of just a line on a résumé. The goal is a culture where a stint in New York City government technology is something the best engineers in the world seek out, the way the best lawyers clerk here and the best doctors do residencies here. The [nearly 2,800 applications](https://www.amny.com/politics/mamdanis-tech-pit-crews-2800-applicanants/) for PIT Crew’s first hiring round show the appetite. Open work is how you feed it.
 
 ### 5. Build Once, Use It 130+ Times
 
-Paris has run its open source Lutèce platform since 2002; in 2026 it powers <b>more than 300 city services</b>, from permits to participatory budgeting, and Paris’s own IT staff helped a Baltimore neighborhood nonprofit deploy it. One city’s software, reused across an ocean, because it was built to be reused.
+Paris has run its open source Lutèce platform since 2002; in 2026 it powers [<b>more than 300 city services</b>](https://opensource.paris.fr/ossparis/english.html), from permits to participatory budgeting, and Paris’s own IT staff helped a [Baltimore neighborhood nonprofit deploy it](https://technical.ly/civic-news/paris-lutece-open-source-platform-city-services-west-baltimore-community-center-st-francis/). One city’s software, reused across an ocean, because it was built to be reused.
 
 Now look inward: New York is not a single buyer, it is 130-plus agencies buying separately. That system is how you end up with seventeen of them individually paying for support contracts of the exact same Microsoft products. Software the city builds or adopts openly can be deployed by every agency that needs it, at no additional licensing cost. The first agency pays to solve the problem, then every other agency gets the solution for free. No proprietary contract has ever worked that way.
 
