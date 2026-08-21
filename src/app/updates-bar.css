@@ -1,79 +1,68 @@
 /* ============================================
-   UpdatesBar — the site-wide email capture (components/unnyc/UpdatesBar.js).
+   UpdatesBar — the site-wide email capture (components/unnyc/UpdatesBar.js),
+   in the flow between <main> and the footer.
 
-   ⚠ @layer site, NOT @layer unnyc, for the same reason the nav is there (see
-   the note at the top of base.css): this bar renders INSIDE .unnyc-page to
-   inherit its tokens, so unnyc.css's element rules — `.unnyc-page a { color:
+   ⚠ @layer site, NOT @layer unnyc, for the same reason the nav and footer are
+   there (see the note at the top of base.css): this renders INSIDE .unnyc-page
+   to inherit its tokens, so unnyc.css's element rules — `.unnyc-page a { color:
    inherit }` and `.unnyc-page button { border: none; background: none }`, both
    (0,1,1) — would otherwise beat any single-class rule here. A later layer wins
    without specificity games. The `.unnyc-page` prefixes below are belt AND
    braces: five bugs in this repo have come from exactly that reset.
+
+   ⚠ WHAT IS NO LONGER HERE, because this stopped being a fixed overlay:
+   position/inset/z-index, a slide-in keyframe, the `prefers-reduced-motion`
+   exception that keyframe needed, a close button, and a mobile height budget
+   (the fixed version hit 40% of a 375x812 viewport and had to be cut to 26.5%).
+   In the flow it covers nothing, so none of that applies. Do not reintroduce an
+   entrance animation: in-flow content that appears after mount shifts the page,
+   which is a CLS penalty rather than an interstitial one.
    ============================================ */
 
 @layer site {
 
   .unnyc-updates {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    /* Above the nav's 50. Leaflet's 400-1000 is contained by the map wrapper's
-       `isolation: isolate`, so there is nothing to fight on /start. */
-    z-index: 60;
+    /* One step lighter than the footer's --wg-brand-deep, so the two dark bands
+       read as distinct rather than as one over-tall footer, with the header's
+       orange rule repeated on top to mark where the content ends. */
     background: var(--wg-brand, #162e51);
     border-top: 2px solid var(--wg-accent-warm, #ff6600);
-    box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.28);
     color: var(--wg-text-on-brand, #eef3f9);
-    animation: unnyc-updates-in 0.32s var(--wg-ease, ease) both;
   }
 
-  @keyframes unnyc-updates-in {
-    from { transform: translateY(100%); }
-    to   { transform: translateY(0); }
-  }
-
-  /* ⚠ Stillness is only half a fix. The bar is `position: fixed`, so a reader
-     who stops the animation must still be able to reach and dismiss it — hence
-     no `display: none` here, only the movement removed. (The /success marquee
-     taught this repo the lesson: `animation: none` inside `overflow: hidden`
-     made every card past the first unreachable.) */
-  @media (prefers-reduced-motion: reduce) {
-    .unnyc-updates { animation: none; }
-  }
-
-  /* Never on paper. Two of the site's routes exist to be printed, and a fixed
-     bar would either print over the document or reserve space in it. The
-     component also suppresses itself on those routes; this covers printing any
-     OTHER page. */
+  /* Never on paper. In the flow this would otherwise print at the end of every
+     page. (The component also suppresses itself on the two printable routes;
+     this covers printing any other page.) */
   @media print {
     .unnyc-updates { display: none; }
   }
 
   .unnyc-updates__inner {
-    position: relative;
     max-width: 1120px;
     margin: 0 auto;
-    padding: var(--wg-sp-4, 1rem) calc(var(--wg-sp-8, 2rem) + 24px) var(--wg-sp-4, 1rem) var(--wg-sp-5, 1.25rem);
+    padding: var(--wg-sp-10, 2.5rem) var(--wg-sp-5, 1.25rem);
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--wg-sp-3, 0.75rem) var(--wg-sp-6, 1.5rem);
+    gap: var(--wg-sp-4, 1rem) var(--wg-sp-8, 2rem);
   }
 
-  .unnyc-updates__copy { flex: 1 1 18rem; min-width: 0; }
+  .unnyc-updates__copy { flex: 1 1 20rem; min-width: 0; }
 
   .unnyc-page .unnyc-updates__title {
     font-family: var(--wg-font-display, Georgia, serif);
-    font-size: var(--wg-fs-lg, 1.125rem);
+    font-size: var(--wg-fs-2xl, 1.5rem);
+    line-height: 1.2;
     color: var(--wg-text-inverse, #fff);
     margin: 0;
   }
 
   .unnyc-page .unnyc-updates__text {
-    font-size: var(--wg-fs-sm, 0.9375rem);
+    font-size: var(--wg-fs-base, 1rem);
     color: var(--wg-text-on-brand, #eef3f9);
     opacity: 0.86;
-    margin: 0.15rem 0 0;
+    line-height: 1.55;
+    margin: var(--wg-sp-2, 0.5rem) 0 0;
   }
 
   .unnyc-updates__form {
@@ -131,13 +120,14 @@
     font-size: var(--wg-fs-xs, 0.8125rem);
     color: var(--wg-text-on-brand, #eef3f9);
     opacity: 0.72;
+    max-width: 78ch;
     margin: 0;
   }
 
   .unnyc-page .unnyc-updates__done {
     flex: 1 1 100%;
     font-family: var(--wg-font-display, Georgia, serif);
-    font-size: var(--wg-fs-lg, 1.125rem);
+    font-size: var(--wg-fs-2xl, 1.5rem);
     color: var(--wg-text-inverse, #fff);
     margin: 0;
   }
@@ -150,84 +140,25 @@
     margin: 0;
   }
 
-  /* ⚠ Scoped with .unnyc-page (0,2,0) so it beats `.unnyc-page button` (0,1,1),
-     the reset that strips border and background. Without this the × renders as
-     bare text in the wrong place — the exact symptom that has cost this repo
-     five separate bugs. */
-  .unnyc-page .unnyc-updates__close {
-    position: absolute;
-    top: 50%;
-    right: var(--wg-sp-3, 0.75rem);
-    transform: translateY(-50%);
-    /* 32px, over the 24px minimum for a non-inline target. */
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    line-height: 1;
-    color: var(--wg-text-on-brand, #eef3f9);
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 50%;
-    cursor: pointer;
-  }
-
-  .unnyc-page .unnyc-updates__close:hover {
-    background: rgba(255, 255, 255, 0.16);
-  }
-
-  .unnyc-page .unnyc-updates__close:focus-visible {
-    outline: 3px solid var(--wg-accent-warm, #ff6600);
-    outline-offset: 2px;
-  }
-
-  /* ⚠ MEASURED, NOT EYEBALLED. The first version of this stacked title, text,
-     input, button and consent, and came to 322px on a 375x812 phone — 40% of the
-     viewport. A bottom bar eating 40% of a small screen IS the intrusive
-     interstitial this component exists to avoid, so the mobile rules below are
-     load-bearing rather than polish. Re-measure
-     `el.offsetHeight / innerHeight` if you change any of it; the target is
-     comfortably under a quarter. */
   @media (max-width: 720px) {
     .unnyc-updates__inner {
-      padding-right: var(--wg-sp-5, 1.25rem);
-      padding-top: var(--wg-sp-7, 1.75rem);
-      padding-bottom: var(--wg-sp-3, 0.75rem);
-      gap: var(--wg-sp-2, 0.5rem);
+      padding: var(--wg-sp-8, 2rem) var(--wg-sp-5, 1.25rem);
+      gap: var(--wg-sp-3, 0.75rem);
     }
 
-    /* The one line that goes. Title and consent still say who is asking and
-       what for; the sentence explaining WHY is the most expendable 45px on the
-       screen, and it is 45px that decides whether this bar is polite. */
-    .unnyc-page .unnyc-updates__text {
-      display: none;
-    }
-
-    /* Input and button share a row instead of stacking — another ~54px. Both
-       keep their 44px height, so the tap targets are untouched. */
+    /* Input and button share a row rather than stacking. Both keep their 44px
+       height, so the tap targets are untouched. */
     .unnyc-updates__form {
       flex: 1 1 100%;
       flex-wrap: nowrap;
     }
 
-    .unnyc-page .unnyc-updates__input {
-      flex: 1 1 6rem;
-      min-width: 0;
-    }
+    .unnyc-page .unnyc-updates__input { flex: 1 1 6rem; }
 
     .unnyc-page .unnyc-updates__submit {
       padding-left: var(--wg-sp-4, 1rem);
       padding-right: var(--wg-sp-4, 1rem);
       font-size: var(--wg-fs-sm, 0.9375rem);
-    }
-
-    /* Out of the text's way on a narrow screen, where the row wraps and the
-       vertically-centred × would land on top of the copy. */
-    .unnyc-page .unnyc-updates__close {
-      top: var(--wg-sp-2, 0.5rem);
-      transform: none;
     }
   }
 }

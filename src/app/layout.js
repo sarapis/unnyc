@@ -60,15 +60,18 @@ export default function RootLayout({ children }) {
                 <div className="unnyc-page wg-unnyc" data-brand="unnyc">
                     <UnnycNav />
                     <main>{children}</main>
+                    {/* Site-wide email capture, IN THE FLOW between the content
+                        and the footer — it is not an overlay, and the ordering
+                        here is what puts it there.
+
+                        Copy read HERE because UpdatesBar is a client component
+                        and getContent is server-only — the same reason
+                        PrimerMovementNow takes its map data as props. Read
+                        inside the component, never at module scope, or edits to
+                        the markdown need a dev-server restart to appear. */}
+                    <UpdatesBar copy={getContent('updates')} />
                     <UnnycFooter />
                     <ScrollReveal />
-                    {/* Site-wide email capture. Copy read HERE because
-                        UpdatesBar is a client component and getContent is
-                        server-only — the same reason PrimerMovementNow takes its
-                        map data as props. Read inside the component, never at
-                        module scope, or edits to the markdown need a dev-server
-                        restart to appear. */}
-                    <UpdatesBar copy={getContent('updates')} />
                 </div>
             </body>
         </html>

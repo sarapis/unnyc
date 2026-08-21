@@ -92,6 +92,12 @@ or "working fine". Ranked by how much time each has cost:
   ⚠ Also: `resize_window` to the `desktop` preset ("native size") left
   `innerWidth` reporting **0**, which renders a blank screenshot and degrades any
   layout logic reading the viewport. Pass explicit `width`/`height` instead.
+  ⚠ And **screenshots come back BLANK at deep scroll offsets** — anything a few
+  thousand pixels down a long page cannot be captured, in a fresh tab either.
+  `/resources#open-data` sits ~6,100px down and could only be verified by DOM
+  measurement. The workaround is to exercise the component on a SHORT page (the
+  in-flow email capture was checked on `/campaign`, where the page end is within
+  one viewport) rather than trusting a blank frame.
 - **IntersectionObserver DOES NOT RUN in the preview pane, or in any page these
   tools drive.** `document.visibilityState` is `hidden`, and a fresh observer with
   no rootMargin fires ZERO callbacks — verified against production, not just the
@@ -232,22 +238,22 @@ wrapper, then Olivia consolidated the shared nav-look into `primer.css`.
 - **`public/images/CREDITS.md` is a licence record** — update it in the same commit
   as any image change, including when a card's "Used on" column moves.
 
-## The site-wide updates bar (added 2026-08-21)
+## The site-wide email capture (added 2026-08-21)
 
-`UpdatesBar.js`, mounted in `layout.js`, collects emails into Payload's existing
-**`campaign-signups`** collection — the one `/campaign/sign`'s "get updates"
-checkbox already used, so no CMS change. Copy lives in `content/updates.md`.
+`UpdatesBar.js` collects emails into Payload's existing **`campaign-signups`**
+collection — the one `/campaign/sign`'s "get updates" checkbox already used, so no
+CMS change. Copy lives in `content/updates.md`.
 
-A **dismissible bottom bar, not a modal**: an interstitial covering content on
-mobile is a negative ranking signal and would undo the SEO work above. It waits
-for half the page plus 8s dwell (or 25s), remembers dismissal and success in
-`localStorage`, and is suppressed on the two campaign forms, `/contact` and both
-printables.
+**It sits IN THE FLOW between `<main>` and the footer**, not over the page. It
+began as a fixed overlay with an engagement trigger; moving it in-flow removed the
+scroll listener, the dwell floor, the backstop, the slide-in, the reduced-motion
+exception, the dismiss button, both localStorage keys and the mobile height
+budget. Nothing covers content, so none of that is needed.
+⚠ Don't add a reveal animation or a delay: in-flow content appearing after mount
+shifts the page (CLS), which is the mirror of the problem the overlay had.
 ⚠ **Verify the success path on the deployed origin** — `localhost` is not in the
-CORS allowlist, so locally it can only be seen to fail.
-⚠ **Nobody has confirmed the trigger by eye yet.** Timers do run in the preview
-pane (IntersectionObserver does not), so the logic was exercised with shortened
-thresholds; the real 8s/25s timings have not been watched on production.
+CORS allowlist. To check without creating a record, POST an intentionally invalid
+body from the live origin and confirm Payload answers 400 "invalid: Email".
 
 ## Open work
 
