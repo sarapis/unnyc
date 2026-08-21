@@ -220,6 +220,23 @@ wrapper, then Olivia consolidated the shared nav-look into `primer.css`.
 - **`public/images/CREDITS.md` is a licence record** — update it in the same commit
   as any image change, including when a card's "Used on" column moves.
 
+## The site-wide updates bar (added 2026-08-21)
+
+`UpdatesBar.js`, mounted in `layout.js`, collects emails into Payload's existing
+**`campaign-signups`** collection — the one `/campaign/sign`'s "get updates"
+checkbox already used, so no CMS change. Copy lives in `content/updates.md`.
+
+A **dismissible bottom bar, not a modal**: an interstitial covering content on
+mobile is a negative ranking signal and would undo the SEO work above. It waits
+for half the page plus 8s dwell (or 25s), remembers dismissal and success in
+`localStorage`, and is suppressed on the two campaign forms, `/contact` and both
+printables.
+⚠ **Verify the success path on the deployed origin** — `localhost` is not in the
+CORS allowlist, so locally it can only be seen to fail.
+⚠ **Nobody has confirmed the trigger by eye yet.** Timers do run in the preview
+pane (IntersectionObserver does not), so the logic was exercised with shortened
+thresholds; the real 8s/25s timings have not been watched on production.
+
 ## Open work
 
 Nothing is blocking.
