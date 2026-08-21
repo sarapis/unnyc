@@ -178,10 +178,35 @@
   }
 
   /* The middle words carry no flag colour — the two accents are what say "UN"
-     and "NYC", and colouring all three parts would leave nothing emphasised. */
+     and "NYC", and colouring all three parts would leave nothing emphasised.
+     They also stay at the wordmark's base weight while UN/NYC go heavier, so the
+     flag words carry the emphasis in both colour and weight. */
   .unnyc-nav__logo-mid,
   .unnyc-page .unnyc-footer__logo-mid {
     color: var(--wg-text-on-brand, #eef3f9);
+  }
+
+  /* ⚠ `font-weight: 700` HERE DOES NOTHING, and this comment exists so nobody
+     adds it again. DM Serif Display ships ONE weight (400) — which is why
+     src/app/fonts.js asks for `weight: '400'` and nothing else — so 700 selects
+     no bold cut, and Chrome does not even synthesise one: measured, the string
+     "UN" is 51.56px wide at both 400 and 700. It was tried and reverted.
+
+     The weight contrast is made with the FAMILY instead, and both faces are
+     already loaded: the flag words keep the display serif, which reads heavy and
+     monumental, and "Open Source" drops to the body sans, which reads light
+     beside it. Inter IS variable, so if a real bold is ever wanted on UN/NYC the
+     way to get it is to set the whole mark in Inter — at the cost of the mark no
+     longer being a serif at all. */
+  .unnyc-nav__logo-mid,
+  .unnyc-page .unnyc-footer__logo-mid {
+    font-family: var(--wg-font-body, -apple-system, sans-serif);
+    /* Optically matched to the serif beside it: at the same nominal size Inter's
+       lowercase sits noticeably larger, so it is stepped down and the tracking
+       opened slightly to keep the three words reading as one lockup. */
+    font-size: 0.72em;
+    font-weight: 400;
+    letter-spacing: 0.02em;
   }
 
   .unnyc-nav__menu {
