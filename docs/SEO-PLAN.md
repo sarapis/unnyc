@@ -32,7 +32,8 @@ replaces the parent's rather than extending it, and every page defines its own.
 `og:type` survived only because each page happened to re-declare it. The
 `openGraph` block in `layout.js` had been reaching no page at all.
 
-**No `og:image` anywhere**, with `twitter:card` at `summary` (the small card).
+**No `og:image` anywhere** (fixed later the same day — phase 2 item 1), with
+`twitter:card` at `summary` (the small card).
 Every share of this campaign — Slack, Signal, LinkedIn, Bluesky — renders as
 bare text, and og tags are also what several AI systems read when summarizing a
 link. For a campaign that exists to be forwarded, this is the largest visible
@@ -89,10 +90,18 @@ Earlier the same day: canonical tags on all 12 indexable routes (PR #49).
 
 ## Phase 2 — previews and de-duplication
 
-1. **Generate OG images** with Next's `ImageResponse` (`opengraph-image.js`)
-   from each page's own title. Per-route, on-brand, no licensing exposure and no
-   photo to buy — which sidesteps the problem that has blocked homepage card 1
-   twice. Then `twitter:card` → `summary_large_image`.
+1. ~~**Generate OG images**~~ **DONE 2026-08-20.** Twelve 1200x630 PNGs,
+   prerendered at build from `ROUTES` — not from Next's `opengraph-image.js`
+   convention, which is per-directory and would have meant twelve near-identical
+   files plus a thirteenth to remember. `/og/<slug>.png`, headline from each
+   page's own `meta.ogTitle` with the "— UNNYC" affix stripped, wordmark in the
+   UN-blue/NYC-orange split, orange rule along the foot. `twitter:card` is now
+   `summary_large_image` — it was `summary`, the small square crop, which would
+   have shown a 1200x630 image as a thumbnail with the headline cropped out.
+   ⚠ The font is VENDORED (`src/assets/fonts/`, OFL, recorded in CREDITS.md).
+   Satori reads ttf/otf/woff and **cannot read woff2**, which is the only format
+   Google Fonts serves a modern browser — and asking its CSS API for an older
+   format with an ancient user-agent returns EOT, not ttf.
 2. **Give `/principles/document` its own title and description.** It currently
    shares both with `/principles`, so the two compete. It rewrites four
    principle titles into the imperative, so it has real distinct content and

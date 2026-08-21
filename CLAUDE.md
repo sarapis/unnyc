@@ -471,6 +471,19 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   `src/app/sitemap.js`) — both 404'd until 2026-08-20. Nothing is `Disallow`ed
   on purpose: `Disallow` blocks the fetch, so a crawler never reads the
   `noindex` it was sent to obey.
+- **Link-preview images are GENERATED, one per route** —
+  `src/app/og/[slug]/route.js` + `src/lib/og-image.js`, prerendered to
+  `/og/<slug>.png` at build from `ROUTES` (so a new route gets its preview,
+  canonical and sitemap entry together). Headline is the page's own
+  `meta.ogTitle` minus the "— UNNYC" affix; nothing to license, nothing to
+  re-cut when copy changes. ⚠ **The font is a vendored TTF**
+  (`src/assets/fonts/`, OFL, in CREDITS.md) because Satori — what `next/og`
+  draws with — reads ttf/otf/woff and **cannot read woff2**, the only format
+  Google Fonts serves a modern browser. Asking its CSS API for an old format
+  with an ancient user-agent gets you EOT, which Satori also can't read.
+  ⚠ `twitter.card` must stay `summary_large_image`: Next derives the twitter
+  tags from openGraph but defaults the card to `summary`, which crops a
+  1200x630 image to a square thumbnail.
 - **Route metadata goes through `pageMetadata(meta, path)`** in
   `src/lib/seo.js` (added 2026-08-20), which is what sets each page's
   `alternates.canonical` and `openGraph.url` from ONE hand-written path.
