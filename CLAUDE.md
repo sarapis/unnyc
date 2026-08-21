@@ -471,6 +471,18 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   `src/app/sitemap.js`) — both 404'd until 2026-08-20. Nothing is `Disallow`ed
   on purpose: `Disallow` blocks the fetch, so a crawler never reads the
   `noindex` it was sent to obey.
+- **JSON-LD lives in `src/lib/structured-data.js`**, rendered by
+  `src/components/unnyc/StructuredData.js`, and is built from the content files
+  so it cannot drift from the visible page. ⚠ **Mark up only what is
+  server-rendered.** The `ItemList`s claim 150 endorsers and 18 OSPOs because
+  all of them are in the HTML — checked, not assumed. If either list ever starts
+  rendering one page of results server-side, its markup has to shrink to match.
+  ⚠ `StructuredData` escapes `<`, and that is load-bearing: `JSON.stringify`
+  will happily emit a literal `</script>` from inside a string and close the tag
+  early, and some of this data is a transcription of a third-party page.
+  ⚠ No dates and no OSPO coordinates, both deliberate — there is no real
+  per-page date anywhere in the repo, and half the OSPO coordinates are
+  `locationBasis: 'hq'`, so `GeoCoordinates` would overstate their precision.
 - **Link-preview images are GENERATED, one per route** —
   `src/app/og/[slug]/route.js` + `src/lib/og-image.js`, prerendered to
   `/og/<slug>.png` at build from `ROUTES` (so a new route gets its preview,

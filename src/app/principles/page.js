@@ -7,6 +7,8 @@ import UnnycEndorserDirectory from '@/components/unnyc/primer/UnnycEndorserDirec
 import UnnycPrinciplesRail from '@/components/unnyc/UnnycPrinciplesRail';
 import { getContent, getUnEndorsers, inlineMd, principlesResolve } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
+import StructuredData from '@/components/unnyc/StructuredData';
+import { endorserListLd } from '@/lib/structured-data';
 
 // Read per call, NOT at module scope — see the note in crosswalk/page.js.
 export async function generateMetadata() {
@@ -49,6 +51,17 @@ export default function PrinciplesPage() {
 
     return (
         <div className="unnyc-pr unnyc-principles">
+            {/* The endorser directory. All 150 names are server-rendered, so
+                the list describes what the page actually contains. */}
+            <StructuredData
+                data={endorserListLd({
+                    organizations: endorsers?.organizations ?? [],
+                    path: '/principles',
+                    name: 'Organizations endorsing the UN Open Source Principles',
+                    source: endorsers?.source,
+                    sourceUrl: endorsers?.sourceUrl,
+                })}
+            />
             <HeaderHeightVar />
 
             <header className="unnyc-pr-cw__header">

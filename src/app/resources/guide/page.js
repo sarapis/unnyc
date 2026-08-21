@@ -5,6 +5,8 @@ import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import UnnycSectionNav from '@/components/unnyc/UnnycSectionNav';
 import { getContent, inlineMd } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
+import StructuredData from '@/components/unnyc/StructuredData';
+import { articleLd, breadcrumbLd } from '@/lib/structured-data';
 
 // Read per call, NOT at module scope — see the note in crosswalk/page.js.
 export async function generateMetadata() {
@@ -36,6 +38,18 @@ export default function GuidePage() {
 
     return (
         <div className="unnyc-pr unnyc-guide">
+            {/* The site's one long-form article, plus its place in the tree.
+                No datePublished — see src/lib/structured-data.js. */}
+            <StructuredData
+                data={[
+                    articleLd({
+                        path: '/resources/guide',
+                        headline: doc.title,
+                        description: doc.meta.description,
+                    }),
+                    breadcrumbLd('/resources/guide'),
+                ]}
+            />
             <HeaderHeightVar />
 
             <header className="unnyc-guide__header">

@@ -8,6 +8,8 @@ import PrimerMovement from '@/components/unnyc/primer/PrimerMovement';
 import PrimerMovementNow from '@/components/unnyc/primer/PrimerMovementNow';
 import { getContent, getCtfgProjects, getGovossCatalogues, getOspoMapPoints, inlineMd } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
+import StructuredData from '@/components/unnyc/StructuredData';
+import { glossaryLd } from '@/lib/structured-data';
 
 export async function generateMetadata() {
     const { meta } = getContent('start');
@@ -30,6 +32,14 @@ export default function StartPage() {
 
     return (
         <div className="unnyc-pr">
+            {/* The vocabulary section, as a DefinedTermSet. */}
+            <StructuredData
+                data={glossaryLd({
+                    terms: doc.concepts?.terms ?? [],
+                    path: '/start',
+                    name: doc.concepts?.title ?? 'Vocabulary',
+                })}
+            />
             <HeaderHeightVar />
 
             <UnnycSectionNav items={doc.sectionNav} />

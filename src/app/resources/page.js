@@ -8,6 +8,8 @@ import PrimerContacts from '@/components/unnyc/primer/PrimerContacts';
 import PrimerOspoDirectory from '@/components/unnyc/primer/PrimerOspoDirectory';
 import { getContent, inlineMd } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
+import StructuredData from '@/components/unnyc/StructuredData';
+import { ospoListLd } from '@/lib/structured-data';
 
 export async function generateMetadata() {
     const { meta } = getContent('resources');
@@ -25,6 +27,15 @@ export default function ResourcesPage() {
 
     return (
         <div className="unnyc-pr">
+            {/* The 18 public sector OSPOs. No coordinates — see the note in
+                src/lib/structured-data.js about locationBasis. */}
+            <StructuredData
+                data={ospoListLd({
+                    groups: doc.ospoDirectory?.groups ?? [],
+                    path: '/resources',
+                    name: doc.ospoDirectory?.title ?? 'Public sector open source programme offices',
+                })}
+            />
             <HeaderHeightVar />
 
             <UnnycSectionNav items={doc.sectionNav} />
