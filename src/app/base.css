@@ -149,6 +149,14 @@
        spacing. */
     display: inline-block;
     white-space: nowrap;
+    /* ⚠ line-height 1 IS WHAT MAKES THE SECOND LINE FREE. Inherited leading was
+       1.6, so the one-line mark occupied 37px of a 66px bar to draw 23px of
+       glyphs. Tightened, the mark plus the tagline come to less than that 37px,
+       so the lockup gains a line WITHOUT the nav growing and without
+       --pr-header-h (measured off .unnyc-nav by HeaderHeightVar) moving, which
+       every hash-jump offset on the site depends on. Verify the nav is still
+       68px if you touch these numbers. */
+    line-height: 1;
     flex-shrink: 0;
     /* Hug the glyphs so the wordmark box is the same in both places (the
        footer one would otherwise stretch to fill its column). */
@@ -198,6 +206,39 @@
      An earlier attempt set the middle words in Inter to fake a weight
      difference — one wordmark in two families, which is a thing to notice rather
      than a thing to read. Reverted. */
+  .unnyc-nav__logo-mark,
+  .unnyc-page .unnyc-footer__logo-mark {
+    display: block;
+  }
+
+  /* "open source", tracked out to sit under the mark at about its width. The
+     body sans deliberately — a tagline in the same display serif competes with
+     the mark instead of supporting it, and at 8px the serif's detail turns to
+     mud.
+     ⚠ `margin-right: -0.34em` cancels the trailing letter-spacing, which CSS
+     adds AFTER the final character: without it the tagline's box is wider than
+     its ink and the lockup looks off-centre to the left. */
+  .unnyc-nav__logo-tag,
+  .unnyc-page .unnyc-footer__logo-tag {
+    display: block;
+    margin-top: 0.22em;
+    margin-right: -0.5em;
+    font-family: var(--wg-font-body, -apple-system, sans-serif);
+    font-size: 0.335em;
+    font-weight: 500;
+    /* Tracking set by measurement — and ⚠ MEASURE THE INK, NOT THE BOX. Both the
+       mark and the tagline are block children of a shrink-to-fit inline-block, so
+       getBoundingClientRect() returns the PARENT's width for either of them and
+       makes any two values look 2px apart. A Range around the text nodes gives
+       the real glyph runs: the mark inks at 90.1px, and at 0.34em the tagline
+       inked at 72.3px — 18px short, not 3px over, which is the opposite of what
+       the box measurement suggested. 0.5em closes it. */
+    letter-spacing: 0.5em;
+    text-transform: lowercase;
+    color: var(--wg-text-on-brand, #eef3f9);
+    opacity: 0.78;
+  }
+
   /* The join. Recessive and optically spaced so it reads as a link between the
      two names rather than as a third word: a `+` sits high and tight in this
      serif, so it gets a little air either side and a touch less weight of colour.

@@ -25,9 +25,12 @@ export default function UnnycFooter() {
                 <div className="unnyc-footer__grid">
                     <div className="unnyc-footer__logo">
                         {/* See the note in UnnycNav.js. */}
-                        <span className="unnyc-footer__logo-un">UN</span>
-                        <span className="unnyc-footer__logo-mid">+</span>
-                        <span className="unnyc-footer__logo-nyc">NYC</span>
+                        <span className="unnyc-footer__logo-mark">
+                            <span className="unnyc-footer__logo-un">UN</span>
+                            <span className="unnyc-footer__logo-mid">+</span>
+                            <span className="unnyc-footer__logo-nyc">NYC</span>
+                        </span>
+                        <span className="unnyc-footer__logo-tag">open source</span>
                     </div>
 
                     <nav className="unnyc-footer__nav" aria-label="Footer navigation">
