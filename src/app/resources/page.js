@@ -6,9 +6,10 @@ import UnnycSectionNav from '@/components/unnyc/UnnycSectionNav';
 import PrimerResources from '@/components/unnyc/primer/PrimerResources';
 import PrimerContacts from '@/components/unnyc/primer/PrimerContacts';
 import PrimerOspoDirectory from '@/components/unnyc/primer/PrimerOspoDirectory';
+import PrimerOpenData from '@/components/unnyc/primer/PrimerOpenData';
 import { getContent, inlineMd } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
-import { DATASETS } from '@/lib/datasets';
+import { DATASETS, datasetIndex } from '@/lib/datasets';
 import StructuredData from '@/components/unnyc/StructuredData';
 import { ospoListLd, datasetLd } from '@/lib/structured-data';
 
@@ -61,6 +62,10 @@ export default function ResourcesPage() {
             <PrimerResources groups={doc.resourceGroups} />
             <PrimerContacts contacts={doc.contacts} />
             <PrimerOspoDirectory ospoDirectory={doc.ospoDirectory} />
+
+            {/* The human way in to /data/*.json. Rows derived from the same
+                envelope the JSON serves — see the note in PrimerOpenData. */}
+            <PrimerOpenData copy={doc.openData} datasets={datasetIndex().datasets} />
 
             {/* Foot nav — the four paths don't dead-end here */}
             <section className="unnyc-resources__foot">

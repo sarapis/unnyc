@@ -509,6 +509,21 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   `src/app/sitemap.js`) — both 404'd until 2026-08-20. Nothing is `Disallow`ed
   on purpose: `Disallow` blocks the fetch, so a crawler never reads the
   `noindex` it was sent to obey.
+- **`/resources#open-data` is the human way in to the datasets** —
+  `PrimerOpenData.js`, and **every row is DERIVED from `datasetIndex()`**: name,
+  description, record count, licence and URL all come from the same envelope
+  `/data/index.json` serves. Only the section's title, lede and note are copy
+  (`openData` in `content/resources.md`). ⚠ Never type a dataset or a count into
+  that markdown — a count in prose goes stale the next time a snapshot is
+  refreshed, which is why the endorser directory derives its own.
+  It shows "compiled by this campaign" vs "credit <source>" per row, inferred
+  from each dataset's own attribution string, because both are CC BY 4.0 and the
+  licence alone would not tell a reuser whose name goes on it.
+  ⚠ The on-page hrefs are made **origin-relative** from the envelope's absolute
+  URL: absolute hrefs would send anyone on a preview deployment or a dev server
+  to production's copy of the file rather than the one they are testing.
+  This also took /resources' section subnav to **4 items**, so it is no longer
+  one removal away from vanishing at the `items.length < 3` guard.
 - **The site publishes four datasets** at `/data/*.json`, catalogued at
   `/data/index.json`, described in a generated `/llms.txt` — all built by
   `src/lib/datasets.js` from the SAME `content/*` files the pages render, never

@@ -35,6 +35,82 @@
     margin: 0 auto;
   }
 
+  /* --- Open Data (PrimerOpenData) --- */
+
+  .unnyc-pr-data__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: var(--wg-sp-5, 1.25rem);
+  }
+
+  .unnyc-pr-data__item {
+    padding: var(--wg-sp-5, 1.25rem);
+    background: var(--wg-surface, #fff);
+    border: 1px solid var(--wg-border, #d5dce5);
+    border-radius: var(--wg-radius-lg, 16px);
+  }
+
+  /* ⚠ Scoped with .unnyc-page (0,2,0) so it beats `.unnyc-page a { color:
+     inherit }` (0,1,1) — the reset that has silently flattened links in this
+     repo five times. `padding: 4px 0` is the WCAG 2.5.8 floor for a
+     NON-INLINE target: this is display:block with a ~22px line box, the same
+     shape as .unnyc-pr-ospo__links a, .unnyc-pr-contact__link,
+     .unnyc-pr-concept__link and .unnyc-pr-case__link. Copy the pattern for a
+     new one; inline links in prose are exempt. */
+  .unnyc-page .unnyc-pr-data__link {
+    display: block;
+    padding: 4px 0;
+    font-family: var(--wg-font-display, Georgia, serif);
+    font-size: var(--wg-fs-lg, 1.125rem);
+    line-height: 1.3;
+    color: var(--wg-accent-strong, #005ea2);
+    text-decoration: none;
+  }
+
+  .unnyc-page .unnyc-pr-data__link:hover {
+    text-decoration: underline;
+  }
+
+  .unnyc-page .unnyc-pr-data__desc {
+    font-size: var(--wg-fs-sm, 0.9375rem);
+    color: var(--wg-text-secondary, #4a5568);
+    line-height: 1.55;
+    margin: var(--wg-sp-2, 0.5rem) 0 var(--wg-sp-3, 0.75rem);
+  }
+
+  .unnyc-page .unnyc-pr-data__meta {
+    font-size: var(--wg-fs-xs, 0.8125rem);
+    color: var(--wg-text-secondary, #4a5568);
+    margin: 0;
+  }
+
+  .unnyc-pr-data__count {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+
+  .unnyc-page .unnyc-pr-data__note {
+    max-width: 62ch;
+    font-size: var(--wg-fs-sm, 0.9375rem);
+    color: var(--wg-text-secondary, #4a5568);
+    line-height: 1.6;
+    margin: var(--wg-sp-6, 1.5rem) 0 var(--wg-sp-2, 0.5rem);
+  }
+
+  .unnyc-page .unnyc-pr-data__links {
+    font-size: var(--wg-fs-sm, 0.9375rem);
+    margin: 0;
+  }
+
+  /* Inline in a sentence, so exempt from the 24px non-inline target rule —
+     see the note above .unnyc-pr-data__link. */
+  .unnyc-page .unnyc-pr-data__links a {
+    color: var(--wg-accent-strong, #005ea2);
+  }
+
   .unnyc-resources__foot {
     padding: var(--wg-sp-16) 0;
     text-align: center;
