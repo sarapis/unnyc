@@ -2,13 +2,17 @@ import '../../printable-doc.css';
 import UnnycIcon from '@/components/unnyc/UnnycIcon';
 import PrintButton from '@/components/unnyc/PrintButton';
 import { getContent } from '@/lib/content';
-import { pageMetadata } from '@/lib/seo';
+import { pageMetadata, routeForPath, routeMeta } from '@/lib/seo';
 import StructuredData from '@/components/unnyc/StructuredData';
 import { breadcrumbLd } from '@/lib/structured-data';
 
 export async function generateMetadata() {
-    const { meta } = getContent('principles');
-    return pageMetadata(meta, '/principles/document');
+    // `metaDocument`, not `meta` — this page shares content/principles.md with
+    // /principles and would otherwise state the same title and description, and
+    // carry the same preview image. See `metaKey` in src/lib/seo.js.
+    const path = '/principles/document';
+    const doc = getContent('principles');
+    return pageMetadata(routeMeta(doc, routeForPath(path)), path);
 }
 
 /**

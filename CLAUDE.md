@@ -459,6 +459,15 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   `Unexpected token Delim('*')`.
 - **Don't add a `title.template`** in `src/app/layout.js` — page titles already end
   in "— UNNYC" and a template double-suffixes them.
+- **Two routes share `content/principles.md`, and `metaKey` is what keeps them
+  apart.** `/principles` reads `meta:`; `/principles/document` reads
+  `metaDocument:` because the route entry names it. Everything outward-facing —
+  title, description, preview image, breadcrumb label — goes through
+  `routeMeta(doc, route)`, so a route cannot end up with its own title and its
+  sibling's preview. ⚠ `routeMeta` **throws** on a `metaKey` that isn't in the
+  file; a typo would otherwise fall through to `undefined` and ship a page with
+  no title. The document page's `<h1>` still matches `/principles` on purpose —
+  on a printed sheet the subject is the title.
 - **`ROUTES` in `src/lib/seo.js` is the one list of this site's URLs.** A new
   route MUST be added there or the build throws — `pageMetadata()` rejects a
   path it doesn't know, deliberately, because `sitemap.js` reads the same list.

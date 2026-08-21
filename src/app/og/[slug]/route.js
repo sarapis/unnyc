@@ -1,5 +1,5 @@
 import { getContent } from '@/lib/content';
-import { imageRoutes, ogSlug } from '@/lib/seo';
+import { imageRoutes, ogSlug, routeMeta } from '@/lib/seo';
 import { ogHeadline, renderOgImage, OG_CONTENT_TYPE } from '@/lib/og-image';
 
 /**
@@ -42,6 +42,9 @@ export async function GET(request, { params }) {
     // empty card.
     if (!route) return new Response('Not found', { status: 404 });
 
-    const { meta } = getContent(route.content);
+    // routeMeta, not doc.meta: two routes share content/principles.md and the
+    // document page names its own block, so this is what keeps their previews
+    // from being the same image.
+    const meta = routeMeta(getContent(route.content), route);
     return renderOgImage(ogHeadline(meta.ogTitle));
 }
