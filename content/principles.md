@@ -4,6 +4,18 @@ meta:
   description: "The eight UN Open Source Principles, and what each one would mean for New York City."
   ogTitle: "The UN Open Source Principles"
   ogDescription: "Eight commitments adopted by the UN in 2025 — what each means, and what each would change for New York."
+# /principles/document reads THIS block instead of the one above, because the two
+# routes share this file and were sharing its title, description, preview image
+# and breadcrumb leaf — four ways of telling a crawler that one page is a copy of
+# the other. Same convention as `titleDocument`/`descDocument` on each principle.
+# The page's own <h1> stays "The UN Open Source Principles": on a printed sheet
+# the subject IS the title, and duplication there costs nothing now that the
+# metadata and the canonical distinguish the two routes.
+metaDocument:
+  title: "The UN Open Source Principles: One-Pager — UNNYC"
+  description: "A one-page summary of all eight UN Open Source Principles, written as actions — ready to print or hand to a colleague who needs the short version."
+  ogTitle: "The UN Open Source Principles — A One-Page Summary"
+  ogDescription: "All eight principles on a single page, written as actions. Print it, or send it to whoever asks what endorsing them actually commits you to."
 title: "The UN Open Source Principles"
 lede: "Adopted by the UN’s Digital and Technology Network in 2025, these eight commitments articulate a global consensus around how institutions should adopt and interact with open source software."
 # The grid opens straight on the lead principle as of 2026-08-14. It used to

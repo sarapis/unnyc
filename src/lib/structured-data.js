@@ -1,5 +1,5 @@
 import { getContent } from '@/lib/content';
-import { SITE_URL, ROUTES, ogImagePath, OG_WIDTH, OG_HEIGHT, ogHeadline } from '@/lib/seo';
+import { SITE_URL, ROUTES, ogImagePath, OG_WIDTH, OG_HEIGHT, ogHeadline, routeMeta } from '@/lib/seo';
 
 /**
  * JSON-LD builders, returning plain objects for <StructuredData> to render.
@@ -244,7 +244,11 @@ function crumbLabel(path) {
     if (route?.crumb) return route.crumb;
     if (route?.content) {
         const doc = getContent(route.content);
-        const label = doc?.title || ogHeadline(doc?.meta?.ogTitle);
+        // A route with its own meta block is labelled from that, not from the
+        // page-level `title` it may share with a sibling.
+        const label = route.metaKey
+            ? ogHeadline(routeMeta(doc, route)?.ogTitle)
+            : doc?.title || ogHeadline(doc?.meta?.ogTitle);
         if (label) return label;
     }
     return path.split('/').filter(Boolean).pop() ?? 'Home';

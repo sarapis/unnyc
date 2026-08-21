@@ -102,12 +102,20 @@ Earlier the same day: canonical tags on all 12 indexable routes (PR #49).
    Satori reads ttf/otf/woff and **cannot read woff2**, which is the only format
    Google Fonts serves a modern browser — and asking its CSS API for an older
    format with an ancient user-agent returns EOT, not ttf.
-2. **Give `/principles/document` its own title and description.** It currently
-   shares both with `/principles`, so the two compete. It rewrites four
-   principle titles into the imperative, so it has real distinct content and
-   deserves distinct metadata rather than `noindex` — and `/start/principles`
-   308s to it, so it has inbound links.
-3. **Length pass** on the five routes in the table above.
+2. ~~**Give `/principles/document` its own title and description**~~ **DONE
+   2026-08-20**, by owner decision — distinct metadata rather than `noindex`,
+   since the page rewrites four principle titles into the imperative and
+   `/start/principles` 308s to it, so it has real content and real inbound links.
+   `content/principles.md` now carries a `metaDocument:` block beside `meta:`
+   (same convention as `titleDocument`/`descDocument` on each principle), and
+   `metaKey` on the route entry is what routes it there. The two pages no longer
+   share a title, a description, a preview image or a breadcrumb leaf — four
+   separate ways of telling a crawler that one is a copy of the other.
+   Its `<h1>` still reads "The UN Open Source Principles", deliberately: on a
+   printed sheet the subject *is* the title, and that costs nothing once the
+   metadata and the canonical distinguish the routes.
+3. **Length pass** on the five routes in the table above — still open. (The new
+   `metaDocument` block is already inside the 60/160 targets.)
 
 ## Phase 3 — structured data (DONE 2026-08-20)
 

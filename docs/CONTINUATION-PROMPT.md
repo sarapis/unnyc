@@ -231,7 +231,10 @@ Nothing is blocking.
 Phase 2's link-preview images shipped the same day: twelve generated
 `/og/<slug>.png` cards, built from the same `ROUTES` table as the canonicals and
 the sitemap, with `twitter:card` raised from `summary` to `summary_large_image`.
-Phase 3 shipped too: ten JSON-LD graphs across eight routes (`Organization` +
+`/principles/document` also got its own metadata block (`metaDocument:` in
+`content/principles.md`, reached via `metaKey` on the route entry), so it no
+longer shares a title, description, preview image or breadcrumb leaf with
+`/principles`. Phase 3 shipped too: ten JSON-LD graphs across eight routes (`Organization` +
 `WebSite`, a `DefinedTermSet` for the glossary, `ItemList`s for the 150 endorsers
 and the 18 OSPOs, `Article` on the guide, breadcrumbs on the four nested routes),
 all built from the content files. Phases 4-6 are open — the citable-datasets bet,

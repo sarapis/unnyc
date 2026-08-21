@@ -23,11 +23,15 @@
  * the three legacy hosts — see next.config.mjs). A sitemap that lists a
  * redirect asks a crawler to index a URL we're telling it to leave.
  *
- * `content` names the markdown file in content/ whose `meta.ogTitle` becomes
- * the headline of that route's link-preview image (/og/<slug>.png). Two routes
- * legitimately share one file: `/principles` and `/principles/document` read
- * `content/principles.md`, so they share a preview until the document page gets
- * its own metadata (phase 2 of docs/SEO-PLAN.md).
+ * `content` names the markdown file in content/ whose meta block supplies the
+ * route's title, description and the headline of its link-preview image
+ * (/og/<slug>.png).
+ *
+ * `metaKey` names a DIFFERENT block in that file, for the case where two routes
+ * share one content file. `/principles` and `/principles/document` both read
+ * `content/principles.md`; the document page reads `metaDocument`, so the two no
+ * longer share a title, a description or a preview. Read it through
+ * `routeMeta()` rather than reaching for `doc.meta` directly.
  *
  * `indexable: false` means the route exists but stays out of the sitemap and
  * gets no canonical. One route uses it: `/campaign/endorse/document` is
@@ -71,16 +75,12 @@ export const ROUTES = [
     { path: '/', content: 'home', priority: 1.0, changeFrequency: 'weekly' },
     { path: '/start', content: 'start', priority: 0.9, changeFrequency: 'monthly' },
     { path: '/principles', content: 'principles', priority: 0.9, changeFrequency: 'monthly' },
-    // `crumb` overrides the breadcrumb label, and exists for exactly one
-    // situation: two routes sharing one content file, where the label derived
-    // from that file would repeat. Without it this page's trail read
-    // "Home > The UN Open Source Principles > The UN Open Source Principles".
-    // ⚠ A SYMPTOM, NOT THE FIX. /principles and /principles/document also share
-    // a title, a description and a preview image; giving the document page its
-    // own metadata is phase 2 item 2 of docs/SEO-PLAN.md and needs an owner
-    // decision. Don't add `crumb` to routes that simply want a shorter label —
-    // the label belongs in the content file, where a rename renames the crumb.
-    { path: '/principles/document', content: 'principles', crumb: 'Printable One-Pager', priority: 0.6, changeFrequency: 'yearly' },
+    // `metaKey` is what stops this route duplicating /principles (see above).
+    // `crumb` stays because a breadcrumb leaf and a page title are different
+    // registers: the trail wants two or three words, and this page's own titles
+    // all begin "The UN Open Source Principles", which the PARENT crumb already
+    // says. It is no longer patching a collision.
+    { path: '/principles/document', content: 'principles', metaKey: 'metaDocument', crumb: 'One-Pager', priority: 0.6, changeFrequency: 'yearly' },
     { path: '/crosswalk', content: 'crosswalk', priority: 0.9, changeFrequency: 'monthly' },
     { path: '/success', content: 'success', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/campaign', content: 'campaign', priority: 0.8, changeFrequency: 'monthly' },
@@ -95,6 +95,33 @@ export const ROUTES = [
 ];
 
 const BY_PATH = new Map(ROUTES.map((r) => [r.path, r]));
+
+/**
+ * The meta block a route reads out of its content file — `meta` for almost
+ * every route, or the block named by `metaKey` where two routes share a file.
+ *
+ * Everything that describes a page to the outside world goes through here, so a
+ * route can't end up with its own title but its sibling's preview image.
+ * THROWS on a named block that isn't in the file: a typo would otherwise
+ * silently fall back to `undefined` and ship a page with no title at all.
+ */
+export function routeMeta(doc, route) {
+    if (!route?.metaKey) return doc?.meta;
+    const meta = doc?.[route.metaKey];
+    if (!meta) {
+        throw new Error(
+            `routeMeta: '${route.path}' names metaKey '${route.metaKey}', which is ` +
+            `not in its content file. Add that block or drop the key.`,
+        );
+    }
+    return meta;
+}
+
+/** One route entry by path. Returns undefined for an unknown path — callers
+ *  that must not silently accept one (`pageMetadata`) check for themselves. */
+export function routeForPath(path) {
+    return BY_PATH.get(path);
+}
 
 /** The routes that belong in the sitemap — everything except `indexable: false`. */
 export function indexableRoutes() {
