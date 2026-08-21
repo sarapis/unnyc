@@ -26,7 +26,7 @@ export default function UnnycFooter() {
                     <div className="unnyc-footer__logo">
                         {/* See the note in UnnycNav.js. */}
                         <span className="unnyc-footer__logo-un">UN</span>
-                        <span className="unnyc-footer__logo-mid">.opensource.</span>
+                        <span className="unnyc-footer__logo-mid">+</span>
                         <span className="unnyc-footer__logo-nyc">NYC</span>
                     </div>
 

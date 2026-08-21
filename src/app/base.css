@@ -155,10 +155,11 @@
     width: fit-content;
     font-family: var(--wg-font-display, 'DM Serif Display', Georgia, serif);
     font-weight: 400;
-    /* Was a flat 1.45rem when the wordmark was the five-letter UNNYC lockup.
-       "UN Open Source NYC" is 18 characters, so it has to be allowed to shrink
-       on a narrow screen or it collides with the hamburger. */
-    font-size: clamp(1.05rem, 3.6vw, 1.45rem);
+    /* Flat again. The clamp here existed only while the wordmark was the
+       18-character "UN Open Source NYC" and had to shrink to clear the
+       hamburger; "UN+NYC" is six characters and needs no such help, and shrinking
+       it on mobile for no reason just made the mark smaller than it was. */
+    font-size: 1.45rem;
     letter-spacing: 0.5px;
     text-decoration: none;
   }
@@ -197,10 +198,15 @@
      An earlier attempt set the middle words in Inter to fake a weight
      difference — one wordmark in two families, which is a thing to notice rather
      than a thing to read. Reverted. */
+  /* The join. Recessive and optically spaced so it reads as a link between the
+     two names rather than as a third word: a `+` sits high and tight in this
+     serif, so it gets a little air either side and a touch less weight of colour.
+     ⚠ The margins are OPTICAL ONLY — textContent stays exactly "UN+NYC", so a
+     copy-paste and any text extractor get the mark itself. */
   .unnyc-nav__logo-mid,
   .unnyc-page .unnyc-footer__logo-mid {
-    /* Slightly recessive so the flag words lead, without changing family. */
-    opacity: 0.82;
+    margin: 0 0.06em;
+    opacity: 0.72;
   }
 
   .unnyc-nav__menu {

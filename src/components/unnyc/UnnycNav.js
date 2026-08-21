@@ -46,13 +46,11 @@ export default function UnnycNav() {
     return (
         <header className="unnyc-nav">
             <div className="unnyc-nav__inner">
-                <Link href="/" className="unnyc-nav__logo" aria-label="UN.opensource.NYC home">
-                    {/* Reads as the site's own domain. The dots do the
-                        separating, so there are no word spaces to lose — which is
-                        what went wrong when this was three words and the gap came
-                        from flex `gap` rather than from characters. */}
+                <Link href="/" className="unnyc-nav__logo" aria-label="UN+NYC home">
+                    {/* Six characters, so no word spaces to lose and nothing
+                        that needs to shrink to clear the hamburger. */}
                     <span className="unnyc-nav__logo-un">UN</span>
-                    <span className="unnyc-nav__logo-mid">.opensource.</span>
+                    <span className="unnyc-nav__logo-mid">+</span>
                     <span className="unnyc-nav__logo-nyc">NYC</span>
                 </Link>
 
