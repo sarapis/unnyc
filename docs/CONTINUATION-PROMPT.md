@@ -224,6 +224,14 @@ wrapper, then Olivia consolidated the shared nav-look into `primer.css`.
 
 Nothing is blocking.
 
+**SEO / AI discoverability: see [SEO-PLAN.md](SEO-PLAN.md)** — audited
+2026-08-20, phase 1 shipped (canonicals on all 12 indexable routes, real
+`robots.txt` + `sitemap.xml` from one route table, `og:site_name` restored,
+`/resources` given the `<h1>` it never had, two host redirects flipped to 308).
+Phases 2-6 are open; the largest single gap left is that **no route has an
+`og:image`**, so every share of this campaign renders as bare text. Three
+decisions are listed at the foot of that file.
+
 1. **A photo for homepage card 1** — still the favicon placeholder, now first.
    `public/images/success/tokyo.jpeg` is paid-for and unused but has been rejected
    twice: a skyline beside card 4's Barcelona reads as a case study.
