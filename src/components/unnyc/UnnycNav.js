@@ -46,16 +46,12 @@ export default function UnnycNav() {
     return (
         <header className="unnyc-nav">
             <div className="unnyc-nav__inner">
-                <Link href="/" className="unnyc-nav__logo" aria-label="UN+NYC open source home">
-                    {/* Two-line lockup: the mark, then "open source" tracked out
-                        beneath it. The mark's three spans have to be wrapped so
-                        the tagline can take its own line. */}
-                    <span className="unnyc-nav__logo-mark">
-                        <span className="unnyc-nav__logo-un">UN</span>
-                        <span className="unnyc-nav__logo-mid">+</span>
-                        <span className="unnyc-nav__logo-nyc">NYC</span>
-                    </span>
-                    <span className="unnyc-nav__logo-tag">open source</span>
+                <Link href="/" className="unnyc-nav__logo" aria-label="UN+NYC home">
+                    {/* Six characters, so no word spaces to lose and nothing
+                        that needs to shrink to clear the hamburger. */}
+                    <span className="unnyc-nav__logo-un">UN</span>
+                    <span className="unnyc-nav__logo-mid">+</span>
+                    <span className="unnyc-nav__logo-nyc">NYC</span>
                 </Link>
 
                 <button
