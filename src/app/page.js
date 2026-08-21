@@ -4,6 +4,8 @@ import PrimerHero from '@/components/unnyc/primer/PrimerHero';
 import UnnycPathCards from '@/components/unnyc/primer/UnnycPathCards';
 import { getContent } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
+import StructuredData from '@/components/unnyc/StructuredData';
+import { websiteLd } from '@/lib/structured-data';
 
 export async function generateMetadata() {
     const { meta } = getContent('home');
@@ -21,6 +23,8 @@ export default function UnnycPage() {
 
     return (
         <div className="unnyc-pr">
+            {/* One WebSite/Organization pair for the whole site, home only. */}
+            <StructuredData data={websiteLd({ description: doc.meta.description })} />
             <HeaderHeightVar />
             <PrimerHero hero={doc.hero} />
             <UnnycPathCards paths={doc.paths} />

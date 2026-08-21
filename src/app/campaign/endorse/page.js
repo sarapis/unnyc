@@ -3,6 +3,8 @@ import '../campaign.css';
 import EndorseForm from '@/components/unnyc/EndorseForm';
 import { getContent } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
+import StructuredData from '@/components/unnyc/StructuredData';
+import { breadcrumbLd } from '@/lib/structured-data';
 
 export async function generateMetadata() {
     const { meta } = getContent('endorse');
@@ -22,6 +24,7 @@ export default function CampaignEndorsePage() {
 
     return (
         <div className="unnyc-cmp">
+            <StructuredData data={breadcrumbLd('/campaign/endorse')} />
             <header className="unnyc-cmp-header">
                 <div className="unnyc-cmp-container">
                     <h1 className="unnyc-cmp-header__title">{doc.title}</h1>

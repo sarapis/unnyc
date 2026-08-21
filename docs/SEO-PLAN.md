@@ -109,16 +109,56 @@ Earlier the same day: canonical tags on all 12 indexable routes (PR #49).
    308s to it, so it has inbound links.
 3. **Length pass** on the five routes in the table above.
 
-## Phase 3 — structured data
+## Phase 3 — structured data (DONE 2026-08-20)
 
-Zero JSON-LD today. Add, derived from the same `content/*.md` the page renders
-so it cannot drift from what a reader sees:
+Ten JSON-LD graphs across eight routes, built in `src/lib/structured-data.js`
+from the same `content/*.md` the page renders and emitted by
+`src/components/unnyc/StructuredData.js`.
 
-- `Organization` (WeGovNYC, Sarapis) and `WebSite` at the root
-- `BreadcrumbList` on the nested routes
-- `Article` on `/resources/guide`
-- `DefinedTermSet` for the glossary in `content/start.md` — a genuinely good fit
-- `ItemList` for the endorser directory and the OSPO directory
+| Route | Graph |
+|---|---|
+| `/` | `Organization` + `WebSite`, keyed by `@id` so other graphs reference rather than restate |
+| `/start` | `DefinedTermSet` — the 8 glossary terms, each with its NYC gloss appended |
+| `/principles` | `ItemList` of the 150 UN endorsers |
+| `/resources` | `ItemList` of the 18 public sector OSPOs |
+| `/resources/guide` | `Article` + `BreadcrumbList` |
+| `/principles/document`, `/campaign/sign`, `/campaign/endorse` | `BreadcrumbList` |
+
+**What is deliberately absent, and why** — each of these was written and then
+removed:
+
+- **`datePublished` / `dateModified`.** No per-page date exists in this repo, the
+  same reason the sitemap has no `lastModified`. A build timestamp would claim
+  every page changed on every deploy.
+- **Geo coordinates on the OSPO list.** `content/resources.md` has lat/lng, but
+  half carry `locationBasis: 'hq'` — the parent body's headquarters, not the
+  office's address, which is why the map popup marks "(HQ)". `GeoCoordinates`
+  would state a precision the data lacks, so only the city is emitted.
+- **`isBasedOn`** for the endorser list's source page — it is a `CreativeWork`
+  property and `ItemList` is an `Intangible`. Provenance moved to `description`,
+  which is Thing-level and valid anywhere.
+- **`additionalType`** for each endorser's sector — that property expects a URI
+  from an external vocabulary, not a bare label like "Companies". The sectors
+  stay on the visible filter chips, whose counts derive from the same array.
+
+**Verified:** all 10 blocks parse; head tags byte-identical to production on all
+13 routes (JSON-LD is a body script, so nothing in `<head>` should move, and
+nothing did); no block contains a raw `<`, so none can break out of its own
+`<script>`. Marked up only what is server-rendered — checked first that all 150
+endorser names and all 18 OSPOs are in the HTML, not behind the client-side
+pagination.
+
+**Weight:** raw HTML grew 40.9 kB on `/principles`, but over the wire that is
+**+2.4 kB brotli** (`/resources` +1.2, `/start` +0.5) — the structure is
+repetitive and compresses hard. The raw figure is roughly twice the JSON because
+App Router emits page content twice, in the DOM and again in the RSC payload;
+that is equally true of the visible list beside it.
+
+⚠ The breadcrumb work surfaced another face of the `/principles` vs
+`/principles/document` duplication below: the trail read "Home > The UN Open
+Source Principles > The UN Open Source Principles", because both routes read one
+content file. Patched with a `crumb` override on that route entry — a symptom
+fix, not the real one.
 
 ## Phase 4 — the AI-discoverability bet
 

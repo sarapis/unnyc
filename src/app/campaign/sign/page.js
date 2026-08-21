@@ -4,6 +4,8 @@ import CampaignSignForm from '@/components/unnyc/CampaignSignForm';
 import { fetchAPI } from '@/lib/api';
 import { getContent, inlineMd, principlesFlat } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
+import StructuredData from '@/components/unnyc/StructuredData';
+import { breadcrumbLd } from '@/lib/structured-data';
 
 export async function generateMetadata() {
     const { meta } = getContent('sign');
@@ -78,6 +80,7 @@ export default async function CampaignSignPage() {
 
     return (
         <div className="unnyc-cmp">
+            <StructuredData data={breadcrumbLd('/campaign/sign')} />
             <HeaderHeightVar />
 
             {/* Letter header */}

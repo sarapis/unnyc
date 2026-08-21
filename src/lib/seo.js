@@ -71,7 +71,16 @@ export const ROUTES = [
     { path: '/', content: 'home', priority: 1.0, changeFrequency: 'weekly' },
     { path: '/start', content: 'start', priority: 0.9, changeFrequency: 'monthly' },
     { path: '/principles', content: 'principles', priority: 0.9, changeFrequency: 'monthly' },
-    { path: '/principles/document', content: 'principles', priority: 0.6, changeFrequency: 'yearly' },
+    // `crumb` overrides the breadcrumb label, and exists for exactly one
+    // situation: two routes sharing one content file, where the label derived
+    // from that file would repeat. Without it this page's trail read
+    // "Home > The UN Open Source Principles > The UN Open Source Principles".
+    // ⚠ A SYMPTOM, NOT THE FIX. /principles and /principles/document also share
+    // a title, a description and a preview image; giving the document page its
+    // own metadata is phase 2 item 2 of docs/SEO-PLAN.md and needs an owner
+    // decision. Don't add `crumb` to routes that simply want a shorter label —
+    // the label belongs in the content file, where a rename renames the crumb.
+    { path: '/principles/document', content: 'principles', crumb: 'Printable One-Pager', priority: 0.6, changeFrequency: 'yearly' },
     { path: '/crosswalk', content: 'crosswalk', priority: 0.9, changeFrequency: 'monthly' },
     { path: '/success', content: 'success', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/campaign', content: 'campaign', priority: 0.8, changeFrequency: 'monthly' },

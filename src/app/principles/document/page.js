@@ -3,6 +3,8 @@ import UnnycIcon from '@/components/unnyc/UnnycIcon';
 import PrintButton from '@/components/unnyc/PrintButton';
 import { getContent } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
+import StructuredData from '@/components/unnyc/StructuredData';
+import { breadcrumbLd } from '@/lib/structured-data';
 
 export async function generateMetadata() {
     const { meta } = getContent('principles');
@@ -52,6 +54,7 @@ export default function PrinciplesDocumentPage() {
 
     return (
         <div className="unnyc-doc-wrap">
+            <StructuredData data={breadcrumbLd('/principles/document')} />
             <div className="unnyc-doc-toolbar">
                 <PrintButton>Print / Save as PDF</PrintButton>
                 <p className="unnyc-doc-toolbar__note">
