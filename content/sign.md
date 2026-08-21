@@ -1,8 +1,8 @@
 ---
 meta:
-  title: "Sign the Open Letter — NYC Should Endorse the UN Open Source Principles"
-  description: "An open letter calling on the New York City Office of Technology & Innovation to endorse the UN Open Source Principles, establish an OSPO, and evaluate open source alternatives in every city technology contract."
-  ogTitle: "NYC Should Endorse the UN Open Source Principles — Sign the Open Letter"
+  title: "Sign the Open Letter — UN Open Source Principles for NYC"
+  description: "An open letter asking NYC's Office of Technology & Innovation to endorse the UN Open Source Principles, open an OSPO, and weigh open source in every contract."
+  ogTitle: "NYC Should Endorse the UN Open Source Principles"
   ogDescription: "Three asks of the city's Office of Technology & Innovation: endorse the UN Open Source Principles, establish an OSPO, and weigh an open source alternative in every technology contract."
 title: "New York City Should Endorse the UN Open Source Principles"
 addressed:

@@ -1,7 +1,7 @@
 ---
 meta:
   title: "The UN Open Source Principles — UNNYC"
-  description: "The eight UN Open Source Principles, and what each one would mean for New York City."
+  description: "The eight UN Open Source Principles, what each would mean for New York City, and a directory of the organizations that have already endorsed them."
   ogTitle: "The UN Open Source Principles"
   ogDescription: "Eight commitments adopted by the UN in 2025 — what each means, and what each would change for New York."
 # /principles/document reads THIS block instead of the one above, because the two

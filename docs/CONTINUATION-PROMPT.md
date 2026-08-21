@@ -237,8 +237,12 @@ longer shares a title, description, preview image or breadcrumb leaf with
 `/principles`. Phase 3 shipped too: ten JSON-LD graphs across eight routes (`Organization` +
 `WebSite`, a `DefinedTermSet` for the glossary, `ItemList`s for the 150 endorsers
 and the 18 OSPOs, `Article` on the guide, breadcrumbs on the four nested routes),
-all built from the content files. Phases 4-6 are open — the citable-datasets bet,
-off-site presence, performance — plus three decisions at the foot of that file.
+all built from the content files. Phase 2's length pass is done as well: eleven title/description fields across
+six content files, none now over the length a search result or social card shows,
+with a **new `lint:content` warning** (check 6) to catch the next drift.
+Phases 4-6 are open — the citable-datasets bet, off-site presence, performance.
+The only decision still outstanding is phase 4's licence question; the other two
+from that list are resolved.
 
 1. **A photo for homepage card 1** — still the favicon placeholder, now first.
    `public/images/success/tokyo.jpeg` is paid-for and unused but has been rejected
