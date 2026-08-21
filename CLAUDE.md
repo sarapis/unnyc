@@ -129,9 +129,16 @@ to its CTFG profile. Toggleable, default on.
   missing snapshot costs the dots, never the page.
 - **CTFG popup fields are escaped** (`esc()` in `PrimerMapInner.js`) — third-party data, unlike the
   hand-authored markers beside it.
-- **Attribution is a licence term**, not a courtesy: CTFG content is CC BY-NC-SA 4.0, so the credit +
+- **Attribution is a licence term**, not a courtesy: CTFG content is **CC BY 4.0**, so the credit +
   `civictech.guide` link render under the map, counts read from the snapshot so they can't drift.
   Wording lives in `content/start.md` (`mapSource`) per the copy-in-markdown rule.
+  ⚠ **It was CC BY-NC-SA until CTFG relicensed between 2026-07-03 and 2026-07-25**, and this repo
+  went on claiming NC-SA — on the live page — until 2026-08-21, because the value was a HARDCODED
+  LITERAL in the fetch script. `detectLicence()` now reads it off `civictech.guide` (the
+  `rel="license"` anchor, cross-checked on two pages) and **throws** on anything unexpected, so a
+  refresh can no longer re-stamp a stale claim. The snapshot records `licenceUrl` and
+  `licenceCheckedFrom` beside it. **A licence is the licensor's fact, not ours — read it, don't
+  recall it.**
 
 ## The four map layers (rescoped 2026-08-17)
 
@@ -175,8 +182,11 @@ layer's counts; those now live in the popups and the key, so repeating them unde
 map only gave a reader more numbers to reconcile. Two lines instead of six or so.
 
 ⚠ **What cannot be shortened away is attribution — it is a LICENCE TERM for two of
-these, and the licences differ.** GovOSS is **CC BY 4.0**; the Civic Tech Field Guide
-is **CC BY-NC-SA 4.0**. Source name, link and licence stay for both. Everything after
+these.** Both are **CC BY 4.0** as of 2026-08-21: GovOSS ("Catalogue data CC BY 4.0;
+code MIT", its own footer) and the Civic Tech Field Guide, which relicensed off
+CC BY-NC-SA in July 2026. They agreeing today is a coincidence, not an invariant —
+keep the strings per-source, never collapse them into one. Source name, link and
+licence stay for both. Everything after
 the lead-in is read from the snapshots (`licence`, `sourceUrl`, `generated`,
 `boundariesShort`) so it cannot drift from the data it describes; only the lead-in is
 copy, in `mapSource.creditLead`.
@@ -231,9 +241,11 @@ ask. Invert it and the page argues something else.
   `content/govoss-countries.geo.json` (19 KB of Natural Earth polygons — never
   readable in a diff, and burying the counts inside it would hide the reviewable
   half). `getGovossCatalogues()` loads them independently and fails soft on each.
-- **Licence differs from the layer beside it.** GovOSS is **CC BY 4.0**; CTFG is CC
-  BY-NC-SA 4.0. The two credit lines are not interchangeable. Boundaries are Natural
-  Earth, public domain.
+- **Each layer's licence is its own fact.** GovOSS is **CC BY 4.0** (its footer:
+  "Catalogue data CC BY 4.0; code MIT"); CTFG is **CC BY 4.0** too since it relicensed
+  off CC BY-NC-SA in July 2026. Same string today, still two independent facts — the
+  credit line keeps them separate and per-source. Boundaries are Natural Earth, public
+  domain.
 - ⚠ **Never render the sum of the country counts.** It matches neither total, in
   both directions at once: 256 entries sit under `GLOBAL`/`EU` and get no polygon,
   while an entry listed by catalogues in two countries counts under each. 2,619

@@ -161,9 +161,11 @@ mapSource:
   # Opening words of the SINGLE credit line under the map. Everything after it —
   # source names, links, licences and snapshot dates — is read from the snapshots
   # themselves so it cannot drift from the data it describes.
-  # ⚠ Attribution is a LICENCE TERM for two of these, and the licences differ:
-  # GovOSS is CC BY 4.0, the Civic Tech Field Guide is CC BY-NC-SA 4.0. Reword the
-  # lead-in freely; do not drop a source, its link or its licence.
+  # ⚠ Attribution is a LICENCE TERM for two of these: GovOSS and the Civic Tech
+  # Field Guide are both CC BY 4.0 as of 2026-08-21 (CTFG relicensed off CC BY-NC-SA
+  # in July 2026). Matching today is a coincidence, not a rule — the licence strings
+  # stay per-source. Reword the lead-in freely; never drop a source, its link or its
+  # licence.
   creditLead: "Map data —"
 mapLegend:
 - type: "city"

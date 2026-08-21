@@ -2,9 +2,14 @@
   "source": "Civic Tech Field Guide",
   "sourceUrl": "https://civictech.guide",
   "sourceApi": "https://civictech.guide/api/v1/projects/search?openSource=Yes&orgType=Government%20%2F%20public%20sector",
-  "licence": "CC BY-NC-SA 4.0",
+  "licence": "CC BY 4.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "licenceCheckedFrom": [
+    "https://civictech.guide/",
+    "https://civictech.guide/guiding-principles/"
+  ],
   "generatedBy": "scripts/fetch-ctfg-projects.mjs",
-  "generated": "2026-08-07",
+  "generated": "2026-08-21",
   "count": 62,
   "countries": 24,
   "excluded": [
@@ -13,24 +18,24 @@
       "reason": "IMLS-funded academic/public library capacity project"
     },
     {
-      "slug": "congressional-data-coalition",
-      "reason": "an advocacy coalition lobbying Congress, not a government body"
-    },
-    {
-      "slug": "code-for-australia-foresight",
-      "reason": "Code for Australia is a nonprofit; URL is a dead Wayback capture"
+      "slug": "civicspacetech",
+      "reason": "a collection of primers, not a government program"
     },
     {
       "slug": "civis",
       "reason": "civis.vote — an Indian nonprofit platform, works with government but is not one"
     },
     {
-      "slug": "govtrackus",
-      "reason": "run by Civic Impulse LLC, a private company"
+      "slug": "code-for-australia-foresight",
+      "reason": "Code for Australia is a nonprofit; URL is a dead Wayback capture"
     },
     {
-      "slug": "civicspacetech",
-      "reason": "a collection of primers, not a government program"
+      "slug": "congressional-data-coalition",
+      "reason": "an advocacy coalition lobbying Congress, not a government body"
+    },
+    {
+      "slug": "govtrackus",
+      "reason": "run by Civic Impulse LLC, a private company"
     }
   ],
   "projects": [
