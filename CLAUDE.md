@@ -563,6 +563,36 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   `noindex`, and a self-referencing canonical on a noindex page tells a crawler
   two contradictory things, so it keeps a hand-written block with a comment
   saying exactly that. Don't "fix" it.
+- **The site-wide updates bar is the FOURTH Payload write path** —
+  `UpdatesBar.js`, mounted once in `layout.js`, posting to
+  **`campaign-signups`**: the same collection the "get updates" checkbox on
+  `/campaign/sign` has always used, so no CMS change was needed. `source`
+  carries the pathname the reader was on, and the sign-form path sends
+  `/campaign`, so the two are distinguishable in the admin.
+  - **A bar, not a modal, deliberately.** Nothing is covered: an interstitial
+    over content on mobile is a negative ranking signal, and this site's job is
+    to be read and forwarded. It also means no focus trap, no `aria-modal` and
+    no return-focus — if it ever becomes a modal, all of that becomes required.
+  - **It waits for engagement**: half the page scrolled AND 8s dwell, or 25s
+    either way. ⚠ The dwell floor is not decoration — "50% scrolled" fires almost
+    instantly on a short page like `/`, so scroll depth alone made it an
+    on-arrival popup on exactly the pages where that is worst.
+  - **Suppressed on five routes** (`SUPPRESSED` in the component): both campaign
+    forms and `/contact` already take an email — asking twice on one page reads
+    as a broken site — and both printables are meant to reach paper. There is a
+    `@media print` rule too, so it can never land in a PDF of any other page.
+  - ⚠ **Mobile height is a measured constraint, not styling.** The first version
+    came to 322px on a 375×812 phone — **40% of the viewport**, which IS the
+    intrusive interstitial the bar exists to avoid. Hiding one line of copy and
+    putting the input and button on one row brought it to 215px (26.5%).
+    Re-measure `el.offsetHeight / innerHeight` if you touch those rules.
+  - Its CSS is in **`@layer site`**, like the nav, for the same reason: it renders
+    inside `.unnyc-page`, so `.unnyc-page button { border: none; background:
+    none }` (0,1,1) would beat any single-class rule in `@layer unnyc`.
+  - ⚠ **Cannot be tested from localhost** — that origin is not in Payload's CORS
+    allowlist, so the POST is blocked and the bar shows its generic error.
+    Verified locally only as far as that error; the success path needs the
+    deployed origin.
 - **The contact form is the third Payload write path** (`/contact`, added
   2026-08-07). It posts to `contact-submissions` — a collection that already
   existed for sarapis.org, with exactly the `name`/`email`/`message` fields

@@ -1,8 +1,11 @@
 import './base.css';
 import './unnyc.css';
+import './updates-bar.css';
 import UnnycNav from '@/components/unnyc/UnnycNav';
 import UnnycFooter from '@/components/unnyc/UnnycFooter';
 import ScrollReveal from '@/components/unnyc/ScrollReveal';
+import UpdatesBar from '@/components/unnyc/UpdatesBar';
+import { getContent } from '@/lib/content';
 import { SITE_URL } from '@/lib/seo';
 import { bodyFont, displayFont } from './fonts';
 
@@ -59,6 +62,13 @@ export default function RootLayout({ children }) {
                     <main>{children}</main>
                     <UnnycFooter />
                     <ScrollReveal />
+                    {/* Site-wide email capture. Copy read HERE because
+                        UpdatesBar is a client component and getContent is
+                        server-only — the same reason PrimerMovementNow takes its
+                        map data as props. Read inside the component, never at
+                        module scope, or edits to the markdown need a dev-server
+                        restart to appear. */}
+                    <UpdatesBar copy={getContent('updates')} />
                 </div>
             </body>
         </html>
