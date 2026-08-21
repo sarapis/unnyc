@@ -141,16 +141,24 @@
      otherwise win. Don't re-add colours to .unnyc-footer__logo-* in unnyc.css. */
   .unnyc-nav__logo,
   .unnyc-page .unnyc-footer__logo {
-    display: flex;
-    align-items: baseline;
-    gap: 1px;
+    /* ⚠ NOT `display: flex` any more, and that is the whole point: a flex
+       container DISCARDS whitespace-only children, so the `{' '}` between the
+       three spans would vanish and textContent would read "UNOpen SourceNYC".
+       inline-block hugs the glyphs the way `width: fit-content` did, keeps the
+       spans on one baseline for free, and lets real space characters do the
+       spacing. */
+    display: inline-block;
+    white-space: nowrap;
     flex-shrink: 0;
     /* Hug the glyphs so the wordmark box is the same in both places (the
        footer one would otherwise stretch to fill its column). */
     width: fit-content;
     font-family: var(--wg-font-display, 'DM Serif Display', Georgia, serif);
     font-weight: 400;
-    font-size: 1.45rem;
+    /* Was a flat 1.45rem when the wordmark was the five-letter UNNYC lockup.
+       "UN Open Source NYC" is 18 characters, so it has to be allowed to shrink
+       on a narrow screen or it collides with the hamburger. */
+    font-size: clamp(1.05rem, 3.6vw, 1.45rem);
     letter-spacing: 0.5px;
     text-decoration: none;
   }
@@ -167,6 +175,13 @@
   .unnyc-nav__logo-nyc,
   .unnyc-page .unnyc-footer__logo-nyc {
     color: var(--wg-accent-warm, #d4a843);
+  }
+
+  /* The middle words carry no flag colour — the two accents are what say "UN"
+     and "NYC", and colouring all three parts would leave nothing emphasised. */
+  .unnyc-nav__logo-mid,
+  .unnyc-page .unnyc-footer__logo-mid {
+    color: var(--wg-text-on-brand, #eef3f9);
   }
 
   .unnyc-nav__menu {

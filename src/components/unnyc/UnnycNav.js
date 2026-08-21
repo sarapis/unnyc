@@ -46,8 +46,15 @@ export default function UnnycNav() {
     return (
         <header className="unnyc-nav">
             <div className="unnyc-nav__inner">
-                <Link href="/" className="unnyc-nav__logo" aria-label="UNNYC home">
-                    <span className="unnyc-nav__logo-un">UN</span>
+                <Link href="/" className="unnyc-nav__logo" aria-label="UN Open Source NYC home">
+                    {/* ⚠ The {' '} are REAL SPACE CHARACTERS and they matter:
+                        the wordmark used to be the single lockup "UNNYC" and got
+                        its 1px optical gap from flex `gap`, which is a visual
+                        space and not a textual one. With three words that leaves
+                        textContent reading "UNOpen SourceNYC" — what a copy-paste
+                        and any text extractor get. */}
+                    <span className="unnyc-nav__logo-un">UN</span>{' '}
+                    <span className="unnyc-nav__logo-mid">Open Source</span>{' '}
                     <span className="unnyc-nav__logo-nyc">NYC</span>
                 </Link>
 

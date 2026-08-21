@@ -24,7 +24,10 @@ export default function UnnycFooter() {
             <div className="unnyc-container">
                 <div className="unnyc-footer__grid">
                     <div className="unnyc-footer__logo">
-                        <span className="unnyc-footer__logo-un">UN</span>
+                        {/* Real spaces — see the note in UnnycNav.js. This one
+                            has no aria-label to fall back on. */}
+                        <span className="unnyc-footer__logo-un">UN</span>{' '}
+                        <span className="unnyc-footer__logo-mid">Open Source</span>{' '}
                         <span className="unnyc-footer__logo-nyc">NYC</span>
                     </div>
 
