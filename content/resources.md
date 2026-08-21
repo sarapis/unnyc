@@ -29,6 +29,8 @@ meta:
   ogTitle: "Related Resources — UNNYC"
   ogDescription: "Primary sources, communities of practice, who to call, and a directory of public sector open source programme offices."
 # Jump menu (UnnycSectionNav) — `id` must match an id rendered on the page.
+# ⚠ The bar hides itself below 3 items; there are now 4, so one could be removed
+# without it vanishing — but two could not.
 sectionNav:
   - id: resources
     label: "Primary Sources"
@@ -36,6 +38,21 @@ sectionNav:
     label: "People to Call"
   - id: ospos
     label: "Find an OSPO"
+  - id: open-data
+    label: "Open Data"
+# The published datasets (PrimerOpenData). Only the words are here: every ROW —
+# name, description, record count, licence, URL — is read from
+# src/lib/datasets.js, the same place /data/*.json is built from. ⚠ Do not list
+# the datasets or their counts here. A count in prose is a number that goes
+# stale the next time a snapshot is refreshed, which is why the endorser
+# directory derives its own.
+openData:
+  title: "Open Data"
+  lede: "Everything the map and the directories are built from, published as JSON with its provenance and licence attached."
+  # Rendered after the rows, as one line.
+  note: "Licences differ by who compiled each set — two are this site's own work, two are redistributed and credit their upstream source. Each file states its own terms."
+  indexLabel: "All four, catalogued"
+  llmsLabel: "What this site is, in one file"
 resourceGroups:
   title: "Primary Sources"
   lede: "Read the frameworks, browse the registries, join the communities."
