@@ -497,6 +497,19 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   `src/app/sitemap.js`) — both 404'd until 2026-08-20. Nothing is `Disallow`ed
   on purpose: `Disallow` blocks the fetch, so a crawler never reads the
   `noindex` it was sent to obey.
+- **The site publishes four datasets** at `/data/*.json`, catalogued at
+  `/data/index.json`, described in a generated `/llms.txt` — all built by
+  `src/lib/datasets.js` from the SAME `content/*` files the pages render, never
+  copies, and prerendered at build. ⚠ **Slugs are published addresses**: renaming
+  one breaks whatever cited it, so add rather than rename.
+  ⚠ **Each payload states its OWN licence and attribution.** The endorser
+  transcription and the OSPO directory are ours (CC BY 4.0, owner decision
+  2026-08-21); the CTFG and GovOSS slices are redistributed and say *credit them,
+  not this site*. Do not factor these into one shared constant — they match today
+  by coincidence, and CTFG's was CC BY-NC-SA six weeks ago.
+  ⚠ **`Dataset` JSON-LD is only for OUR two.** Marking up the upstream slices
+  would nominate this site as the thing to cite for someone else's data, which
+  those payloads explicitly warn against.
 - **JSON-LD lives in `src/lib/structured-data.js`**, rendered by
   `src/components/unnyc/StructuredData.js`, and is built from the content files
   so it cannot drift from the visible page. ⚠ **Mark up only what is

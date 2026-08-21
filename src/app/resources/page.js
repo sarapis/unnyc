@@ -8,8 +8,9 @@ import PrimerContacts from '@/components/unnyc/primer/PrimerContacts';
 import PrimerOspoDirectory from '@/components/unnyc/primer/PrimerOspoDirectory';
 import { getContent, inlineMd } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
+import { DATASETS } from '@/lib/datasets';
 import StructuredData from '@/components/unnyc/StructuredData';
-import { ospoListLd } from '@/lib/structured-data';
+import { ospoListLd, datasetLd } from '@/lib/structured-data';
 
 export async function generateMetadata() {
     const { meta } = getContent('resources');
@@ -35,6 +36,11 @@ export default function ResourcesPage() {
                     path: '/resources',
                     name: doc.ospoDirectory?.title ?? 'Public sector open source programme offices',
                 })}
+            />
+            {/* And as a citable Dataset — see the note on datasetLd about why
+                only this site's OWN data gets this treatment. */}
+            <StructuredData
+                data={datasetLd({ dataset: DATASETS['public-sector-ospos'](), path: '/resources' })}
             />
             <HeaderHeightVar />
 

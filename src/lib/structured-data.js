@@ -49,6 +49,18 @@ const PUBLISHERS = [
     { '@type': 'Organization', name: 'Sarapis', url: 'https://sarapis.org' },
 ];
 
+/**
+ * The publisher/creator node, as a reference that also DEFINES itself.
+ *
+ * A bare `{ '@id': ORG_ID }` is correct JSON-LD and resolves for anything that
+ * crawls the whole site — the full Organization node lives on the homepage. But
+ * a consumer parsing one page in isolation (which is what most extraction does)
+ * sees a dangling pointer. Carrying name and url alongside the @id costs two
+ * lines and makes every page self-contained without duplicating a second,
+ * drift-prone description of who we are.
+ */
+const ORG_REF = { '@type': 'Organization', '@id': ORG_ID, name: 'UNNYC', url: SITE_URL };
+
 function absolute(path) {
     return SITE_URL + (path === '/' ? '' : path);
 }
@@ -78,6 +90,8 @@ export function websiteLd({ description }) {
             url: SITE_URL,
             description,
             inLanguage: 'en-US',
+            // Bare @id is fine HERE: the Organization node above is on this same
+            // page, so the reference resolves in a single-page parse.
             publisher: { '@id': ORG_ID },
         },
     ];
@@ -131,7 +145,7 @@ export function articleLd({ path, headline, description }) {
             height: OG_HEIGHT,
         },
         author: PUBLISHERS,
-        publisher: { '@id': ORG_ID },
+        publisher: ORG_REF,
         isAccessibleForFree: true,
     };
 }
@@ -233,6 +247,41 @@ export function ospoListLd({ groups, path, name }) {
                     : {}),
             },
         })),
+    };
+}
+
+/**
+ * A published dataset, as schema.org Dataset — the link between the JSON at
+ * /data/*.json and the page a reader arrives on.
+ *
+ * ⚠ ONLY FOR DATASETS THIS SITE MADE. The endorser transcription and the OSPO
+ * directory are ours to license and ours to be cited for. The CTFG and GovOSS
+ * slices are redistributed under their own CC BY terms and are credited under
+ * the map with links — marking THEM up as Datasets here would nominate this site
+ * as the thing to cite for someone else's data, which the attribution in those
+ * payloads explicitly says not to do.
+ *
+ * Takes the dataset's own envelope (src/lib/datasets.js), so the licence,
+ * attribution and record count in the markup are the same values the JSON
+ * serves. No second set of claims to keep in step.
+ */
+export function datasetLd({ dataset, path }) {
+    if (!dataset) return null;
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'Dataset',
+        name: dataset.name,
+        description: dataset.description,
+        url: absolute(path),
+        license: dataset.licenceUrl,
+        creator: ORG_REF,
+        isAccessibleForFree: true,
+        ...(dataset.generated ? { dateModified: dataset.generated } : {}),
+        distribution: {
+            '@type': 'DataDownload',
+            encodingFormat: 'application/json',
+            contentUrl: dataset.url,
+        },
     };
 }
 

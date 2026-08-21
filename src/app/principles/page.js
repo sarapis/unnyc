@@ -7,8 +7,9 @@ import UnnycEndorserDirectory from '@/components/unnyc/primer/UnnycEndorserDirec
 import UnnycPrinciplesRail from '@/components/unnyc/UnnycPrinciplesRail';
 import { getContent, getUnEndorsers, inlineMd, principlesResolve } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
+import { DATASETS } from '@/lib/datasets';
 import StructuredData from '@/components/unnyc/StructuredData';
-import { endorserListLd } from '@/lib/structured-data';
+import { endorserListLd, datasetLd } from '@/lib/structured-data';
 
 // Read per call, NOT at module scope — see the note in crosswalk/page.js.
 export async function generateMetadata() {
@@ -61,6 +62,12 @@ export default function PrinciplesPage() {
                     source: endorsers?.source,
                     sourceUrl: endorsers?.sourceUrl,
                 })}
+            />
+            {/* The same list as a citable Dataset, pointing at the published
+                JSON. Envelope comes from src/lib/datasets.js, so the licence and
+                count here are the ones that file serves. */}
+            <StructuredData
+                data={datasetLd({ dataset: DATASETS['un-endorsers'](), path: '/principles' })}
             />
             <HeaderHeightVar />
 
