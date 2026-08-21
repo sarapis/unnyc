@@ -1,6 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
+        // Next's default is ['image/webp'] only. AVIF added 2026-08-21 after
+        // measuring what the site actually serves a browser: at the widths that
+        // matter, WEBP CAME OUT LARGER THAN THE SOURCE JPEG — 76 kB vs 68 kB at
+        // w=640 for the homepage photo, 123 vs 113 at w=828 — because these are
+        // already well-compressed photographs and re-encoding at q=75 gains
+        // nothing. Next still serves the negotiated modern format even when it
+        // is bigger, so the fix is to offer a format that actually wins.
+        //
+        // ⚠ NOT MEASURED ON THIS DEPLOYMENT. Image optimisation runs at request
+        // time, and Vercel preview URLs are behind SSO, so the improvement can
+        // only be confirmed on production after this merges. Re-run the same
+        // per-width comparison there before believing a number.
+        // Cost: AVIF encoding is slower on the first request for each variant,
+        // cached thereafter. Fine for a site with a dozen photographs.
+        formats: ['image/avif', 'image/webp'],
         remotePatterns: [
             // Payload CMS media (endorser logos / any future CMS imagery).
             {

@@ -4,6 +4,7 @@ import UnnycNav from '@/components/unnyc/UnnycNav';
 import UnnycFooter from '@/components/unnyc/UnnycFooter';
 import ScrollReveal from '@/components/unnyc/ScrollReveal';
 import { SITE_URL } from '@/lib/seo';
+import { bodyFont, displayFont } from './fonts';
 
 export const metadata = {
     // The campaign's home as of 2026-08-20: a SUBDOMAIN, so the apex is free
@@ -48,7 +49,10 @@ export const metadata = {
  */
 export default function RootLayout({ children }) {
     return (
-        <html lang="en">
+        // The two font variables go on <html> so the `:root` override in
+        // unnyc.css can see them. Nothing reads these class names directly —
+        // they exist only to define --unnyc-font-*.
+        <html lang="en" className={`${displayFont.variable} ${bodyFont.variable}`}>
             <body>
                 <div className="unnyc-page wg-unnyc" data-brand="unnyc">
                     <UnnycNav />

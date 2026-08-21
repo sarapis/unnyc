@@ -249,11 +249,79 @@ for UNNYC itself. Cross-links from `wegov.nyc` and `sarapis.org`, GitHub repo
 topics and About URL. Note that the campaign's own goal is also its best
 backlink: when NYC endorses, the UN's page links here.
 
-## Phase 6 — performance (measure first)
+## Phase 6 — performance (DONE 2026-08-21)
 
-~630 KB of uncompressed static assets per route, near-identical across the four
-routes sampled — so that is the shared bundle, not Leaflet, which is correctly
-dynamically imported. Take a real LCP/INP measurement before changing anything.
+**Measured first, and most of the site came out fine.** Over the wire, with
+compression, as a browser gets it:
+
+| Route | HTML | Subresources | TTFB |
+|---|---|---|---|
+| `/` | 5.4 kB | 190.6 kB | 327 ms |
+| `/start` | 27.2 kB | 188.2 kB | 355 ms |
+| `/principles` | 18.4 kB | — | 246 ms |
+| `/success` | 10.5 kB | — | 103 ms |
+
+Leaflet's 154 kB chunk is referenced by **no route's initial HTML** — the dynamic
+import genuinely keeps it off the critical path. The earlier "~630 kB per route"
+figure was uncompressed and identical everywhere, which was the shared bundle.
+
+⚠ **No LCP/INP/CLS numbers here, deliberately.** The browser tools available in
+this repo report `document.visibilityState: hidden` and run no animation frames,
+so timing-based Core Web Vitals cannot be trusted from them — this is documented
+elsewhere in these notes and it applies here. Everything above is bytes and
+round trips, which are measurable. Field data needs Search Console or a real
+lab run.
+
+### The one real finding: the font critical path
+
+`unnyc.css` opened with a Google Fonts `@import`, which is the worst available
+way to load a webfont because three problems compound:
+
+1. It was the **first line of a render-blocking stylesheet**, so no text could
+   paint until the browser opened a **new connection to fonts.googleapis.com**
+   (measured: DNS + TLS complete at 33 ms, 71 ms total on a warm connection —
+   worse on mobile), parsed 39 `@font-face` rules, then opened **another** new
+   connection to fonts.gstatic.com for the files. Three serialised round trips.
+2. **Nothing preconnected** to either host, so both handshakes started cold.
+3. It requested more than the site uses: **Inter weight 300, which appears
+   nowhere in the CSS**, and **DM Serif Display italic**, with zero
+   `font-style: italic` in the built stylesheets. Counted, not assumed — the
+   weights actually used are 400, 500, 600 and 700.
+
+Fixed with `next/font/google` (`src/app/fonts.js`): both faces self-hosted at
+build, Inter as the **variable** font so one file covers every weight instead of
+five static faces, italic dropped, `subsets: ['latin']`. Verified in a browser:
+**zero requests to googleapis or gstatic**, two self-hosted woff2 (17.8 kB +
+48.4 kB), both `rel="preload"`ed in the head.
+
+⚠ The trade is named in `fonts.js`: this moves a **per-visitor** runtime
+dependency on Google to a **per-build** one. Strictly better — a failed build
+just doesn't deploy — but it is the same build-time network dependency this repo
+argues against for the data snapshots, so it was accepted knowingly rather than
+by accident.
+
+⚠ **The token override is UNLAYERED**, and has to be: the design system declares
+`--wg-font-display`/`--wg-font-body` at `:root` with no layer, and unlayered
+styles beat every layer, so the same override inside `@layer unnyc` would have
+silently lost and the fonts would have stayed unloaded. Verified by parsing the
+built CSS for the enclosing block, then confirming the computed value in a
+browser.
+
+### Also: AVIF was off
+
+Next's default is WebP only. Measuring what the site actually serves showed
+**WebP coming out larger than the source JPEG** at the widths that matter — 76 kB
+vs 68 kB at w=640, 123 vs 113 at w=828 — because these are already
+well-compressed photographs. Next serves the negotiated modern format even when
+it is bigger, so `formats: ['image/avif', 'image/webp']` gives it a format that
+can actually win.
+⚠ **Unmeasured on this deployment**: image optimisation runs at request time and
+Vercel preview URLs are behind SSO, so the gain can only be confirmed on
+production. Re-run the per-width comparison there.
+
+A first pass at this measurement was wrong in the reassuring direction: curl sent
+no `Accept` header, so every image came back as JPEG and the totals summed all 24
+srcset variants rather than the one a browser downloads. Both corrected above.
 
 ## Decisions still open
 

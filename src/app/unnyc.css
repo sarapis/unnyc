@@ -11,7 +11,30 @@
    (src/styles/wegov-tokens.css). Class names match components/.
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap');
+/* The Google Fonts @import that used to be here is GONE — the faces are
+   self-hosted at build by src/app/fonts.js, which explains why at length.
+   Short version: it was the first line of a render-blocking stylesheet and
+   chained two cold third-party connections before text could paint, while
+   asking for a weight and an italic the site never uses.
+
+   ⚠ UNLAYERED, DELIBERATELY, AND THIS IS THE ONLY UNLAYERED RULE IN THIS FILE.
+   @wegovnyc/design-tokens declares these two tokens at `:root` with no layer
+   (see the note in base.css), and unlayered styles beat EVERY layer — so the
+   same override inside `@layer unnyc` would silently lose and the fonts would
+   quietly stay unloaded. Same specificity as the token, later in the cascade,
+   which is what makes it win.
+
+   The var() fallbacks are the old token values, so if the classNames in
+   layout.js are ever dropped the page degrades to the previous behaviour
+   instead of rendering with no family at all. That is also why Georgia/serif
+   appear TWICE in the resolved value — next/font's own fallback list is inside
+   the variable, and these trailing ones only get reached in the degraded path
+   where the variable is undefined. A duplicated fallback costs nothing; a
+   missing one costs the page its typography. */
+:root {
+  --wg-font-display: var(--unnyc-font-display, 'DM Serif Display'), Georgia, serif;
+  --wg-font-body: var(--unnyc-font-body, 'Inter'), -apple-system, BlinkMacSystemFont, sans-serif;
+}
 
 @layer unnyc {
 
