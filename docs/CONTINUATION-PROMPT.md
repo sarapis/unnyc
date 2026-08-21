@@ -181,11 +181,12 @@ page, from `content/un-endorsers.json` (a 2026-08-06 snapshot of the UN's page).
 - 154 raw -> 150: #121 unnamed, #114 a KDE duplicate, #3 and #21 unclassifiable.
 - **Counts are DERIVED, never authored.** ⚠ The lede says "Hundreds" over a
   countable 150 — owner's wording, noted in the content.
-- ⚠ **10 organizations the page used to name are absent** from the snapshot — Open
-  Knowledge, OpenInfra, Matrix, Sovereign Tech Agency, ZenDiS, Nextcloud,
-  Rocket.Chat, Linagora, LPI, European Open Source Academy. Checked by name, alt
-  slug and source URL. Probably means the UN's logo wall is not the authoritative
-  list; unresolved.
+- **The 10 organizations the page used to name: RESOLVED 2026-08-21**, and the
+  answer is "nothing to fix". All ten are still absent from the UN's page
+  (searched by name and by logo-slug), and its endorser region still holds exactly
+  154 images with no names as text — unchanged since the snapshot. The
+  transcription is faithful; those ten came from another source. In the file's
+  `recheck` field.
 
 ## CSS: the one rule that would have saved five bugs
 
@@ -278,17 +279,25 @@ with a **new `lint:content` warning** (check 6) to catch the next drift.
 Phase 4 shipped 2026-08-21: four datasets at `/data/*.json` with a
 `/data/index.json` catalogue, a generated `/llms.txt`, and `Dataset` JSON-LD on
 the two pages whose data it is. Our two datasets are **CC BY 4.0** (owner
-decision); the two upstream slices say credit them, not us. ⚠ **Nothing on the
-site links to any of it yet** — a human path in is the one loose end.
+decision); the two upstream slices say credit them, not us. The human path in is
+**`/resources#open-data`** (added the same day), whose every row — name, count,
+licence, URL — is derived from `datasetIndex()` rather than authored.
 Phase 6 shipped 2026-08-21: the Google Fonts `@import` is gone — both faces are
 self-hosted by `next/font` (`src/app/fonts.js`), which removed two cold
 third-party connections from the critical path and dropped a weight and an italic
 the site never used. AVIF enabled. ⚠ The token override in `unnyc.css` is
 UNLAYERED and must stay so: the design system declares those tokens at `:root`
 unlayered, and unlayered beats every layer.
-Phase 5 is the only one left — Search Console, IndexNow, a CTFG listing, and
-cross-links from wegov.nyc and sarapis.org — and most of it needs account access,
-not code.
+Phase 5 is the only one left, and it is mostly NOT code. Done 2026-08-21: the
+GitHub repo's About URL pointed at `unnyc-campaign.vercel.app` and now points at
+`https://un.opensource.nyc`, with 8 topics added.
+⚠ Note `unnyc-campaign.vercel.app` DOES serve the site (200) — a fifth host,
+outside the redirect map — and it correctly declares `un.opensource.nyc` as its
+canonical, which is the canonical work earning its keep.
+Still needing account access, not this repo: Search Console and Bing
+verification, a Civic Tech Field Guide listing for UNNYC itself, and cross-links
+from wegov.nyc and sarapis.org (different repos and deploys — do not edit those
+from here).
 ⚠ **Phase 4's licence question is CLOSED and the answer was not what this repo
 said.** CTFG relicensed from CC BY-NC-SA to **CC BY 4.0** in July 2026; the repo
 kept asserting NC-SA (on the live page) because the licence was a hardcoded
@@ -301,9 +310,8 @@ Nothing blocks phase 4.
    twice: a skyline beside card 4's Barcelona reads as a case study.
 2. **Decide the two-sections-vs-the-UN's-three question** for the endorsement
    declaration before it goes to OTI.
-3. **Resolve the 10 missing endorsers** — union of both lists, or leave as is.
-4. **"Hundreds" vs 150** in the endorser lede.
-5. **Retire `old-unnyc.wegov.nyc`** whenever wanted; nothing depends on it.
-6. **The CTFG directory question** — Hub task `168a959d`.
-7. **A shared component package** — Hub task `7656df36` (Backburner).
-8. **Exposed keys in `wegovnyc_front` history** — Hub task `51968fc0`.
+3. **"Hundreds" vs 150** in the endorser lede.
+4. **Retire `old-unnyc.wegov.nyc`** whenever wanted; nothing depends on it.
+5. **The CTFG directory question** — Hub task `168a959d`.
+6. **A shared component package** — Hub task `7656df36` (Backburner).
+7. **Exposed keys in `wegovnyc_front` history** — Hub task `51968fc0`.

@@ -334,11 +334,15 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
 - **Counts are DERIVED in the component, never authored**, so a refreshed snapshot
   cannot leave the page claiming a number it no longer shows. ⚠ The lede says
   "Hundreds" over a countable 150 — owner's wording, flagged in the content.
-- ⚠ **10 organizations the page used to name are absent** from the snapshot (Open
-  Knowledge, OpenInfra, Matrix, Sovereign Tech Agency, ZenDiS, Nextcloud,
-  Rocket.Chat, Linagora, LPI, European Open Source Academy). Checked by name, by
-  the UN's alt-text slugs and by source URL. Probably means the logo wall is not
-  the authoritative list. Unresolved.
+- **The 10 organizations this site's earlier copy named are NOT a gap in the
+  transcription — RESOLVED 2026-08-21.** Open Knowledge, OpenInfra, Matrix,
+  Sovereign Tech Agency, ZenDiS, Nextcloud, Rocket.Chat, Linagora, LPI and the
+  European Open Source Academy are all still absent from the UN's page, searched
+  by name and by logo-slug across the whole endorser region — and that region
+  still holds exactly **154 images**, unchanged since the snapshot was taken, with
+  still no organization names as text. So the snapshot is faithful and those ten
+  came from some other source. Recorded in the file's own `recheck` field; re-run
+  the same check rather than trusting this line.
 
 `/resources/guide` is the long-form UN-system briefing, ported from the retired
 `old-unnyc.wegov.nyc` hub. **That host is no longer load-bearing.**
