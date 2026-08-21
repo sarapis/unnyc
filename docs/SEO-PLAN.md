@@ -191,10 +191,17 @@ Publishing these at stable URLs with provenance, licence and generated date
 turns the site from *optimized* into *citable* — the thing a model quotes
 because it is the only place the data exists. Add `llms.txt` alongside.
 
-⚠ **Licence check first, per dataset.** The Civic Tech Field Guide slice is
-CC BY-NC-SA, so redistribution carries share-alike obligations; GovOSS is
-CC BY 4.0; the endorser transcription is our own work. These are not
-interchangeable and the differences are already documented in `CLAUDE.md`.
+**Licence position, rechecked 2026-08-21 — there is no blocker.** The Civic Tech
+Field Guide is **CC BY 4.0**, not CC BY-NC-SA: it relicensed between 2026-07-03
+and 2026-07-25, and this repo had gone on asserting the old licence, on the live
+page, because the value was a hardcoded literal in the fetch script. GovOSS is
+CC BY 4.0 (verified from its own footer), and the endorser transcription is our
+own work. So republishing any of these needs **attribution and nothing else** — no
+non-commercial restriction, no share-alike.
+
+⚠ Still check per dataset before publishing, and check it at the SOURCE. The
+earlier version of this paragraph was confidently wrong for two weeks, which is
+the whole argument for `detectLicence()` in `scripts/fetch-ctfg-projects.mjs`.
 
 ## Phase 5 — off-site and entity presence
 

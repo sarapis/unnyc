@@ -241,8 +241,12 @@ all built from the content files. Phase 2's length pass is done as well: eleven 
 six content files, none now over the length a search result or social card shows,
 with a **new `lint:content` warning** (check 6) to catch the next drift.
 Phases 4-6 are open — the citable-datasets bet, off-site presence, performance.
-The only decision still outstanding is phase 4's licence question; the other two
-from that list are resolved.
+⚠ **Phase 4's licence question is CLOSED and the answer was not what this repo
+said.** CTFG relicensed from CC BY-NC-SA to **CC BY 4.0** in July 2026; the repo
+kept asserting NC-SA (on the live page) because the licence was a hardcoded
+literal in the fetch script. It is now READ from civictech.guide, and both map
+data sources are CC BY 4.0 — attribution, no share-alike, commercial use fine.
+Nothing blocks phase 4.
 
 1. **A photo for homepage card 1** — still the favicon placeholder, now first.
    `public/images/success/tokyo.jpeg` is paid-for and unused but has been rejected

@@ -223,8 +223,12 @@ export function getOspoMapPoints() {
  * They fail INDEPENDENTLY too: counts without geometry still render the credit line
  * and the totals, which is more useful than an all-or-nothing blank.
  *
- * GovOSS data is CC BY 4.0 — note that is a DIFFERENT licence from the CTFG layer
- * beside it (CC BY-NC-SA 4.0), so the two credits are not interchangeable.
+ * GovOSS data is CC BY 4.0, and so is the CTFG layer beside it since CTFG
+ * relicensed off CC BY-NC-SA in July 2026. Matching strings, still two separate
+ * facts: the credit line names each source's licence from that source's own
+ * snapshot, and must keep doing so. ⚠ Read a licence at the source, never from a
+ * comment like this one — a stale literal in the CTFG fetch script published the
+ * wrong licence on /start for two weeks.
  */
 export function getGovossCatalogues() {
     const file = path.join(CONTENT_DIR, 'govoss-catalogues.json');

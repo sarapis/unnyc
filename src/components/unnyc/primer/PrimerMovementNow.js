@@ -46,10 +46,17 @@ export default function PrimerMovementNow({ mapMarkers, mapLegend, ctfg, govoss,
                     numbers to reconcile.
 
                     ⚠ What could NOT be shortened away: attribution is a LICENCE TERM
-                    for two of these, and the two licences differ — GovOSS is CC BY 4.0,
-                    CTFG is CC BY-NC-SA 4.0. Source name, link and licence stay for
-                    both, and the licence strings are read from the snapshots so they
-                    cannot drift from the data they describe.
+                    for two of these — GovOSS and CTFG are both CC BY 4.0 as of
+                    2026-08-21, CTFG having relicensed off CC BY-NC-SA in July 2026.
+                    Source name, link and licence stay for both, per source: they match
+                    today by coincidence, not by rule.
+
+                    The licence strings are read from the snapshots, which stops the
+                    PAGE drifting from the snapshot — but not the snapshot from the
+                    licensor. That second gap is what let this component render
+                    "CC BY-NC-SA 4.0" for two weeks after CTFG had stopped using it.
+                    scripts/fetch-ctfg-projects.mjs now reads the licence off their
+                    site; see detectLicence() there.
 
                     Dropping the counts also retired a caveat: the old line had to
                     explain that 256 entries sit in cross-border catalogues no country

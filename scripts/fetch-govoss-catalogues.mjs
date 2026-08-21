@@ -16,8 +16,19 @@
  * not go half-empty if GovOSS is slow, the data deserves a human gate before it goes
  * on an advocacy page, and a snapshot is reviewable where a runtime fetch is not.
  *
- * GovOSS catalogue data is CC BY 4.0 (NOT the CTFG layer's NC-SA) — attribution is a
- * licence term. Boundaries are Natural Earth, public domain.
+ * GovOSS catalogue data is CC BY 4.0 — its own footer: "Catalogue data CC BY 4.0;
+ * code MIT. Individual entries remain under the terms of their own sources."
+ * Attribution is a licence term. Boundaries are Natural Earth, public domain.
+ *
+ * ⚠ THIS LICENCE IS A LITERAL HERE, AND THAT IS THE RISK THE CTFG SCRIPT JUST GOT
+ * BITTEN BY: it asserted CC BY-NC-SA long after CTFG had relicensed, and a refresh
+ * re-stamped the stale value every time. That script now reads the licence off the
+ * site (`detectLicence()`); this one cannot use the same trick, because GovOSS
+ * publishes NO `rel="license"` anchor — the only Creative Commons strings on its
+ * pages are facet values for the licences of the catalogued PROJECTS, which is a
+ * different fact entirely and would parse into a confidently wrong answer.
+ * Verified by hand against the footer on 2026-08-21. Re-read it when you refresh,
+ * and move the date.
  */
 import { writeFileSync } from 'node:fs';
 
