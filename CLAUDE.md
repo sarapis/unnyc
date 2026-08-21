@@ -616,6 +616,12 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   - Background is `--wg-brand`, one step lighter than the footer's
     `--wg-brand-deep`, with the header's orange rule repeated on top — so the two
     dark bands read as distinct rather than as one over-tall footer.
+  - **The copy names the sender as `opensource.nyc`**, not WeGovNYC and Sarapis
+    (owner decision 2026-08-21), even though it is their Payload install that
+    receives the address. The footer names both organizations on every page, so
+    the reader can still find out who is behind it. ⚠ Still no promise of
+    frequency or unsubscribe: neither exists, and either would be a build rather
+    than a wording change.
   - ⚠ **Cannot be tested from localhost** — that origin is not in Payload's CORS
     allowlist, so the POST is blocked and it shows its generic error. CORS from
     the live origin IS verified: an intentionally invalid POST returns Payload's
