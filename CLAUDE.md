@@ -578,41 +578,45 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   `noindex`, and a self-referencing canonical on a noindex page tells a crawler
   two contradictory things, so it keeps a hand-written block with a comment
   saying exactly that. Don't "fix" it.
-- **The site-wide updates bar is the FOURTH Payload write path** —
-  `UpdatesBar.js`, mounted once in `layout.js`, posting to
+- **The site-wide email capture is the FOURTH Payload write path** —
+  `UpdatesBar.js`, rendered **IN THE FLOW between `<main>` and the footer** in
+  `layout.js` (the ordering there is what puts it there), posting to
   **`campaign-signups`**: the same collection the "get updates" checkbox on
-  `/campaign/sign` has always used, so no CMS change was needed. `source`
-  carries the pathname the reader was on, and the sign-form path sends
-  `/campaign`, so the two are distinguishable in the admin.
-  - **A bar, not a modal, deliberately.** Nothing is covered: an interstitial
-    over content on mobile is a negative ranking signal, and this site's job is
-    to be read and forwarded. It also means no focus trap, no `aria-modal` and
-    no return-focus — if it ever becomes a modal, all of that becomes required.
-  - **It waits for engagement**: half the page scrolled AND 8s dwell, or 25s
-    either way. ⚠ The dwell floor is not decoration — "50% scrolled" fires almost
-    instantly on a short page like `/`, so scroll depth alone made it an
-    on-arrival popup on exactly the pages where that is worst.
+  `/campaign/sign` has always used, so no CMS change was needed. `source` carries
+  the pathname the reader was on, and the sign-form path sends `/campaign`, so
+  the two are distinguishable in the admin.
+  - ⚠ **It was a FIXED OVERLAY for one commit, and moving it in-flow deleted most
+    of it.** The overlay needed a scroll listener, an 8s dwell floor, a 25s
+    backstop, a slide-in keyframe, a `prefers-reduced-motion` exception, a
+    dismiss button, two localStorage keys, an Escape handler and a mobile height
+    budget — because a thing that covers the page has to earn its place and then
+    get out of the way. In the flow it covers nothing, so all of that is gone.
+    Don't reintroduce any of it piecemeal.
+  - ⚠ **No reveal animation and no delay, deliberately.** In-flow content that
+    appears after mount shifts the page under the reader — a CLS penalty, the
+    mirror image of the overlay's interstitial problem. It renders immediately,
+    server-side included, so there is no shift and no JS needed to see it.
+  - ⚠ **No localStorage.** In-flow there is nothing to nag, so nothing to
+    remember; reading storage to hide it would also make the server and client
+    render different things (a hydration mismatch) for no reader benefit.
+    Success state lasts the session.
   - **Suppressed on five routes** (`SUPPRESSED` in the component): both campaign
     forms and `/contact` already take an email — asking twice on one page reads
-    as a broken site — and both printables are meant to reach paper. There is a
-    `@media print` rule too, so it can never land in a PDF of any other page.
-  - ⚠ **Mobile height is a measured constraint, not styling.** The first version
-    came to 322px on a 375×812 phone — **40% of the viewport**, which IS the
-    intrusive interstitial the bar exists to avoid. Hiding one line of copy and
-    putting the input and button on one row brought it to 215px (26.5%).
-    Re-measure `el.offsetHeight / innerHeight` if you touch those rules.
-  - Its CSS is in **`@layer site`**, like the nav, for the same reason: it renders
-    inside `.unnyc-page`, so `.unnyc-page button { border: none; background:
-    none }` (0,1,1) would beat any single-class rule in `@layer unnyc`.
+    as a broken site — and both printables are meant to reach paper. The
+    `@media print` rule matters MORE now, not less: in the flow this would
+    otherwise print at the end of every other page.
+  - Its CSS is in **`@layer site`**, like the nav and footer, for the same
+    reason: it renders inside `.unnyc-page`, so `.unnyc-page button { border:
+    none; background: none }` (0,1,1) would beat any single-class rule in
+    `@layer unnyc`.
+  - Background is `--wg-brand`, one step lighter than the footer's
+    `--wg-brand-deep`, with the header's orange rule repeated on top — so the two
+    dark bands read as distinct rather than as one over-tall footer.
   - ⚠ **Cannot be tested from localhost** — that origin is not in Payload's CORS
-    allowlist, so the POST is blocked and the bar shows its generic error.
-    CORS from the live origin IS verified: an intentionally invalid POST returns
-    Payload's 400 "invalid: Email", which proves the request reaches the server
-    without creating a record. Do that rather than submitting a real address.
-  - ⚠ **The scroll half of the trigger is UNVERIFIED and cannot be verified with
-    these tools** — the preview pane delivers no scroll events at all (see the
-    continuation prompt). The 25s backstop is confirmed on production; whether
-    "half the page + 8s" fires correctly needs a person watching.
+    allowlist, so the POST is blocked and it shows its generic error. CORS from
+    the live origin IS verified: an intentionally invalid POST returns Payload's
+    400 "invalid: Email", which proves the request reaches the server without
+    creating a record. Do that rather than submitting a real address.
 - **The contact form is the third Payload write path** (`/contact`, added
   2026-08-07). It posts to `contact-submissions` — a collection that already
   existed for sarapis.org, with exactly the `name`/`email`/`message` fields

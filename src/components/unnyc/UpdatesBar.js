@@ -1,45 +1,52 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { createSubmission } from '@/lib/api';
 
 /**
- * UpdatesBar — the site-wide email capture, mounted once in layout.js.
+ * UpdatesBar — the site-wide email capture, rendered IN THE FLOW between the
+ * content and the footer (mounted in layout.js, between <main> and
+ * <UnnycFooter />).
  *
- * ── A BAR, NOT A MODAL, AND THAT IS THE MAIN DECISION HERE ──────────────────
- * Nothing is covered, nothing is blocked, and the page underneath stays usable.
- * Three reasons, in order of weight:
- *   1. Google treats interstitials that cover content on mobile as a negative
- *      signal. Blocking the page after a week spent on canonicals, structured
- *      data and the font critical path would be self-defeating.
- *   2. This site's job is to be READ and forwarded. Interrupting somebody
- *      mid-argument costs more attention than it captures.
- *   3. A non-modal region needs no focus trap, no aria-modal, and no
- *      return-focus-on-close — machinery that is easy to get subtly wrong for
- *      keyboard and screen-reader users, and invisible when you do.
- * If this ever becomes a modal, all of point 3 becomes required work.
+ * ── IT USED TO BE A FIXED OVERLAY, AND MOVING IT IN-FLOW DELETED MOST OF IT ──
+ * The first version was `position: fixed` at the bottom of the viewport, which
+ * needed: a scroll-depth listener, an 8s dwell floor, a 25s backstop, a slide-in
+ * animation, a `prefers-reduced-motion` exception, a dismiss button, two
+ * localStorage keys, an Escape handler, and a mobile height budget — because a
+ * thing that covers the page has to earn its place and then get out of the way.
+ * In the flow it covers nothing, so every one of those is gone.
  *
- * ── IT WAITS FOR ENGAGEMENT ─────────────────────────────────────────────────
- * Half the page read AND at least MIN_DWELL on it, or MAX_WAIT elapsed either
- * way. The dwell floor exists because "50% scrolled" fires almost immediately on
- * a short page like `/` or `/campaign` — scroll depth alone would have made this
- * an on-arrival popup on exactly the pages where that is most annoying.
+ * What replaces the trigger is the layout itself: a reader reaches this by
+ * getting to the end of the page, which IS the engagement signal the timers were
+ * approximating. And it cannot be an intrusive interstitial, which was the whole
+ * anxiety behind the original design.
+ *
+ * ⚠ DO NOT ADD A REVEAL ANIMATION OR A DELAY. In-flow content that appears after
+ * mount shifts the page under the reader — the exact opposite of the fixed
+ * version's problem, and a Core Web Vitals penalty (CLS) rather than an
+ * interstitial one. It renders immediately, server-side included.
+ *
+ * ⚠ NO localStorage, DELIBERATELY. The fixed version remembered dismissal and
+ * success so it would stop nagging. In-flow there is nothing to nag: the form
+ * simply sits at the end of the page like any other. Reading storage to hide it
+ * would also mean the server and the client render different things — a
+ * hydration mismatch — for no reader benefit. Success state lasts the session.
  *
  * ── WHERE IT DOESN'T APPEAR ─────────────────────────────────────────────────
- * SUPPRESSED (below): the two campaign forms and /contact already take an email,
- * and asking twice on one page reads as a broken site rather than as enthusiasm;
- * both printables are meant to reach paper. Print is also handled in CSS, so it
- * can never end up in a PDF.
+ * SUPPRESSED (below) on the two campaign forms and /contact, which already take
+ * an email — asking twice on one page reads as a broken site — and on both
+ * printables, which are meant to reach paper. The `@media print` rule still
+ * matters too: in-flow, this WOULD print at the end of any other page.
  *
  * ── SUBMISSION ──────────────────────────────────────────────────────────────
  * Payload's `campaign-signups`, the SAME collection the "get updates" checkbox
  * on /campaign/sign has always used — no new collection, no CMS change, no
- * secret. `source` carries the actual pathname, so the admin shows which page
- * earned each address; the sign-form path sends '/campaign', so the two are
- * distinguishable.
+ * secret. `source` carries the pathname, so the admin shows which page earned
+ * each address; the sign-form path sends '/campaign'.
  * ⚠ It CANNOT be tested from localhost: that origin is not in Payload's CORS
- * allowlist, so the POST is blocked by the browser and this shows its generic
- * error. That is expected, not a bug — verify on the deployed origin.
+ * allowlist, so the POST is blocked and this shows its generic error. To check
+ * the live origin without creating a record, POST an intentionally invalid body
+ * and confirm Payload answers 400 "invalid: Email" rather than a network error.
  */
 
 /** Routes that already ask for an email, and the two printables. */
@@ -51,94 +58,18 @@ const SUPPRESSED = new Set([
     '/contact',
 ]);
 
-const STORAGE_DISMISSED = 'unnyc:updates:dismissed';
-const STORAGE_SUBSCRIBED = 'unnyc:updates:subscribed';
-
-const MIN_DWELL_MS = 8000;   // never sooner than this, however fast they scroll
-const MAX_WAIT_MS = 25000;   // ...and no later than this, however little they do
-const SCROLL_FRACTION = 0.5; // half the scrollable height
-
 /** Deliberately loose. The server is the real validator and an over-clever
  *  regex rejects addresses that work — this only catches the obvious typo
  *  before a round trip. */
 const LOOKS_LIKE_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/** localStorage throws in private-mode Safari and when storage is full. A
- *  reader who cannot be remembered should still see the bar once, not crash. */
-function remembered(key) {
-    try {
-        return window.localStorage.getItem(key) === '1';
-    } catch {
-        return false;
-    }
-}
-function remember(key) {
-    try {
-        window.localStorage.setItem(key, '1');
-    } catch {
-        /* ignore — worst case it appears again next visit */
-    }
-}
-
 export default function UpdatesBar({ copy, campaign = 'un-open-source' }) {
     const pathname = usePathname();
-    const [visible, setVisible] = useState(false);
     const [status, setStatus] = useState('idle'); // idle | submitting | success | error
     const [message, setMessage] = useState('');
     const [email, setEmail] = useState('');
-    const shown = useRef(false);
 
-    const suppressed = SUPPRESSED.has(pathname);
-
-    useEffect(() => {
-        if (suppressed || shown.current) return;
-        if (remembered(STORAGE_DISMISSED) || remembered(STORAGE_SUBSCRIBED)) return;
-
-        const mountedAt = Date.now();
-        let dwellTimer;
-        const show = () => {
-            if (shown.current) return;
-            shown.current = true;
-            setVisible(true);
-        };
-
-        // Fires as soon as BOTH conditions hold: if they scroll early, wait out
-        // the dwell floor; if the dwell has already passed, show immediately.
-        const onScroll = () => {
-            const doc = document.documentElement;
-            const scrollable = doc.scrollHeight - window.innerHeight;
-            const progress = scrollable > 0 ? window.scrollY / scrollable : 1;
-            if (progress < SCROLL_FRACTION) return;
-            const waited = Date.now() - mountedAt;
-            if (waited >= MIN_DWELL_MS) show();
-            else if (!dwellTimer) dwellTimer = setTimeout(show, MIN_DWELL_MS - waited);
-        };
-
-        const backstop = setTimeout(show, MAX_WAIT_MS);
-        window.addEventListener('scroll', onScroll, { passive: true });
-        return () => {
-            window.removeEventListener('scroll', onScroll);
-            clearTimeout(backstop);
-            clearTimeout(dwellTimer);
-        };
-    }, [suppressed, pathname]);
-
-    const dismiss = useCallback(() => {
-        setVisible(false);
-        remember(STORAGE_DISMISSED);
-    }, []);
-
-    // Escape closes it. Non-modal, so this is a convenience rather than the
-    // requirement it would be for a dialog — but a reader who reaches for Escape
-    // should not have to hunt for the button.
-    useEffect(() => {
-        if (!visible) return;
-        const onKey = (e) => {
-            if (e.key === 'Escape') dismiss();
-        };
-        window.addEventListener('keydown', onKey);
-        return () => window.removeEventListener('keydown', onKey);
-    }, [visible, dismiss]);
+    if (SUPPRESSED.has(pathname) || !copy) return null;
 
     async function onSubmit(e) {
         e.preventDefault();
@@ -162,23 +93,14 @@ export default function UpdatesBar({ copy, campaign = 'un-open-source' }) {
             });
             setStatus('success');
             setMessage(copy.success);
-            remember(STORAGE_SUBSCRIBED);
         } catch {
             setStatus('error');
             setMessage(copy.error);
         }
     }
 
-    if (suppressed || !visible) return null;
-
     return (
-        <aside
-            className="unnyc-updates"
-            // A labelled region, NOT role="dialog": nothing is trapped and the
-            // page behind it is fully usable, so announcing a dialog would
-            // misdescribe it to a screen reader.
-            aria-label={copy.title}
-        >
+        <aside className="unnyc-updates" aria-label={copy.title}>
             <div className="unnyc-updates__inner">
                 {status === 'success' ? (
                     <p className="unnyc-updates__done" role="status">
@@ -228,15 +150,6 @@ export default function UpdatesBar({ copy, campaign = 'un-open-source' }) {
                 <p className="unnyc-updates__status" role="status" aria-live="polite">
                     {status === 'error' ? message : ''}
                 </p>
-
-                <button
-                    type="button"
-                    className="unnyc-updates__close"
-                    onClick={dismiss}
-                    aria-label={copy.dismiss}
-                >
-                    <span aria-hidden="true">×</span>
-                </button>
             </div>
         </aside>
     );
