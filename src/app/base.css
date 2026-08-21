@@ -141,15 +141,24 @@
      otherwise win. Don't re-add colours to .unnyc-footer__logo-* in unnyc.css. */
   .unnyc-nav__logo,
   .unnyc-page .unnyc-footer__logo {
-    display: flex;
-    align-items: baseline;
-    gap: 1px;
+    /* ⚠ NOT `display: flex` any more, and that is the whole point: a flex
+       container DISCARDS whitespace-only children, so the `{' '}` between the
+       three spans would vanish and textContent would read "UNOpen SourceNYC".
+       inline-block hugs the glyphs the way `width: fit-content` did, keeps the
+       spans on one baseline for free, and lets real space characters do the
+       spacing. */
+    display: inline-block;
+    white-space: nowrap;
     flex-shrink: 0;
     /* Hug the glyphs so the wordmark box is the same in both places (the
        footer one would otherwise stretch to fill its column). */
     width: fit-content;
     font-family: var(--wg-font-display, 'DM Serif Display', Georgia, serif);
     font-weight: 400;
+    /* Flat again. The clamp here existed only while the wordmark was the
+       18-character "UN Open Source NYC" and had to shrink to clear the
+       hamburger; "UN+NYC" is six characters and needs no such help, and shrinking
+       it on mobile for no reason just made the mark smaller than it was. */
     font-size: 1.45rem;
     letter-spacing: 0.5px;
     text-decoration: none;
@@ -167,6 +176,37 @@
   .unnyc-nav__logo-nyc,
   .unnyc-page .unnyc-footer__logo-nyc {
     color: var(--wg-accent-warm, #d4a843);
+  }
+
+  /* The middle words carry no flag colour — the two accents are what say "UN"
+     and "NYC", and colouring all three parts would leave nothing emphasised.
+     They also stay at the wordmark's base weight while UN/NYC go heavier, so the
+     flag words carry the emphasis in both colour and weight. */
+  .unnyc-nav__logo-mid,
+  .unnyc-page .unnyc-footer__logo-mid {
+    color: var(--wg-text-on-brand, #eef3f9);
+  }
+
+  /* ⚠ DO NOT REACH FOR font-weight HERE. DM Serif Display ships ONE weight
+     (400) — which is why src/app/fonts.js asks for `weight: '400'` and nothing
+     else — so 700 selects no bold cut and Chrome does not synthesise one either:
+     measured, "UN" is 51.56px wide at both 400 and 700, and the rendered nav was
+     pixel-identical. Bolding the flag words is not available on this face.
+
+     It does not need to be. CASE carries the contrast now: caps UN and NYC
+     against lowercase "opensource", in one family, with the dots separating them.
+     An earlier attempt set the middle words in Inter to fake a weight
+     difference — one wordmark in two families, which is a thing to notice rather
+     than a thing to read. Reverted. */
+  /* The join. Recessive and optically spaced so it reads as a link between the
+     two names rather than as a third word: a `+` sits high and tight in this
+     serif, so it gets a little air either side and a touch less weight of colour.
+     ⚠ The margins are OPTICAL ONLY — textContent stays exactly "UN+NYC", so a
+     copy-paste and any text extractor get the mark itself. */
+  .unnyc-nav__logo-mid,
+  .unnyc-page .unnyc-footer__logo-mid {
+    margin: 0 0.06em;
+    opacity: 0.72;
   }
 
   .unnyc-nav__menu {
