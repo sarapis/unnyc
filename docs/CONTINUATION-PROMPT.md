@@ -240,7 +240,12 @@ and the 18 OSPOs, `Article` on the guide, breadcrumbs on the four nested routes)
 all built from the content files. Phase 2's length pass is done as well: eleven title/description fields across
 six content files, none now over the length a search result or social card shows,
 with a **new `lint:content` warning** (check 6) to catch the next drift.
-Phases 4-6 are open — the citable-datasets bet, off-site presence, performance.
+Phase 4 shipped 2026-08-21: four datasets at `/data/*.json` with a
+`/data/index.json` catalogue, a generated `/llms.txt`, and `Dataset` JSON-LD on
+the two pages whose data it is. Our two datasets are **CC BY 4.0** (owner
+decision); the two upstream slices say credit them, not us. ⚠ **Nothing on the
+site links to any of it yet** — a human path in is the one loose end.
+Phases 5-6 are open — off-site presence, performance.
 ⚠ **Phase 4's licence question is CLOSED and the answer was not what this repo
 said.** CTFG relicensed from CC BY-NC-SA to **CC BY 4.0** in July 2026; the repo
 kept asserting NC-SA (on the live page) because the licence was a hardcoded

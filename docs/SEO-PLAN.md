@@ -176,7 +176,7 @@ Source Principles > The UN Open Source Principles", because both routes read one
 content file. Patched with a `crumb` override on that route entry — a symptom
 fix, not the real one.
 
-## Phase 4 — the AI-discoverability bet
+## Phase 4 — the AI-discoverability bet (DONE 2026-08-21)
 
 This is the highest-leverage item and the only one that is not housekeeping.
 
@@ -190,6 +190,45 @@ government open source programmes, and 13 country catalogues.
 Publishing these at stable URLs with provenance, licence and generated date
 turns the site from *optimized* into *citable* — the thing a model quotes
 because it is the only place the data exists. Add `llms.txt` alongside.
+
+**Shipped:** four datasets at stable URLs, catalogued at `/data/index.json`,
+plus `/llms.txt`. All built from the same `content/*` files the pages render —
+never copies — and prerendered at build.
+
+| URL | Records | Whose | Licence |
+|---|---|---|---|
+| `/data/un-endorsers.json` | 150 | ours | CC BY 4.0 |
+| `/data/public-sector-ospos.json` | 18 | ours | CC BY 4.0 |
+| `/data/government-open-source-programs.json` | 62 | Civic Tech Field Guide | CC BY 4.0, credit upstream |
+| `/data/government-code-catalogues.json` | 13 | GovOSS | CC BY 4.0, credit upstream |
+
+- **Every payload states its own terms**, because "who to credit" is a different
+  question for each. Our two are CC BY 4.0 by owner decision (2026-08-21),
+  matching what Sarapis already does with GovOSS's catalogue data. The upstream
+  two say plainly: credit them, not this site. ⚠ Do not collapse the four into
+  one shared licence constant — they agree today by coincidence, and CTFG's was a
+  different licence six weeks ago.
+- **Facts vs compilation, stated in the payload.** Which organizations endorsed
+  is the UN's fact and we claim nothing over it; the licence covers the
+  transcription and the sector classification.
+- **`/llms.txt` is GENERATED** from `ROUTES` and the content files, not written
+  by hand — a hand-kept index of a 13-route site is wrong within a fortnight, and
+  this repo has just spent a week proving that a hardcoded fact nobody re-reads
+  becomes a false one. It omits the noindex printable, like the sitemap.
+- **`Dataset` JSON-LD on `/principles` and `/resources`** links each page to its
+  published JSON, built from the same envelope so the licence and count in the
+  markup are the values the file serves. ⚠ Only for OUR datasets — marking up the
+  upstream two would nominate this site as the thing to cite for someone else's
+  data, which those payloads explicitly tell you not to do.
+- `Access-Control-Allow-Origin: *` on the data routes: published data a browser
+  can't fetch cross-origin is half published. Safe — static public files, no
+  credentials, the opposite of the CMS write endpoints.
+
+**Still open from this phase:** nothing machine-facing, but **no human-visible
+link points at `/data` or `/llms.txt`**. Discovery today is the llms.txt
+convention plus the `Dataset` markup. A line on `/resources` — the site's own
+reference directory — is the obvious home, and is new visible copy, so it was
+left as a decision rather than taken.
 
 **Licence position, rechecked 2026-08-21 — there is no blocker.** The Civic Tech
 Field Guide is **CC BY 4.0**, not CC BY-NC-SA: it relicensed between 2026-07-03

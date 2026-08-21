@@ -78,6 +78,20 @@ no CMS, no sync step.
 | `/contact` | `content/contact.md` |
 
 Full conventions, markers and gotchas: **[docs/EDITING-CONTENT.md](docs/EDITING-CONTENT.md)**.
+
+## Machine-readable
+
+| URL | What |
+|---|---|
+| `/robots.txt`, `/sitemap.xml` | generated from the one route table in `src/lib/seo.js` |
+| `/llms.txt` | what the site is, every page, every dataset — generated, not hand-kept |
+| `/data/index.json` | catalogue of the four published datasets |
+| `/data/*.json` | the datasets themselves: 150 UN endorsers, 18 public sector OSPOs, 62 CTFG government programmes, 13 national code catalogues |
+| `/og/*.png` | generated 1200×630 link previews, one per route |
+
+Each dataset carries its own licence and attribution — ours are CC BY 4.0, the
+two redistributed slices credit their upstream source. See
+[docs/SEO-PLAN.md](docs/SEO-PLAN.md).
 What's still in components (nav labels, footer, form messages):
 [docs/CONTENT-MAP.md](docs/CONTENT-MAP.md).
 
