@@ -459,6 +459,18 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   Crossref and OpenAlex — the journal is otherwise subscription. Where a licence
   requires credit, the credit must actually RENDER (the figcaption on
   /resources), not merely sit in CREDITS.md.
+- **Fonts are SELF-HOSTED by `next/font`** (`src/app/fonts.js`), not fetched from
+  Google. The `@import` that used to head `unnyc.css` was the first line of a
+  render-blocking stylesheet and chained two cold third-party connections before
+  text could paint, while asking for Inter 300 and a DM Serif italic that appear
+  nowhere in the CSS. ⚠ **The token override in `unnyc.css` is the file's ONLY
+  UNLAYERED RULE, and that is load-bearing**: @wegovnyc/design-tokens declares
+  `--wg-font-display`/`--wg-font-body` at `:root` with no layer, and unlayered
+  styles beat EVERY layer — the same override inside `@layer unnyc` would lose
+  silently and the fonts would simply never load. ⚠ Also note this makes a BUILD
+  depend on fonts.googleapis being reachable; that is a deliberate trade (it
+  replaces a per-visitor dependency with a per-build one), reasoned through in
+  `fonts.js`.
 - **Icons are inline SVG, one set, themeable** — `src/components/unnyc/UnnycIcon.js`,
   paths verbatim from Lucide v1.30.0 (ISC), 24×24 canvas, 2px stroke. Content
   refers to them by name (`icon: shield-check` in `content/principles.md` and

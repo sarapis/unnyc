@@ -245,7 +245,15 @@ Phase 4 shipped 2026-08-21: four datasets at `/data/*.json` with a
 the two pages whose data it is. Our two datasets are **CC BY 4.0** (owner
 decision); the two upstream slices say credit them, not us. ⚠ **Nothing on the
 site links to any of it yet** — a human path in is the one loose end.
-Phases 5-6 are open — off-site presence, performance.
+Phase 6 shipped 2026-08-21: the Google Fonts `@import` is gone — both faces are
+self-hosted by `next/font` (`src/app/fonts.js`), which removed two cold
+third-party connections from the critical path and dropped a weight and an italic
+the site never used. AVIF enabled. ⚠ The token override in `unnyc.css` is
+UNLAYERED and must stay so: the design system declares those tokens at `:root`
+unlayered, and unlayered beats every layer.
+Phase 5 is the only one left — Search Console, IndexNow, a CTFG listing, and
+cross-links from wegov.nyc and sarapis.org — and most of it needs account access,
+not code.
 ⚠ **Phase 4's licence question is CLOSED and the answer was not what this repo
 said.** CTFG relicensed from CC BY-NC-SA to **CC BY 4.0** in July 2026; the repo
 kept asserting NC-SA (on the live page) because the licence was a hardcoded
