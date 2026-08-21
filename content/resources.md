@@ -25,9 +25,9 @@ title: "Related Resources"
 lede: "Where to read further, and who to call — primary sources from the UN and the City, the communities doing this work, and a directory of public sector open source programme offices."
 meta:
   title: "Related Resources — UNNYC"
-  description: "A resource directory and the people to call. Looking for case studies? See what success looks like."
+  description: "Primary sources from the UN and the City, communities of practice, funders, and a directory of public sector open source programme offices."
   ogTitle: "Related Resources — UNNYC"
-  ogDescription: "The resource directory and the people to call for the UNNYC campaign."
+  ogDescription: "Primary sources, communities of practice, who to call, and a directory of public sector open source programme offices."
 # Jump menu (UnnycSectionNav) — `id` must match an id rendered on the page.
 sectionNav:
   - id: resources

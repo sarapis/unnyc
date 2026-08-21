@@ -39,15 +39,17 @@ bare text, and og tags are also what several AI systems read when summarizing a
 link. For a campaign that exists to be forwarded, this is the largest visible
 gap on the site.
 
-Measured lengths, for phase 2:
+Measured lengths, for phase 2 — **all fixed**, kept here as the record of what
+had drifted:
 
 | Route | Title | Description | |
 |---|---|---|---|
-| `/` | 70 | **232** | both over; ~60 / ~160 is where SERPs truncate |
-| `/campaign/sign` | 71 | **215** | both over |
-| `/principles` | 37 | 84 | description thin, and duplicated |
-| `/resources` | 25 | 99 | description thin |
-| `/contact` | 15 | 78 | description thin |
+| `/` | 70 → 53 | **232 → 150** | ~60 / ~160 is where SERPs truncate |
+| `/campaign/sign` | 71 → 56 | **215 → 158** | `ogTitle` 71 → 48 too, which also improved its preview image |
+| `/crosswalk` | 40 | 171 → 139 | |
+| `/principles` | 37 | 84 → 146 | was thin *and* duplicated |
+| `/resources` | 25 | 99 → 139 | `ogDescription` 69 → 118 |
+| `/contact` | 15 | 78 → 149 | `ogDescription` 55 → 125 |
 
 Content depth is not a problem: 900-1,500 words on each of the five main pages,
 all server-rendered as static HTML with no JS gate — which is the single most
@@ -114,8 +116,14 @@ Earlier the same day: canonical tags on all 12 indexable routes (PR #49).
    Its `<h1>` still reads "The UN Open Source Principles", deliberately: on a
    printed sheet the subject *is* the title, and that costs nothing once the
    metadata and the canonical distinguish the routes.
-3. **Length pass** on the five routes in the table above — still open. (The new
-   `metaDocument` block is already inside the 60/160 targets.)
+3. ~~**Length pass**~~ **DONE 2026-08-20.** Eleven fields across six content
+   files. Nothing on any route is now over target, and `lint:content` **warns**
+   if that changes — a warning and not an error, because copy length is a
+   judgement call and a build should never fail over four characters.
+   Four titles remain under the soft minimum and were left alone:
+   `campaign` (23), `resources` (25), `contact` (15) and `contact.ogTitle` (15).
+   A short title is often the right one — "Contact — UNNYC" needs nothing more —
+   and padding it to hit a number would make the copy worse.
 
 ## Phase 3 — structured data (DONE 2026-08-20)
 

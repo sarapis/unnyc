@@ -99,8 +99,13 @@ row mid-case-study) and `{{principles}}` (sign.md, the eight-principles list).
 runs in `prebuild` **and** as the `Validate content` GitHub Action on every push
 and PR — the PR run is the one that matters, since a push to `main` deploys with
 no gate. It checks YAML validity, unterminated quotes, frontmatter slugs missing
-their `## slug` section, duplicate `### Label` keys, and unknown `gloss:` refs
-(that last one warns only). Errors exit 1.
+their `## slug` section, and duplicate `### Label` keys. Two checks WARN rather
+than fail: unknown `gloss:` refs, and `meta:`/`meta*:` fields outside the length
+a search result or social card actually shows (~60 title, ~160 description).
+The length check is a warning by design — copy length is a judgement call and a
+build should never fail over four characters — but it is the only thing watching:
+five routes had drifted before it existed, including a 232-character description.
+Errors exit 1.
 
 ## The CTFG map layer (MERGED and live as of `7faaf97`, 2026-08-07)
 

@@ -3,7 +3,7 @@ title: "New York Rents the Software It Should Own"
 lede: "The city is putting two citywide IT purchasing contracts in place right now — [$1.2 billion with SHI](https://databook.nyc/procurement/contract/5364919) and [$800 million with CDW](https://databook.nyc/procurement/contract/5363428) — to go on renting proprietary software year after year, with nothing owned at the end, nothing the city can inspect or fix, and nothing it can afford to walk away from. Cities around the world have replaced these systems with faster, better and cheaper open source alternatives. Here are six reasons New York should do the same."
 meta:
   title: "Open Source for NYC: Six Reasons — UNNYC"
-  description: "Six reasons New York City should switch from renting proprietary software to owning open source systems — savings, control, security, talent, reuse, and global leadership."
+  description: "Six reasons New York City should own its software instead of renting it — savings, control, security, talent, reuse, and global leadership."
   ogTitle: "Six Reasons New York Should Run on Open Source"
   ogDescription: "The city rents the software it should own. What switching to open source would save, unlock, and signal — with the contract records to check."
 # The per-principle sections that used to live here MOVED to content/principles.md

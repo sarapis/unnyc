@@ -37,6 +37,12 @@
  *
  *   warnings (reported, do not fail)
  *     5. a `[text](gloss:slug)` link with no matching term in start.md
+ *     6. a `meta:` field outside the length search engines and social cards
+ *        actually show. A WARNING and not an error on purpose: copy length is a
+ *        judgement call, and a build should never fail because a description
+ *        gained four characters. It exists because five routes had drifted —
+ *        a 232-character description that Google truncates at ~160, and two
+ *        titles over 60 — and nothing was watching.
  *
  * Deliberately NOT checked: a `## section` with no frontmatter slug. Components
  * pull sections by name (`intro`, `closing`, `letter`, `barcelona`…), so an
@@ -170,6 +176,51 @@ function checkDuplicateLabels(file, body) {
     }
 }
 
+/**
+ * Check 6 — the length of what a search result or a social card will show.
+ *
+ * Bounds are where the text starts getting cut off, not house style: ~60 for a
+ * title in Google's result width, ~160 for a description snippet, and for the
+ * `og*` pair the wider limits a shared card allows. The lower bounds are softer
+ * — a short title is often the right one ("Contact — UNNYC" needs nothing more)
+ * — so being under is only worth mentioning for a description, where too little
+ * text invites the search engine to write its own snippet instead.
+ *
+ * Applies to EVERY meta-shaped block, not just `meta:` — `content/principles.md`
+ * also has `metaDocument:` for /principles/document, which reads it via
+ * `metaKey` in src/lib/seo.js.
+ */
+const META_LIMITS = {
+    title: { max: 60 },
+    description: { min: 110, max: 160 },
+    ogTitle: { max: 65 },
+    ogDescription: { min: 80, max: 200 },
+};
+
+function checkMetaLengths(file, data, fmLines) {
+    for (const [block, meta] of Object.entries(data ?? {})) {
+        if (!block.startsWith('meta') || typeof meta !== 'object' || meta === null) continue;
+
+        for (const [field, { min, max }] of Object.entries(META_LIMITS)) {
+            const value = meta[field];
+            if (typeof value !== 'string') continue;
+
+            // `.n` — frontmatterLines() returns { text, n }, and reading a
+            // `.number` that doesn't exist reported every warning with no line.
+            const line = fmLines.find((l) => l.text.trim().startsWith(`${field}:`))?.n ?? null;
+            const where = block === 'meta' ? field : `${block}.${field}`;
+
+            if (max && value.length > max) {
+                warn(file, line, `${where} is ${value.length} chars (over ${max})`,
+                    'it will be truncated where it matters; trim it or accept the cut.');
+            } else if (min && value.length < min) {
+                warn(file, line, `${where} is ${value.length} chars (under ${min})`,
+                    'too thin to describe the page — a search engine will write its own snippet instead.');
+            }
+        }
+    }
+}
+
 /** Check 5 — glossary references, defined once in start.md `concepts.terms`. */
 function glossaryTerms() {
     try {
@@ -240,6 +291,7 @@ for (const file of files) {
     checkSlugSections(file, parsed.data, bodySections(src));
     checkDuplicateLabels(file, parsed.content);
     checkGlossary(file, src, terms);
+    checkMetaLengths(file, parsed.data, fmLines);
 }
 
 const show = (list, label) => {
