@@ -228,9 +228,11 @@ Nothing is blocking.
 2026-08-20, phase 1 shipped (canonicals on all 12 indexable routes, real
 `robots.txt` + `sitemap.xml` from one route table, `og:site_name` restored,
 `/resources` given the `<h1>` it never had, two host redirects flipped to 308).
-Phases 2-6 are open; the largest single gap left is that **no route has an
-`og:image`**, so every share of this campaign renders as bare text. Three
-decisions are listed at the foot of that file.
+Phase 2's link-preview images shipped the same day: twelve generated
+`/og/<slug>.png` cards, built from the same `ROUTES` table as the canonicals and
+the sitemap, with `twitter:card` raised from `summary` to `summary_large_image`.
+Phases 3-6 are open (structured data, the citable-datasets bet, off-site, perf),
+plus three decisions at the foot of that file.
 
 1. **A photo for homepage card 1** — still the favicon placeholder, now first.
    `public/images/success/tokyo.jpeg` is paid-for and unused but has been rejected

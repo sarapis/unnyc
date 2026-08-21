@@ -23,6 +23,12 @@
  * the three legacy hosts — see next.config.mjs). A sitemap that lists a
  * redirect asks a crawler to index a URL we're telling it to leave.
  *
+ * `content` names the markdown file in content/ whose `meta.ogTitle` becomes
+ * the headline of that route's link-preview image (/og/<slug>.png). Two routes
+ * legitimately share one file: `/principles` and `/principles/document` read
+ * `content/principles.md`, so they share a preview until the document page gets
+ * its own metadata (phase 2 of docs/SEO-PLAN.md).
+ *
  * `indexable: false` means the route exists but stays out of the sitemap and
  * gets no canonical. One route uses it: `/campaign/endorse/document` is
  * `noindex`, and a self-referencing canonical on a noindex page hands a crawler
@@ -51,25 +57,32 @@
  */
 export const SITE_URL = 'https://un.opensource.nyc';
 
+/** Open Graph's expected image size, restated here so metadata doesn't have to
+ *  import the renderer (src/lib/og-image.js reads the filesystem and pulls in
+ *  next/og — not something every page's metadata should drag along). Keep the
+ *  two in step; OG_SIZE there is the one that actually draws the pixels. */
+export const OG_WIDTH = 1200;
+export const OG_HEIGHT = 630;
+
 /** Every route this site serves. `changeFrequency`/`priority` are sitemap
  *  hints only; they say "this page changes more often than that one", nothing
  *  a crawler is obliged to honour. */
 export const ROUTES = [
-    { path: '/', priority: 1.0, changeFrequency: 'weekly' },
-    { path: '/start', priority: 0.9, changeFrequency: 'monthly' },
-    { path: '/principles', priority: 0.9, changeFrequency: 'monthly' },
-    { path: '/principles/document', priority: 0.6, changeFrequency: 'yearly' },
-    { path: '/crosswalk', priority: 0.9, changeFrequency: 'monthly' },
-    { path: '/success', priority: 0.8, changeFrequency: 'monthly' },
-    { path: '/campaign', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/', content: 'home', priority: 1.0, changeFrequency: 'weekly' },
+    { path: '/start', content: 'start', priority: 0.9, changeFrequency: 'monthly' },
+    { path: '/principles', content: 'principles', priority: 0.9, changeFrequency: 'monthly' },
+    { path: '/principles/document', content: 'principles', priority: 0.6, changeFrequency: 'yearly' },
+    { path: '/crosswalk', content: 'crosswalk', priority: 0.9, changeFrequency: 'monthly' },
+    { path: '/success', content: 'success', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/campaign', content: 'campaign', priority: 0.8, changeFrequency: 'monthly' },
     // The two conversion pages. `/campaign/sign` carries the endorser wall, so
     // it genuinely changes whenever a signature is published.
-    { path: '/campaign/sign', priority: 0.9, changeFrequency: 'weekly' },
-    { path: '/campaign/endorse', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/campaign/sign', content: 'sign', priority: 0.9, changeFrequency: 'weekly' },
+    { path: '/campaign/endorse', content: 'endorse', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/campaign/endorse/document', indexable: false },
-    { path: '/resources', priority: 0.7, changeFrequency: 'monthly' },
-    { path: '/resources/guide', priority: 0.7, changeFrequency: 'yearly' },
-    { path: '/contact', priority: 0.5, changeFrequency: 'yearly' },
+    { path: '/resources', content: 'resources', priority: 0.7, changeFrequency: 'monthly' },
+    { path: '/resources/guide', content: 'guide', priority: 0.7, changeFrequency: 'yearly' },
+    { path: '/contact', content: 'contact', priority: 0.5, changeFrequency: 'yearly' },
 ];
 
 const BY_PATH = new Map(ROUTES.map((r) => [r.path, r]));
@@ -77,6 +90,47 @@ const BY_PATH = new Map(ROUTES.map((r) => [r.path, r]));
 /** The routes that belong in the sitemap — everything except `indexable: false`. */
 export function indexableRoutes() {
     return ROUTES.filter((r) => r.indexable !== false);
+}
+
+/** The routes that get a generated link-preview image: the indexable ones that
+ *  name a content file. `/campaign/endorse/document` has neither — it is a
+ *  noindex printable with hand-written metadata. */
+export function imageRoutes() {
+    return ROUTES.filter((r) => r.indexable !== false && r.content);
+}
+
+/**
+ * A route path as a flat filename fragment: '/' -> 'home',
+ * '/campaign/sign' -> 'campaign-sign'.
+ *
+ * Nested paths are flattened because the image route is a single dynamic
+ * segment. Keep it collision-free: two routes that flatten to the same slug
+ * would silently share one preview, so `ogSlug` is asserted to be injective in
+ * the image route's own tests-by-construction (generateStaticParams would
+ * produce a duplicate param and Next would fail the build).
+ */
+export function ogSlug(path) {
+    return path === '/' ? 'home' : path.slice(1).replace(/\//g, '-');
+}
+
+/**
+ * The headline for the image, from the page's own `meta.ogTitle`.
+ *
+ * Strips the "— UNNYC" affix, in either position ("UNNYC — The UN Has United…",
+ * "Related Resources — UNNYC"), because the wordmark is already drawn in the
+ * corner and a preview that says UNNYC twice wastes the one line a reader scans.
+ */
+export function ogHeadline(ogTitle) {
+    return String(ogTitle ?? '')
+        .replace(/^UNNYC\s+[—-]\s+/, '')
+        .replace(/\s+[—-]\s+UNNYC$/, '')
+        .trim();
+}
+
+/** Where a route's generated preview image lives. Relative on purpose — Next
+ *  resolves it against `metadataBase`, same as the canonical. */
+export function ogImagePath(path) {
+    return `/og/${ogSlug(path)}.png`;
 }
 
 /**
@@ -123,6 +177,34 @@ export function pageMetadata(meta, path, ogType = 'article') {
             // og:site_name, no og:locale, anywhere.
             siteName: 'UNNYC',
             locale: 'en_US',
+            ...(route.content
+                ? {
+                      images: [
+                          {
+                              url: ogImagePath(path),
+                              width: OG_WIDTH,
+                              height: OG_HEIGHT,
+                              // Describes the image's own words, because that
+                              // is all the image contains — the headline, the
+                              // wordmark and the domain. ⚠ Built from
+                              // ogHeadline(), NOT the raw ogTitle: most
+                              // ogTitles already end in "— UNNYC", so
+                              // appending it produced "Contact — UNNYC —
+                              // UNNYC" on eight of the twelve routes.
+                              alt: `${ogHeadline(meta.ogTitle)} — UNNYC`,
+                          },
+                      ],
+                  }
+                : {}),
+        },
+        // ⚠ SET EXPLICITLY. Next derives the twitter tags from openGraph but
+        // defaults the card to 'summary' — the small square crop — which shows a
+        // 1200x630 image as a thumbnail with most of the headline cropped out.
+        // The site was emitting `twitter:card: summary` with no image at all.
+        twitter: {
+            card: route.content ? 'summary_large_image' : 'summary',
+            title: meta.ogTitle,
+            description: meta.ogDescription,
         },
     };
 }

@@ -18,6 +18,20 @@ free use**, which covers web use. See [Adobe Stock's license terms](https://stoc
 | `success/tokyo.jpeg` | **currently unused** — was the `/success` Tokyo case hero until that case was removed 2026-08-14. Considered for the fourth homepage card and rejected the same day; see "Not covered by this file" below | olivia@sarapis.org | 08/10/2026 |
 | `success/munich.jpeg` | `/success` — Munich case hero | olivia@sarapis.org | 08/11/2026 |
 
+## Fonts (not under `public/images/`, recorded here because this is the project's licence record)
+
+| File | Used for | License | Source |
+|---|---|---|---|
+| `src/assets/fonts/DMSerifDisplay-Regular.ttf` | The generated link-preview images (`/og/*.png`) — the headline and the wordmark | **SIL Open Font License 1.1** (`src/assets/fonts/OFL.txt`, retained as the licence requires) | [github.com/google/fonts/tree/main/ofl/dmserifdisplay](https://github.com/google/fonts/tree/main/ofl/dmserifdisplay), fetched 2026-08-20 |
+
+The site already loads DM Serif Display from Google Fonts for the page itself
+(`@import` in `src/app/unnyc.css`); this is the same family as a local file
+because the image renderer needs font BYTES, and Satori — what `next/og` draws
+with — reads ttf/otf/woff and **cannot read woff2**, which is the only format
+Google serves to a modern browser. Vendored rather than fetched during the build,
+for the same reason the CTFG and GovOSS data are snapshots: a build that reaches
+the network can fail for reasons unrelated to the commit.
+
 ## Other licenses
 
 | File | Used on | License | Source |
