@@ -80,6 +80,18 @@ or "working fine". Ranked by how much time each has cost:
   endorser chip as white text when it was rendering dark blue, and the screenshot
   the user sent was the only thing that caught it. `el.matches(selector)` and the
   shipped CSS text are reliable.
+- **SCROLL EVENTS ARE NOT DELIVERED in the preview pane either** — found
+  2026-08-21 while verifying the updates bar's trigger on production.
+  `window.scrollBy()` leaves `scrollY` unchanged and a listener added moments
+  before sees ZERO events; `scrollTo()` moves the position but still dispatches
+  nothing. So anything gated on a scroll listener cannot be exercised here, only
+  its non-scroll fallback. ⚠ Timers DO run, which makes this easy to get wrong:
+  a component that shows on "scroll OR timeout" will appear on schedule and look
+  verified while the scroll half was never tested. Same family as the
+  IntersectionObserver limitation below, and it needs a human the same way.
+  ⚠ Also: `resize_window` to the `desktop` preset ("native size") left
+  `innerWidth` reporting **0**, which renders a blank screenshot and degrades any
+  layout logic reading the viewport. Pass explicit `width`/`height` instead.
 - **IntersectionObserver DOES NOT RUN in the preview pane, or in any page these
   tools drive.** `document.visibilityState` is `hidden`, and a fresh observer with
   no rootMargin fires ZERO callbacks — verified against production, not just the

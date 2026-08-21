@@ -591,8 +591,13 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
     none }` (0,1,1) would beat any single-class rule in `@layer unnyc`.
   - ⚠ **Cannot be tested from localhost** — that origin is not in Payload's CORS
     allowlist, so the POST is blocked and the bar shows its generic error.
-    Verified locally only as far as that error; the success path needs the
-    deployed origin.
+    CORS from the live origin IS verified: an intentionally invalid POST returns
+    Payload's 400 "invalid: Email", which proves the request reaches the server
+    without creating a record. Do that rather than submitting a real address.
+  - ⚠ **The scroll half of the trigger is UNVERIFIED and cannot be verified with
+    these tools** — the preview pane delivers no scroll events at all (see the
+    continuation prompt). The 25s backstop is confirmed on production; whether
+    "half the page + 8s" fires correctly needs a person watching.
 - **The contact form is the third Payload write path** (`/contact`, added
   2026-08-07). It posts to `contact-submissions` — a collection that already
   existed for sarapis.org, with exactly the `name`/`email`/`message` fields
