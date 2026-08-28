@@ -37,7 +37,7 @@ hero:
 journey:
   - href: /start
     kicker: "A Global Movement"
-    headline: "Governments everywhere are switching to open source. The UN is leading."
+    headline: "Global cities are putting open source at the center of their technology strategy."
     lede: "From national code catalogues to city OSPOs, the world's best performing governments are building on software they own and share. Learn the vocabulary, the history, and see the map."
     stats:
       - source: ospos
@@ -48,7 +48,7 @@ journey:
   - href: /principles
     kicker: "The UN Principles"
     image: "/images/home/SDGs01.jpeg"
-    headline: "Eight commitments, adopted by the UN in 2025."
+    headline: "The UN is helping cities adopt open source. Their principles help."
     lede: "The UN Open Source Principles articulate a global consensus on how institutions should adopt and interact with open source — and a growing directory of organizations has formally endorsed them."
     stats:
       - source: endorsers
@@ -57,13 +57,13 @@ journey:
   - href: /crosswalk
     kicker: "Open Source for NYC"
     image: "/images/home/NYC02.jpeg"
-    headline: "New York rents the software it should own."
+    headline: "New York rents its software. It should own it and improve it."
     lede: "The city is putting billion-dollar IT contracts in place to keep renting proprietary systems — with nothing owned at the end. Here is what switching would save, unlock, and signal."
     linkLabel: "See six reasons"
   - href: /success
     kicker: "Case Studies"
     image: "/images/success/barcelona.jpeg"
-    headline: "Other cities are transitioning to open source. It’s working."
+    headline: "Well-run cities are transitioning to open source. It’s working."
     lede: "Barcelona signed first. Munich made the landmark migration. Paris scaled one office into national policy. Their playbooks are public — and New York can follow them."
     linkLabel: "Read the case studies"
 ---
