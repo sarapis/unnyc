@@ -11,9 +11,9 @@ free use**, which covers web use. See [Adobe Stock's license terms](https://stoc
 
 | File | Used on | License holder | Date acquired |
 |---|---|---|---|
-| `home/SDGs01.jpeg` | `/` — homepage path card #2, the UN Principles card (was card #1 until 2026-08-14) | olivia@sarapis.org | 08/10/2026 |
-| `home/NYC02.jpeg` | `/` — homepage path card #3 (was #2 until the 2026-08-14 reorder) | olivia@sarapis.org | 08/10/2026 |
-| `success/barcelona.jpeg` | `/success` — Barcelona case hero (also reused on the homepage path card #4) | olivia@sarapis.org | 08/10/2026 |
+| `home/SDGs01.jpeg` | `/` — the UN Principles section of the homepage journey (was path card #2 until the 2026-08-21 vertical-scroll redesign) | olivia@sarapis.org | 08/10/2026 |
+| `home/NYC02.jpeg` | `/` — the Open Source for NYC section of the homepage journey (was path card #3 until 2026-08-21) | olivia@sarapis.org | 08/10/2026 |
+| `success/barcelona.jpeg` | `/success` — Barcelona case hero (also reused on the homepage journey's Case Studies section; was path card #4 until 2026-08-21) | olivia@sarapis.org | 08/10/2026 |
 | `success/paris.jpeg` | `/success` — Paris case hero | olivia@sarapis.org | 08/10/2026 |
 | `success/tokyo.jpeg` | **currently unused** — was the `/success` Tokyo case hero until that case was removed 2026-08-14. Considered for the fourth homepage card and rejected the same day; see "Not covered by this file" below | olivia@sarapis.org | 08/10/2026 |
 | `success/munich.jpeg` | `/success` — Munich case hero | olivia@sarapis.org | 08/11/2026 |

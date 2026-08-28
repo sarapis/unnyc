@@ -1,0 +1,183 @@
+/* ============================================
+   / — the homepage journey (UnnycHomeJourney): four full-width sections, one
+   per interior page, replacing the four-card grid.
+
+   Lives in @layer unnyc like the other page styles. Class prefix is
+   `unnyc-home-j__` and appears in NO other stylesheet — the /principles vs
+   /crosswalk rail collision (two sheets styling one class, source order
+   deciding after a client-side nav) is the failure this uniqueness prevents.
+   ============================================ */
+
+@layer unnyc {
+
+  .unnyc-home-j__section {
+    padding: var(--wg-sp-16, 4rem) 0;
+    background: var(--wg-surface, #fff);
+  }
+
+  /* Alternate the band, not the layout: odd sections warm, even white, so the
+     scroll reads as distinct chapters without a hard rule between them. */
+  .unnyc-home-j__section:nth-child(odd) {
+    background: var(--wg-surface-warm, #f8f6f0);
+  }
+
+  .unnyc-home-j__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--wg-sp-10, 2.5rem);
+    align-items: center;
+  }
+
+  /* Image side alternates via grid ORDER, not duplicated markup. */
+  .unnyc-home-j__section--flip .unnyc-home-j__text { order: 2; }
+  .unnyc-home-j__section--flip .unnyc-home-j__media { order: 1; }
+
+  /* A text-only section (the first) centres its column instead of leaving a
+     ghost gutter where the image would sit. */
+  .unnyc-home-j__inner:has(.unnyc-home-j__text:only-child) {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 820px;
+  }
+
+  .unnyc-home-j__kicker {
+    display: flex;
+    align-items: baseline;
+    gap: var(--wg-sp-2, 0.5rem);
+    font-size: var(--wg-fs-sm, 0.9375rem);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--wg-accent-strong, #005ea2);
+    margin: 0 0 var(--wg-sp-3, 0.75rem);
+  }
+
+  .unnyc-home-j__kicker-n {
+    font-family: var(--wg-font-display, Georgia, serif);
+    font-size: 1.35em;
+    letter-spacing: 0;
+    color: var(--wg-accent-warm, #ff6600);
+  }
+
+  .unnyc-home-j__headline {
+    font-family: var(--wg-font-display, Georgia, serif);
+    font-weight: 400;
+    font-size: clamp(var(--wg-fs-2xl, 1.5rem), 3.2vw, var(--wg-fs-4xl, 2.5rem));
+    line-height: 1.15;
+    color: var(--wg-brand, #162e51);
+    margin: 0 0 var(--wg-sp-4, 1rem);
+  }
+
+  .unnyc-home-j__lede {
+    font-size: var(--wg-fs-lg, 1.125rem);
+    line-height: 1.7;
+    color: var(--wg-text-secondary, #4a5568);
+    max-width: 58ch;
+    margin: 0 0 var(--wg-sp-5, 1.25rem);
+  }
+
+  /* Derived stats — the text-only section's visual. Big figures, small labels. */
+  .unnyc-home-j__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--wg-sp-8, 2rem);
+    margin: 0 0 var(--wg-sp-6, 1.5rem);
+  }
+
+  .unnyc-home-j__stat-value {
+    font-family: var(--wg-font-display, Georgia, serif);
+    font-size: var(--wg-fs-3xl, 2rem);
+    color: var(--wg-brand, #162e51);
+    margin: 0;
+  }
+
+  .unnyc-home-j__stat-label {
+    font-size: var(--wg-fs-xs, 0.8125rem);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--wg-text-secondary, #4a5568);
+    margin: 0 0 2px;
+  }
+
+  /* Derived teaser lists (principle titles, reasons, cases): two columns where
+     they fit, marked with the site's accent dot rather than a browser bullet. */
+  .unnyc-home-j__items {
+    list-style: none;
+    margin: 0 0 var(--wg-sp-6, 1.5rem);
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--wg-sp-2, 0.5rem) var(--wg-sp-6, 1.5rem);
+    max-width: 40rem;
+  }
+
+  .unnyc-home-j__item {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: var(--wg-fs-sm, 0.9375rem);
+    color: var(--wg-text-primary, #12263f);
+    line-height: 1.5;
+  }
+
+  .unnyc-home-j__item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--wg-accent, #4b92db);
+  }
+
+  /* ⚠ Scoped with .unnyc-page (0,2,0) to beat `.unnyc-page a { color: inherit }`
+     (0,1,1) — the reset behind five bugs in this repo. Block link with a ~22px
+     line box, so it carries the 4px vertical padding the four card-link rules
+     carry (WCAG 2.5.8's 24px floor for a NON-INLINE target; see the
+     cross-reference in resources.css). */
+  .unnyc-page .unnyc-home-j__link {
+    display: inline-block;
+    padding: 4px 0;
+    font-size: var(--wg-fs-base, 1rem);
+    font-weight: 600;
+    color: var(--wg-accent-strong, #005ea2);
+    text-decoration: none;
+  }
+
+  .unnyc-page .unnyc-home-j__link:hover {
+    text-decoration: underline;
+  }
+
+  .unnyc-home-j__media {
+    position: relative;
+    /* Reserve the box; next/image `fill` + object-fit cover paints it. */
+    aspect-ratio: 5 / 4;
+    border-radius: var(--wg-radius-lg, 16px);
+    overflow: hidden;
+    box-shadow: 0 18px 44px rgba(11, 31, 58, 0.18);
+  }
+
+  .unnyc-home-j__img {
+    object-fit: cover;
+  }
+
+  @media (max-width: 900px) {
+    .unnyc-home-j__section {
+      padding: var(--wg-sp-10, 2.5rem) 0;
+    }
+
+    /* One column; the image drops BELOW the text on every section — the
+       alternation is a desktop rhythm, and on a phone text-first keeps the
+       headline above the fold of each band. */
+    .unnyc-home-j__inner {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--wg-sp-6, 1.5rem);
+    }
+
+    .unnyc-home-j__section--flip .unnyc-home-j__text { order: 1; }
+    .unnyc-home-j__section--flip .unnyc-home-j__media { order: 2; }
+
+    .unnyc-home-j__media { aspect-ratio: 16 / 9; }
+
+    .unnyc-home-j__stats { gap: var(--wg-sp-6, 1.5rem); }
+  }
+}
