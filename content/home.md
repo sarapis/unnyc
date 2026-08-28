@@ -43,7 +43,7 @@ journey:
       - source: ospos
         label: "Governments with Open Source Program Offices"
       - source: govoss-entries
-        label: "Software Applications in Government Open Source Catalogs"
+        label: "Open Source Applications in Public Government Catalogs"
     linkLabel: "Explore the movement"
   - href: /principles
     kicker: "The UN Principles"
