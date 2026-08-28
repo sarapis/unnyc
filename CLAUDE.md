@@ -355,9 +355,12 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   This was a real bug; don't "optimise" it back.
 - **`getContent()` is server-only** (uses `node:fs`). Never import it in a
   `"use client"` file.
-- **⚠ THE ONE CSS RULE THAT WOULD HAVE PREVENTED FIVE BUGS: in `@layer unnyc`,
-  scope any component rule that sets `color` on an `<a>` or `<button>` with
-  `.unnyc-page`.** Both resets are TWO-part selectors — `.unnyc-page a { color:
+- **⚠ THE ONE CSS RULE THAT WOULD HAVE PREVENTED SIX BUGS: in `@layer unnyc`,
+  scope any component rule styling an element the `.unnyc-page` resets touch —
+  `a`, `button`, `ul`, `ol` — with `.unnyc-page`.** The sixth instance was
+  MARGINS, not color: `.unnyc-page ul { margin: 0 }` silently zeroed a
+  single-class list rule on the homepage journey and parked the CTA button on
+  top of the list. All the resets are TWO-part selectors — `.unnyc-page a { color:
   inherit }` and `.unnyc-page button { border: none; background: none }` are
   (0,1,1) — so a single-class component rule (0,1,0) LOSES in the same layer.
   Five collisions, all this shape: navy-on-navy sign-form tabs; endorser chips

@@ -106,7 +106,12 @@
 
   /* Derived teaser lists (principle titles, reasons, cases): two columns where
      they fit, marked with the site's accent dot rather than a browser bullet. */
-  .unnyc-home-j__items {
+  /* ⚠ Scoped with .unnyc-page (0,2,0) because `.unnyc-page ul { margin: 0 }`
+     in unnyc.css is (0,1,1) and BEATS a single-class rule in this same layer.
+     Unscoped, this margin silently zeroed and the button sat on the list —
+     the exact spacing bug the first review screenshot showed. Sixth instance
+     of the reset trap in this repo, first via ul margins rather than color. */
+  .unnyc-page .unnyc-home-j__items {
     list-style: none;
     /* Same bottom margin as the stats block — the shared rhythm. */
     margin: 0 0 var(--wg-sp-7, 1.75rem);
