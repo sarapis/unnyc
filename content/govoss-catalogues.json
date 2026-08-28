@@ -6,10 +6,10 @@
   "boundaries": "Natural Earth 1:110m (public domain)",
   "boundariesShort": "Natural Earth",
   "generatedBy": "scripts/fetch-govoss-catalogues.mjs",
-  "generated": "2026-08-18",
-  "govossGenerated": "2026-08-17",
-  "totalEntries": 2772,
-  "countryAttributedEntries": 2619,
+  "generated": "2026-08-28",
+  "govossGenerated": "2026-08-24",
+  "totalEntries": 2789,
+  "countryAttributedEntries": 2636,
   "countryCount": 13,
   "catalogueCount": 17,
   "trimmed": [
@@ -30,18 +30,18 @@
     {
       "code": "EU",
       "reason": "code.europa.eu — EU institutions, not a member state",
-      "entries": 8
+      "entries": 7
     }
   ],
   "countries": [
     {
       "code": "FR",
-      "entries": 676,
+      "entries": 679,
       "catalogues": [
         {
           "label": "SILL",
           "site": "https://code.gouv.fr/sill",
-          "entries": 667,
+          "entries": 670,
           "route": "bulk JSON"
         },
         {
@@ -54,12 +54,12 @@
     },
     {
       "code": "DE",
-      "entries": 549,
+      "entries": 560,
       "catalogues": [
         {
           "label": "openCode",
           "site": "https://opencode.de/en/software",
-          "entries": 412,
+          "entries": 423,
           "route": "GitLab API"
         },
         {
@@ -84,12 +84,12 @@
     },
     {
       "code": "DK",
-      "entries": 214,
+      "entries": 213,
       "catalogues": [
         {
           "label": "OS2 Denmark",
           "site": "https://os2.eu/",
-          "entries": 214,
+          "entries": 213,
           "route": "GitHub orgs (20)"
         }
       ]
@@ -168,12 +168,12 @@
     },
     {
       "code": "SE",
-      "entries": 44,
+      "entries": 48,
       "catalogues": [
         {
           "label": "Offentligkod",
           "site": "https://offentligkod.se/",
-          "entries": 44,
+          "entries": 48,
           "route": "GNU recutils in git"
         }
       ]

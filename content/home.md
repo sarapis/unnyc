@@ -28,32 +28,42 @@ hero:
 # array position, so reordering entries renumbers them (the old cards carried
 # literal "1." strings and renumbering meant editing every card below).
 #
-# ⚠ The proof row under each headline — counts, principle titles, reason titles,
-# case cities — is NOT here either. It is DERIVED in src/app/page.js from the
-# same files the interior pages render, so the homepage cannot claim a number
-# its target page no longer shows. Do not add counts to this prose.
+# ⚠ The proof row under each headline — the numbers, the reason titles, the case
+# cities — is NOT authored here. Stat LABELS are copy and live below; their
+# VALUES are derived in src/app/page.js from the same files the interior pages
+# render (each `source:` names a derivation there), so the homepage cannot claim
+# a number its target no longer shows. The teaser lists are read from the target
+# pages' own content — retitle a crosswalk reason and the homepage follows.
 journey:
   - href: /start
     kicker: "A Global Movement"
     headline: "Governments everywhere are switching to open source. The UN is leading."
     lede: "From national code catalogues to city OSPOs, the world's best performing governments are building on software they own and share. Learn the vocabulary, the history, and see the map."
+    stats:
+      - source: ospos
+        label: "Governments with Open Source Program Offices"
+      - source: govoss-entries
+        label: "Software Applications in Government Open Source Catalogs"
     linkLabel: "Explore the movement"
   - href: /principles
     kicker: "The UN Principles"
     image: "/images/home/SDGs01.jpeg"
     headline: "Eight commitments, adopted by the UN in 2025."
     lede: "The UN Open Source Principles articulate a global consensus on how institutions should adopt and interact with open source — and a growing directory of organizations has formally endorsed them."
+    stats:
+      - source: endorsers
+        label: "Endorsing Organizations"
     linkLabel: "Read the eight principles"
   - href: /crosswalk
     kicker: "Open Source for NYC"
     image: "/images/home/NYC02.jpeg"
     headline: "New York rents the software it should own."
     lede: "The city is putting billion-dollar IT contracts in place to keep renting proprietary systems — with nothing owned at the end. Here is what switching would save, unlock, and signal."
-    linkLabel: "See the six reasons"
+    linkLabel: "See six reasons"
   - href: /success
     kicker: "Case Studies"
     image: "/images/success/barcelona.jpeg"
-    headline: "Other cities already did this. It worked."
+    headline: "Other cities are transitioning to open source. It’s working."
     lede: "Barcelona signed first. Munich made the landmark migration. Paris scaled one office into national policy. Their playbooks are public — and New York can follow them."
     linkLabel: "Read the case studies"
 ---

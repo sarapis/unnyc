@@ -14,9 +14,10 @@ import Image from 'next/image';
  * importing loaders: what gets derived, and from where, stays visible in one
  * place (page.js).
  *
- * Section numbers render from array position — reorder the entries in the
- * markdown and the numbering follows, which is precisely what the old cards'
- * literal "1." strings could not do.
+ * Stat LABELS are copy (each section's `stats:` in the markdown); their VALUES
+ * arrive in `proofs` keyed by the entry's `source:` name, so the words are the
+ * editor's and the numbers stay derived. A source with no derived value drops
+ * its stat silently — same fail-soft posture as the loaders.
  *
  * Layout: text column plus media column, image side alternating per row.
  * The FIRST section has no image on purpose — the only asset ever available for
@@ -32,6 +33,9 @@ export default function UnnycHomeJourney({ journey = [], proofs = {} }) {
             {journey.map((section, i) => {
                 const proof = proofs[section.href];
                 const flip = i % 2 === 1;
+                const stats = (section.stats ?? [])
+                    .map((s) => ({ ...s, value: proof?.values?.[s.source] }))
+                    .filter((s) => s.value != null);
                 return (
                     <section
                         key={section.href}
@@ -39,21 +43,21 @@ export default function UnnycHomeJourney({ journey = [], proofs = {} }) {
                     >
                         <div className="unnyc-container unnyc-home-j__inner">
                             <div className="unnyc-home-j__text">
-                                <p className="unnyc-home-j__kicker">
-                                    <span className="unnyc-home-j__kicker-n" aria-hidden="true">
-                                        {String(i + 1).padStart(2, '0')}
-                                    </span>
-                                    {section.kicker}
-                                </p>
+                                <p className="unnyc-home-j__kicker">{section.kicker}</p>
                                 <h2 className="unnyc-home-j__headline">{section.headline}</h2>
                                 <p className="unnyc-home-j__lede">{section.lede}</p>
 
-                                {proof?.stats && (
+                                {stats.length > 0 && (
                                     <dl className="unnyc-home-j__stats">
-                                        {proof.stats.map((s) => (
-                                            <div key={s.label} className="unnyc-home-j__stat">
+                                        {stats.map((s) => (
+                                            /* dt before dd is what HTML requires;
+                                               the flex column-reverse in the CSS
+                                               shows the figure above its label. */
+                                            <div key={s.source} className="unnyc-home-j__stat">
                                                 <dt className="unnyc-home-j__stat-label">{s.label}</dt>
-                                                <dd className="unnyc-home-j__stat-value">{s.value}</dd>
+                                                <dd className="unnyc-home-j__stat-value">
+                                                    {s.value.toLocaleString('en-US')}
+                                                </dd>
                                             </div>
                                         ))}
                                     </dl>
@@ -67,7 +71,15 @@ export default function UnnycHomeJourney({ journey = [], proofs = {} }) {
                                     </ul>
                                 )}
 
-                                <Link href={section.href} className="unnyc-home-j__link">
+                                {/* A real button, not a text link — the one action
+                                    per section should pop. .unnyc-btn--primary is
+                                    the site's primary; .unnyc-page .unnyc-btn in
+                                    unnyc.css already out-specifies the anchor
+                                    reset. */}
+                                <Link
+                                    href={section.href}
+                                    className="unnyc-btn unnyc-btn--primary unnyc-home-j__link"
+                                >
                                     {section.linkLabel}{' '}
                                     <span aria-hidden="true">→</span>
                                 </Link>
