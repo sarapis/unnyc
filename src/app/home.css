@@ -1,0 +1,173 @@
+/* ============================================
+   / — the homepage journey (UnnycHomeJourney)
+   Scoped under `.unnyc-home-j`, prefix `unnyc-home-j-`.
+   Replaces the four question/answer path cards 2026-08-19 (Devin's
+   redesign artifact) with four alternating text/image sections.
+
+   Colours read the SEMANTIC tier (--wg-*) only. See CLAUDE.md.
+   ============================================ */
+
+@layer unnyc {
+
+  .unnyc-home-j__section {
+    padding: var(--wg-sp-16) 0;
+    background: var(--wg-surface);
+  }
+
+  .unnyc-home-j__section:nth-child(odd) {
+    background: var(--wg-surface-warm);
+  }
+
+  .unnyc-home-j__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: center;
+    gap: var(--wg-sp-10);
+  }
+
+  .unnyc-home-j__section--flip .unnyc-home-j__text {
+    order: 2;
+  }
+
+  .unnyc-home-j__section--flip .unnyc-home-j__media {
+    order: 1;
+  }
+
+  /* No image (the /start section) — one centered column instead of the
+     two-column grid, so the text isn't left stranded in a 7fr slot. */
+  .unnyc-home-j__inner:has(.unnyc-home-j__text:only-child) {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 820px;
+  }
+
+  .unnyc-home-j__kicker {
+    font-size: var(--wg-fs-sm);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--wg-accent-strong);
+    margin: 0 0 var(--wg-sp-3);
+  }
+
+  .unnyc-home-j__headline {
+    font-family: var(--wg-font-display);
+    font-weight: 400;
+    font-size: clamp(var(--wg-fs-2xl), 3.2vw, var(--wg-fs-4xl));
+    color: var(--wg-brand);
+    line-height: 1.15;
+    margin: 0 0 var(--wg-sp-4);
+  }
+
+  .unnyc-home-j__lede {
+    font-size: var(--wg-fs-lg);
+    color: var(--wg-text-secondary);
+    max-width: 58ch;
+    line-height: 1.7;
+    margin: 0 0 var(--wg-sp-5);
+  }
+
+  .unnyc-home-j__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--wg-sp-4) var(--wg-sp-10);
+    margin: 0 0 var(--wg-sp-7);
+  }
+
+  /* column-reverse: the DOM keeps <dt> (label) before <dd> (value) for a
+     sane reading order, but visually the big number leads. */
+  .unnyc-home-j__stat {
+    display: flex;
+    flex-direction: column-reverse;
+    max-width: 15rem;
+  }
+
+  .unnyc-home-j__stat-value {
+    font-family: var(--wg-font-display);
+    font-size: var(--wg-fs-3xl);
+    color: var(--wg-brand);
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  .unnyc-home-j__stat-label {
+    font-size: var(--wg-fs-xs);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--wg-text-secondary);
+    line-height: 1.45;
+    margin: var(--wg-sp-1) 0 0;
+  }
+
+  .unnyc-page .unnyc-home-j__items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--wg-sp-2) var(--wg-sp-6);
+    max-width: 40rem;
+    margin: 0 0 var(--wg-sp-7);
+    padding: 0;
+    list-style: none;
+  }
+
+  .unnyc-home-j__item {
+    position: relative;
+    font-size: var(--wg-fs-sm);
+    color: var(--wg-text);
+    padding-left: 1.1rem;
+    line-height: 1.45;
+  }
+
+  .unnyc-home-j__item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--wg-accent);
+  }
+
+  .unnyc-page .unnyc-home-j__link {
+    margin-top: 0;
+  }
+
+  .unnyc-home-j__media {
+    position: relative;
+    aspect-ratio: 5 / 4;
+    border-radius: var(--wg-radius-lg);
+    overflow: hidden;
+    box-shadow: 0 18px 44px rgba(11, 31, 58, 0.18);
+  }
+
+  .unnyc-home-j__img {
+    object-fit: cover;
+  }
+
+  @media (max-width: 900px) {
+    .unnyc-home-j__section {
+      padding: var(--wg-sp-10) 0;
+    }
+
+    .unnyc-home-j__inner {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--wg-sp-6);
+    }
+
+    /* Text always reads before the image on narrow screens, flip or not. */
+    .unnyc-home-j__section--flip .unnyc-home-j__text {
+      order: 1;
+    }
+
+    .unnyc-home-j__section--flip .unnyc-home-j__media {
+      order: 2;
+    }
+
+    .unnyc-home-j__media {
+      aspect-ratio: 16 / 9;
+    }
+
+    .unnyc-home-j__stats {
+      gap: var(--wg-sp-6);
+    }
+  }
+}
