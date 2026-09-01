@@ -25,7 +25,9 @@ hero:
     - "<span>NYC Hosts It. It's Time for </span><br><span>NYC Government to Join It.</span>"
   subtitle: "<span>The world’s best performing city governments have put transitioning</span><br><span>to open source at the center of their technology strategy.</span><br><span>New York City is ready to do the same.</span>"
   ctas:
-    - href: /campaign
+    # Straight to the letter itself (owner call, 2026-09-01) — /campaign is a
+    # two-way chooser and the hero's one CTA shouldn't cost an extra hop.
+    - href: /campaign/sign
       label: "Tell NYC to Use Open Source"
       style: primary
 
