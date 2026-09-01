@@ -59,6 +59,183 @@
     font-weight: 400;
   }
 
+  /* ------------------------------------------------------------------
+     FULL-BLEED HERO (PrimerHeroFullBleed) — a second, competing option
+     for the homepage hero: a photo background with a dark scrim instead
+     of the abstract gradient. Not wired into page.js by default.
+     ------------------------------------------------------------------ */
+
+  /* Pixel-sampled from the actual source photo (public/images/home/UNHQ.jpeg,
+     5472x3648): the Secretariat tower's roofline sits at ~17% of the image's
+     height, found by scanning for the first sky->non-sky transition per
+     column and locating the flat plateau (the roofline is flat; sky-vs-cloud
+     noise elsewhere isn't). Two variables for the one figure, not one shared
+     between the two rules below, because CSS resolves them differently:
+     object-position's Y is a genuine height-relative anchor, but
+     padding-top's percentage — despite being a "vertical" property — resolves
+     against the containing block's WIDTH, not height (a real CSS quirk), so
+     it needs a viewport-relative unit instead to mean the same 17%.
+     ⚠ UNVERIFIED VISUALLY — this session's preview can't render screenshots,
+     so this is computed, not eyeballed. Check the real page and adjust both
+     if the kicker doesn't sit exactly on the roofline. */
+  .unnyc-hero-fb {
+    --hero-fb-roofline-y: 17%;
+    --hero-fb-roofline-vh: 17vh;
+  }
+
+  .unnyc-hero-fb {
+    position: relative;
+    /* Not decorative — the image/scrim below sit at negative z-index, which
+       only stacks correctly INSIDE a stacking context this section
+       establishes itself. Without it (position:relative alone doesn't
+       establish one at z-index:auto), they render behind other page content
+       instead of just behind this section's own text. Same reason
+       .unnyc-hero (the original hero, unnyc.css) sets z-index: 0. */
+    z-index: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    overflow: hidden;
+    /* Top padding replaces the roofline offset (was a fixed --wg-sp-24) —
+       this is what actually moves the kicker up to the roofline. */
+    padding: var(--hero-fb-roofline-vh) 0 var(--wg-sp-16);
+  }
+
+  .unnyc-hero-fb__img {
+    z-index: -2;
+    object-fit: cover;
+    /* Biased toward the top of the source rather than a plain center crop,
+       so the roofline (near the top of a tall source photo) doesn't get
+       cropped away on viewports taller-relative-to-width than the photo. */
+    object-position: center var(--hero-fb-roofline-y);
+  }
+
+  /* Darkens left-to-right so the right-aligned text stays legible over a
+     busy photo without flattening the whole image — the left side (mostly
+     sky/water in the source photo) stays bright. A second, even vertical
+     wash keeps the bottom-anchored content readable regardless of what's
+     directly behind it. */
+  .unnyc-hero-fb__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, transparent 0%, rgba(11, 31, 58, 0.65) 45%, rgba(11, 31, 58, 0.94) 100%),
+      linear-gradient(0deg, rgba(11, 31, 58, 0.82) 0%, rgba(11, 31, 58, 0.24) 45%, rgba(11, 31, 58, 0.44) 100%);
+  }
+
+  .unnyc-hero-fb__inner {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .unnyc-hero-fb__content {
+    /* Widest atomic title segment ("The Open Source Government") measures
+       689px at this font size — 640px clipped/overflowed it. 720px gives
+       real margin above all three segments that were too wide, not just
+       the one that happened to be widest today. */
+    max-width: 720px;
+    text-align: right;
+  }
+
+  .unnyc-hero-fb__kicker {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--wg-sp-4);
+    font-size: var(--wg-fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--wg-accent-warm-light);
+    margin: 0 0 var(--wg-sp-6);
+  }
+
+  .unnyc-hero-fb__kicker i {
+    display: block;
+    width: 48px;
+    height: 1px;
+    background: var(--wg-accent-warm-light);
+    flex-shrink: 0;
+  }
+
+  .unnyc-hero-fb__title {
+    font-family: var(--wg-font-display);
+    font-weight: 400;
+    font-size: clamp(var(--wg-fs-3xl), 3.6vw, var(--wg-fs-5xl));
+    line-height: 1.15;
+    color: var(--wg-text-inverse);
+    margin: 0 0 var(--wg-sp-6);
+  }
+
+  .unnyc-hero-fb__line {
+    display: block;
+  }
+
+  .unnyc-hero-fb__line--ask {
+    margin-top: var(--wg-sp-2);
+    color: var(--wg-accent-warm-light);
+  }
+
+  .unnyc-hero-fb__line small {
+    font-size: 0.75em;
+    font-weight: 400;
+  }
+
+  /* Wraps each <br>-delimited segment in content/home.md's titleLines/
+     subtitle for this hero. Plain <br>s alone aren't enough to guarantee a
+     specific line break: at this font size a long segment can still wrap
+     BEFORE reaching its <br>, orphaning the last word or two onto their own
+     line — a real bug this fixed (see the commit this landed in). Forcing
+     each segment atomic means the break happens exactly where written,
+     never mid-segment; the tradeoff is a segment can overflow the column on
+     a narrow viewport instead of wrapping gracefully, which is why this is
+     scoped to the title/subtitle specifically, not the button row below. */
+  .unnyc-hero-fb__line span,
+  .unnyc-hero-fb__subtitle span {
+    white-space: nowrap;
+  }
+
+  @media (max-width: 720px) {
+    .unnyc-hero-fb__line span,
+    .unnyc-hero-fb__subtitle span {
+      white-space: normal;
+    }
+  }
+
+  .unnyc-hero-fb__subtitle {
+    font-size: var(--wg-fs-lg);
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.7;
+    margin: 0 0 var(--wg-sp-8);
+  }
+
+  .unnyc-hero-fb__cta {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: var(--wg-sp-4);
+  }
+
+  @media (max-width: 720px) {
+    .unnyc-hero-fb {
+      align-items: center;
+      padding: var(--wg-sp-16) 0;
+    }
+
+    .unnyc-hero-fb__inner {
+      justify-content: center;
+    }
+
+    .unnyc-hero-fb__content,
+    .unnyc-hero-fb__kicker,
+    .unnyc-hero-fb__cta {
+      text-align: center;
+      justify-content: center;
+    }
+  }
+
   /* --- Hub path cards: the four-question entry point --- */
   .unnyc-pr-paths {
     padding: var(--wg-sp-16) 0;

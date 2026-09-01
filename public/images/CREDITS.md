@@ -17,6 +17,7 @@ free use**, which covers web use. See [Adobe Stock's license terms](https://stoc
 | `success/paris.jpeg` | `/success` — Paris case hero | olivia@sarapis.org | 08/10/2026 |
 | `success/tokyo.jpeg` | **currently unused** — was the `/success` Tokyo case hero until that case was removed 2026-08-14. Considered for the fourth homepage card and rejected the same day; see "Not covered by this file" below | olivia@sarapis.org | 08/10/2026 |
 | `success/munich.jpeg` | `/success` — Munich case hero | olivia@sarapis.org | 08/11/2026 |
+| `home/UNHQ.jpeg` | `/` — full-bleed hero background, `PrimerHeroFullBleed` (hero option B, unnyc#67) | oliviacroteau667@gmail.com | 09/01/2026 |
 
 ## Fonts (not under `public/images/`, recorded here because this is the project's licence record)
 
