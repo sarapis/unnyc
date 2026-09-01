@@ -6,8 +6,8 @@ meta:
   ogDescription: "The campaign to make New York the first city in the Americas to endorse the UN Open Source Principles."
 hero:
   titleLines:
-    - "The Movement for Open Source Government is Being Organized in New York City... by the UN."
-    - "NYC Government Should Join It."
+    - "The Open Source Government Movement is Organized at the UN Headquarters."
+    - "NYC Hosts It. It's Time for NYC Government to Join It."
   subtitle: "The world’s best performing city governments have put transitioning to open source at the center of their technology strategy. It’s time for New York City to do the same."
   ctas:
     - href: /campaign

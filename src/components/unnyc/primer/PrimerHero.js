@@ -1,9 +1,15 @@
 import Link from 'next/link';
+import { inlineMd } from '@/lib/content';
 
 /**
  * PrimerHero — the hub hero: display headline, subtitle, CTAs, stats row.
  * Content comes from content/home.md (`hero:` in frontmatter). The last title
  * line gets the blue→gold accent, since that line is the campaign's ask.
+ *
+ * Each title line runs through inlineMd(), same as every other prose field in
+ * this codebase — so `**bold**` and raw `<b>`/`<small>` both work in
+ * `titleLines`, matching the convention the open letter rewrite already used.
+ * Plain text with no markup renders exactly as it did before.
  */
 export default function PrimerHero({ hero }) {
     if (!hero) return null;
@@ -18,9 +24,8 @@ export default function PrimerHero({ hero }) {
                         <span
                             key={i}
                             className={`unnyc-pr-hero__line${i === lines.length - 1 ? ' unnyc-pr-hero__line--ask' : ''}`}
-                        >
-                            {part}
-                        </span>
+                            dangerouslySetInnerHTML={{ __html: inlineMd(part) }}
+                        />
                     ))}
                 </h1>
 

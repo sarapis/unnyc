@@ -70,7 +70,11 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--wg-sp-4) var(--wg-sp-10);
-    margin: 0 0 var(--wg-sp-7);
+    /* --wg-sp-7 isn't a real token (the artifact's own CSS had a 1.75rem
+       fallback for it that got lost when this file was cleaned up from that
+       source — that's what made this margin silently compute to 0). sp-8
+       is the nearest defined step above it. */
+    margin: 0 0 var(--wg-sp-8);
   }
 
   /* column-reverse: the DOM keeps <dt> (label) before <dd> (value) for a
@@ -103,7 +107,11 @@
     grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
     gap: var(--wg-sp-2) var(--wg-sp-6);
     max-width: 40rem;
-    margin: 0 0 var(--wg-sp-7);
+    /* --wg-sp-7 isn't a real token (the artifact's own CSS had a 1.75rem
+       fallback for it that got lost when this file was cleaned up from that
+       source — that's what made this margin silently compute to 0). sp-8
+       is the nearest defined step above it. */
+    margin: 0 0 var(--wg-sp-8);
     padding: 0;
     list-style: none;
   }
