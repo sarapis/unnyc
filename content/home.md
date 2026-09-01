@@ -5,10 +5,25 @@ meta:
   ogTitle: "UNNYC — The UN Has United Around Open Source. NYC Should Too."
   ogDescription: "The campaign to make New York the first city in the Americas to endorse the UN Open Source Principles."
 hero:
+  # kicker + backgroundImage are new fields, only read by the full-bleed hero
+  # variant (PrimerHeroFullBleed) — the original PrimerHero ignores them.
+  kicker: "United Nations Headquarters, New York"
+  backgroundImage: "/images/home/UNHQ.jpeg"
+  # <br> line breaks below are deliberate, tuned for this hero's fixed
+  # right-aligned column (see primer.css) — not the original PrimerHero's
+  # narrower, auto-wrapping one. If that hero is ever used with this same
+  # content, these breaks will force its wrap points too.
+  #
+  # Each segment is wrapped in a plain <span> — primer.css forces those
+  # nowrap, which is what actually GUARANTEES the break lands where the
+  # <br> is. A <br> alone isn't enough: at this font size, a long segment
+  # can still auto-wrap before reaching its own <br>, orphaning the last
+  # word onto its own line (that's what shipped first — a real bug, not a
+  # rendering quirk to design around).
   titleLines:
-    - "The Open Source Government Movement is Organized at the UN Headquarters."
-    - "NYC Hosts It. It's Time for NYC Government to Join It."
-  subtitle: "The world’s best performing city governments have put transitioning to open source at the center of their technology strategy. It’s time for New York City to do the same."
+    - "<span>The Movement for</span><br><span>Open Source Government</span><br><span> is Organized at the UN HQ.</span>"
+    - "<span>NYC Hosts It. It's Time for </span><br><span>NYC Government to Join It.</span>"
+  subtitle: "<span>The world’s best performing city governments have put transitioning</span><br><span>to open source at the center of their technology strategy.</span><br><span>New York City is ready to do the same.</span>"
   ctas:
     - href: /campaign
       label: "Tell NYC to Use Open Source"
