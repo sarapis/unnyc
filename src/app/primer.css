@@ -49,6 +49,16 @@
     color: transparent;
   }
 
+  /* <small> inside a title line, from content/home.md's inlineMd() pass (see
+     PrimerHero.js) — sized relative to the line's own clamp()'d font-size
+     rather than a fixed value, so it scales the same way across breakpoints.
+     Inherits color/-webkit-text-fill-color, so it still picks up the
+     --line--ask gradient when nested in the ask line. */
+  .unnyc-pr-hero__line small {
+    font-size: 0.75em;
+    font-weight: 400;
+  }
+
   /* --- Hub path cards: the four-question entry point --- */
   .unnyc-pr-paths {
     padding: var(--wg-sp-16) 0;

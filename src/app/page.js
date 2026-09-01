@@ -1,7 +1,8 @@
 import './primer.css';
+import './home.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import PrimerHero from '@/components/unnyc/primer/PrimerHero';
-import UnnycPathCards from '@/components/unnyc/primer/UnnycPathCards';
+import UnnycHomeJourney from '@/components/unnyc/primer/UnnycHomeJourney';
 import { getContent } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
 import StructuredData from '@/components/unnyc/StructuredData';
@@ -13,8 +14,11 @@ export async function generateMetadata() {
 }
 
 /**
- * / — the campaign hub. Deliberately short: what UNNYC is, then four cards
- * routing the reader to whichever sub-page matches where they're starting from.
+ * / — the campaign hub. Deliberately short: what UNNYC is, then a four-part
+ * journey routing the reader to whichever sub-page matches where they're
+ * starting from. Was four question/answer cards until 2026-08-19, when this
+ * alternating text/image layout replaced them (Devin's redesign artifact) —
+ * same four destinations, same three images, different presentation.
  *
  * ALL COPY LIVES IN content/home.md. See docs/EDITING-CONTENT.md.
  */
@@ -27,7 +31,7 @@ export default function UnnycPage() {
             <StructuredData data={websiteLd({ description: doc.meta.description })} />
             <HeaderHeightVar />
             <PrimerHero hero={doc.hero} />
-            <UnnycPathCards paths={doc.paths} />
+            <UnnycHomeJourney journey={doc.journey} />
         </div>
     );
 }
