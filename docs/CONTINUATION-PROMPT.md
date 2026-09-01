@@ -120,11 +120,14 @@ or "working fine". Ranked by how much time each has cost:
 Thirteen routes. Reader path and nav order: `/` -> `/start` -> `/principles` ->
 `/crosswalk` -> `/success` -> `/resources`, plus `/campaign*` and `/contact`.
 
-- **`/` has four cards matching the nav's first four** (`/start`, `/principles`,
-  `/crosswalk`, `/success`), left-to-right then top-to-bottom, no numbers.
-  ⚠ Resources has NO card, and is NOT in the footer — the top nav is its only
-  link from the homepage. ⚠ Card 1 still shows the favicon-as-logo placeholder;
-  it has moved three times and is now the most prominent it has been.
+- **`/` is a vertical-scroll journey (2026-09-01)**: full-bleed UN HQ hero
+  (`PrimerHeroFullBleed`), then one section per interior page — kicker,
+  headline, lede, derived proof row, one button. Copy in `content/home.md`
+  under `journey:`; **all figures and teaser lists are DERIVED in `page.js`**
+  from the files the interior pages render — never type a count there.
+  Consolidated from two parallel implementations (mine #65, Olivia's #66/#67 —
+  hers won as base, the derivations were ported in). ⚠ Resources still has no
+  section and is not in the footer.
 - **`/principles` is two named sections**, each opening on one principle as a
   full-width card then three in columns: **Software Principles** (Open by default
   + Secure by design / Design for reusability / Well documented) and **Community

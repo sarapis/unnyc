@@ -11,13 +11,13 @@ free use**, which covers web use. See [Adobe Stock's license terms](https://stoc
 
 | File | Used on | License holder | Date acquired |
 |---|---|---|---|
-| `home/SDGs01.jpeg` | `/` — homepage path card #2, the UN Principles card (was card #1 until 2026-08-14) | olivia@sarapis.org | 08/10/2026 |
-| `home/NYC02.jpeg` | `/` — homepage path card #3 (was #2 until the 2026-08-14 reorder) | olivia@sarapis.org | 08/10/2026 |
-| `success/barcelona.jpeg` | `/success` — Barcelona case hero (also reused on the homepage path card #4) | olivia@sarapis.org | 08/10/2026 |
+| `home/SDGs01.jpeg` | `/` — the UN Principles section of the homepage journey (was path card #2 until the 2026-09-01 vertical-scroll redesign) | olivia@sarapis.org | 08/10/2026 |
+| `home/NYC02.jpeg` | `/` — the Open Source for NYC section of the homepage journey (was path card #3 until 2026-09-01) | olivia@sarapis.org | 08/10/2026 |
+| `success/barcelona.jpeg` | `/success` — Barcelona case hero (also reused on the homepage journey's Case Studies section; was path card #4 until 2026-09-01) | olivia@sarapis.org | 08/10/2026 |
 | `success/paris.jpeg` | `/success` — Paris case hero | olivia@sarapis.org | 08/10/2026 |
 | `success/tokyo.jpeg` | **currently unused** — was the `/success` Tokyo case hero until that case was removed 2026-08-14. Considered for the fourth homepage card and rejected the same day; see "Not covered by this file" below | olivia@sarapis.org | 08/10/2026 |
 | `success/munich.jpeg` | `/success` — Munich case hero | olivia@sarapis.org | 08/11/2026 |
-| `home/UNHQ.jpeg` | `/` — full-bleed hero background, `PrimerHeroFullBleed` (hero option B, unnyc#67) | oliviacroteau667@gmail.com | 09/01/2026 |
+| `home/UNHQ.jpeg` | `/` — full-bleed hero background, `PrimerHeroFullBleed` (hero option B, unnyc#67) | oliviacroteau667@gmail.com | 09/01/2026 Resampled to 2560px / q72 with sips on 2026-09-01 (5.1MB → 1.3MB); the original arrived uncompressed and its own PR flagged it. |
 
 ## Fonts (not under `public/images/`, recorded here because this is the project's licence record)
 

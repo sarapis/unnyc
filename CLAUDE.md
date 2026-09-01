@@ -290,13 +290,22 @@ several false positives on the first pass.
 Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/crosswalk`
 → `/success` → `/resources`, which is also the nav order.
 
-- **`/` is four cards matching the nav's first four** — `/start`, `/principles`,
-  `/crosswalk`, `/success` — reading left-to-right then top-to-bottom, with no
-  leading numbers (those were literal text in the content, so numbering a card
-  meant renumbering every card below it). ⚠ **Resources has NO card and is NOT in
-  the footer**, so the top nav is its only route in from the homepage. ⚠ Card 1
-  still shows the favicon-as-logo placeholder; it has moved three times and now
-  sits in the most prominent position it has held.
+- **`/` is a vertical-scroll journey as of 2026-09-01**: a full-bleed UN HQ
+  photo hero (`PrimerHeroFullBleed`; the gradient `PrimerHero` survives,
+  swappable back in `page.js`), then one full-width section per interior page in
+  nav order — kicker, headline, lede, proof row, one button deeper
+  (`UnnycHomeJourney`, copy in `content/home.md` under `journey:` — ⚠ NOT
+  `sections`, which the parsed body silently overwrites).
+  ⚠ **Every proof row is DERIVED in `page.js`** — the 18/2,789/150 figures from
+  the OSPO directory, the GovOSS snapshot and the endorser snapshot; the six
+  reason titles read out of `content/crosswalk.md`'s own blocks; the case titles
+  from `content/success.md`. They were authored literals for ONE commit and the
+  homepage contradicted /crosswalk's titles within a day. Never type a count or
+  a teaser title into `home.md`.
+  ⚠ **Resources still has NO section and is NOT in the footer**, so the top nav
+  is its only route in from the homepage. The old first-card
+  favicon-placeholder problem is retired: the first section's stat row is its
+  visual, no image to license.
 - **`/principles` is TWO NAMED SECTIONS**, each opening on one principle as a
   full-width card and then three in columns:
   *Software Principles* — Open by default, then Secure by design / Design for
@@ -355,9 +364,12 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   This was a real bug; don't "optimise" it back.
 - **`getContent()` is server-only** (uses `node:fs`). Never import it in a
   `"use client"` file.
-- **⚠ THE ONE CSS RULE THAT WOULD HAVE PREVENTED FIVE BUGS: in `@layer unnyc`,
-  scope any component rule that sets `color` on an `<a>` or `<button>` with
-  `.unnyc-page`.** Both resets are TWO-part selectors — `.unnyc-page a { color:
+- **⚠ THE ONE CSS RULE THAT WOULD HAVE PREVENTED SIX BUGS: in `@layer unnyc`,
+  scope any component rule styling an element the `.unnyc-page` resets touch —
+  `a`, `button`, `ul`, `ol` — with `.unnyc-page`.** The sixth instance was
+  MARGINS, not color: `.unnyc-page ul { margin: 0 }` silently zeroed a
+  single-class list rule on the homepage journey and parked the CTA button on
+  top of the list. All the resets are TWO-part selectors — `.unnyc-page a { color:
   inherit }` and `.unnyc-page button { border: none; background: none }` are
   (0,1,1) — so a single-class component rule (0,1,0) LOSES in the same layer.
   Five collisions, all this shape: navy-on-navy sign-form tabs; endorser chips

@@ -40,7 +40,7 @@ To put that figure in perspective, PIT Crew, the Mamdani Administration’s flag
 
 The following is an explanation of those savings, as well as five other reasons why NYC should adopt open source software.
 
-### 1. Save Money, and Change Every Negotiation
+### 1. Save Money and Improve Negotiating Position
 
 The Department of Health pays [<b>$210,000 per two-year renewal</b>](https://databook.nyc/procurement/contract/4843244) for SurveyMonkey licenses — one agency, one survey tool. Multiply that pattern across 130-plus agencies each buying their own copy of the same category of tool and the spending total becomes rather staggering. Now put that up against LimeSurvey, its open source equivalent, which has no per-seat license at all. The potential savings speak for themselves.
 
@@ -56,7 +56,7 @@ An administration that wants genuinely innovative programs — new ways to deliv
 
 New York already runs a citywide [Vulnerability Disclosure Program](https://nyc.responsibledisclosure.com/hc/en-us): outside researchers are invited to find flaws before attackers do. But for the vendor-purchased majority of city systems, the code is closed, meaning nobody outside the vendor can check how well-built a system was to begin with. Open source extends the VDP’s logic from the city’s front doors to its foundations, allowing researchers to build trust in the systems by inspection, not by contract clause. Instead of taking a vendor’s word for it, the city — and the public — can verify the security of their data.
 
-### 4. City Government as a Tech Career Goal
+### 4. Attract Elite Talent to NYC Government
 
 Weaknesses in NYC’s digital public infrastructure are not due to a talent problem, but an access problem. New York has one of the most educated technical workforces on earth — and almost none of it ever works on the systems eight million people depend on, because closed vendor systems have no place for an outside contributor to start.
 
@@ -68,7 +68,7 @@ Paris has run its open source Lutèce platform since 2002; in 2026 it powers [<b
 
 Now look inward: New York is not a single buyer, it is 130-plus agencies buying separately. That system is how you end up with seventeen of them individually paying for support contracts of the exact same Microsoft products. Software the city builds or adopts openly can be deployed by every agency that needs it, at no additional licensing cost. The first agency pays to solve the problem, then every other agency gets the solution for free. No proprietary contract has ever worked that way.
 
-### 6. NYC: Nexus for Global Good Government
+### 6. Lead the World from its Nexus in NYC
 
 Every June, the world’s open source government movement meets at UN Headquarters — a subway ride from City Hall. Barcelona endorsed the UN Open Source Principles and became the reference point for cities’ technological innovation worldwide. That role was New York’s for the taking, and still is.
 

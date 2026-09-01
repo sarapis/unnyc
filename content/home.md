@@ -43,10 +43,16 @@ journey:
     headline: "Global cities are putting open source at the center of their technology strategy."
     lede: "From national code catalogues to city OSPOs, the world's best performing governments are building on software they own and share. Learn the vocabulary, the history, and see the map."
     linkLabel: "Explore the movement"
+    # ⚠ `source`, not `value` — the figures are DERIVED in src/app/page.js from
+    # the same files the interior pages render (the OSPO directory, the GovOSS
+    # snapshot, the endorser snapshot), so this page cannot claim a number its
+    # target no longer shows. They were authored literals for one commit, and
+    # the same commit's homepage already contradicted /crosswalk's titles —
+    # that class of drift is what this buys out of. Labels stay editable here.
     stats:
-      - value: "18"
+      - source: ospos
         label: "Governments with Open Source Program Offices"
-      - value: "2,789"
+      - source: govoss-entries
         label: "Open Source Applications in Public Government Catalogs"
   - href: /principles
     kicker: "The UN Principles"
@@ -56,7 +62,7 @@ journey:
     image: "/images/home/SDGs01.jpeg"
     flip: true
     stats:
-      - value: "150"
+      - source: endorsers
         label: "Endorsing Organizations"
   - href: /crosswalk
     kicker: "Open Source for NYC"
@@ -64,13 +70,10 @@ journey:
     lede: "The city is putting billion-dollar IT contracts in place to keep renting proprietary systems — with nothing owned at the end. Here is what switching would save, unlock, and signal."
     linkLabel: "See six reasons"
     image: "/images/home/NYC02.jpeg"
-    items:
-      - "Save Money and Improve Negotiating Position"
-      - "Control Your Systems, Unlock Your Programs"
-      - "Security You Can Verify"
-      - "Attract Elite Talent to NYC Government"
-      - "Build Once, Use It 130+ Times"
-      - "Lead the World from its Nexus in NYC"
+    # No `items:` here — the six reason titles are READ from content/crosswalk.md
+    # (src/app/page.js), so retitling a reason there retitles it here in the
+    # same edit. The transcribed list this replaces went stale against
+    # /crosswalk within a day of being written.
   - href: /success
     kicker: "Case Studies"
     headline: "Well-run cities are transitioning to open source. It's working."
@@ -78,8 +81,6 @@ journey:
     linkLabel: "Read the case studies"
     image: "/images/success/barcelona.jpeg"
     flip: true
-    items:
-      - "Barcelona: The First City to Sign"
-      - "Munich: A Landmark Migration and Lasting Institution"
-      - "Paris: From One Office to National Policy"
+    # No `items:` — the case titles are read from content/success.md's own
+    # `cases` list (src/app/page.js).
 ---
