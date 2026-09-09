@@ -12,6 +12,7 @@ free use**, which covers web use. See [Adobe Stock's license terms](https://stoc
 | File | Used on | License holder | Date acquired |
 |---|---|---|---|
 | `home/SDGs01.jpeg` | `/` — the UN Principles section of the homepage journey (was path card #2 until the 2026-09-01 vertical-scroll redesign) | olivia@sarapis.org | 08/10/2026 |
+| `home/SDGs01.png` | `/principles` — storyscroller hero (`UnnycPrinciplesStoryscroller`) | olivia@sarapis.org | 09/09/2026. Background removed (transparent PNG) from the same `home/SDGs01.jpeg` purchase above; no other modification. |
 | `home/NYC02.jpeg` | `/` — the Open Source for NYC section of the homepage journey (was path card #3 until 2026-09-01) | olivia@sarapis.org | 08/10/2026 |
 | `success/barcelona.jpeg` | `/success` — Barcelona case hero (also reused on the homepage journey's Case Studies section; was path card #4 until 2026-09-01) | olivia@sarapis.org | 08/10/2026 |
 | `success/paris.jpeg` | `/success` — Paris case hero | olivia@sarapis.org | 08/10/2026 |
