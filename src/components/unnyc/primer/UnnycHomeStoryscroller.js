@@ -327,8 +327,8 @@ export default function UnnycHomeStoryscroller({
                     <div className="unnyc-container">
                         <div className="unnyc-home-story__hero-inner">
                         <p className="unnyc-home-story__kicker" data-reveal="1">
-                            <i aria-hidden="true" className="unnyc-home-story__kicker-rule" />
                             {hero.kicker}
+                            <i aria-hidden="true" className="unnyc-home-story__kicker-rule" />
                         </p>
                         <h1
                             className="unnyc-home-story__h1"
