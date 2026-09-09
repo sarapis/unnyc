@@ -12,6 +12,9 @@ addressed:
     value: "The undersigned"
   - label: "Re"
     value: "Endorsing the United Nations Open Source Principles and making a transition to open source a goal of New York City government"
+# Homepage storyscroller's open-letter section only (unnyc#72), beside the
+# endorsing-organizations count there.
+signatureCountLabel: "endorsing organizations so far"
 signTitle: "Add your name"
 signLede: "Sign the letter as an individual, or endorse it on behalf of your organization. Every signature strengthens the case that New York’s civic community wants the city to lead."
 refsTitle: "References"

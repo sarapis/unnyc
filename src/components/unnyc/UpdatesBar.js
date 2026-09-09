@@ -100,7 +100,7 @@ export default function UpdatesBar({ copy, campaign = 'un-open-source' }) {
     }
 
     return (
-        <aside className="unnyc-updates" aria-label={copy.title}>
+        <aside id="updates" className="unnyc-updates" aria-label={copy.title}>
             <div className="unnyc-updates__inner">
                 {status === 'success' ? (
                     <p className="unnyc-updates__done" role="status">
