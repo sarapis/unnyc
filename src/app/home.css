@@ -53,12 +53,30 @@
     position: relative;
   }
 
+  /* Horizontal padding matches .unnyc-home-story__section's own — every
+     other section double-insets at narrow viewports (its own padding PLUS
+     .unnyc-container's), so this needs the same to land on the same edge
+     below max-width:1200px's cap, not just above it. */
   .unnyc-home-story__hero-screen {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: var(--wg-sp-16) 0;
+    padding: var(--wg-sp-16) var(--wg-sp-6);
+  }
+
+  /* `.unnyc-container`'s shared rule (unnyc.css) has no explicit `width` —
+     harmless everywhere else, since a plain block child fills its
+     containing block by default. Nested in THIS flex column, that default
+     doesn't apply: a flex item's own `margin: 0 auto` disables stretch per
+     spec (auto margins in the cross axis absorb the free space instead),
+     so the container shrank to fit its own content (hero-inner's 720px
+     max-width + its own padding) and centered THAT in the viewport,
+     instead of reaching the real ~1152px content width every other
+     section gets. Forcing width:100% here — not in the shared rule, which
+     must stay untouched for every other consumer — restores it locally. */
+  .unnyc-home-story__hero-screen > .unnyc-container {
+    width: 100%;
   }
 
   .unnyc-home-story__hero-inner {
