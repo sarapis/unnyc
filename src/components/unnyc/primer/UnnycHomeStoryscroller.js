@@ -324,7 +324,8 @@ export default function UnnycHomeStoryscroller({
         <div className="unnyc-home-story" ref={rootRef}>
             <section className="unnyc-home-story__hero">
                 <div className="unnyc-home-story__hero-screen">
-                    <div className="unnyc-container unnyc-home-story__hero-inner">
+                    <div className="unnyc-container">
+                        <div className="unnyc-home-story__hero-inner">
                         <p className="unnyc-home-story__kicker" data-reveal="1">
                             {hero.kicker}
                             <i aria-hidden="true" className="unnyc-home-story__kicker-rule" />
@@ -341,19 +342,22 @@ export default function UnnycHomeStoryscroller({
                         <div className="unnyc-home-story__scroll-cue">
                             Scroll <span>↓</span>
                         </div>
+                        </div>
                     </div>
                 </div>
                 <div className="unnyc-home-story__hero-screen">
-                    <div className="unnyc-container unnyc-home-story__hero-inner">
+                    <div className="unnyc-container">
+                        <div className="unnyc-home-story__hero-inner">
                         <h2 className="unnyc-home-story__h2" data-reveal="1" data-delay="210">
                             {hero.h2Lines.map((line, i) => (
-                                <span key={i} dangerouslySetInnerHTML={{ __html: line }} />
+                                <span key={i}>{line}</span>
                             ))}
                         </h2>
                         <div data-reveal="1" data-delay="340" className="unnyc-home-story__hero-cta">
                             <Link href={hero.cta.href} className="unnyc-btn unnyc-btn--primary">
                                 {hero.cta.label}
                             </Link>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -625,6 +629,8 @@ function HorizontalCarousel({ reasons, trackRef }) {
                         </div>
                     ))}
                 </div>
+            </div>
+            <div className="unnyc-home-story__hprogress-wrap">
                 <div className="unnyc-home-story__hprogress-track">
                     <div className="unnyc-home-story__hprogress" data-hprogress="1" />
                 </div>
@@ -633,27 +639,40 @@ function HorizontalCarousel({ reasons, trackRef }) {
     );
 }
 
+/** Per-vendor bar counts/widths, by position — matches the design's fixed
+ * layout for exactly these three vendors (Microsoft's three stacked full
+ * bars aren't a ratio of anything; Axon/Geotab each get one bar at a
+ * design-set width). A vendor beyond these three falls back to a single
+ * bar scaled against the largest amount, so the card degrades sensibly
+ * rather than breaking if the list ever changes. */
+const RENT_BARS = [[100, 100, 100], [79], [53]];
+
 function RentCard({ card }) {
-    const max = Math.max(...card.vendors.map((v) => parseFloat(v.amount.replace(/[^0-9.]/g, '')) || 0));
+    const amounts = card.vendors.map((v) => parseFloat(v.amount.replace(/[^0-9.]/g, '')) || 0);
+    const max = Math.max(...amounts);
     return (
         <div className="unnyc-home-story__rent" data-reveal="1">
             <p className="unnyc-home-story__rent-title">{card.title}</p>
             <div className="unnyc-home-story__rent-rows">
                 {card.vendors.map((v, i) => {
-                    const pct = max ? (parseFloat(v.amount.replace(/[^0-9.]/g, '')) / max) * 100 : 0;
+                    const bars = RENT_BARS[i] || [max ? (amounts[i] / max) * 100 : 0];
                     return (
                         <div key={v.name}>
                             <div className="unnyc-home-story__rent-row">
                                 <span>{v.name}</span>
                                 <span>{v.amount}</span>
                             </div>
-                            <div className="unnyc-home-story__rent-bar-track">
-                                <div
-                                    className="unnyc-home-story__rent-bar"
-                                    data-bar="1"
-                                    data-delay={80 + i * 100}
-                                    style={{ width: `${pct}%` }}
-                                />
+                            <div className="unnyc-home-story__rent-bars">
+                                {bars.map((pct, j) => (
+                                    <div key={j} className="unnyc-home-story__rent-bar-track">
+                                        <div
+                                            className="unnyc-home-story__rent-bar"
+                                            data-bar="1"
+                                            data-delay={80 + (i * 3 + j) * 60}
+                                            style={{ width: `${pct}%` }}
+                                        />
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     );

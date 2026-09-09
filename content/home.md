@@ -100,12 +100,13 @@ storyscroller:
     # One <span> marks the underlined phrase, same convention as
     # content/principles.md's `heroTitle`.
     h1: "The Movement for <span>Open Source Government</span> is Organized at the UN HQ."
-    # Second screen of the (230vh) hero. Last line is the one that's
-    # underlined in the design — marked the same way as h1.
+    # Second screen of the (230vh) hero. The LAST line is fully underlined
+    # in the design (not one phrase within it, unlike h1) — the component
+    # applies that to whichever line renders last, no markup needed here.
     h2Lines:
       - "Top performing cities are participating."
       - "Our city hosts it."
-      - "It's time for our city <span>government to join it.</span>"
+      - "It's time for our city government to join it."
     # CTA reuses `hero.ctas[0]` above (same label/href) — not repeated here.
   openLetter:
     kicker: "The Open Letter"
