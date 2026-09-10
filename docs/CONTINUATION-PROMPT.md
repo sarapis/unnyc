@@ -3,12 +3,17 @@
 Paste the block below into a new session. Everything above the line is context for
 whoever is maintaining this file.
 
-**Last updated 2026-08-20.** The stretch from #28 to #46 rebuilt `/principles`,
-added the endorser directory and both rails, and moved the site onto a new domain
-twice. This file is the one doc guaranteed to be read first,
-so it is the one most damaging to leave stale — it spent 2026-08-19 describing a
-homepage, a principles grid and a hostname that had all changed, which is exactly
-the failure its own header warns about. **Rewrite it whenever something lands.**
+**Last updated 2026-09-10.** This file is the standing onboarding brief: where the
+site lives, how to verify things here, what the pages are. It is the one doc
+guaranteed to be read first, so it is the one most damaging to leave stale — it
+spent 2026-08-19 describing a homepage, a principles grid and a hostname that had
+all changed, which is exactly the failure its own header warns about. **Rewrite it
+whenever something lands.**
+
+**For the most recent session's handoff — current state, invariants, the decisions
+waiting on the owner, and the traps — read
+`/Users/devin/Antigravity/unnyc/docs/CONTINUE.md`.** That file is per-session and
+dated; this one is the durable brief. Where they disagree, CONTINUE.md is newer.
 
 ---
 
@@ -129,8 +134,9 @@ Thirteen routes. Reader path and nav order: `/` -> `/start` -> `/principles` ->
   ⚠ **`/start`'s Leaflet map is GONE**, replaced by a static d3-geo SVG
   (`UnnycWorldMap`) — because CARTO put their free basemap behind an API key and
   the tiles arrived stamped "API KEY REQUIRED" while still returning HTTP 200.
-  Same four data sources, no tile server, no key. The old Leaflet components are
-  now orphaned dead code; see CLAUDE.md.
+  Same four data sources, no tile server, no key. **`/` draws the same component**,
+  reading its markers from `content/start.md` so the two cannot drift. The old
+  Leaflet components are now orphaned dead code; see CLAUDE.md.
   ⚠ Resources still has no homepage section and is not in the footer.
 - **`/principles` is two named sections**, each opening on one principle as a
   full-width card then three in columns: **Software Principles** (Open by default
@@ -312,9 +318,14 @@ literal in the fetch script. It is now READ from civictech.guide, and both map
 data sources are CC BY 4.0 — attribution, no share-alike, commercial use fine.
 Nothing blocks phase 4.
 
-1. **A photo for homepage card 1** — still the favicon placeholder, now first.
-   `public/images/success/tokyo.jpeg` is paid-for and unused but has been rejected
-   twice: a skyline beside card 4's Barcelona reads as a case study.
+1. **Delete the orphaned Leaflet map, or keep it?** `PrimerMapInner.js` and
+   `PrimerMovementNow.js` have no live references and `leaflet` is still a
+   dependency, but they are the working implementation of the pan/zoom and
+   per-country keyboard access the SVG gives up — and restoring them restores the
+   CARTO watermark. Owner's call; see CONTINUE.md §4.
+   ⚠ **The old "photo for homepage card 1" item is RETIRED, not forgotten** — the
+   homepage has no cards any more. The first storyscroller section's stat row is
+   its own visual, so there is no placeholder and nothing to license.
 2. **Decide the two-sections-vs-the-UN's-three question** for the endorsement
    declaration before it goes to OTI.
 3. **"Hundreds" vs 150** in the endorser lede.
