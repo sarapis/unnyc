@@ -84,7 +84,7 @@
   }
 
   .unnyc-cw-story__h1 {
-    margin: 0 0 var(--wg-sp-7);
+    margin: 0 0 var(--wg-sp-8);
     font-family: var(--wg-font-display);
     font-weight: 400;
     font-size: clamp(2.25rem, 4.4vw, 4.25rem);
@@ -142,7 +142,7 @@
   }
 
   .unnyc-cw-story__rent-title {
-    margin: 0 0 var(--wg-sp-7);
+    margin: 0 0 var(--wg-sp-8);
     font-size: var(--wg-fs-xs);
     font-weight: 700;
     letter-spacing: 0.12em;
@@ -219,7 +219,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--wg-sp-2);
-    margin-top: var(--wg-sp-7);
+    margin-top: var(--wg-sp-8);
     font-size: 0.8125rem;
     line-height: 1.6;
     color: var(--wg-text-secondary);
@@ -236,7 +236,7 @@
 
   .unnyc-cw-story__intro {
     display: grid;
-    gap: var(--wg-sp-7);
+    gap: var(--wg-sp-8);
     font-size: 1.0625rem;
     line-height: 1.75;
     color: var(--wg-brand);
@@ -247,8 +247,22 @@
     margin: 0;
   }
 
-  .unnyc-cw-story__intro a {
+  /* .unnyc-inline-link (content.js's markdown-link renderer, used site-wide)
+     defaults to inherited colour + a gold underline (unnyc.css) — this page
+     wants plain blue, no underline, like every other link here. Needs
+     .unnyc-page in the selector to match that rule's own specificity
+     (0-2-0); a bare `.unnyc-cw-story__intro a` (0-1-1) would lose to it
+     regardless of stylesheet order. */
+  .unnyc-page .unnyc-cw-story__intro a,
+  .unnyc-page .unnyc-cw-story__intro .unnyc-inline-link {
     color: var(--wg-accent-strong);
+    text-decoration: none;
+  }
+
+  .unnyc-page .unnyc-cw-story__intro .unnyc-inline-link:hover,
+  .unnyc-page .unnyc-cw-story__intro .unnyc-inline-link:focus {
+    color: var(--wg-accent);
+    text-decoration: underline;
   }
 
   /* The 4th intro paragraph is a markdown blockquote (content/crosswalk.md),
@@ -429,8 +443,18 @@
     margin: 0;
   }
 
-  .unnyc-cw-story__article-prose a {
+  /* Same specificity note as .unnyc-cw-story__intro above: needs
+     .unnyc-page to beat unnyc.css's .unnyc-inline-link rule (0-2-0). */
+  .unnyc-page .unnyc-cw-story__article-prose a,
+  .unnyc-page .unnyc-cw-story__article-prose .unnyc-inline-link {
     color: var(--wg-accent-strong);
+    text-decoration: none;
+  }
+
+  .unnyc-page .unnyc-cw-story__article-prose .unnyc-inline-link:hover,
+  .unnyc-page .unnyc-cw-story__article-prose .unnyc-inline-link:focus {
+    color: var(--wg-accent);
+    text-decoration: underline;
   }
 
   /* ---------------------------------------------------------------------
