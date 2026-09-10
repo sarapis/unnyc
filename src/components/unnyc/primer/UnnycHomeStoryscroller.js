@@ -1,6 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
+
+/** Same ssr:false reasoning as UnnycStartStoryscroller: the map fetches a world
+ *  atlas and computes SVG paths client-side, so it must not run during the
+ *  server render. */
+const UnnycWorldMap = dynamic(() => import('./UnnycWorldMap'), { ssr: false });
 import Link from 'next/link';
 
 /**
@@ -32,6 +38,7 @@ import Link from 'next/link';
 export default function UnnycHomeStoryscroller({
     hero,
     movement,
+    worldMap,
     principles,
     nyc,
     cases,
@@ -390,10 +397,27 @@ export default function UnnycHomeStoryscroller({
                             ))}
                         </div>
                     </div>
-                    <div className="unnyc-home-story__map-placeholder" data-reveal="1" data-delay="120">
-                        <p>World map — coming soon</p>
-                        <span>A country-by-country view of public code catalogues and OSPOs.</span>
-                    </div>
+                    {worldMap ? (
+                        <div className="unnyc-home-story__map" data-reveal="1" data-delay="120">
+                            <UnnycWorldMap
+                                markers={worldMap.markers}
+                                legend={worldMap.legend}
+                                mapSource={worldMap.mapSource}
+                                govoss={worldMap.govoss}
+                                ospos={worldMap.ospos}
+                                ctfg={worldMap.ctfg}
+                            />
+                        </div>
+                    ) : (
+                        /* Kept as the fallback, not as the shipped state: this
+                           section went to production reading "World map — coming
+                           soon" for a day. It only renders now if the page
+                           forgets to pass `worldMap`. */
+                        <div className="unnyc-home-story__map-placeholder" data-reveal="1" data-delay="120">
+                            <p>World map — coming soon</p>
+                            <span>A country-by-country view of public code catalogues and OSPOs.</span>
+                        </div>
+                    )}
                 </div>
             </section>
 
@@ -569,13 +593,27 @@ export default function UnnycHomeStoryscroller({
     );
 }
 
+/**
+ * ⚠ `data-count` MUST stay a raw, unformatted number and the visible text MUST
+ * stay formatted — they are two different jobs on one element and swapping
+ * either breaks something silently:
+ *   - the count-up reads `Number(el.dataset.count)`, and Number("2,789") is NaN,
+ *     so a formatted attribute replaces the correct server-rendered value with
+ *     "NaN" the instant the page hydrates (2,789 broke this way; 18 and 150
+ *     survived because they have no comma, which made it look like one bad stat);
+ *   - the children are what a reader sees before JS runs, and with JS off they
+ *     are ALL a reader ever sees, so "2789" there is a four-digit number that
+ *     reads as a year.
+ * `toLocaleString` is applied in both places for that reason. Pass numbers in.
+ */
 function Stat({ value, label, delay = 0, inline }) {
     if (value == null) return null;
+    const display = typeof value === 'number' ? value.toLocaleString('en-US') : value;
     return (
         <div className={inline ? 'unnyc-home-story__stat unnyc-home-story__stat--inline' : 'unnyc-home-story__stat'}>
             <div className="unnyc-home-story__stat-row">
                 <span className="unnyc-home-story__stat-value" data-reveal="1" data-count={value} data-delay={delay}>
-                    {value}
+                    {display}
                 </span>
             </div>
             {!inline && <div className="unnyc-home-story__stat-rule" data-rule="1" data-delay={delay + 40} />}
