@@ -142,8 +142,13 @@ to its CTFG profile. Toggleable, default on.
 
 ## ⚠ THE MAP RENDERER CHANGED 2026-09-10 — read this before the three sections below
 
-`/start` now draws **`UnnycWorldMap`**: a static d3-geo + topojson SVG on a dark navy
-panel, no tile server at all. Everything in the three sections that follow about WHICH
+**`/start` AND `/` both draw `UnnycWorldMap`**: a static d3-geo + topojson SVG, no tile
+server at all. The homepage shipped a literal `<p>World map — coming soon</p>` placeholder
+for a day; it now renders the same component, reading `mapMarkers`/`mapLegend`/`mapSource`
+from `content/start.md` rather than copying them, so the two maps cannot drift apart. The
+placeholder survives only as the fallback branch if `worldMap` is not passed.
+
+Everything in the three sections that follow about WHICH
 data layers exist, WHY they stack in that order, what the licences require and why the
 per-country counts must never be summed **is still true** — the new map carries the same
 four sources. What is no longer true is anything about Leaflet, tiles, popups, toggles or
@@ -159,11 +164,18 @@ without failing; monitoring for errors would never have seen this.**
 
 Two consequences of the swap, both real:
 
-- ⚠ **The map is no longer keyboard-accessible.** `PrimerMapInner`'s tabindex/aria wiring
-  on the GeoJSON paths — which the GovOSS section below rightly calls hard-won — is gone;
-  the SVG carries `aria-label` only, and 0 elements with `tabindex`. Its own comments say
-  the detail lives in "the accessible marker list rendered below it"; **that list could not
-  be found in the DOM** when checked. Either finish it or treat this as a regression.
+- **The accessible marker list EXISTS — an earlier version of this bullet said it "could
+  not be found in the DOM" and that was WRONG.** It is
+  `.unnyc-start-story__marker-list` (UnnycWorldMap.js:274) and renders 8 rows of real text
+  ("Barcelona — First city in the world to endorse the UN Principles…"), none aria-hidden,
+  on both `/` and `/start`. The claim came from a browser query for `li` children of a
+  `[class*="marker-list"]`; the rows are `div`s, so the selector matched nothing and the
+  absence looked confirmed. ⚠ **A selector that returns 0 is not evidence that a thing is
+  missing** — check the component source before writing down an absence.
+  What IS still true, and milder: `PrimerMapInner`'s per-country tabindex/aria wiring on
+  the GeoJSON paths is gone, so the GovOSS *country* counts are not individually
+  keyboard-reachable — the SVG carries `aria-label` only and 0 `tabindex`. The
+  argument-carrying markers are in text; the geography's detail is not.
 - ⚠ **It fetches world geometry from a CDN at runtime** —
   `cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json`, 39 KB, measured in the
   browser. That contradicts this repo's own snapshot doctrine, and the repo ALREADY ships
@@ -404,6 +416,19 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
 
 ## Non-obvious things that will bite you
 
+- **⚠ A FORMATTED NUMBER IN `data-count` RENDERS "NaN" AFTER HYDRATION.** The
+  storyscrollers' count-up animation reads `Number(el.dataset.count)`, and
+  `Number("2,789")` is `NaN` — so passing a `toLocaleString()`ed value replaces the
+  CORRECT server-rendered figure with `NaN` the instant the page hydrates. It shipped
+  that way on 2026-09-10. `18` and `150` were unaffected because they have no comma,
+  which made it present as one broken stat rather than a broken mechanism.
+  **The rule: `data-count` takes the raw number, the element's CHILDREN take the
+  formatted one** — see the `Stat` component in `UnnycHomeStoryscroller.js`, which
+  documents both jobs. Pass numbers, not strings, from `page.js`.
+  ⚠ **And note how it evaded checking:** the SSR HTML was correct the whole time, so
+  grepping the rendered output found `2,789` and passed. **A rendered-HTML check
+  structurally cannot see a defect that hydration introduces.** Anything involving a
+  client component's `useEffect` needs a browser, not `curl`.
 - **`getContent()` must be called inside the component or `generateMetadata`, not
   at module scope.** The markdown isn't a module dependency, so a module-level call
   is evaluated once per dev-server process and edits won't appear until a restart.
