@@ -120,14 +120,18 @@ or "working fine". Ranked by how much time each has cost:
 Thirteen routes. Reader path and nav order: `/` -> `/start` -> `/principles` ->
 `/crosswalk` -> `/success` -> `/resources`, plus `/campaign*` and `/contact`.
 
-- **`/` is a vertical-scroll journey (2026-09-01)**: full-bleed UN HQ hero
-  (`PrimerHeroFullBleed`), then one section per interior page — kicker,
-  headline, lede, derived proof row, one button. Copy in `content/home.md`
-  under `journey:`; **all figures and teaser lists are DERIVED in `page.js`**
-  from the files the interior pages render — never type a count there.
-  Consolidated from two parallel implementations (mine #65, Olivia's #66/#67 —
-  hers won as base, the derivations were ported in). ⚠ Resources still has no
-  section and is not in the footer.
+- **SEVEN PAGES ARE STORYSCROLLERS (2026-09-10)** — `/`, `/principles`,
+  `/crosswalk`, `/success`, `/start`, `/resources`, `/campaign/sign`
+  (unnyc#71-#78, merged as one integration branch). **All figures and teaser
+  lists are still DERIVED in `page.js`** from the files the interior pages
+  render — never type a count into `home.md`; Olivia kept that architecture,
+  checked across all seven.
+  ⚠ **`/start`'s Leaflet map is GONE**, replaced by a static d3-geo SVG
+  (`UnnycWorldMap`) — because CARTO put their free basemap behind an API key and
+  the tiles arrived stamped "API KEY REQUIRED" while still returning HTTP 200.
+  Same four data sources, no tile server, no key. The old Leaflet components are
+  now orphaned dead code; see CLAUDE.md.
+  ⚠ Resources still has no homepage section and is not in the footer.
 - **`/principles` is two named sections**, each opening on one principle as a
   full-width card then three in columns: **Software Principles** (Open by default
   + Secure by design / Design for reusability / Well documented) and **Community
