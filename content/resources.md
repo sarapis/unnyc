@@ -21,7 +21,11 @@ foot:
 # names the sections already on the page. Deliberately claim-free and number-free
 # — counts belong in the components that derive them, never in prose that can
 # drift. Reword freely, but don't delete them.
-title: "Related Resources"
+# `title` carries its own <span> for the underlined word, same convention as
+# content/start.md's `title` and content/principles.md's `heroTitle`.
+title: "Related <span>Resources</span>"
+# Storyscroller hero eyebrow (UnnycResourcesStoryscroller).
+heroKicker: "Resources"
 lede: "Where to read further, and who to call — primary sources from the UN and the City, the communities doing this work, and a directory of public sector open source programme offices."
 meta:
   title: "Related Resources — UNNYC"
@@ -169,7 +173,7 @@ contacts:
 ospoDirectory:
   title: "Find an OSPO"
   lede: "Public-sector Open Source Program Offices already running elsewhere."
-  intro: "What actually goes inside one is not a matter of opinion — it has been studied. Researchers interviewed representatives of sixteen public-sector OSPOs across the EU, Norway, Liechtenstein and Iceland and sorted them into six archetypes. The diagram below is their summary of what those offices are made of and what they do. On the left, the structural choices every one of them had to make: who sponsors it, which entities support it, how it is budgeted, where it sits in the organization, and how it is staffed. On the right, the work itself — setting open source strategy, overseeing compliance, writing the policies, driving contributions upstream, collaborating with outside projects, tracking whether any of it is working, practising inner source between agencies, growing and keeping people with these skills, advising colleagues, and running the open source infrastructure the organization already depends on. That list is the difference between endorsing open source as a value and running a program for it."
+  intro: "Researchers interviewed representatives of sixteen public-sector OSPOs across the EU, Norway, Liechtenstein and Iceland and sorted them into six archetypes. The diagram below is their summary of what those offices are made of and what they do. On the left, the structural choices every one of them had to make: who sponsors it, which entities support it, how it is budgeted, where it sits in the organization, and how it is staffed. On the right, the work itself — setting open source strategy, overseeing compliance, writing the policies, driving contributions upstream, collaborating with outside projects, tracking whether any of it is working, practising inner source between agencies, growing and keeping people with these skills, advising colleagues, and running the open source infrastructure the organization already depends on."
   diagram:
     src: "/images/resources/ospo-archetypes.jpg"
     alt: "Diagram of public-sector OSPO archetypes. Structure (RQ1) is fed by five choices — sponsor, supporting entities, budget, organization, and staffing. Responsibilities (RQ2) branch into ten activities: develop and execute OSS strategy, oversee OSS compliance, establish and improve OSS policies and processes, prioritize and drive OSS upstream development, collaborate with OSS organizations, track performance metrics, implement inner source practices, grow and retain OSS talent inside the organization, provide advice and support on OSS, and manage open source IT infrastructure"
