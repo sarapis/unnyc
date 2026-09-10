@@ -59,7 +59,13 @@ export default function UnnycPage() {
     const withStats = (section) => ({
         ...section,
         stats: section.stats
-            ?.map((st) => ({ label: st.label, value: statValues[st.source] }))
+            // toLocaleString, not the bare integer: the storyscroller rewrite
+            // dropped it and 2,789 rendered as "2789". A four-digit stat set at
+            // display size reads as a year without the separator.
+            ?.map((st) => ({
+                label: st.label,
+                value: statValues[st.source]?.toLocaleString('en-US'),
+            }))
             .filter((st) => st.value != null),
     });
 

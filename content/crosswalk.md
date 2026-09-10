@@ -30,24 +30,6 @@ meta:
   description: "Six reasons New York City should own its software instead of renting it — savings, control, security, talent, reuse, and global leadership."
   ogTitle: "Six Reasons New York Should Run on Open Source"
   ogDescription: "The city rents the software it should own. What switching to open source would save, unlock, and signal — with the contract records to check."
-# Estimated annual rent card, homepage storyscroller only (unnyc#72 —
-# UnnycHomeStoryscroller's "Open Source for NYC" section). Hand-sourced from
-# Databook's product-by-product breakdown, NOT derived from a snapshot file
-# like the other homepage stats — there is no per-product Databook API, so
-# this is a manually verified figure and needs a manual re-check if it is
-# ever updated. Keep the source link in the same commit as any change.
-rentCard:
-  title: "Estimated Annual Rent"
-  vendors:
-    - name: "Microsoft"
-      amount: "$142.5M"
-    - name: "Axon"
-      amount: "$37.5M"
-    - name: "Geotab"
-      amount: "$25.2M"
-  total: "$205.2M"
-  sourceLabel: "Product-by-product breakdown on Databook →"
-  sourceUrl: "https://databook.nyc/research/digital-reform/products"
 # The per-principle sections that used to live here MOVED to content/principles.md
 # on 2026-08-13 (the /principles page). This page was then rewritten 2026-08-14
 # around six REASONS to adopt — organized by reason, not by principle (that is
