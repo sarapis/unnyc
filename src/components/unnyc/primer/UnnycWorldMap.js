@@ -344,7 +344,13 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                     <summary className="unnyc-start-story__catalogues-summary">
                         {mapSource?.cataloguesLabel || 'Catalogue counts, country by country'}
                         {/* Derived, never authored — the label in content/start.md
-                            deliberately carries no number. */}
+                            deliberately carries no number.
+                            ⚠ The literal space matters and is not cosmetic: the span
+                            is spaced visually by `margin-left`, but margin is not
+                            text, so without this the accessible name concatenated to
+                            "…country by country13 countries". Caught by reading
+                            innerText in a browser, which is the only place it shows. */}
+                        {' '}
                         <span className="unnyc-start-story__catalogues-count">
                             {catalogueCountries.length} countries
                         </span>
