@@ -6,7 +6,7 @@ title: "New York Rents the Software It Should Own"
 # `storyscroller.hero.h1`. `title` above (used elsewhere on this page) is
 # left alone.
 heroKicker: "Open Source for NYC · Six reasons"
-heroTitle: "New York <span>Rents</span> the Software It Should Own"
+heroTitle: "New York Rents the <span>Software It Should Own</span>"
 lede: "The city spends around $2 billion a year on technology, and roughly a third of it is licensing — proprietary software rented year after year, with nothing owned at the end, nothing the city can inspect or fix, and nothing it can afford to walk away from. Cities around the world have replaced these systems with faster, better and cheaper open source alternatives. Here are six reasons New York should do the same."
 # Hand-sourced from Databook's product-by-product breakdown, NOT derived
 # from a snapshot file like other stats on this site — there is no
