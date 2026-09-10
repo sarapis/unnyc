@@ -58,6 +58,14 @@ gh pr list --state open --json number -q 'length'   # 0
   `/crosswalk`, `/success`, `/resources`, `/campaign/sign` checked directly.
   `curl https://un.opensource.nyc/start | grep -c cartocdn` → **0** (the
   watermark is gone). `curl https://un.opensource.nyc/ | grep -c NaN` → **0**.
+- **The NaN fix and the map are verified POST-HYDRATION, in a browser** — not
+  just by `curl`, which per §1 could not have seen either defect. Loading `/`
+  and reading the live DOM: four `[data-count]` elements, every attribute a raw
+  number (`18`, `2789`, `150`, `150`) that `Number()` parses, the rendered text
+  correctly formatted (`2,789`), `NaN` absent from `innerText`, `"coming soon"`
+  absent from `innerHTML`, and **219 `<svg> <path>` elements** — so the runtime
+  jsdelivr atlas fetch resolved and the countries actually draw. Reproduce with
+  `document.querySelectorAll('[data-count]')` and `svg path` on the live page.
 - **Seven pages are storyscrollers**, each with its own
   `Unnyc<Page>Storyscroller` component and `unnyc-<page>-story__` class prefix.
   `#75` also added a site-wide `BackToTop`.
@@ -200,8 +208,10 @@ branch `feat/capital`, not `main`.
 
 ## Coverage — what this session did NOT do
 
-- **Never saw the storyscrollers scroll.** No scroll events in these tools. Seven
-  pages shipped on that basis.
+- **Never saw the storyscrollers scroll.** No scroll events in these tools, and
+  no IntersectionObserver callbacks either. Seven pages shipped on that basis.
+  What *was* checked in a browser is the post-hydration DOM of `/` (see §2) —
+  that covers the two defects §1 describes, and nothing about scroll behaviour.
 - **Never opened a Vercel preview.** SSO-gated; all preview verification was
   indirect (build output, local dev server, production after merge).
 - **Did not review the seven PRs line by line.** The review was targeted at this
