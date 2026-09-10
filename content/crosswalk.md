@@ -1,6 +1,30 @@
 ---
 title: "New York Rents the Software It Should Own"
+# Storyscroller hero only (UnnycCrosswalkStoryscroller). `heroTitle` carries
+# its own <span> for the underlined word — same convention as
+# content/principles.md's `heroTitle` and content/home.md's
+# `storyscroller.hero.h1`. `title` above (used elsewhere on this page) is
+# left alone.
+heroKicker: "Open Source for NYC · Six reasons"
+heroTitle: "New York <span>Rents</span> the Software It Should Own"
 lede: "The city spends around $2 billion a year on technology, and roughly a third of it is licensing — proprietary software rented year after year, with nothing owned at the end, nothing the city can inspect or fix, and nothing it can afford to walk away from. Cities around the world have replaced these systems with faster, better and cheaper open source alternatives. Here are six reasons New York should do the same."
+# Hand-sourced from Databook's product-by-product breakdown, NOT derived
+# from a snapshot file like other stats on this site — there is no
+# per-product Databook API, so this needs a manual re-check if it is ever
+# updated. Keep the source link in the same commit as any change. Also
+# read by the homepage storyscroller's "Open Source for NYC" section.
+rentCard:
+  title: "Estimated Annual Rent"
+  vendors:
+    - name: "Microsoft"
+      amount: "$142.5M"
+    - name: "Axon"
+      amount: "$37.5M"
+    - name: "Geotab"
+      amount: "$25.2M"
+  total: "$205.2M"
+  sourceLabel: "Product-by-product breakdown on Databook →"
+  sourceUrl: "https://databook.nyc/research/digital-reform/products"
 meta:
   title: "Open Source for NYC: Six Reasons — UNNYC"
   description: "Six reasons New York City should own its software instead of renting it — savings, control, security, talent, reuse, and global leadership."
@@ -38,7 +62,7 @@ To put that figure in perspective, PIT Crew, the Mamdani Administration’s flag
 
 [Databook.NYC](https://databook.nyc) is an open source tool that aggregates and processes nearly 100 city-produced open datasets, providing analysis of the agencies, contracts, and money being spent by NYC on its IT services. Databook’s insights support this conclusion; there is city money to be saved by cancelling vendor contracts in favor of open source solutions.
 
-The following is an explanation of those savings, as well as five other reasons why NYC should adopt open source software.
+> The following is an explanation of those savings, as well as five other reasons why NYC should adopt open source software.
 
 ### 1. Save Money and Improve Negotiating Position
 
@@ -74,4 +98,4 @@ Every June, the world’s open source government movement meets at UN Headquarte
 
 A city that runs on open source doesn’t just serve its own residents better; it exports better government. NYC’s benefits screeners, permit systems and data tools — published openly — become starting points for Lagos, Jakarta and São Paulo, with the UN’s own networks as the distribution channel. No other city on earth has the UN in its backyard. Using that proximity to help cities everywhere govern better is a kind of leadership no one else can offer.
 
-New York calls itself the center of the world, and that carries a responsibility — to its residents, and to the world centered on it — to be a leader in good, open source government.
+> New York calls itself the center of the world, and that carries a responsibility — to its residents, and to the world centered on it — to be a leader in good, open source government.
