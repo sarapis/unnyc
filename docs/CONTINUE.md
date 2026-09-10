@@ -1,236 +1,237 @@
-# Continue here — UNNYC, after the 2026-09-10 storyscroller session
+# Continue here — UNNYC, after the second 2026-09-10 session
 
 Written from the repo, not from memory. Every number below has the command that
 produced it. If a claim here disagrees with the code, **the code is right and
 this file is stale** — fix it.
 
----
-
-## 1. The one idea
-
-**A green build and a correct `curl` prove less than you think, and this session
-had both while shipping two visible defects.**
-
-The homepage went live reading `NaN OPEN SOURCE APPLICATIONS…` and, below it,
-`World map — coming soon`. The build was green. The server-rendered HTML was
-*correct* — I grepped it, found `2,789`, and passed the check. The `NaN` was
-introduced by **hydration**: the count-up animation reads
-`Number(el.dataset.count)`, and `Number("2,789")` is `NaN`, so the client
-overwrote a right answer with a wrong one. No error, no console warning, nothing
-for CI to catch.
-
-The same shape appeared three more times today:
-
-- **CARTO** put its free basemap behind an API key and kept returning **HTTP 200
-  with a valid PNG** — every tile just arrived stamped `API KEY REQUIRED`.
-  Defacing production for an unknown period. Only a human looking at the page
-  caught it.
-- **Merging seven individually-green PRs** produced two defects present in none
-  of them: duplicated `rentCard:` YAML (both PRs added it at different lines, so
-  git merged both *cleanly* and YAML then failed) and a lost thousands separator.
-- **I wrote a false claim into `CLAUDE.md`** — that the map's accessible marker
-  list "could not be found in the DOM" — because a browser selector looking for
-  `li` children returned 0. The list is there; the rows are `div`s. **A selector
-  that returns 0 is not evidence of absence.** Corrected in this session's last
-  commit.
-
-So: for anything client-side, use a browser. For anything you're about to write
-down as *missing*, read the source first.
+Supersedes the earlier 2026-09-10 handoff. That one's §1 lesson is still the
+most useful paragraph in this repo; it is restated below because this session
+found a fourth instance of it.
 
 ---
 
-## 2. State — verified 2026-09-10
+## 1. The one idea, again, with a new instance
+
+**A thing can look correct every single time you check it, because of *how* you
+check it.**
+
+The homepage world map shipped this morning and has been rendering **unstyled
+on every fresh load of `/`** ever since. Not subtly — no panel gradient, no
+border radius, no padding, no shadow, and the marker list as a plain block
+instead of a two-column grid.
+
+Nobody caught it, and the reason is the interesting part: everyone who looked at
+it arrived from `/start`. Next keeps a route's stylesheet in the DOM after a
+client-side navigation, so the map's rules were still loaded and the page looked
+right. Only a cold load of `/` reveals it.
+
+```js
+// production, fresh load of "/", before the fix
+getComputedStyle(document.querySelector('.unnyc-start-story__map-panel')).backgroundImage
+// -> "none"
+```
+
+This is the **same cross-route stylesheet trap** CLAUDE.md already documented for
+`.unnyc-principles__rail` — **with the two cases exactly reversed.** There, a
+fresh load was always fine and only nav-click broke. Here, nav-click is fine and
+only a fresh load breaks. Knowing the first case did not prevent the second.
+
+The three earlier instances from this morning still stand: the `NaN` that only
+hydration could produce, CARTO's watermarked tiles returning HTTP 200, and two
+defects born from merging seven individually-green PRs. Add a fourth pattern to
+the list: **verify the cold path, not the path you happen to be on.**
+
+---
+
+## 2. State — verified 2026-09-10, second session
 
 ```bash
 cd /Users/devin/Antigravity/unnyc
-git branch --show-current && git status --short     # main, clean
-gh pr list --state open --json number -q 'length'   # 0
+git fetch origin && git log --oneline origin/main -1
+gh pr list --state open --json number,title
 ```
 
-- **Branch `main`, clean tree, nothing unpushed** once this handoff's own PR (#81,
-  these docs) is merged. Everything before it is already on `main`.
-- ⚠ **ONE OPEN PR, and it is not mine: #82**, `fix/resources-scrollbar-track`
-  (Olivia, opened 16:59Z today, +17/-5, one file). `/resources` set
-  `scrollbar-color: … transparent`, which on a light page shows the page
-  background through the track instead of reading as dark; it switches to the
-  solid `--wg-brand-deep` track the other six storyscroller pages already use.
-  Reviewed by reading, not merged — **merging deploys to production and nobody
-  asked me to**. It looks right and it follows the pattern `principles.css`
-  documents in its own comment. Not a fork, so you can push to the branch.
-- **Twelve PRs merged 2026-09-10**: #71–#77 (Olivia's seven storyscrollers,
-  auto-closed by the integration merge), #78 (the integration branch), #79 (docs),
-  #80 (the NaN + map fix), #81 and #83 (this handoff). #65 was closed as
-  superseded earlier. **~20 stale local branches** remain from that stretch —
-  all merged, none load-bearing, prune when convenient.
-- **Production is healthy.** All 13 routes 200. `/`, `/start`, `/principles`,
-  `/crosswalk`, `/success`, `/resources`, `/campaign/sign` checked directly.
-  `curl https://un.opensource.nyc/start | grep -c cartocdn` → **0** (the
-  watermark is gone). `curl https://un.opensource.nyc/ | grep -c NaN` → **0**.
-- **The NaN fix and the map are verified POST-HYDRATION, in a browser** — not
-  just by `curl`, which per §1 could not have seen either defect. Loading `/`
-  and reading the live DOM: four `[data-count]` elements, every attribute a raw
-  number (`18`, `2789`, `150`, `150`) that `Number()` parses, the rendered text
-  correctly formatted (`2,789`), `NaN` absent from `innerText`, `"coming soon"`
-  absent from `innerHTML`, and **219 `<svg> <path>` elements** — so the runtime
-  jsdelivr atlas fetch resolved and the countries actually draw. Reproduce with
-  `document.querySelectorAll('[data-count]')` and `svg path` on the live page.
-- **Seven pages are storyscrollers**, each with its own
-  `Unnyc<Page>Storyscroller` component and `unnyc-<page>-story__` class prefix.
-  `#75` also added a site-wide `BackToTop`.
-- **The `/start` Leaflet map is gone**; `/` and `/start` both render
-  `UnnycWorldMap` (static d3-geo + topojson SVG, no tile server, no API key).
-- **Derived data survived the rewrite** — checked, not assumed: homepage stats
-  read `18 / 2,789 / 150` from the OSPO directory, the GovOSS snapshot and the
-  endorser snapshot; the six `/crosswalk` reason titles are byte-equal on `/` and
-  `/crosswalk`; 150 of 150 endorser names are server-rendered on `/principles`.
-- **New runtime deps** from #75: `d3-geo@^3.1.1`, `topojson-client@^3.1.0`.
-- **No dev server left running.** The session's one on port 3100 was stopped;
-  `lsof -ti tcp:3100` returns only the desktop app's own network-service socket,
-  not a server. Start a fresh one with the `unnyc-dev` launch config.
+- **`origin/main` is at `9eb00ca`** — "Merge PR #82: dark scrollbar track on
+  /resources instead of transparent".
+- **PR #82 is MERGED.** Olivia's `/resources` scrollbar fix. Reviewed against the
+  five other storyscroller stylesheets (the pattern matches all of them,
+  including `principles.css`'s own note on why `--wg-brand-deep` is the
+  variant-safe token), then **main was merged in locally and built before
+  merging** — its green checks had run against a base three commits old.
+- ⚠ **PR #84 is OPEN and is this session's work.** Seven commits, +710/−877,
+  20 files. All three checks pass, `MERGEABLE` / `CLEAN`.
+  **Not merged: merging deploys to production and that was not authorised.**
+  If you are reading this file on `main`, it merged — check
+  `gh pr view 84 --json state`.
+- ⚠ **The main checkout is one commit behind `origin/main`** (at `da137e9`). It
+  was left alone deliberately — another session may be live in it, and this
+  session worked in a throwaway worktree instead. `git pull` it when you know
+  you are alone.
+- **Production is healthy.** All 13 routes 200. `curl … / | grep -c NaN` → 0,
+  `curl … /start | grep -c cartocdn` → 0.
 
-- **The board carries today's work.** Hub `841ee0a9` (unnyc) has a comment
-  (`72ea15ff`) recording the eleven merges, the CARTO failure and the two new
-  owner decisions; Hub `7d5fdeef` (Databook2) holds the Mapbox token finding.
-  Both read back after writing — verified, not assumed. Neither task's status
-  moved: everything left on them is a human decision.
+### What PR #84 contains
 
-### Not mine, but you'll see it
-`~/Antigravity/map1` and `~/Antigravity/Databook2` show dirty trees
-(`.claude/`, `handoffs/`, an `.env.backup` dated 09-04). **Pre-existing** — this
-session only ran read commands (`git show`, `grep`) in both. Databook2 is on
-branch `feat/capital`, not `main`.
+1. **The world atlas is a repo snapshot, not a runtime CDN fetch.**
+   `content/world-atlas.json` (104 KB, 177 countries) +
+   `scripts/fetch-world-atlas.mjs`, imported directly by `UnnycWorldMap`. This
+   was the last third-party runtime dependency on `/` and `/start`.
+   Browser-verified: **40 requests on a page load, all same-origin, none to
+   jsdelivr.**
+2. **The homepage-unstyled-map fix** (§1). Rules moved to
+   `src/app/world-map.css`, imported by both routes, hoisted by Next into one
+   shared chunk. Verified both routes link the same file.
+3. **The GovOSS per-country counts are reachable** — a native `<details>` under
+   the map: 13 countries, entry counts, a link to each government's own
+   catalogue.
+4. **Three `#ffffff` literals** in `home.css` → `var(--wg-surface)`.
+   `wg-lint-tokens` is now clean across 14 stylesheets.
+5. **Leaflet deleted** — see §3.
+6. A one-character a11y fix, found only by reading `innerText` in a browser.
+7. **CLAUDE.md reconciled** — eight falsified claims corrected, two new entries.
 
 ---
 
-## 3. Invariants — break these and something already fixed re-breaks
+## 3. Decisions you made this session, and what they cost
 
-1. **`data-count` takes a RAW number; the element's children take the formatted
-   one.** Formatting the attribute reintroduces the `NaN` above. Documented on
-   `Stat` in `UnnycHomeStoryscroller.js`. Pass numbers from `page.js`, not
-   strings.
-2. **Never type a count or a teaser title into `content/home.md`.** Every figure
-   and list on the homepage is derived in `src/app/page.js` from the file its
-   target page renders. Olivia's PRs briefly hardcoded them and the homepage
-   contradicted `/crosswalk` about three reason titles within a day.
-3. **The map's markers/legend/credit are READ from `content/start.md`** by both
-   `/` and `/start`. Copy them and the two maps drift.
-4. **Scope any `@layer unnyc` rule that styles `a`, `button`, `ul` or `ol` with
-   `.unnyc-page`.** Six bugs so far; the most recent was `ul { margin: 0 }`
-   silently zeroing a list's bottom margin and parking a CTA button on the text.
-5. **`content/crosswalk.md`'s lede is the Aug-13 version by owner decision**
-   (PR #70). It reintroduces an unsourced "$2 billion a year" where the replaced
-   text had two Databook contract links — that was the owner's call, so don't
-   "fix" it back.
-6. **Attribution is a licence term for GovOSS and CTFG.** Both are CC BY 4.0
-   *today* — that's a coincidence, not an invariant. Keep the strings per-source.
+- **Delete the Leaflet map: DONE.** `PrimerMapInner.js` (361 lines),
+  `PrimerMovementNow.js` (122), `leaflet@^1.9.4`, 163 lines of dead CSS in
+  `unnyc.css`, `.unnyc-pr-map__source` in `primer.css`. Orphanhood was
+  re-verified rather than taken from the handoff.
+  ⚠ **What is genuinely lost:** pan/zoom, and per-country keyboard focus on the
+  geography. The counts came back as text (§2.3); the *shapes* did not, and
+  cannot without a different renderer. CLAUDE.md now says there is nothing to
+  restore and the history is in git — **that bullet had been wrong in both
+  directions**, so it should not be reopened a third time.
+- **Merge #82: DONE**, live.
 
 ---
 
 ## 4. Waiting on the human — not mine to decide
 
-1. **The Databook Mapbox token** — Hub task **`7d5fdeef`** (Databook2, `Idea`).
-   One hardcoded `pk.` token for an account called **`soundpress`** appears in six
-   places in Databook2 and is served publicly at
-   `https://databook.nyc/js/script.js`. It works today (tested: HTTP 200 for
-   styles and tiles). **First step is owner-only: can you sign into that Mapbox
-   account?** Everything downstream branches on the answer, and both branches are
-   written into the task. Note `map1` already does this correctly via
-   `PUBLIC_MAPBOX_TOKEN`, so the house pattern exists — it just isn't applied
-   consistently.
-2. **Delete the orphaned Leaflet map, or keep it?** `PrimerMapInner.js` (15,869
-   bytes) has **zero** non-comment references outside itself; `PrimerMovementNow.js`
-   (5,933 bytes) has only two comment mentions. `leaflet@^1.9.4` is still in
-   `dependencies`. Kept deliberately because it is the working implementation of
-   the pan/zoom and per-country keyboard access the SVG gives up — but restoring
-   it means restoring the CARTO watermark. **Decide; don't leave it as folklore.**
-3. **Nobody has watched the storyscrollers scroll.** Seven scroll-driven pages
-   are in production verified only by build, rendered text and invariants,
-   because the tools here deliver **no scroll events at all**. This is the
-   largest untested surface on the site.
-4. Three older content decisions still open on Hub `841ee0a9`: the declaration's
-   two-sections-vs-the-UN's-three question (matters before it goes to OTI),
-   "Hundreds" over a countable 150, and retiring `old-unnyc.wegov.nyc`.
+1. **Merge PR #84**, or don't. It is the only thing standing between the repo and
+   a clean board, and it carries a live production fix.
+2. **⚠ NOBODY HAS STILL WATCHED THE STORYSCROLLERS SCROLL.** Unchanged, and
+   confirmed again from the other direction this session: in these tools
+   `document.visibilityState` is `"hidden"`, so IntersectionObserver never fires
+   and **all 74 `[data-reveal]` elements sit at `opacity: 0`**. Seven
+   scroll-driven pages are in production verified only by build, rendered text
+   and invariants. Still the largest untested surface on the site. Needs a human
+   with a real browser — not a better check.
+3. **A THIRD ORPHAN: `UnnycEndorserDirectory.js`.** Found while tracing
+   Leaflet's consumers. Nothing imports it —
+   `UnnycPrinciplesStoryscroller` reimplemented the directory with its own
+   `unnyc-pr-story__endorsers*` markup (verified against production: that is what
+   `/principles` serves). So the component, **25 `unnyc-endorsers__` rules in
+   `primer.css`** and one in `principles.css` are all dead. Deliberately **not**
+   deleted — same class of decision as Leaflet. The primer.css block is now
+   *labelled* dead rather than left looking alive. Delete all three together or
+   none.
+4. **The Databook Mapbox token** — Hub `7d5fdeef`, unchanged. First step is
+   owner-only: can you sign into the `soundpress` Mapbox account?
+5. Three older content decisions on Hub `841ee0a9`: the declaration's
+   two-sections-vs-the-UN's-three (matters before it goes to OTI), "Hundreds"
+   over a countable 150, retiring `old-unnyc.wegov.nyc`. Plus `168a959d`, the
+   CTFG de-indexed-linking question.
 
 ---
 
 ## 5. Candidates, ranked
 
-0. **Merge #82** (see §2) — it is one CSS file, it fixes a visible wrong colour
-   on `/resources`, and it is the only thing standing between the repo and a
-   clean board. *Why now:* an open PR is the cheapest thing here to finish, and
-   leaving someone else's small fix parked is how a branch goes stale.
-1. **Snapshot the world atlas locally.** `UnnycWorldMap` fetches
-   `cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json` (39 KB, measured
-   in-browser) at runtime, on **both** `/` and `/start` now. That contradicts this
-   repo's own snapshot doctrine, and if jsdelivr is blocked the map has no
-   countries. `content/govoss-countries.geo.json` already proves the pattern —
-   the fetch script that produced it could emit a world file.
-   *Why now:* it's the last third-party runtime dependency on the two most
-   important pages, and the CARTO episode is exactly the risk it carries.
-2. **Fix the three colour literals** `wg-lint-tokens` reports in `home.css`
-   (`#ffffff` ×3, lines 236/744/750 — `stroke` and `fill`). Non-blocking
-   (`|| true` in prebuild) but invisible to the brand-variant mechanism, which is
-   the failure the two-tier token system exists to prevent.
-   *Why now:* three lines, and the warning will be ignored into permanence.
-3. **Decide the Leaflet deletion** (see §4.2) and, if deleting, drop the
-   `leaflet` dependency with it.
-4. **Add per-country keyboard access to the SVG**, if §4.2 says the old map goes.
-   The markers are already reachable as text; the GovOSS country counts are not.
+0. **Merge #84** (§4.1). *Why now:* it fixes a visible production defect and
+   nothing else can land cleanly on top of a seven-commit open PR.
+1. **Rename `unnyc-start-story__map*` → something route-neutral.** The component
+   draws on `/` and `/start`; the prefix claims otherwise, and the misnomer is
+   what made the CSS look like it belonged in `start.css` in the first place.
+   Touch the component and `world-map.css` together. *Why now:* the cause of §1
+   is still in the code, only documented.
+2. **Decide the third orphan** (§4.3) and delete all three pieces or none.
+3. **Give the SVG geography keyboard access**, if it is wanted back. The counts
+   are text now; the shapes are not focusable. This is the one capability the
+   Leaflet deletion actually cost.
+4. **Prune ~20 stale local branches** from the storyscroller stretch. All merged,
+   none load-bearing.
 
 ---
 
 ## 6. Traps — looks broken but isn't, and looks fine but isn't
 
-**Looks broken, is deliberate:**
-
-- **`"World map — coming soon"` still exists in `UnnycHomeStoryscroller.js`.** It
-  is the fallback branch if `worldMap` isn't passed, not the shipped state. The
-  real map renders.
-- **`content/home.md` still references `SDGs01.jpeg`** while the storyscrollers
-  use `SDGs01.png`. Both are real: the `.jpeg` is the journey-era photo, still
-  rendered once in the built homepage; the `.png` is the transparent cutout. Both
-  have CREDITS rows.
-- **`localhost` can't submit any form.** Not in Payload's CORS allowlist, by
-  design. To test the live origin without creating a record, POST an
-  intentionally invalid body and confirm Payload answers `400 "invalid: Email"`.
-- **`opensource.nyc` is a 307 while the other two hosts are 308.** The apex rule
-  is meant to be *deleted* when that domain becomes its own project; a cached 308
-  would strand it.
-- **`unnyc-campaign.vercel.app` serves the site (200).** A fifth host outside the
-  redirect map — it correctly declares `un.opensource.nyc` as canonical.
-
 **Looks fine, isn't:**
 
-- **A green `curl` of a page proves nothing about client behaviour.** See §1. The
-  `NaN` was invisible to SSR checks for the entire time it was live.
-- **"CLEAN mergeable" on a PR is not "both sides survived".** Two PRs adding the
-  same YAML block at different line positions merge cleanly into a duplicate key
-  and a broken build. Merging parallel page rewrites needs a build *after* the
-  merge, not just green checks on each.
+- **A page checked by nav-click is not a page checked.** §1. Page CSS is
+  per-route; Next keeps the previous route's sheet in the DOM.
+- **A green `curl` proves nothing about client behaviour.** `UnnycWorldMap` is
+  `dynamic(..., { ssr: false })`, so **none** of the map is in the prerendered
+  HTML. Everything about it needs a browser.
+- **A selector returning 0 is not evidence of absence.** Cost a false a11y claim
+  in CLAUDE.md this morning; cost me ten minutes again this session when my own
+  stylesheet-introspection helper returned `null` for a rule that was demonstrably
+  applying.
 - **A third-party freebie can degrade without failing.** CARTO returned HTTP 200
-  the whole time. Error monitoring would never have seen it.
-- **Vercel preview URLs are SSO-gated**, so an agent gets a 302 and cannot see
-  them; only the account owner can. Fork PRs get no preview at all (that's what
-  #76's "Vercel fail — Authorization required" was, not a broken build).
-- **Screenshots come back blank at deep scroll offsets**, and `resize_window` to
-  the `desktop` preset has returned `innerWidth: 0`, which makes *every* element
-  report as overflowing. Verify a deep section on a short page instead.
+  the whole time it was serving watermarked tiles.
+- **"CLEAN mergeable" is not "both sides survived",** and a PR's green checks may
+  have run against an old base. #82's had. Merge main in locally and build.
+- **Naive brace-counting on `unnyc.css` reports an imbalance (208 open / 207
+  close) and that is PRE-EXISTING and benign** — `@layer unnyc {` at line 39 is
+  never closed, so everything to EOF is inside it, which is the intent, and CSS
+  parsers auto-close at EOF. Don't "fix" it in a panic; it was 229/228 before
+  this session's deletions removed a balanced 21/21.
+
+**Looks broken, is deliberate:**
+
+- **`"World map — coming soon"` still exists in `UnnycHomeStoryscroller.js`** —
+  the fallback branch if `worldMap` isn't passed, not the shipped state.
+- **`ssr: false` on the map is now a BYTES decision, not a technical necessity.**
+  There is no async work left. 176 country paths belong in a content-hashed JS
+  chunk the CDN caches immutably, not inlined into every HTML response. Both call
+  sites say so; don't "simplify" it away.
+- **The atlas snapshot is imported, not loaded fail-soft** like
+  `getCtfgProjects()`. A bundler import in a client component means a missing
+  snapshot fails the **build** rather than a reader's page. That is the louder,
+  cheaper failure and it is on purpose.
+- **`localhost` can't submit any form.** Not in Payload's CORS allowlist.
+- **`opensource.nyc` is a 307 while the other two hosts are 308.** The apex rule
+  is meant to be deleted, not promoted.
+
+**Tooling limits worth knowing before you waste time on them:**
+
+- **Screenshots come back blank at deep scroll offsets.** The map sits ~2,208px
+  down `/`; a screenshot there is a white rectangle. Use DOM measurement.
+- **`resize_window` to the `desktop` preset can report `innerWidth: 0`.** Pass
+  explicit `width`/`height`.
+- **A synthetic `KeyboardEvent` does not run default activation** — that is
+  correct browser behaviour for untrusted events, not a bug in the page. So a
+  trusted Enter/Space keypress **cannot be dispatched** from here. Use
+  `element.click()` to prove a control's activation path, and say plainly that
+  the hardware keypress is unverified.
+- **⚠ `.claude/` IS NOT INHERITED BY A GIT WORKTREE**, `launch.json` included. So
+  `preview_start` finds only the *main* checkout's config and **silently starts a
+  dev server on the main checkout**, serving code that is not yours. Writing a
+  `launch.json` inside the worktree does not help — the tool resolves it from the
+  project root. What works: add a second entry to the main
+  `.claude/launch.json` with `runtimeExecutable: "sh"` and
+  `runtimeArgs: ["-c", "cd <worktree> && npm run dev -- --port 3101"]`, then put
+  the file back when you finish. (This session did, and restored it.)
+- **`cp -Rc <main>/node_modules <worktree>/`** clones 291 MB in seconds on APFS —
+  much better than a 350 MB install that needs network for the git-dep tokens.
 
 ---
 
 ## Coverage — what this session did NOT do
 
-- **Never saw the storyscrollers scroll.** No scroll events in these tools, and
-  no IntersectionObserver callbacks either. Seven pages shipped on that basis.
-  What *was* checked in a browser is the post-hydration DOM of `/` (see §2) —
-  that covers the two defects §1 describes, and nothing about scroll behaviour.
-- **Never opened a Vercel preview.** SSO-gated; all preview verification was
-  indirect (build output, local dev server, production after merge).
-- **Did not review the seven PRs line by line.** The review was targeted at this
-  repo's known traps (derived counts, `.unnyc-page` scoping, class-prefix
-  collisions) plus post-merge invariants. Storyscroller *logic* — the scroll
-  math, the carousels, the reveal timing — is unreviewed.
-- **Did not touch `map1` or `Databook2`** beyond reading. The Mapbox token
-  finding is recorded in Hub `7d5fdeef`; no code was changed there.
-- **Left the orphaned Leaflet components and the `leaflet` dependency in place**
-  pending the decision in §4.2.
+- **Never saw the storyscrollers scroll.** Same structural reason as this
+  morning, now measured from the other side: `visibilityState: "hidden"`, 74
+  elements stuck at `opacity: 0`.
+- **Never dispatched a trusted keypress** at the new disclosure. Its native
+  `<summary>` behaviour is intact and nothing overrides it (checked: no global
+  keydown `preventDefault` anywhere — the nav's only key handler attaches when
+  its drawer is open and reacts to Escape alone), and `element.click()` toggles
+  correctly. But the hardware path is unverified.
+- **Never opened a Vercel preview.** SSO-gated for an agent, as before.
+- **Did not review the seven storyscrollers' scroll logic.** Unchanged from this
+  morning's coverage note: the scroll math, carousels and reveal timing remain
+  unreviewed.
+- **Did not delete the third orphan** (§4.3), did not rename the misnamed map
+  classes (§5.1), did not prune the stale branches.
+- **Did not touch the main checkout** beyond restoring the `launch.json` entry it
+  had temporarily added, and did not pull it forward one commit.
