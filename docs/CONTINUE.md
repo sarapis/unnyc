@@ -49,15 +49,31 @@ gh pr list --state open --json number -q 'length'   # 0
 
 - **Branch `main`, clean tree, nothing unpushed** once this handoff's own PR (#81,
   these docs) is merged. Everything before it is already on `main`.
-- **Eleven PRs merged 2026-09-10**: #71–#77 (Olivia's seven storyscrollers,
+- ⚠ **ONE OPEN PR, and it is not mine: #82**, `fix/resources-scrollbar-track`
+  (Olivia, opened 16:59Z today, +17/-5, one file). `/resources` set
+  `scrollbar-color: … transparent`, which on a light page shows the page
+  background through the track instead of reading as dark; it switches to the
+  solid `--wg-brand-deep` track the other six storyscroller pages already use.
+  Reviewed by reading, not merged — **merging deploys to production and nobody
+  asked me to**. It looks right and it follows the pattern `principles.css`
+  documents in its own comment. Not a fork, so you can push to the branch.
+- **Twelve PRs merged 2026-09-10**: #71–#77 (Olivia's seven storyscrollers,
   auto-closed by the integration merge), #78 (the integration branch), #79 (docs),
-  #80 (the NaN + map fix), #81 (this handoff). #65 was closed as superseded
-  earlier. **~20 stale local branches** remain from that stretch — all merged,
-  none load-bearing, prune when convenient.
+  #80 (the NaN + map fix), #81 and #83 (this handoff). #65 was closed as
+  superseded earlier. **~20 stale local branches** remain from that stretch —
+  all merged, none load-bearing, prune when convenient.
 - **Production is healthy.** All 13 routes 200. `/`, `/start`, `/principles`,
   `/crosswalk`, `/success`, `/resources`, `/campaign/sign` checked directly.
   `curl https://un.opensource.nyc/start | grep -c cartocdn` → **0** (the
   watermark is gone). `curl https://un.opensource.nyc/ | grep -c NaN` → **0**.
+- **The NaN fix and the map are verified POST-HYDRATION, in a browser** — not
+  just by `curl`, which per §1 could not have seen either defect. Loading `/`
+  and reading the live DOM: four `[data-count]` elements, every attribute a raw
+  number (`18`, `2789`, `150`, `150`) that `Number()` parses, the rendered text
+  correctly formatted (`2,789`), `NaN` absent from `innerText`, `"coming soon"`
+  absent from `innerHTML`, and **219 `<svg> <path>` elements** — so the runtime
+  jsdelivr atlas fetch resolved and the countries actually draw. Reproduce with
+  `document.querySelectorAll('[data-count]')` and `svg path` on the live page.
 - **Seven pages are storyscrollers**, each with its own
   `Unnyc<Page>Storyscroller` component and `unnyc-<page>-story__` class prefix.
   `#75` also added a site-wide `BackToTop`.
@@ -139,6 +155,10 @@ branch `feat/capital`, not `main`.
 
 ## 5. Candidates, ranked
 
+0. **Merge #82** (see §2) — it is one CSS file, it fixes a visible wrong colour
+   on `/resources`, and it is the only thing standing between the repo and a
+   clean board. *Why now:* an open PR is the cheapest thing here to finish, and
+   leaving someone else's small fix parked is how a branch goes stale.
 1. **Snapshot the world atlas locally.** `UnnycWorldMap` fetches
    `cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json` (39 KB, measured
    in-browser) at runtime, on **both** `/` and `/start` now. That contradicts this
@@ -200,8 +220,10 @@ branch `feat/capital`, not `main`.
 
 ## Coverage — what this session did NOT do
 
-- **Never saw the storyscrollers scroll.** No scroll events in these tools. Seven
-  pages shipped on that basis.
+- **Never saw the storyscrollers scroll.** No scroll events in these tools, and
+  no IntersectionObserver callbacks either. Seven pages shipped on that basis.
+  What *was* checked in a browser is the post-hydration DOM of `/` (see §2) —
+  that covers the two defects §1 describes, and nothing about scroll behaviour.
 - **Never opened a Vercel preview.** SSO-gated; all preview verification was
   indirect (build output, local dev server, production after merge).
 - **Did not review the seven PRs line by line.** The review was targeted at this
