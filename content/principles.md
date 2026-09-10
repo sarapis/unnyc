@@ -17,7 +17,14 @@ metaDocument:
   ogTitle: "The UN Open Source Principles — A One-Page Summary"
   ogDescription: "All eight principles on a single page, written as actions. Print it, or send it to whoever asks what endorsing them actually commits you to."
 title: "The UN Open Source Principles"
-lede: "Adopted by the UN’s Digital and Technology Network in 2025, these eight commitments articulate a global consensus around how institutions should adopt and interact with open source software."
+lede: "Articulating a global consensus on how institutions should adopt and interact with open source — and a growing directory of organizations has formally endorsed them."
+# Hero kicker + heading for the storyscroller layout. Not read by the
+# printable document, which has no hero. `heroTitle` carries its own <span>
+# for the underlined portion — same convention as content/home.md's
+# hero.titleLines, where an inline mark needs more control than markdown
+# gives. `title` above (the page's real <h1> elsewhere) is left alone.
+heroKicker: "Eight commitments · Adopted 2025"
+heroTitle: "The <span>UN Open Source Principles</span>"
 # The grid opens straight on the lead principle as of 2026-08-14. It used to
 # carry two framing lines — `gridIntro` ("The software built for the city ought
 # to be:") and `gridCommitted` ("As leaders in the global open source movement,
@@ -59,6 +66,9 @@ endorsers:
   # it. If that matters, "150 organizations" or "More than 150 organizations"
   # is accurate and no weaker — the count is derived, so it cannot go stale.
   lede: "Hundreds of organizations that have publicly endorsed the UN Open Source Principles."
+  # CTA beside the directory heading on the storyscroller layout.
+  ctaLabel: "Add Your Organization →"
+  ctaHref: /campaign/endorse
   allLabel: "All sectors"
   filterLabel: "Filter endorsing organizations by sector"
   unitOne: "organization"
