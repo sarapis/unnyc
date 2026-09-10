@@ -21,6 +21,40 @@
 
 @layer unnyc {
 
+  /* Orange vertical scrollbar, this page only — matches the design
+     handoff's `html { scrollbar-color: ... }` rule, scoped with :has() so
+     it doesn't reach in and restyle every other route's scrollbar too.
+     Reads --wg-nyc-orange, the one reference-tier token this file uses
+     directly (everywhere else reads the semantic tier — see the note up
+     top): `<html>` sits OUTSIDE `.wg-unnyc`, the div layout.js puts the
+     brand variant class on, so a semantic --wg-accent-warm here would
+     silently resolve to the default (wegov) variant's gold, not UNNYC's
+     orange remap — the exact silent-failure mode CLAUDE.md warns about,
+     just in the other direction. The reference token is variant-agnostic
+     by design, which is what a rule outside the variant's own scope needs. */
+  html:has(.unnyc-pr-story) {
+    scrollbar-color: var(--wg-nyc-orange) transparent;
+    scrollbar-width: thin;
+  }
+
+  html:has(.unnyc-pr-story)::-webkit-scrollbar {
+    width: 9px;
+    background: transparent;
+  }
+
+  html:has(.unnyc-pr-story)::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  html:has(.unnyc-pr-story)::-webkit-scrollbar-thumb {
+    background: var(--wg-nyc-orange);
+    border-radius: 999px;
+  }
+
+  html:has(.unnyc-pr-story)::-webkit-scrollbar-thumb:hover {
+    background: var(--wg-nyc-orange-light);
+  }
+
   /* ---------------------------------------------------------------------
      Hero
      --------------------------------------------------------------------- */
