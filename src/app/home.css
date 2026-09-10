@@ -231,9 +231,13 @@
     stroke-width: 1;
   }
 
+  /* White marks on the dark map read --wg-surface, matching what
+     UnnycWorldMap already uses for its own white strokes and nation
+     markers. --wg-text-inverse resolves to the same white but means
+     "text on a dark ground", and these are graphics. */
   .unnyc-home-story__map-un-dot {
     fill: var(--wg-accent-warm);
-    stroke: #ffffff;
+    stroke: var(--wg-surface);
     stroke-width: 1.8;
   }
 
@@ -741,13 +745,13 @@
   }
 
   .unnyc-home-story__hcard-globe {
-    stroke: #ffffff;
+    stroke: var(--wg-surface);
     stroke-opacity: 0.18;
     stroke-width: 1.5;
   }
 
   .unnyc-home-story__hcard-dot {
-    fill: #ffffff;
+    fill: var(--wg-surface);
     fill-opacity: 0.85;
   }
 
