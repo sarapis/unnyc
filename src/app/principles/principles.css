@@ -670,35 +670,4 @@
     }
   }
 
-  /* ---------------------------------------------------------------------
-     Foot
-     --------------------------------------------------------------------- */
-
-  .unnyc-pr-story__foot {
-    padding: var(--wg-sp-16) var(--wg-sp-6) var(--wg-sp-24);
-    background: var(--wg-surface-warm);
-    border-top: 1px solid var(--wg-warm-gray);
-    text-align: center;
-  }
-
-  .unnyc-pr-story__foot-lede {
-    margin: 0 0 var(--wg-sp-8);
-    font-family: var(--wg-font-display);
-    font-weight: 400;
-    font-size: clamp(1.5rem, 2.6vw, 2.125rem);
-    line-height: 1.25;
-    color: var(--wg-brand);
-  }
-
-  .unnyc-pr-story__foot-ctas {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: var(--wg-sp-4);
-  }
-
-  .unnyc-pr-story__foot-doc {
-    margin: var(--wg-sp-8) 0 0;
-    font-size: var(--wg-fs-sm);
-  }
 }

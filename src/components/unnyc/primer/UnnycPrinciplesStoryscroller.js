@@ -12,8 +12,8 @@ const WINDOW = 7;
  * UnnycPrinciplesStoryscroller — the storyscroller redesign of /principles:
  * a hero, the eight principles as two vertical "stems" that grow with the
  * read (Software: open-by-default lead + 3; Community: contribute-back lead
- * + 3), a sticky icon-swapping sidebar, the endorser directory, and foot
- * CTAs. Reimplements a Claude Design handoff (see the design_handoff_unnyc_
+ * + 3), a sticky icon-swapping sidebar, and the endorser directory.
+ * Reimplements a Claude Design handoff (see the design_handoff_unnyc_
  * storyscrollers README from the PR that introduced this) against this
  * repo's own content and tokens rather than the prototype's inline styles.
  *
@@ -43,7 +43,7 @@ const WINDOW = 7;
  * the stem/underline pixel alignment (layoutStems, re-run on resize and
  * once web fonts settle) and the reveal/draw/trunk motion itself.
  */
-export default function UnnycPrinciplesStoryscroller({ hero, groups, endorsers, foot }) {
+export default function UnnycPrinciplesStoryscroller({ hero, groups, endorsers }) {
     const rootRef = useRef(null);
     const iconRef = useRef(null);
     const swappingRef = useRef(false);
@@ -588,24 +588,6 @@ export default function UnnycPrinciplesStoryscroller({ hero, groups, endorsers, 
                     </div>
                 </section>
             )}
-
-            <section className="unnyc-pr-story__foot">
-                <div className="unnyc-container unnyc-container--narrow">
-                    <p className="unnyc-pr-story__foot-lede" data-reveal="1">
-                        {foot.text}
-                    </p>
-                    <div className="unnyc-pr-story__foot-ctas" data-reveal="1" data-delay="100">
-                        {foot.ctas.map((c) => (
-                            <Link key={c.href} href={c.href} className={`unnyc-btn unnyc-btn--${c.style}`}>
-                                {c.label}
-                            </Link>
-                        ))}
-                    </div>
-                    <p className="unnyc-pr-story__foot-doc" data-reveal="1" data-delay="180">
-                        <Link href="/principles/document">View as a printable one-pager ↗</Link>
-                    </p>
-                </div>
-            </section>
         </div>
     );
 }

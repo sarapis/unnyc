@@ -18,8 +18,8 @@ export async function generateMetadata() {
  * /principles — the UN Open Source Principles, storyscroller layout
  * (2026-09). Reimplements a Claude Design handoff (a hero, the eight
  * principles as two vertical "stems" that grow with the read, a sticky
- * icon-swapping sidebar, the endorser directory, foot CTAs) against this
- * repo's own content and tokens. All the actual markup/motion lives in
+ * icon-swapping sidebar, the endorser directory) against this repo's own
+ * content and tokens. All the actual markup/motion lives in
  * UnnycPrinciplesStoryscroller — this file's job is reading content and
  * shaping it into that component's props.
  *
@@ -88,7 +88,6 @@ export default function PrinciplesPage() {
                 }}
                 groups={groups}
                 endorsers={{ organizations: endorsers?.organizations, copy: doc.endorsers }}
-                foot={doc.foot}
             />
         </>
     );
