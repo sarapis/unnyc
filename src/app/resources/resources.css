@@ -12,17 +12,29 @@
 
 @layer unnyc {
 
-  /* Orange scrollbar, this page only — lighter than /start's (no dark map
-     panel here to match), scoped with :has() so it doesn't reach in and
-     restyle every other route's scrollbar. */
+  /* Orange-on-dark scrollbar, this page only, scoped with :has() so it
+     doesn't reach in and restyle every other route's scrollbar. The track
+     is an explicit dark navy, not literal transparency: this page is
+     light, and "transparent" shows that light background through the
+     track instead of reading as the same dark scrollbar every other
+     storyscroller page uses (see principles.css's identical note — this
+     file used to get it wrong exactly this way). */
   html:has(.unnyc-resources-story) {
-    scrollbar-color: var(--wg-nyc-orange) transparent;
+    scrollbar-color: var(--wg-nyc-orange) var(--wg-brand-deep);
     scrollbar-width: thin;
   }
 
   html:has(.unnyc-resources-story)::-webkit-scrollbar {
     width: 9px;
-    background: transparent;
+    background: var(--wg-brand-deep);
+  }
+
+  html:has(.unnyc-resources-story)::-webkit-scrollbar-track {
+    background: var(--wg-brand-deep);
+  }
+
+  html:has(.unnyc-resources-story)::-webkit-scrollbar-corner {
+    background: var(--wg-brand-deep);
   }
 
   html:has(.unnyc-resources-story)::-webkit-scrollbar-thumb {
