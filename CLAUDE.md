@@ -140,7 +140,38 @@ to its CTFG profile. Toggleable, default on.
   `licenceCheckedFrom` beside it. **A licence is the licensor's fact, not ours — read it, don't
   recall it.**
 
-## The four map layers (rescoped 2026-08-17)
+## ⚠ THE MAP RENDERER CHANGED 2026-09-10 — read this before the three sections below
+
+`/start` now draws **`UnnycWorldMap`**: a static d3-geo + topojson SVG on a dark navy
+panel, no tile server at all. Everything in the three sections that follow about WHICH
+data layers exist, WHY they stack in that order, what the licences require and why the
+per-country counts must never be summed **is still true** — the new map carries the same
+four sources. What is no longer true is anything about Leaflet, tiles, popups, toggles or
+keyboard-navigable GeoJSON paths.
+
+**Why it changed, and the lesson worth keeping: CARTO put their free basemap behind an API
+key, and the failure was SILENT.** Their `light_all` tiles still returned HTTP 200 with a
+valid PNG — no error, no console warning, no failed request — but every tile arrived with
+"API KEY REQUIRED / carto.com/basemaps/apikey" stamped diagonally across it. It was
+defacing production for an unknown period and only a human looking at the page caught it.
+Verified by fetching a tile directly and viewing it. **A third-party freebie can degrade
+without failing; monitoring for errors would never have seen this.**
+
+Two consequences of the swap, both real:
+
+- ⚠ **The map is no longer keyboard-accessible.** `PrimerMapInner`'s tabindex/aria wiring
+  on the GeoJSON paths — which the GovOSS section below rightly calls hard-won — is gone;
+  the SVG carries `aria-label` only, and 0 elements with `tabindex`. Its own comments say
+  the detail lives in "the accessible marker list rendered below it"; **that list could not
+  be found in the DOM** when checked. Either finish it or treat this as a regression.
+- ⚠ **It fetches world geometry from a CDN at runtime** —
+  `cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json`, 39 KB, measured in the
+  browser. That contradicts this repo's own snapshot doctrine, and the repo ALREADY ships
+  Natural Earth polygons locally in `content/govoss-countries.geo.json` (13 catalogue
+  countries — not a whole-world basemap, but the fetch script that produced it could emit
+  one). If jsdelivr is blocked, the map has no countries.
+
+## The four map layers (rescoped 2026-08-17 — data still current, renderer replaced)
 
 `/start#going-open-source` carries, bottom to top: the **GovOSS country fill**, the
 **CTFG programs**, the **public sector OSPOs**, and the curated **policy markers**.
@@ -290,12 +321,27 @@ several false positives on the first pass.
 Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/crosswalk`
 → `/success` → `/resources`, which is also the nav order.
 
-- **`/` is a vertical-scroll journey as of 2026-09-01**: a full-bleed UN HQ
-  photo hero (`PrimerHeroFullBleed`; the gradient `PrimerHero` survives,
-  swappable back in `page.js`), then one full-width section per interior page in
-  nav order — kicker, headline, lede, proof row, one button deeper
-  (`UnnycHomeJourney`, copy in `content/home.md` under `journey:` — ⚠ NOT
-  `sections`, which the parsed body silently overwrites).
+- **SEVEN PAGES ARE STORYSCROLLERS as of 2026-09-10** (unnyc#71-#78, Olivia's, merged
+  as one integration branch): `/`, `/principles`, `/crosswalk`, `/success`, `/start`,
+  `/resources` and `/campaign/sign`, each with its own
+  `Unnyc<Page>Storyscroller` component and its own `unnyc-<page>-story__` class
+  prefix in its own stylesheet. `#75` also added a site-wide `BackToTop`.
+  ⚠ **Scroll behaviour is UNVERIFIABLE with the tools in this repo** — the preview
+  pane delivers no scroll events at all (see docs/CONTINUATION-PROMPT.md), so a
+  storyscroller can only be checked by a human. Builds, rendered text and
+  invariants are what an agent can prove.
+  ⚠ Two defects came from MERGING the seven together, neither present in any one
+  of them: `content/crosswalk.md` ended up with two identical `rentCard:` blocks
+  (both PRs added one at a different line, so git merged both CLEANLY and YAML
+  then failed on the duplicate key — the "CLEAN is not both-survived" case), and
+  the homepage's `2,789` lost its `toLocaleString` and rendered `2789`. Fixed in
+  the integration commit; expect this class of thing whenever parallel page
+  rewrites land together.
+- **`/` was a vertical-scroll journey from 2026-09-01 to 09-10** and is now the
+  homepage storyscroller. It keeps the full-bleed UN HQ hero
+  (`PrimerHeroFullBleed`; the gradient `PrimerHero` survives, swappable back in
+  `page.js`) and copy still lives in `content/home.md` under `journey:` — ⚠ NOT
+  `sections`, which the parsed body silently overwrites.
   ⚠ **Every proof row is DERIVED in `page.js`** — the 18/2,789/150 figures from
   the OSPO directory, the GovOSS snapshot and the endorser snapshot; the six
   reason titles read out of `content/crosswalk.md`'s own blocks; the case titles
@@ -665,10 +711,16 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   Sheet path were removed 2026-08-06 — formal organization endorsements post to
   Payload's `campaign-endorsements` with `kind: 'organization'`, the same
   collection and review step as an individual signature.
-- **Leaflet is client-only.** The map loads via `dynamic(..., { ssr: false })` from
-  `PrimerMovementNow.js`, which now receives `mapMarkers`/`mapLegend` as props from
-  `content/start.md`. That relative dynamic import is invisible to `@/`-prefixed
-  grep — don't delete `PrimerMapInner.js` as "unused".
+- **⚠ THE LEAFLET MAP IS ORPHANED as of 2026-09-10** — this bullet said "don't delete
+  `PrimerMapInner.js` as unused" and that advice is now exactly backwards.
+  `/start` renders `UnnycWorldMap` (a static d3-geo SVG) instead;
+  `PrimerMovementNow.js` is referenced only by COMMENTS outside itself, and
+  `PrimerMapInner.js` only by `PrimerMovementNow`. ~22 KB of live-looking dead code,
+  plus `leaflet@^1.9.4` still in `dependencies`.
+  **Kept deliberately, for now**: it is the working implementation of the pan/zoom and
+  keyboard-navigable country layer the SVG gives up, so it is the fallback if
+  interactivity is ever wanted back. ⚠ But it would come back WATERMARKED — see the CARTO
+  note below. Decide and then delete or restore; do not leave this as folklore.
 - **Glossary definitions live once**, in `content/start.md` under `concepts.terms`.
   `src/lib/content.js` reads them so a `[term](gloss:slug)` link anywhere gets a
   hover definition. The old `GlossaryTerm` React component was deleted; re-adding a
