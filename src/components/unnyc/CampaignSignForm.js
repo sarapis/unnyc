@@ -172,9 +172,7 @@ export default function CampaignSignForm({ campaign = 'un-open-source' }) {
                             className="unnyc-btn unnyc-btn--primary"
                             disabled={status === 'submitting'}
                         >
-                            {status === 'submitting'
-                                ? 'Submitting…'
-                                : kind === 'individual' ? 'Sign the letter' : 'Endorse the letter'}
+                            {status === 'submitting' ? 'Submitting…' : 'Sign the letter'}
                         </button>
                         <p className="unnyc-cmp-form__privacy">
                             Your email is never shown publicly. Names appear on this page after a quick review.

@@ -4,7 +4,11 @@ meta:
   description: "An open letter asking NYC's Office of Technology & Innovation to endorse the UN Open Source Principles, open an OSPO, and weigh open source in every contract."
   ogTitle: "NYC Should Endorse the UN Open Source Principles"
   ogDescription: "Three asks of the city's Office of Technology & Innovation: endorse the UN Open Source Principles, establish an OSPO, and weigh an open source alternative in every technology contract."
-title: "New York City Should Endorse the UN Open Source Principles"
+# Storyscroller hero eyebrow (UnnycTakeActionStoryscroller).
+heroKicker: "Take Action · An open letter"
+# `title` carries its own <span> for the underlined word, same convention as
+# content/start.md's `title` and content/principles.md's `heroTitle`.
+title: "New York City Should <span>Endorse</span> the UN Open Source Principles"
 addressed:
   - label: "To"
     value: "The New York City Office of Technology & Innovation"
