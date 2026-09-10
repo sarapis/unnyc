@@ -1,6 +1,6 @@
-import '../campaign.css';
+import UnnycTakeActionStoryscroller from '@/components/unnyc/primer/UnnycTakeActionStoryscroller';
+import './sign.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
-import CampaignSignForm from '@/components/unnyc/CampaignSignForm';
 import { fetchAPI } from '@/lib/api';
 import { getContent, inlineMd, principlesFlat } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
@@ -13,15 +13,24 @@ export async function generateMetadata() {
 }
 
 /**
- * /campaign/sign — the open letter as a standalone, signable page.
- * Individuals sign, organizations endorse; both go to Payload's
- * `campaign-endorsements` collection and appear on the endorser wall below
- * once published (vetting = publishing in the Sarapis admin).
+ * /campaign/sign — the open letter as a standalone, signable page, in the
+ * storyscroller layout (2026-09): letter prose on the left, a sticky
+ * "Add your name" card on the right, no sidebar rail. Individuals sign,
+ * organizations endorse; both go to Payload's `campaign-endorsements`
+ * collection and appear on the endorser wall below once published (vetting
+ * = publishing in the Sarapis admin).
  *
  * ALL COPY LIVES IN content/sign.md, except the eight principles, which come
  * from content/principles.md — the single source shared with /start and the
  * printable declaration. `{{principles}}` in the markdown marks where that list
  * is injected. See docs/EDITING-CONTENT.md.
+ *
+ * The form itself is CampaignSignForm.js, unchanged — this page only
+ * restyles it (see sign.css) and wraps it in a sticky card. It posts to
+ * Payload directly and isn't reused anywhere else, so that restyling is
+ * safe: /campaign/endorse's EndorseForm shares the same `.unnyc-cmp-form__*`
+ * class names, but this file's overrides are scoped under
+ * `.unnyc-take-action-story`, a wrapper only this page renders.
  *
  * Revalidated every 5 minutes so newly published endorsements and the live
  * tally appear without a rebuild.
@@ -68,7 +77,9 @@ export default async function CampaignSignPage() {
     const people = endorsements.filter((e) => e.kind === 'individual');
 
     // The letter body: prose from markdown, with the data-driven principles
-    // list spliced in where the editor put the marker.
+    // list spliced in where the editor put the marker. Same derivation as
+    // the page this replaces — see UnnycTakeActionStoryscroller for how each
+    // chunk is revealed.
     const letter = doc.sections.letter;
     const chunks = [];
     for (const b of [{ label: null, html: letter.html }, ...letter.blocks]) {
@@ -79,130 +90,26 @@ export default async function CampaignSignPage() {
     }
 
     return (
-        <div className="unnyc-cmp">
+        <>
             <StructuredData data={breadcrumbLd('/campaign/sign')} />
             <HeaderHeightVar />
-
-            {/* Letter header */}
-            <header className="unnyc-cmp-header">
-                <div className="unnyc-cmp-container">
-                    <h1 className="unnyc-cmp-header__title">{doc.title}</h1>
-                    {stats && stats.total > 0 && (
-                        <p className="unnyc-cmp-header__tally" aria-live="polite">
-                            Signed by <strong>{stats.individuals}</strong>{' '}
-                            individual{stats.individuals === 1 ? '' : 's'} and{' '}
-                            <strong>{stats.organizations}</strong>{' '}
-                            organization{stats.organizations === 1 ? '' : 's'}
-                        </p>
-                    )}
-                    <dl className="unnyc-cmp-header__meta">
-                        {doc.addressed.map((row) => (
-                            <div key={row.label}>
-                                <dt>{row.label}</dt>
-                                <dd>{row.value}</dd>
-                            </div>
-                        ))}
-                    </dl>
-                </div>
-            </header>
-
-            <div className="unnyc-cmp-layout">
-                <article className="unnyc-cmp-letter unnyc-cmp-layout__main">
-                    {chunks.map((c, i) => (
-                        <div key={i}>
-                            {c.label && <h2 dangerouslySetInnerHTML={{ __html: inlineMd(c.label) }} />}
-                            <div dangerouslySetInnerHTML={{ __html: c.before }} />
-                            {c.after !== null && (
-                                <>
-                                    <ol className="unnyc-cmp-letter__principles">
-                                        {principles.map((p, j) => (
-                                            <li key={j}>
-                                                <strong>{p.title}</strong> —{' '}
-                                                {p.desc.charAt(0).toLowerCase() + p.desc.slice(1)}.
-                                            </li>
-                                        ))}
-                                    </ol>
-                                    <div dangerouslySetInnerHTML={{ __html: c.after }} />
-                                </>
-                            )}
-                        </div>
-                    ))}
-
-                    {/* MUST be a flow container, not a <p>. `sections.*.html` is
-                        block-level markdown output, so it arrives already wrapped
-                        in its own <p>. A <p> cannot contain a <p>: the browser
-                        silently closes the outer one and splits it into siblings,
-                        so the parsed DOM stops matching what React rendered and
-                        the whole page fails to hydrate. That is what this was
-                        until 2026-08-11. Anywhere a phrasing element needs
-                        markdown, use inlineMd() instead — see the refs list below
-                        and every other consumer in this repo. */}
-                    <div
-                        className="unnyc-cmp-letter__signoff"
-                        dangerouslySetInnerHTML={{ __html: doc.sections.signoff.html }}
-                    />
-
-                    <aside className="unnyc-cmp-letter__refs">
-                        <h3>{doc.refsTitle}</h3>
-                        <ul>
-                            {doc.references.map((r, i) => (
-                                <li key={i} dangerouslySetInnerHTML={{ __html: inlineMd(r) }} />
-                            ))}
-                        </ul>
-                    </aside>
-                </article>
-
-                {/* Sign / endorse */}
-                <aside className="unnyc-cmp-sign unnyc-cmp-sign--sidebar unnyc-cmp-layout__aside">
-                    <h2 className="unnyc-cmp-sign__title">{doc.signTitle}</h2>
-                    <p className="unnyc-cmp-sign__lede">{doc.signLede}</p>
-                    <CampaignSignForm campaign={CAMPAIGN} />
-                </aside>
-            </div>
-
-            {/* Endorser wall */}
-            {(orgs.length > 0 || people.length > 0) && (
-                <section className="unnyc-cmp-wall">
-                    <div className="unnyc-cmp-container">
-                        {orgs.length > 0 && (
-                            <>
-                                <h2 className="unnyc-cmp-wall__title">{doc.wall.orgsTitle}</h2>
-                                <ul className="unnyc-cmp-wall__orgs">
-                                    {orgs.map((o) => (
-                                        <li key={o.id} className="unnyc-cmp-wall__org">
-                                            {o.website ? (
-                                                <a href={o.website} target="_blank" rel="noopener noreferrer">
-                                                    {o.name} ↗
-                                                </a>
-                                            ) : (
-                                                o.name
-                                            )}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </>
-                        )}
-                        {people.length > 0 && (
-                            <>
-                                <h2 className="unnyc-cmp-wall__title">{doc.wall.peopleTitle}</h2>
-                                <ul className="unnyc-cmp-wall__people">
-                                    {people.map((p) => (
-                                        <li key={p.id}>
-                                            <strong>{p.name}</strong>
-                                            {(p.title || p.organization) && (
-                                                <span>
-                                                    {' — '}
-                                                    {[p.title, p.organization].filter(Boolean).join(', ')}
-                                                </span>
-                                            )}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </>
-                        )}
-                    </div>
-                </section>
-            )}
-        </div>
+            <UnnycTakeActionStoryscroller
+                hero={{
+                    kicker: doc.heroKicker,
+                    titleHtml: doc.title,
+                    tally: stats.total > 0 ? stats : null,
+                    addressed: doc.addressed,
+                }}
+                letter={{
+                    chunks,
+                    principles,
+                    signoffHtml: doc.sections.signoff.html,
+                    refsTitle: doc.refsTitle,
+                    referencesHtml: doc.references.map((r) => inlineMd(r)),
+                }}
+                sign={{ title: doc.signTitle, lede: doc.signLede, campaign: CAMPAIGN }}
+                wall={{ orgsTitle: doc.wall.orgsTitle, peopleTitle: doc.wall.peopleTitle, orgs, people }}
+            />
+        </>
     );
 }

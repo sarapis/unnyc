@@ -85,4 +85,95 @@ journey:
     flip: true
     # No `items:` — the case titles are read from content/success.md's own
     # `cases` list (src/app/page.js).
+
+# Copy specific to the homepage STORYSCROLLER layout (unnyc#72,
+# UnnycHomeStoryscroller) — a dark, photo-backed alternative to the
+# `hero`/`journey` layout above, which it leaves untouched. The narrative
+# beats it shares with `journey` (Global Movement, UN Principles, Open
+# Source for NYC, Case Studies — and the Keep Reading band) are READ FROM
+# `journey` above, not repeated here: same kicker/headline/lede/href on
+# both layouts. This block only holds copy `journey` has no shape for — the
+# two-screen hero, the open letter section, and the audience chooser.
+storyscroller:
+  hero:
+    # Reuses `hero.kicker` above (identical wording) — not repeated here.
+    # One <span> marks the underlined phrase, same convention as
+    # content/principles.md's `heroTitle`.
+    h1: "The Movement for <span>Open Source Government</span> is Organized at the UN HQ."
+    # Second screen of the (230vh) hero. The LAST line is fully underlined
+    # in the design (not one phrase within it, unlike h1) — the component
+    # applies that to whichever line renders last, no markup needed here.
+    h2Lines:
+      - "Top performing cities are participating."
+      - "Our city hosts it."
+      - "It's time for our city government to join it."
+    # CTA reuses `hero.ctas[0]` above (same label/href) — not repeated here.
+  openLetter:
+    kicker: "The Open Letter"
+    lede: "We respectfully call on the Office of Technology & Innovation to:"
+    ctaLabel: "Sign the open letter →"
+    ctaHref: /campaign
+  takeAction:
+    title: "Which of these are you?"
+    audiences:
+      - id: gov
+        label: "I work in NYC government"
+        actions:
+          - kicker: "Read first"
+            title: "The briefing for city technology leadership"
+            desc: "The UN programs, events and frameworks NYC can join, and what to do first."
+            href: /resources/guide
+          - kicker: "The ask"
+            title: "Endorse the Principles by name"
+            desc: "What an endorsement commits the city to, and the three asks in full."
+            href: /campaign/sign
+          - kicker: "Talk to us"
+            title: "Ask for a briefing"
+            desc: "We convene locally and can make introductions across the UN system."
+            href: /contact
+      - id: builder
+        label: "I build technology"
+        actions:
+          - kicker: "Sign"
+            title: "Add your name to the open letter"
+            desc: "Sign as an individual. Every signature strengthens the case."
+            href: /campaign/sign
+          - kicker: "Read"
+            title: "The eight principles"
+            desc: "The global consensus on how institutions adopt open source."
+            href: /principles
+          - kicker: "Explore"
+            title: "The movement, mapped"
+            desc: "National code catalogues, city OSPOs, and the vocabulary."
+            href: /start
+      - id: org
+        label: "I represent an organization"
+        actions:
+          - kicker: "Endorse"
+            title: "Endorse on behalf of your organization"
+            desc: "Join the organizations that have formally endorsed the letter."
+            href: /campaign/endorse
+          - kicker: "Sign"
+            title: "Add your name to the open letter"
+            desc: "Sign as an individual as well as your organization."
+            href: /campaign/sign
+          - kicker: "Contact"
+            title: "Work with us"
+            desc: "Briefings, introductions, and the letter itself."
+            href: /contact
+      - id: nyer
+        label: "I'm a New Yorker"
+        actions:
+          - kicker: "Sign"
+            title: "Tell NYC to use open source"
+            desc: "Add your name to the letter to the Office of Technology & Innovation."
+            href: /campaign/sign
+          - kicker: "Why"
+            title: "Six reasons this matters for New York"
+            desc: "What switching would save, unlock, and signal."
+            href: /crosswalk
+          - kicker: "Follow"
+            title: "Get campaign updates"
+            desc: "What moves next, as it happens."
+            href: /#updates
 ---

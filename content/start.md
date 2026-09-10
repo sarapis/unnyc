@@ -9,10 +9,18 @@ meta:
   description: "New to government open source? Learn the key vocabulary, the eight UN Open Source Principles, how the movement reached the UN, and who has already signed on."
   ogTitle: "The Global Movement in Government Open Source — UNNYC"
   ogDescription: "The vocabulary, the principles, the history, and the map — everything you need to follow the UNNYC campaign from the beginning."
-title: "A Movement for Government Use of Open Source"
-# Jump menu (UnnycSectionNav). Short labels on purpose — these sit in a one-line
-# bar, where the section headings ("How the UN Came to Champion Open Source")
-# are far too long. `id` must match an id rendered on the page.
+# Storyscroller hero eyebrow (UnnycStartStoryscroller). Matches the homepage
+# journey's own kicker for this page (content/home.md `journey[0].kicker`).
+heroKicker: "A Global Movement"
+# `title` carries its own <span>s for the three underlined words, same
+# convention as content/principles.md's `heroTitle` — but this field IS
+# `title` itself (not a separate heroTitle), since nothing else on the site
+# reads start.md's `title` except this page's own <h1>.
+title: "An <span>Introduction</span> to <span>Government</span> Use of Open Source"
+# Jump menu (UnnycSectionNav in the old layout; the sticky sidebar rail in the
+# storyscroller). Short labels on purpose — these sit in a one-line bar, where
+# the section headings ("How the UN Came to Champion Open Source") are far too
+# long. `id` must match an id rendered on the page.
 # Order matches the page: vocabulary, then who is already doing it, then how the
 # UN got here. "The Eight Principles" left this bar on 2026-08-13 with the
 # section itself — the principles are their own top-level page now (/principles).
@@ -87,22 +95,29 @@ concepts:
 movement:
   title: "How the UN Came to Champion Open Source"
   lede: ""
+  # `url`, if present, wraps the card in a new-tab link (UnnycStartStoryscroller),
+  # same convention as the vocabulary cards above.
   timeline:
   - year: "2019–24"
     title: "The groundwork"
     desc: "The Digital Public Goods Alliance starts vetting open source solutions for the SDGs, the Secretary-General’s digital cooperation roadmap names digital public goods as essential, and \"OSPOs for Good\" convenes governments at UN Headquarters."
+    url: "https://www.un.org/en/content/digital-cooperation-roadmap/"
   - year: "Sept 2024"
     title: "Global Digital Compact adopted"
     desc: "At the Summit of the Future, member states commit to shared principles for an open, safe digital future — with explicit support for digital public goods and infrastructure."
+    url: "https://www.un.org/en/summit-of-the-future/global-digital-compact"
   - year: "March 2025"
     title: "UN Open Source Principles adopted"
     desc: "The UN’s Digital and Technology Network adopts eight principles — \"open by default,\" \"contribute back,\" and more. Seventeen organizations endorse, from the Open Source Initiative to the Linux Foundation."
+    url: "https://unite.un.org/en/news/sixteen-organizations-endorse-un-open-source-principles"
   - year: "Nov 2025"
     title: "Barcelona endorses — a city first"
     desc: "Barcelona becomes the first city in the world to endorse the Principles, pairing the signature with an OSPO, a citizen agreement, and a municipal open source fund."
+    url: "https://www.barcelona.cat/infobarcelona/en/tema/science/barcelona-is-the-first-city-in-the-world-to-endorse-the-un-open-source-principles_1567058.html"
   - year: "June 2026"
     title: "UN OSW draws 2,600+ from 120+ countries"
     desc: "UN Open Source Week fills UN Headquarters with themed days on AI, digital public infrastructure, and OSPOs — the movement’s annual gathering, in New York."
+    url: "https://www.un.org/digital-emerging-technologies/content/open-source-week-2026"
 # The map section. Its title and lede were hardcoded in
 # PrimerMovementNow.js until 2026-08-13 — the last copy this site kept in a
 # component. Editing them needed a developer; now they don't.

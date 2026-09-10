@@ -4,7 +4,11 @@ meta:
   description: "An open letter asking NYC's Office of Technology & Innovation to endorse the UN Open Source Principles, open an OSPO, and weigh open source in every contract."
   ogTitle: "NYC Should Endorse the UN Open Source Principles"
   ogDescription: "Three asks of the city's Office of Technology & Innovation: endorse the UN Open Source Principles, establish an OSPO, and weigh an open source alternative in every technology contract."
-title: "New York City Should Endorse the UN Open Source Principles"
+# Storyscroller hero eyebrow (UnnycTakeActionStoryscroller).
+heroKicker: "Take Action · An open letter"
+# `title` carries its own <span> for the underlined word, same convention as
+# content/start.md's `title` and content/principles.md's `heroTitle`.
+title: "New York City Should <span>Endorse</span> the UN Open Source Principles"
 addressed:
   - label: "To"
     value: "The New York City Office of Technology & Innovation"
@@ -12,6 +16,9 @@ addressed:
     value: "The undersigned"
   - label: "Re"
     value: "Endorsing the United Nations Open Source Principles and making a transition to open source a goal of New York City government"
+# Homepage storyscroller's open-letter section only (unnyc#72), beside the
+# endorsing-organizations count there.
+signatureCountLabel: "endorsing organizations so far"
 signTitle: "Add your name"
 signLede: "Sign the letter as an individual, or endorse it on behalf of your organization. Every signature strengthens the case that New York’s civic community wants the city to lead."
 refsTitle: "References"
@@ -57,8 +64,6 @@ We respectfully call on the **Office of Technology & Innovation** to:
 - **Endorse the UN Open Source Principles**, publicly and by name.
 - **Establish an Open Source Program Office (OSPO)** to facilitate adoption across city government — coordinating what the city uses, what it publishes, how it contributes back, and how it stays secure doing so.
 - **Evaluate an open source alternative in every city technology contract**, so no proprietary license is signed or renewed without first asking whether an open solution would serve New Yorkers better.
-
-The tools to achieve these goals exist, and peer governments run them today. To fulfill their potential and improve NYC’s technology strategy, they need government backing.
 
 ## signoff
 
