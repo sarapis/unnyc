@@ -41,9 +41,13 @@ foot:
   ctas:
     - href: /success
       label: "See How Other Cities Adopted Open Source"
-      style: outline
+      # outline-dark, NOT outline: `.unnyc-btn--outline` is white text on a
+      # white border, built for a dark hero/CTA band. The storyscroller
+      # foot is light (--wg-surface-alt), so it needs the light-background
+      # variant — same reasoning as /principles' foot.
+      style: outline-dark
     - href: /campaign
-      label: "Let’s Take Action"
+      label: "Let’s Take Action →"
       style: primary
 ---
 
