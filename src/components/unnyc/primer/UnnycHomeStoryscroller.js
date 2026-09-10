@@ -8,10 +8,10 @@ import Link from 'next/link';
  * dark, photo-backed narrative (Manhattan map hero, global-movement stats,
  * the UN principles as two horizontal branch diagrams, a pinned horizontal
  * carousel of six reasons, a case-study timeline, the open letter, an
- * audience chooser, a keep-reading band). Reimplements a Claude Design
- * handoff against this repo's own content/tokens — see page.js for how the
- * props here are shaped from content/home.md, content/crosswalk.md,
- * content/success.md and content/sign.md.
+ * audience chooser). Reimplements a Claude Design handoff against this
+ * repo's own content/tokens — see page.js for how the props here are
+ * shaped from content/home.md, content/crosswalk.md, content/success.md
+ * and content/sign.md.
  *
  * Same division as UnnycPrinciplesStoryscroller: this component renders the
  * WHOLE page (content is read server-side and passed down as props) and
@@ -37,7 +37,6 @@ export default function UnnycHomeStoryscroller({
     cases,
     openLetter,
     takeAction,
-    keepReading,
 }) {
     const rootRef = useRef(null);
     const trackRef = useRef(null);
@@ -561,28 +560,6 @@ export default function UnnycHomeStoryscroller({
                                 <span className="unnyc-home-story__action-kicker">{act.kicker}</span>
                                 <span className="unnyc-home-story__action-title">{act.title}</span>
                                 <span className="unnyc-home-story__action-desc">{act.desc}</span>
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            <section className="unnyc-home-story__keep-reading">
-                <div className="unnyc-container">
-                    <p className="unnyc-home-story__eyebrow" data-reveal="1">
-                        Keep reading
-                    </p>
-                    <div className="unnyc-home-story__keep-grid">
-                        {keepReading.map((k, i) => (
-                            <Link
-                                key={k.href}
-                                href={k.href}
-                                className="unnyc-home-story__keep-card"
-                                data-reveal="1"
-                                data-delay={60 + i * 80}
-                            >
-                                <span className="unnyc-home-story__keep-kicker">{k.kicker}</span>
-                                <span className="unnyc-home-story__keep-title">{k.label}</span>
                             </Link>
                         ))}
                     </div>

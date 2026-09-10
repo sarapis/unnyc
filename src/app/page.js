@@ -117,7 +117,6 @@ export default function UnnycPage() {
                     ctaHref: doc.storyscroller.openLetter.ctaHref,
                 }}
                 takeAction={doc.storyscroller.takeAction}
-                keepReading={journey.map((j) => ({ kicker: j.kicker, label: j.linkLabel, href: j.href }))}
             />
         </>
     );

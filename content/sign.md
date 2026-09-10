@@ -61,8 +61,6 @@ We respectfully call on the **Office of Technology & Innovation** to:
 - **Establish an Open Source Program Office (OSPO)** to facilitate adoption across city government — coordinating what the city uses, what it publishes, how it contributes back, and how it stays secure doing so.
 - **Evaluate an open source alternative in every city technology contract**, so no proprietary license is signed or renewed without first asking whether an open solution would serve New Yorkers better.
 
-The tools to achieve these goals exist, and peer governments run them today. To fulfill their potential and improve NYC’s technology strategy, they need government backing.
-
 ## signoff
 
 Respectfully, the undersigned
