@@ -73,13 +73,14 @@ git -C ~/Antigravity/unnyc worktree list
 git -C ~/Antigravity/unnyc worktree remove ~/Antigravity/unnyc-<task>
 ```
 
-Four things are NOT inherited, all because they are gitignored:
+Five things are NOT inherited, all because they are gitignored:
 
 | | |
 |---|---|
-| `node_modules` | needs its own `npm install` — **350 MB**, and `@wegovnyc/design-tokens` is a git dep so it needs network |
+| `node_modules` | needs its own `npm install` — **350 MB**, and `@wegovnyc/design-tokens` is a git dep so it needs network. ⚠ Faster: `cp -Rc <main>/node_modules <worktree>/` clones it in seconds on APFS, no network |
 | `.vercel` | `vercel link --yes --project unnyc-campaign` before any manual deploy |
 | `.next` | cold first build; fine, just expected |
+| `.claude/` | **including `launch.json`** — so `preview_start` finds only the MAIN checkout's config and silently starts a server on the main checkout, serving code that is not yours. Writing a `launch.json` inside the worktree does NOT help; the tool resolves it from the project root. Add a second entry to the main `.claude/launch.json` with `runtimeExecutable: "sh"` and `runtimeArgs: ["-c", "cd <worktree> && npm run dev -- --port 3101"]`, and put it back when you finish |
 | dev server port | `.claude/launch.json` uses 3100 — give a second worktree its own |
 
 Commits and branches ARE shared instantly (one object store), so the other
@@ -111,7 +112,9 @@ Errors exit 1.
 
 `/start#going-open-source` has a second, deliberately quieter map layer: **62 government-built
 open source programs across 24 countries**, sourced from the Civic Tech Field Guide, each dot linking
-to its CTFG profile. Toggleable, default on.
+to its CTFG profile. ⚠ This section said "Toggleable, default on" long after the toggles were
+removed (owner decision 2026-08-17 — see "The four map layers"). **There are no toggles;
+every layer is simply on.**
 
 > ⚠ This section previously said "built but held — local-only on that branch." That stopped being
 > true when the branch was merged and deployed. If the open question about linking into the CTFG
@@ -120,15 +123,23 @@ to its CTFG profile. Toggleable, default on.
 
 - **It is a SUPPORTING layer, not a replacement.** The section's argument is the curated policy
   markers (who endorsed; that NYC hasn't). Replacing them with project data undercuts it — NYC lights
-  up with dots. So CTFG dots are 9px teal, drawn *beneath* the policy markers, and switchable off.
+  up with dots. So CTFG dots are drawn small and *beneath* the policy markers. (They were 9px teal
+  and switchable off; in the SVG renderer they are `r=3` in `--wg-accent-strong`, and nothing is
+  switchable.)
 - **`content/ctfg-gov-open-source.json` is a curated SNAPSHOT, not a live fetch** — refresh with
   `node scripts/fetch-ctfg-projects.mjs` and read the diff. Reasons: the map can't go half-empty if
   the CTFG API is slow, and CTFG's `orgType` tagging has noise (6 entries are excluded there with
   reasons — nonprofits, an advocacy coalition, a private LLC, a dead Wayback URL).
 - `getCtfgProjects()` in `src/lib/content.js` is **fail-soft on purpose**, unlike `getContent()`: a
   missing snapshot costs the dots, never the page.
-- **CTFG popup fields are escaped** (`esc()` in `PrimerMapInner.js`) — third-party data, unlike the
-  hand-authored markers beside it.
+- **CTFG data no longer reaches any markup, so there is nothing to escape** (changed
+  2026-09-10). This said "CTFG popup fields are escaped (`esc()` in `PrimerMapInner.js`)";
+  that file is deleted and its `esc()` with it. `UnnycWorldMap` draws CTFG as plain dots
+  with no popups and no `dangerouslySetInnerHTML` anywhere, so React escapes everything by
+  default. ⚠ The underlying rule still stands and will bite whoever adds a CTFG popup or
+  tooltip back: **this is third-party data, unlike the hand-authored markers beside it** —
+  hand-built HTML strings need escaping, JSX does not. (The surviving `esc()` in
+  `src/lib/api.js` is unrelated.)
 - **Attribution is a licence term**, not a courtesy: CTFG content is **CC BY 4.0**, so the credit +
   `civictech.guide` link render under the map, counts read from the snapshot so they can't drift.
   Wording lives in `content/start.md` (`mapSource`) per the copy-in-markdown rule.
@@ -172,16 +183,68 @@ Two consequences of the swap, both real:
   `[class*="marker-list"]`; the rows are `div`s, so the selector matched nothing and the
   absence looked confirmed. ⚠ **A selector that returns 0 is not evidence that a thing is
   missing** — check the component source before writing down an absence.
-  What IS still true, and milder: `PrimerMapInner`'s per-country tabindex/aria wiring on
-  the GeoJSON paths is gone, so the GovOSS *country* counts are not individually
-  keyboard-reachable — the SVG carries `aria-label` only and 0 `tabindex`. The
-  argument-carrying markers are in text; the geography's detail is not.
-- ⚠ **It fetches world geometry from a CDN at runtime** —
-  `cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json`, 39 KB, measured in the
-  browser. That contradicts this repo's own snapshot doctrine, and the repo ALREADY ships
-  Natural Earth polygons locally in `content/govoss-countries.geo.json` (13 catalogue
-  countries — not a whole-world basemap, but the fetch script that produced it could emit
-  one). If jsdelivr is blocked, the map has no countries.
+  What IS still true, and milder: the geography carries no per-country detail. The SVG is
+  `role="img"` with one `aria-label`, so you cannot tab a country's shape or hover a
+  polygon. ⚠ But the **counts** are no longer unreachable — see the catalogue disclosure
+  below; that half of this bullet was fixed 2026-09-10.
+- **The GovOSS country counts ARE reachable, in text, as of 2026-09-10** —
+  `.unnyc-start-story__catalogues`, a native `<details>` under the map listing all 13
+  countries with their entry counts and a link to each government's own catalogue.
+  ⚠ **This was never only an accessibility gap.** Replacing Leaflet dropped the
+  per-country popups, and with them the counts and catalogue links, **for every reader** —
+  the flat fill says "this government publishes a catalogue" and nothing else. Detail is
+  deliberately NOT wired onto the shapes: a `tabindex` inside a `role="img"` is a focus
+  stop with no accessible name, and a `<path>` cannot hold a link at all. Same pattern as
+  the marker list — each layer's detail lives in text below the map.
+  Every figure is derived from `content/govoss-catalogues.json`; the label in
+  `content/start.md` (`mapSource.cataloguesLabel`) carries no number on purpose.
+  ⚠ Do NOT set `display` on that `<summary>`: moving it off `list-item` deletes the native
+  disclosure triangle, which is the only affordance saying it opens.
+  ⚠ And the space before the derived count is load-bearing — `margin-left` is not text, so
+  without it the accessible name reads "…COUNTRY BY COUNTRY13 countries". Only visible by
+  reading `innerText` in a browser.
+- **The world geometry is a SNAPSHOT IN THE REPO as of 2026-09-10** —
+  `content/world-atlas.json`, refreshed by `node scripts/fetch-world-atlas.mjs`, imported
+  directly by `UnnycWorldMap`. ⚠ It used to be fetched from
+  `cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json` at runtime on **both** `/`
+  and `/start`, which contradicted this repo's own snapshot doctrine and carried exactly
+  the CARTO risk described above. Verified in a browser: 40 requests on a page load, all
+  same-origin, none to jsdelivr.
+  - A **static import**, not a fail-soft server read like `getCtfgProjects()`: it is a
+    bundler import in a client component, so a missing snapshot fails the BUILD rather
+    than a reader's page. Louder and cheaper.
+  - The fetch script **throws** rather than writing something plausible, and the check
+    that matters is the **name join**: the fill matches Natural Earth's
+    `properties.name` against GovOSS's 13 catalogue countries, so an upstream rename
+    would silently unshade a country. Same shape as the `ISO_A2 = -99` trap the GovOSS
+    script guards. It also checks the country count is in band, that every geometry has a
+    name, and that Antarctica is still called Antarctica (the render filters it BY NAME).
+  - ⚠ `ssr: false` stays on both call sites, but the REASON CHANGED: there is no async
+    work left, so it is purely about bytes. 176 country paths belong in a content-hashed
+    JS chunk the CDN caches immutably, not inlined into every HTML response. Both
+    comments say so.
+  - The snapshot is ~104 KB and **not reviewable in a diff**, so `countryCount` and
+    `sha256` are lifted into named fields at the top of the file — same reasoning as
+    GovOSS writing its counts to a separate file.
+
+- **⚠ `src/app/world-map.css` OWNS THE MAP'S LOOK, AND BOTH `/` AND `/start` IMPORT IT.**
+  A trap worth knowing, because it shipped: those rules lived in `start.css`, the homepage
+  started drawing the same component on 2026-09-10, and page CSS in the App Router is
+  scoped to its own route segment — so a **fresh load of `/` linked no stylesheet defining
+  `.unnyc-start-story__map-panel`** and the map rendered with no panel gradient, no radius,
+  no padding, and the marker list as a plain block instead of a two-column grid. Confirmed
+  in a browser against production: `getComputedStyle(panel).backgroundImage` was `none`.
+  **It looked fine every time anyone checked by clicking through from `/start`**, because
+  Next keeps that route's sheet in the DOM after a client-side navigation. This is the same
+  cross-route stylesheet trap as `.unnyc-principles__rail` (below) **with the cases
+  reversed** — there a fresh load was always fine and only nav-click broke.
+  ⚠ Never fix a future gap here by copying rules into `home.css`: two stylesheets owning
+  one class at equal specificity is a latent bug even when the rules are identical, which
+  is how the rail broke. One owner, imported twice — Next hoists it into one shared chunk
+  (verified: both routes link the same file).
+  ⚠ The `unnyc-start-story__` prefix on these classes is now a **misnomer** — the component
+  emits them on both routes. Renaming means touching the component and the stylesheet
+  together.
 
 ## The four map layers (rescoped 2026-08-17 — data still current, renderer replaced)
 
@@ -310,14 +373,17 @@ ask. Invert it and the page argues something else.
   archipelago, Newfoundland, Nova Scotia, Vancouver Island — and Italy's outliers
   are Sicily and Sardinia. The threshold that trims Guiana also trims most of
   Canada, and would look like a rendering glitch rather than a decision.
-- **The fill is keyboard-reachable, and that took work.** Leaflet makes *markers*
-  focusable but GeoJSON paths are bare SVG. The tabindex/aria/Enter wiring must run
-  on the layer's **`add`** event — inside `onEachFeature` the path has no DOM element
-  yet, `getElement()` returns null, and the whole block silently no-ops with a green
-  build. Counting `[tabindex]` in the rendered page is what caught it.
-- **Leaflet panes already keep the fill under the markers** (overlayPane 400 vs
-  markerPane 600, measured). The `bringToBack()` call orders it against future vector
-  layers; it is not what protects the dots.
+- **The fill's counts are keyboard-reachable, but not the geography.** ⚠ This bullet
+  used to describe Leaflet's tabindex/aria wiring on GeoJSON paths; that code was
+  DELETED 2026-09-10 with the Leaflet map. The counts now live in a `<details>` list
+  under the map (see the renderer section); the shapes themselves take no focus and
+  reveal nothing on hover. The transferable lesson from the old implementation is
+  worth keeping: **counting `[tabindex]` in the rendered page is what caught** the
+  wiring silently no-opping with a green build.
+- **Stacking order is now a non-issue.** ⚠ Previously: Leaflet's panes (overlayPane 400
+  vs markerPane 600) kept the fill under the markers. The static SVG has no panes — the
+  layers stack in **document order**, so the fill is painted first simply because it is
+  written first in `UnnycWorldMap`. Reorder the JSX and you reorder the map.
 
 ### Coverage audit vs CTFG (2026-08-07)
 Every project/org/resource/OSPO on this site was cross-checked against the full CTFG directory:
@@ -475,11 +541,14 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
 - **`getContent()` returns `{...frontmatter, sections}` — so a frontmatter key
   named `sections` is silently overwritten** by the parsed body. `content/guide.md`
   calls its section list `outline:` for exactly this reason.
-- **Contain third-party z-indexes; don't escalate ours.** Leaflet ships panes at
-  400-700, controls at 800 and `.leaflet-top`/`.leaflet-bottom` at 1000. The nav is
-  50. The map painted over the header until `.unnyc-map-wrapper` got
-  `isolation: isolate`, which confines Leaflet's ordering to one box. Raising the
-  nav's z-index would have worked until the next widget.
+- **Contain third-party z-indexes; don't escalate ours.** ⚠ The code this lesson came
+  from is GONE (deleted with the Leaflet map, 2026-09-10) — kept because the lesson is
+  the reusable part and the next embedded widget will need it. Leaflet shipped panes at
+  400-700, controls at 800 and `.leaflet-top`/`.leaflet-bottom` at 1000; the nav is 50,
+  so the map painted over the header until `.unnyc-map-wrapper` got
+  `isolation: isolate`, which confined that ordering to one box. Raising the nav's
+  z-index would have worked until the next widget. There is nothing to contain today:
+  the current map is our own inline SVG with no z-index of its own.
 - **`animation: none` under `prefers-reduced-motion` is only half a fix if the
   container is `overflow: hidden`.** `/success`'s marquee track is `max-content`
   (3340px); stopping it clipped every card past the first with no way to reach
@@ -736,16 +805,24 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   Sheet path were removed 2026-08-06 — formal organization endorsements post to
   Payload's `campaign-endorsements` with `kind: 'organization'`, the same
   collection and review step as an individual signature.
-- **⚠ THE LEAFLET MAP IS ORPHANED as of 2026-09-10** — this bullet said "don't delete
-  `PrimerMapInner.js` as unused" and that advice is now exactly backwards.
-  `/start` renders `UnnycWorldMap` (a static d3-geo SVG) instead;
-  `PrimerMovementNow.js` is referenced only by COMMENTS outside itself, and
-  `PrimerMapInner.js` only by `PrimerMovementNow`. ~22 KB of live-looking dead code,
-  plus `leaflet@^1.9.4` still in `dependencies`.
-  **Kept deliberately, for now**: it is the working implementation of the pan/zoom and
-  keyboard-navigable country layer the SVG gives up, so it is the fallback if
-  interactivity is ever wanted back. ⚠ But it would come back WATERMARKED — see the CARTO
-  note below. Decide and then delete or restore; do not leave this as folklore.
+- **THE LEAFLET MAP IS DELETED (2026-09-10, owner's decision).** `PrimerMapInner.js`
+  (361 lines), `PrimerMovementNow.js` (122 lines), `leaflet@^1.9.4`, 163 lines of
+  now-dead CSS in `unnyc.css` (`.unnyc-map-*`, the `.leaflet-*` popup overrides, the
+  `.leaflet-interactive:focus-visible` ring) and `.unnyc-pr-map__source` in `primer.css`
+  are all gone. `UnnycWorldMap` is the site's only map. This bullet has now been wrong in
+  BOTH directions — it once said "don't delete these as unused", then "kept deliberately"
+  — so: **there is nothing to keep or restore; the history is in git.** The pan/zoom and
+  per-country keyboard access it had are genuinely lost, and bringing it back would bring
+  the CARTO watermark with it.
+- **⚠ `UnnycEndorserDirectory.js` IS A SEPARATE ORPHAN, still present, deliberately.**
+  Found while tracing Leaflet's consumers. Nothing imports it, because
+  `UnnycPrinciplesStoryscroller` reimplemented the directory with its own
+  `unnyc-pr-story__endorsers*` markup (its comment says why: the single-column section did
+  not fit the sticky-aside split). Verified against production — that is what `/principles`
+  actually serves. So the component, the 25 `unnyc-endorsers__` rules in `primer.css` and
+  the one in `principles.css` are all dead. The primer.css block is now LABELLED as dead
+  rather than left looking alive. **Delete all three together or none** — and it is an
+  owner decision, the same kind that was just made about Leaflet.
 - **Glossary definitions live once**, in `content/start.md` under `concepts.terms`.
   `src/lib/content.js` reads them so a `[term](gloss:slug)` link anywhere gets a
   hover definition. The old `GlossaryTerm` React component was deleted; re-adding a

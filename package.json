@@ -16,7 +16,6 @@
     "@wegovnyc/design-tokens": "github:sarapis/wegovnyc-design-tokens",
     "d3-geo": "^3.1.1",
     "gray-matter": "^4.0.3",
-    "leaflet": "^1.9.4",
     "marked": "^18.0.9",
     "next": "16.1.1",
     "react": "19.2.3",

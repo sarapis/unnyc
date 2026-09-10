@@ -1,15 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { geoNaturalEarth1, geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 
+import worldAtlas from '../../../../content/world-atlas.json';
+
 /**
  * UnnycWorldMap — the storyscroller redesign's world map: a static d3-geo SVG
- * on a dark navy panel, replacing the Leaflet map in PrimerMapInner (see
- * docs/EDITING-CONTENT.md and the Global Movement storyscroller handoff).
+ * on a dark navy panel. It replaced a Leaflet map (PrimerMapInner), which was
+ * deleted on 2026-09-10 — so this is now the site's only map. See
+ * docs/EDITING-CONTENT.md and the Global Movement storyscroller handoff.
  *
- * THREE DATA LAYERS, same argument as PrimerMapInner, painted bottom to top:
+ * THREE DATA LAYERS, carrying the same argument the Leaflet map did, painted
+ * bottom to top:
  *   1. the GovOSS country FILL — ground, not figure;
  *   2. the CTFG "government-built programs" dots — supporting evidence (this
  *      layer was not in the design prototype; the handoff explicitly calls
@@ -18,20 +21,62 @@ import { feature } from 'topojson-client';
  *   3. the curated POLICY markers (content/start.md `mapMarkers`) — the
  *      section's argument, drawn largest and labelled.
  *
- * Real Natural Earth geometry (world-atlas @2.0.2 via a CDN fetch, same as
- * the design prototype's unnyc-world-map.js) rather than a drawn outline —
- * the same runtime-fetch pattern PrimerMapInner already uses for Leaflet's
- * CARTO tiles, just for vector boundaries instead of raster tiles. Country
- * names from the atlas are matched against govoss.geo's 13 catalogue
- * countries by NAME (govoss.countries itself only carries ISO codes;
- * govoss.geo's features are the code→name bridge).
+ * Real Natural Earth geometry rather than a drawn outline. Country names from
+ * the atlas are matched against govoss.geo's 13 catalogue countries by NAME
+ * (govoss.countries itself only carries ISO codes; govoss.geo's features are
+ * the code→name bridge).
  *
- * No popups: unlike PrimerMapInner's keyboard-navigable GeoJSON layer, this
- * SVG is decorative (aria-label only) and the argument-carrying detail lives
- * in the accessible marker list rendered below it, per the design handoff.
+ * ⚠ THE BOUNDARIES ARE A SNAPSHOT IN THE REPO, NOT A RUNTIME FETCH — changed
+ * 2026-09-10, and the reason is the whole point of this file's existence. The
+ * first version of this component `fetch()`ed the atlas from
+ * cdn.jsdelivr.net on every visit to `/` and `/start`, inheriting exactly the
+ * runtime-third-party dependency that had just cost the site its old map:
+ * CARTO put their free basemap behind an API key and kept answering HTTP 200
+ * with a valid PNG, every tile stamped "API KEY REQUIRED". No error, no
+ * failed request, nothing for a monitor to see. jsdelivr blocked or slow
+ * meant a map with no countries. Refresh the snapshot with
+ * `node scripts/fetch-world-atlas.mjs` and read its summary (country count +
+ * sha256) — the coordinates themselves are not reviewable in a diff.
+ *
+ * A STATIC IMPORT, deliberately, where `getCtfgProjects()` and
+ * `getGovossCatalogues()` are fail-soft server-side reads. Those are called
+ * on the server and a missing file costs a layer; this is a bundler import in
+ * a client component, so a missing file fails the BUILD. That is the louder
+ * and cheaper failure: nobody can ship a countryless map by accident. It also
+ * means the geometry rides a content-hashed JS chunk our own CDN caches
+ * immutably, instead of being re-sent in every HTML response the way a
+ * server-passed prop would be.
+ *
+ * NO POPUPS, AND EVERY LAYER'S DETAIL IS IN TEXT INSTEAD. The SVG is
+ * decorative — `role="img"` with one `aria-label`, which deliberately hides
+ * its whole subtree from assistive tech. That is why detail is NOT wired onto
+ * the shapes: a `tabindex` inside a `role="img"` produces a focus stop with no
+ * accessible name, and an SVG `<path>` cannot hold a link at all.
+ *
+ * So each layer's detail is rendered as real text below the map:
+ *   - the policy markers, in `__marker-list` (8 rows, from the design handoff);
+ *   - the GovOSS country fill, in `__catalogues` — ADDED 2026-09-10.
+ *
+ * ⚠ The catalogue list is not only an accessibility fix. Replacing Leaflet
+ * with this SVG dropped the per-country popups, and with them the entry counts
+ * and the links to each government's own catalogue — for EVERYONE, mouse users
+ * included, not just for keyboard and screen-reader users. The flat fill says
+ * "this government publishes a catalogue" and nothing more. A `<details>`
+ * disclosure restores the rest without adding thirteen rows of text to a
+ * finished design, and `<summary>` is focusable natively, so the keyboard path
+ * needs no ARIA of our own.
+ *
+ * ⚠ What is still NOT reachable, stated plainly so nobody records it as done:
+ * the geography itself. You cannot tab a country's shape, and hovering a
+ * polygon reveals nothing. The counts are reachable; their position on the map
+ * is not. PrimerMapInner's per-country tabindex/aria wiring on GeoJSON paths
+ * is the implementation that had this, and it is orphaned.
  */
 
-const ATLAS = 'https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json';
+/* The topology itself, unwrapped from the snapshot's provenance envelope
+ * (source, version, countryCount, sha256 — see scripts/fetch-world-atlas.mjs). */
+const world = worldAtlas.topology;
+
 const W = 920;
 const H = 430;
 
@@ -48,24 +93,23 @@ const ANCHOR_OFFSET = { e: [10, 4], w: [-10, 4], n: [0, -10], s: [0, 15], sw: [-
 const ANCHOR_TO_TEXT = { w: 'end', sw: 'end', n: 'middle', s: 'middle', e: 'start' };
 
 export default function UnnycWorldMap({ markers = [], legend = [], mapSource, govoss, ospos, ctfg }) {
-    const [world, setWorld] = useState(null);
-
-    useEffect(() => {
-        let cancelled = false;
-        fetch(ATLAS)
-            .then((r) => r.json())
-            .then((topo) => {
-                if (!cancelled) setWorld(topo);
-            })
-            .catch(() => {});
-        return () => {
-            cancelled = true;
-        };
-    }, []);
-
     const hasFill = Boolean(govoss?.countries?.length && govoss?.geo?.features?.length);
     const hasOspos = Boolean(ospos?.points?.length);
     const hasCtfg = Boolean(ctfg?.projects?.length);
+
+    /* The country fill's data as TEXT — see the accessibility note in the file
+     * header. Built outside the projection block on purpose: it needs no
+     * geometry, so it still renders if the atlas ever fails to decode.
+     * Sorted by size because "who publishes the most" is the readable order;
+     * `entries` is each country's own figure and they are NEVER summed. */
+    const catalogueCountries = (govoss?.countries || [])
+        .map((c) => ({
+            ...c,
+            name:
+                govoss?.geo?.features?.find((f) => f.properties.code === c.code)?.properties.name ||
+                c.code,
+        }))
+        .sort((a, b) => b.entries - a.entries);
 
     let countries = [];
     let ospoDots = [];
@@ -293,6 +337,52 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                         </div>
                     ))}
                 </div>
+            )}
+
+            {catalogueCountries.length > 0 && (
+                <details className="unnyc-start-story__catalogues" data-reveal="1">
+                    <summary className="unnyc-start-story__catalogues-summary">
+                        {mapSource?.cataloguesLabel || 'Catalogue counts, country by country'}
+                        {/* Derived, never authored — the label in content/start.md
+                            deliberately carries no number.
+                            ⚠ The literal space matters and is not cosmetic: the span
+                            is spaced visually by `margin-left`, but margin is not
+                            text, so without this the accessible name concatenated to
+                            "…country by country13 countries". Caught by reading
+                            innerText in a browser, which is the only place it shows. */}
+                        {' '}
+                        <span className="unnyc-start-story__catalogues-count">
+                            {catalogueCountries.length} countries
+                        </span>
+                    </summary>
+                    {/* A real <ul>, so assistive tech announces how many countries
+                        there are. ⚠ Its margin/padding rules are scoped with
+                        `.unnyc-page` in world-map.css: `.unnyc-page ul { margin: 0 }`
+                        is a (0,1,1) reset that beats a single-class rule in the same
+                        layer — the trap CLAUDE.md counts six bugs from. */}
+                    <ul className="unnyc-start-story__catalogue-list">
+                        {catalogueCountries.map((c) => (
+                            <li key={c.code} className="unnyc-start-story__catalogue-row">
+                                <p className="unnyc-start-story__catalogue-country">
+                                    <strong>{c.name}</strong>
+                                    {' — '}
+                                    {c.entries.toLocaleString()} projects
+                                </p>
+                                <p className="unnyc-start-story__catalogue-sources">
+                                    {c.catalogues.map((cat, i) => (
+                                        <span key={cat.site}>
+                                            {i > 0 && ' · '}
+                                            <a href={cat.site} target="_blank" rel="noopener noreferrer">
+                                                {cat.label}
+                                            </a>{' '}
+                                            ({cat.entries.toLocaleString()})
+                                        </span>
+                                    ))}
+                                </p>
+                            </li>
+                        ))}
+                    </ul>
+                </details>
             )}
 
             {(() => {

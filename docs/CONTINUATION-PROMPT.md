@@ -3,7 +3,7 @@
 Paste the block below into a new session. Everything above the line is context for
 whoever is maintaining this file.
 
-**Last updated 2026-09-10.** This file is the standing onboarding brief: where the
+**Last updated 2026-09-10 (second session).** This file is the standing onboarding brief: where the
 site lives, how to verify things here, what the pages are. It is the one doc
 guaranteed to be read first, so it is the one most damaging to leave stale — it
 spent 2026-08-19 describing a homepage, a principles grid and a hostname that had
@@ -135,8 +135,13 @@ Thirteen routes. Reader path and nav order: `/` -> `/start` -> `/principles` ->
   (`UnnycWorldMap`) — because CARTO put their free basemap behind an API key and
   the tiles arrived stamped "API KEY REQUIRED" while still returning HTTP 200.
   Same four data sources, no tile server, no key. **`/` draws the same component**,
-  reading its markers from `content/start.md` so the two cannot drift. The old
-  Leaflet components are now orphaned dead code; see CLAUDE.md.
+  reading its markers from `content/start.md` so the two cannot drift.
+  ⚠ **The Leaflet components and the `leaflet` dependency were DELETED
+  2026-09-10** (owner's decision) — not orphaned dead code any more, gone. The
+  boundaries are now a repo snapshot (`content/world-atlas.json`) rather than a
+  runtime CDN fetch, and the map's CSS lives in `src/app/world-map.css` imported
+  by BOTH routes — it was rendering unstyled on a fresh load of `/` until then,
+  because page CSS is per-route. See CLAUDE.md.
   ⚠ Resources still has no homepage section and is not in the footer.
 - **`/principles` is two named sections**, each opening on one principle as a
   full-width card then three in columns: **Software Principles** (Open by default
@@ -318,11 +323,14 @@ literal in the fetch script. It is now READ from civictech.guide, and both map
 data sources are CC BY 4.0 — attribution, no share-alike, commercial use fine.
 Nothing blocks phase 4.
 
-1. **Delete the orphaned Leaflet map, or keep it?** `PrimerMapInner.js` and
-   `PrimerMovementNow.js` have no live references and `leaflet` is still a
-   dependency, but they are the working implementation of the pan/zoom and
-   per-country keyboard access the SVG gives up — and restoring them restores the
-   CARTO watermark. Owner's call; see CONTINUE.md §4.
+1. **RESOLVED 2026-09-10 — the Leaflet map was deleted**, with its CSS and the
+   `leaflet` dependency. What it cost: pan/zoom, and keyboard focus on the
+   geography itself. The per-country COUNTS came back as text (a `<details>`
+   under the map); the shapes did not. ⚠ A THIRD ORPHAN was found while tracing
+   its consumers and is still open: `UnnycEndorserDirectory.js` has no importers
+   either, and its 25 `unnyc-endorsers__` rules in `primer.css` plus one in
+   `principles.css` are dead with it. Not deleted — same kind of owner decision.
+   See CONTINUE.md §4.
    ⚠ **The old "photo for homepage card 1" item is RETIRED, not forgotten** — the
    homepage has no cards any more. The first storyscroller section's stat row is
    its own visual, so there is no placeholder and nothing to license.

@@ -1,5 +1,7 @@
 import UnnycStartStoryscroller from '@/components/unnyc/primer/UnnycStartStoryscroller';
 import './start.css';
+/* Shared with the homepage, which draws the same component. See world-map.css. */
+import '../world-map.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import { getContent, getCtfgProjects, getGovossCatalogues, getOspoMapPoints, inlineMd } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
@@ -15,7 +17,7 @@ export async function generateMetadata() {
  * /start — "A Global Movement," storyscroller layout (2026-09). Reimplements
  * a Claude Design handoff: a hero, a sticky icon-swapping sidebar beside the
  * vocabulary cards / world map / UN timeline, and a d3-rendered world map
- * (UnnycWorldMap) standing in for the old Leaflet map (PrimerMapInner).
+ * (UnnycWorldMap), which replaced a Leaflet map since deleted.
  * Sibling of the /principles, /crosswalk and /success storyscrollers — same
  * palette, sidebar shape and reveal system.
  *

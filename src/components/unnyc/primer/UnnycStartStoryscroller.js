@@ -3,10 +3,14 @@
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 
-/** UnnycWorldMap fetches a world atlas and computes SVG paths client-side —
- * dynamically imported (ssr:false) for the same reason PrimerMovementNow
- * dynamically imports the Leaflet map it replaces: no browser globals / async
- * geometry work during server render. */
+/** UnnycWorldMap computes ~176 country SVG paths from a bundled Natural Earth
+ * snapshot. Dynamically imported with ssr:false, and note the reason CHANGED on
+ * 2026-09-10: it used to be that the component fetched its atlas at runtime, so
+ * there was async work that could not run during a server render. There is no
+ * fetch any more — this is now purely about BYTES. Server-rendering it would
+ * inline all 176 `d` attributes into every HTML response for `/` and `/start`;
+ * keeping it client-only lets the geometry ride a content-hashed JS chunk that
+ * our CDN caches immutably. Nothing here needs a browser global. */
 const UnnycWorldMap = dynamic(() => import('./UnnycWorldMap'), { ssr: false });
 
 /**
