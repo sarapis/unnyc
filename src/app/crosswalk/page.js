@@ -55,7 +55,6 @@ export default function CrosswalkPage() {
                 rentCard={doc.rentCard}
                 intro={sections.intro.html}
                 reasons={reasons}
-                foot={doc.foot}
             />
         </>
     );

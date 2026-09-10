@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 
 /**
  * UnnycCrosswalkStoryscroller — the storyscroller redesign of /crosswalk:
@@ -20,7 +19,7 @@ import Link from 'next/link';
  * reserved for the rail's active reason, since it drives a re-render of
  * the icon and the rail highlight.
  */
-export default function UnnycCrosswalkStoryscroller({ hero, rentCard, intro, reasons, foot }) {
+export default function UnnycCrosswalkStoryscroller({ hero, rentCard, intro, reasons }) {
     const rootRef = useRef(null);
     const [active, setActive] = useState(reasons[0]?.n ?? 1);
     const activeRef = useRef(active);
@@ -323,18 +322,6 @@ export default function UnnycCrosswalkStoryscroller({ hero, rentCard, intro, rea
                                 </article>
                             ))}
                         </div>
-                    </div>
-                </div>
-            </section>
-
-            <section className="unnyc-cw-story__foot">
-                <div className="unnyc-container">
-                    <div className="unnyc-cw-story__foot-ctas" data-reveal="1">
-                        {foot.ctas.map((c) => (
-                            <Link key={c.href} href={c.href} className={`unnyc-btn unnyc-btn--${c.style}`}>
-                                {c.label}
-                            </Link>
-                        ))}
                     </div>
                 </div>
             </section>

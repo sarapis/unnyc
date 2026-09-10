@@ -457,21 +457,4 @@
     text-decoration: underline;
   }
 
-  /* ---------------------------------------------------------------------
-     Foot
-     --------------------------------------------------------------------- */
-
-  .unnyc-cw-story__foot {
-    background: var(--wg-surface-alt);
-    padding: var(--wg-sp-16) var(--wg-sp-6) var(--wg-sp-24);
-    border-top: 1px solid var(--wg-warm-gray);
-    text-align: center;
-  }
-
-  .unnyc-cw-story__foot-ctas {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: var(--wg-sp-4);
-  }
 }
