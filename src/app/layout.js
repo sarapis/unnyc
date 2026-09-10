@@ -67,7 +67,7 @@ export default function RootLayout({ children }) {
 
                         Copy read HERE because UpdatesBar is a client component
                         and getContent is server-only — the same reason
-                        PrimerMovementNow takes its map data as props. Read
+                        UnnycWorldMap takes its map data as props. Read
                         inside the component, never at module scope, or edits to
                         the markdown need a dev-server restart to appear. */}
                     <UpdatesBar copy={getContent('updates')} />

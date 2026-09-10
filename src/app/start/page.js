@@ -17,7 +17,7 @@ export async function generateMetadata() {
  * /start — "A Global Movement," storyscroller layout (2026-09). Reimplements
  * a Claude Design handoff: a hero, a sticky icon-swapping sidebar beside the
  * vocabulary cards / world map / UN timeline, and a d3-rendered world map
- * (UnnycWorldMap) standing in for the old Leaflet map (PrimerMapInner).
+ * (UnnycWorldMap), which replaced a Leaflet map since deleted.
  * Sibling of the /principles, /crosswalk and /success storyscrollers — same
  * palette, sidebar shape and reveal system.
  *

@@ -775,134 +775,6 @@
   color: var(--wg-accent-strong);
 }
 
-/* --- Map --- */
-.unnyc-page .unnyc-section--map {
-  padding-bottom: var(--wg-sp-12);
-}
-
-.unnyc-page .unnyc-map-wrapper {
-  display: grid;
-  /* The legend column sizes to its own content rather than a fixed 220px, so
-     "every label on one line" is structural instead of a number to re-tune each
-     time a label changes. It was 220px, and two labels overflowed the card
-     because `white-space: nowrap` makes text one line by pushing it OUT of a box
-     it does not fit -- which looks like a bug, not a tidy legend. The mobile
-     breakpoint drops to one column and wraps the key into a row, so this only
-     ever applies where there is room to spare. */
-  grid-template-columns: 1fr max-content;
-  gap: var(--wg-sp-6);
-  min-height: 480px;
-  /* Leaflet ships high z-indexes of its own — panes 400-700, controls 800, and
-     the .leaflet-top/.leaflet-bottom corners 1000 — none of which know about our
-     sticky header at z-index 50. Without a stacking context here, those numbers
-     compete directly with the header in the root context and the map paints over
-     the nav on scroll. `isolation: isolate` contains all of it: Leaflet's
-     internal ordering still works, but the whole map now stacks as one box at
-     this element's level, below the header. Do not "fix" a future overlap by
-     raising the header's z-index — contain the offender instead. */
-  isolation: isolate;
-}
-
-.unnyc-page .unnyc-map-container {
-  border-radius: var(--wg-radius-lg);
-  overflow: hidden;
-  border: 1px solid var(--wg-border);
-  min-height: 480px;
-}
-
-.unnyc-page .unnyc-map-legend {
-  display: flex;
-  flex-direction: column;
-  gap: var(--wg-sp-3);
-  padding: var(--wg-sp-4);
-  background: var(--wg-surface);
-  border: 1px solid var(--wg-border);
-  border-radius: var(--wg-radius-lg);
-  align-self: start;
-}
-
-.unnyc-page .unnyc-map-legend-item {
-  display: flex;
-  align-items: center;
-  gap: var(--wg-sp-3);
-  font-size: var(--wg-fs-sm);
-  color: var(--wg-text-secondary);
-  padding: var(--wg-sp-2);
-  border-radius: var(--wg-radius-sm);
-  transition: background 0.2s;
-}
-
-.unnyc-page .unnyc-map-legend-item:hover {
-  background: var(--wg-surface-alt);
-}
-
-/* Country line inside a CTFG popup — quieter than the description. */
-.unnyc-page .unnyc-map-popup__meta,
-.leaflet-popup-content .unnyc-map-popup__meta {
-  margin: 0.15rem 0 0.35rem;
-  font-size: var(--wg-fs-xs, 0.78rem);
-  color: var(--wg-text-secondary, #5a646e);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.unnyc-page .unnyc-map-legend-swatch {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.unnyc-page .unnyc-map-legend-label {
-  font-size: var(--wg-fs-sm);
-  color: var(--wg-text-secondary);
-}
-
-/* OSPO markers are squares where every other layer is round — shape, not just
-   colour, separates them where five OSPOs and a policy marker share a pixel. The
-   legend has to match or the key stops being a key. */
-.unnyc-page .unnyc-map-legend-swatch--square {
-  border-radius: 2px;
-}
-
-/* The country fill is an AREA, not a point, so its key is a rectangle. A circle
-   here read as a sixth kind of marker. */
-.unnyc-page .unnyc-map-legend-swatch--area {
-  width: 18px;
-  height: 11px;
-  border-radius: 2px;
-}
-
-/* One line per row is the rule (2026-08-17): the legend column is narrow and a
-   wrapped label made the key taller than the thing it explains. */
-.unnyc-page .unnyc-map-legend-label {
-  white-space: nowrap;
-}
-
-/* Catalogue links inside a country popup. A country can have more than one
-   catalogue — France and Germany both do — so this is a list, not a single link. */
-.unnyc-page .unnyc-map-popup__list,
-.leaflet-popup-content .unnyc-map-popup__list {
-  margin: 0;
-  padding: 0 0 0 1rem;
-  font-size: var(--wg-fs-sm, 0.875rem);
-}
-
-.unnyc-page .unnyc-map-popup__list li,
-.leaflet-popup-content .unnyc-map-popup__list li {
-  margin: 0.15rem 0;
-}
-
-/* The fill is made keyboard-reachable in PrimerMapInner (SVG paths get tabindex;
-   Leaflet only does that for markers). A focused path needs a VISIBLE ring, and
-   `outline` on an SVG path is unreliable across browsers — stroke is not. */
-.unnyc-page .leaflet-interactive:focus-visible {
-  outline: none;
-  stroke: var(--wg-text, #162e51);
-  stroke-width: 2.5;
-  stroke-opacity: 1;
-}
-
 /* --- News --- */
 .unnyc-page .unnyc-news__grid {
   display: grid;
@@ -1168,15 +1040,6 @@
   .unnyc-page .unnyc-directory__grid {
     grid-template-columns: 1fr;
   }
-
-  .unnyc-page .unnyc-map-wrapper {
-    grid-template-columns: 1fr;
-  }
-
-  .unnyc-page .unnyc-map-legend {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
 }
 
 @media (max-width: 768px) {
@@ -1212,32 +1075,6 @@
   .unnyc-page .unnyc-footer__links {
     gap: var(--wg-sp-4);
   }
-}
-
-/* --- Leaflet Overrides (scoped) --- */
-.unnyc-page .leaflet-popup-content-wrapper {
-  border-radius: var(--wg-radius-md) !important;
-  box-shadow: var(--wg-shadow-lg) !important;
-  font-family: var(--wg-font-body) !important;
-}
-
-.unnyc-page .leaflet-popup-content {
-  margin: var(--wg-sp-4) !important;
-  font-size: var(--wg-fs-sm) !important;
-  line-height: 1.5 !important;
-}
-
-.unnyc-page .unnyc-map-popup strong {
-  display: block;
-  font-size: var(--wg-fs-base);
-  color: var(--wg-text);
-  margin-bottom: var(--wg-sp-1);
-}
-
-.unnyc-page .unnyc-map-popup p {
-  font-size: var(--wg-fs-xs);
-  color: var(--wg-text-muted);
-  margin: 0;
 }
 
 /* --- Hero campaign banner --- */

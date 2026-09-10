@@ -7,10 +7,12 @@ import worldAtlas from '../../../../content/world-atlas.json';
 
 /**
  * UnnycWorldMap — the storyscroller redesign's world map: a static d3-geo SVG
- * on a dark navy panel, replacing the Leaflet map in PrimerMapInner (see
- * docs/EDITING-CONTENT.md and the Global Movement storyscroller handoff).
+ * on a dark navy panel. It replaced a Leaflet map (PrimerMapInner), which was
+ * deleted on 2026-09-10 — so this is now the site's only map. See
+ * docs/EDITING-CONTENT.md and the Global Movement storyscroller handoff.
  *
- * THREE DATA LAYERS, same argument as PrimerMapInner, painted bottom to top:
+ * THREE DATA LAYERS, carrying the same argument the Leaflet map did, painted
+ * bottom to top:
  *   1. the GovOSS country FILL — ground, not figure;
  *   2. the CTFG "government-built programs" dots — supporting evidence (this
  *      layer was not in the design prototype; the handoff explicitly calls

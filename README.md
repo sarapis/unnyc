@@ -29,7 +29,11 @@ live CMS. Copy `.env.example` to `.env.local` if you need to point elsewhere.
 ## Stack
 
 - **Next.js 16** (App Router, Turbopack), React 19
-- **Leaflet** for the world map of governments advancing open source
+- **d3-geo + topojson-client** for the world map of governments advancing open
+  source — a static SVG drawn from a Natural Earth snapshot committed to this
+  repo (`content/world-atlas.json`), with no tile server and no API key.
+  Leaflet was removed on 2026-09-10; see CLAUDE.md for why (CARTO put their
+  free basemap behind a key and kept serving watermarked tiles with HTTP 200).
 - **CSS cascade layers**, no CSS framework, no build step beyond Next
 - Deployed on **Vercel**
 

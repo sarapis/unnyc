@@ -353,21 +353,6 @@
     line-height: 1.6;
   }
 
-  /* --- Map source note --- */
-  .unnyc-pr-map__source {
-    margin: var(--wg-sp-4) auto 0;
-    max-width: 640px;
-    text-align: center;
-    font-size: var(--wg-fs-sm);
-    color: var(--wg-text-secondary);
-    line-height: 1.6;
-  }
-
-  .unnyc-pr-map__source a {
-    color: var(--wg-accent-strong);
-    font-weight: 600;
-  }
-
   /* --- Timeline --- */
   .unnyc-pr-timeline {
     list-style: none;
@@ -1445,12 +1430,27 @@
 
   /* ------------------------------------------------------------------
      ENDORSER DIRECTORY (UnnycEndorserDirectory)
-     Moved here from principles.css when /principles became the
-     storyscroller layout and stopped importing that file — this
-     component is also used by /start (PrimerMovementNow), which only
-     imports primer.css, so these rules have to live somewhere both
-     pages reach. No logos, deliberately: they are third-party
-     trademarks and the UN showing them grants no onward rights.
+
+     ⚠ THESE RULES ARE DEAD, and the reason they look alive is worth
+     reading before touching them. They were moved here from
+     principles.css so that both /principles and /start could reach
+     them — /start reached them through PrimerMovementNow, which was
+     deleted on 2026-09-10 along with the Leaflet map. And the live
+     endorser directory on /principles is NOT this component:
+     UnnycPrinciplesStoryscroller reimplemented it with its own
+     `unnyc-pr-story__endorsers*` markup (see the comment there — the
+     single-column section did not fit the storyscroller's
+     sticky-aside split), so nothing emits `unnyc-endorsers__` any more
+     except UnnycEndorserDirectory.js, which nothing imports.
+
+     Left in place deliberately, not missed: deleting an orphaned
+     component is the owner's call, and one was just made about the
+     Leaflet map. Delete this block WITH UnnycEndorserDirectory.js and
+     the single `unnyc-endorsers__` rule in principles.css, or not at
+     all — the three only make sense together.
+
+     No logos, deliberately: they are third-party trademarks and the UN
+     showing them grants no onward rights.
      ------------------------------------------------------------------ */
 
   .unnyc-endorsers__filters {
