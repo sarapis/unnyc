@@ -148,4 +148,112 @@
     color: var(--wg-accent);
     text-decoration: underline;
   }
+
+  /* ---------------------------------------------------------------------
+     Catalogue counts, country by country — the GovOSS country fill in TEXT.
+
+     The fill is one flat tone: it says "this government publishes a
+     catalogue" and nothing else. The counts and the links to each
+     government's own catalogue were in the old Leaflet popups and were lost
+     with them, for every reader, not only keyboard users — an SVG <path>
+     cannot take focus inside a role="img" and cannot hold a link at all.
+     A native <details> restores them without adding 13 rows to the design.
+     --------------------------------------------------------------------- */
+
+  .unnyc-start-story__catalogues {
+    margin-top: var(--wg-sp-6);
+    border-top: 1px solid var(--wg-warm-gray);
+  }
+
+  /* ⚠ `display` is deliberately NOT set here. Changing a <summary> off
+     `display: list-item` removes its native disclosure triangle in Chrome and
+     Safari — the only affordance saying this opens — and the marker is also
+     what rotates on open. Layout is done with inline children instead.
+     ⚠ The vertical padding is the WCAG 2.5.8 tap target, not decoration: a
+     summary is a non-inline control, so it needs 24px and the text alone is
+     ~19px. Same rule as the four card-link paddings in unnyc.css. */
+  .unnyc-page .unnyc-start-story__catalogues-summary {
+    padding: var(--wg-sp-4) 0;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--wg-accent-strong);
+  }
+
+  .unnyc-page .unnyc-start-story__catalogues-summary:hover {
+    color: var(--wg-accent);
+  }
+
+  .unnyc-page .unnyc-start-story__catalogues-summary:focus-visible {
+    outline: 2px solid var(--wg-accent);
+    outline-offset: 3px;
+  }
+
+  .unnyc-start-story__catalogues-count {
+    margin-left: var(--wg-sp-3);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: var(--wg-text-secondary);
+  }
+
+  /* ⚠ Scoped with `.unnyc-page`: `.unnyc-page ul { list-style: none; margin: 0;
+     padding: 0 }` is a (0,1,1) reset in THIS SAME LAYER, so a single-class
+     (0,1,0) rule loses to it and the grid would silently keep zero margin.
+     This is the collision CLAUDE.md counts six bugs from — most recently
+     `ul { margin: 0 }` parking a CTA button on top of a list. */
+  .unnyc-page .unnyc-start-story__catalogue-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 var(--wg-sp-8);
+    margin: 0 0 var(--wg-sp-5);
+    padding: 0;
+  }
+
+  @media (max-width: 699px) {
+    .unnyc-page .unnyc-start-story__catalogue-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .unnyc-start-story__catalogue-row {
+    padding: var(--wg-sp-3) 0;
+    border-bottom: 1px solid var(--wg-warm-gray);
+  }
+
+  .unnyc-start-story__catalogue-country {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--wg-text-secondary);
+  }
+
+  .unnyc-start-story__catalogue-country strong {
+    color: var(--wg-brand);
+    font-weight: 600;
+  }
+
+  .unnyc-start-story__catalogue-sources {
+    margin: 2px 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--wg-text-secondary);
+  }
+
+  /* ⚠ `.unnyc-page a { color: inherit }` is (0,1,1) and would render these as
+     plain text — the same trap the credit line above already guards against.
+     These are inline links in prose, so WCAG 2.5.8's 24px target does not
+     apply and they must NOT be given block padding. */
+  .unnyc-page .unnyc-start-story__catalogue-sources a {
+    color: var(--wg-accent-strong);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .unnyc-page .unnyc-start-story__catalogue-sources a:hover {
+    color: var(--wg-accent);
+  }
 }

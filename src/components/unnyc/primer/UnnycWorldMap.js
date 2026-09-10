@@ -45,9 +45,30 @@ import worldAtlas from '../../../../content/world-atlas.json';
  * immutably, instead of being re-sent in every HTML response the way a
  * server-passed prop would be.
  *
- * No popups: unlike PrimerMapInner's keyboard-navigable GeoJSON layer, this
- * SVG is decorative (aria-label only) and the argument-carrying detail lives
- * in the accessible marker list rendered below it, per the design handoff.
+ * NO POPUPS, AND EVERY LAYER'S DETAIL IS IN TEXT INSTEAD. The SVG is
+ * decorative — `role="img"` with one `aria-label`, which deliberately hides
+ * its whole subtree from assistive tech. That is why detail is NOT wired onto
+ * the shapes: a `tabindex` inside a `role="img"` produces a focus stop with no
+ * accessible name, and an SVG `<path>` cannot hold a link at all.
+ *
+ * So each layer's detail is rendered as real text below the map:
+ *   - the policy markers, in `__marker-list` (8 rows, from the design handoff);
+ *   - the GovOSS country fill, in `__catalogues` — ADDED 2026-09-10.
+ *
+ * ⚠ The catalogue list is not only an accessibility fix. Replacing Leaflet
+ * with this SVG dropped the per-country popups, and with them the entry counts
+ * and the links to each government's own catalogue — for EVERYONE, mouse users
+ * included, not just for keyboard and screen-reader users. The flat fill says
+ * "this government publishes a catalogue" and nothing more. A `<details>`
+ * disclosure restores the rest without adding thirteen rows of text to a
+ * finished design, and `<summary>` is focusable natively, so the keyboard path
+ * needs no ARIA of our own.
+ *
+ * ⚠ What is still NOT reachable, stated plainly so nobody records it as done:
+ * the geography itself. You cannot tab a country's shape, and hovering a
+ * polygon reveals nothing. The counts are reachable; their position on the map
+ * is not. PrimerMapInner's per-country tabindex/aria wiring on GeoJSON paths
+ * is the implementation that had this, and it is orphaned.
  */
 
 /* The topology itself, unwrapped from the snapshot's provenance envelope
@@ -73,6 +94,20 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
     const hasFill = Boolean(govoss?.countries?.length && govoss?.geo?.features?.length);
     const hasOspos = Boolean(ospos?.points?.length);
     const hasCtfg = Boolean(ctfg?.projects?.length);
+
+    /* The country fill's data as TEXT — see the accessibility note in the file
+     * header. Built outside the projection block on purpose: it needs no
+     * geometry, so it still renders if the atlas ever fails to decode.
+     * Sorted by size because "who publishes the most" is the readable order;
+     * `entries` is each country's own figure and they are NEVER summed. */
+    const catalogueCountries = (govoss?.countries || [])
+        .map((c) => ({
+            ...c,
+            name:
+                govoss?.geo?.features?.find((f) => f.properties.code === c.code)?.properties.name ||
+                c.code,
+        }))
+        .sort((a, b) => b.entries - a.entries);
 
     let countries = [];
     let ospoDots = [];
@@ -300,6 +335,46 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                         </div>
                     ))}
                 </div>
+            )}
+
+            {catalogueCountries.length > 0 && (
+                <details className="unnyc-start-story__catalogues" data-reveal="1">
+                    <summary className="unnyc-start-story__catalogues-summary">
+                        {mapSource?.cataloguesLabel || 'Catalogue counts, country by country'}
+                        {/* Derived, never authored — the label in content/start.md
+                            deliberately carries no number. */}
+                        <span className="unnyc-start-story__catalogues-count">
+                            {catalogueCountries.length} countries
+                        </span>
+                    </summary>
+                    {/* A real <ul>, so assistive tech announces how many countries
+                        there are. ⚠ Its margin/padding rules are scoped with
+                        `.unnyc-page` in world-map.css: `.unnyc-page ul { margin: 0 }`
+                        is a (0,1,1) reset that beats a single-class rule in the same
+                        layer — the trap CLAUDE.md counts six bugs from. */}
+                    <ul className="unnyc-start-story__catalogue-list">
+                        {catalogueCountries.map((c) => (
+                            <li key={c.code} className="unnyc-start-story__catalogue-row">
+                                <p className="unnyc-start-story__catalogue-country">
+                                    <strong>{c.name}</strong>
+                                    {' — '}
+                                    {c.entries.toLocaleString()} projects
+                                </p>
+                                <p className="unnyc-start-story__catalogue-sources">
+                                    {c.catalogues.map((cat, i) => (
+                                        <span key={cat.site}>
+                                            {i > 0 && ' · '}
+                                            <a href={cat.site} target="_blank" rel="noopener noreferrer">
+                                                {cat.label}
+                                            </a>{' '}
+                                            ({cat.entries.toLocaleString()})
+                                        </span>
+                                    ))}
+                                </p>
+                            </li>
+                        ))}
+                    </ul>
+                </details>
             )}
 
             {(() => {
