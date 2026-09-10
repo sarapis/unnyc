@@ -3,7 +3,9 @@ import UnnycHomeStoryscroller from '@/components/unnyc/primer/UnnycHomeStoryscro
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import {
     getContent,
+    getCtfgProjects,
     getGovossCatalogues,
+    getOspoMapPoints,
     getUnEndorsers,
     principlesResolve,
 } from '@/lib/content';
@@ -48,6 +50,9 @@ export default function UnnycPage() {
     //    a figure. See the note there on why these are ALWAYS derived, never
     //    authored literals. ──────────────────────────────────────────────
     const govoss = getGovossCatalogues();
+    // The map's markers/legend/credit are authored in content/start.md, the page
+    // whose map this is — read, not copied, so /start and / cannot disagree.
+    const startDoc = getContent('start');
     const endorsers = getUnEndorsers();
     const ospoCount = (getContent('resources').ospoDirectory?.groups ?? [])
         .reduce((n, g) => n + (g.items?.length ?? 0), 0);
@@ -59,13 +64,14 @@ export default function UnnycPage() {
     const withStats = (section) => ({
         ...section,
         stats: section.stats
-            // toLocaleString, not the bare integer: the storyscroller rewrite
-            // dropped it and 2,789 rendered as "2789". A four-digit stat set at
-            // display size reads as a year without the separator.
-            ?.map((st) => ({
-                label: st.label,
-                value: statValues[st.source]?.toLocaleString('en-US'),
-            }))
+            // ⚠ RAW NUMBER, NOT FORMATTED. The storyscroller's count-up reads
+            // `Number(el.dataset.count)`, and Number("2,789") is NaN — so
+            // formatting here silently replaced the correct server-rendered
+            // value with "NaN" the moment the page hydrated. 18 and 150 survived
+            // because they have no comma, which is why it looked like a
+            // one-stat bug. The separator is the COMPONENT's job (it already
+            // calls toLocaleString on every animation frame).
+            ?.map((st) => ({ label: st.label, value: statValues[st.source] }))
             .filter((st) => st.value != null),
     });
 
@@ -109,6 +115,18 @@ export default function UnnycPage() {
                     cta: doc.hero.ctas[0],
                 }}
                 movement={movement}
+                /* The real world map, replacing the "coming soon" placeholder
+                   this section shipped with. Same component and the SAME four
+                   sources /start draws — markers and legend live in
+                   content/start.md, so the two maps cannot disagree. */
+                worldMap={{
+                    markers: startDoc.mapMarkers,
+                    legend: startDoc.mapLegend,
+                    mapSource: startDoc.mapSource,
+                    govoss,
+                    ospos: getOspoMapPoints(),
+                    ctfg: getCtfgProjects(),
+                }}
                 principles={{ ...principlesBeat, groups: principleGroups }}
                 nyc={{ ...nycBeat, rentCard: crosswalk.rentCard, reasons }}
                 cases={{ ...casesBeat, items: cases }}
