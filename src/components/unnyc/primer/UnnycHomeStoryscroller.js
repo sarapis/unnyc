@@ -606,10 +606,10 @@ function HorizontalCarousel({ reasons, trackRef }) {
                         </div>
                     ))}
                 </div>
-            </div>
-            <div className="unnyc-home-story__hprogress-wrap">
-                <div className="unnyc-home-story__hprogress-track">
-                    <div className="unnyc-home-story__hprogress" data-hprogress="1" />
+                <div className="unnyc-home-story__hprogress-wrap">
+                    <div className="unnyc-home-story__hprogress-track">
+                        <div className="unnyc-home-story__hprogress" data-hprogress="1" />
+                    </div>
                 </div>
             </div>
         </div>
