@@ -105,8 +105,8 @@ storyscroller:
     # applies that to whichever line renders last, no markup needed here.
     h2Lines:
       - "Top performing cities are participating."
-      - "Our city hosts it."
-      - "It's time for our city government to join it."
+      - "New York City hosts it."
+      - "It's time for New York City government to join it."
     # CTA reuses `hero.ctas[0]` above (same label/href) — not repeated here.
   openLetter:
     kicker: "The Open Letter"
