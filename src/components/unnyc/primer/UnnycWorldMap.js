@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { geoNaturalEarth1, geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
+
+import worldAtlas from '../../../../content/world-atlas.json';
 
 /**
  * UnnycWorldMap — the storyscroller redesign's world map: a static d3-geo SVG
@@ -18,20 +19,41 @@ import { feature } from 'topojson-client';
  *   3. the curated POLICY markers (content/start.md `mapMarkers`) — the
  *      section's argument, drawn largest and labelled.
  *
- * Real Natural Earth geometry (world-atlas @2.0.2 via a CDN fetch, same as
- * the design prototype's unnyc-world-map.js) rather than a drawn outline —
- * the same runtime-fetch pattern PrimerMapInner already uses for Leaflet's
- * CARTO tiles, just for vector boundaries instead of raster tiles. Country
- * names from the atlas are matched against govoss.geo's 13 catalogue
- * countries by NAME (govoss.countries itself only carries ISO codes;
- * govoss.geo's features are the code→name bridge).
+ * Real Natural Earth geometry rather than a drawn outline. Country names from
+ * the atlas are matched against govoss.geo's 13 catalogue countries by NAME
+ * (govoss.countries itself only carries ISO codes; govoss.geo's features are
+ * the code→name bridge).
+ *
+ * ⚠ THE BOUNDARIES ARE A SNAPSHOT IN THE REPO, NOT A RUNTIME FETCH — changed
+ * 2026-09-10, and the reason is the whole point of this file's existence. The
+ * first version of this component `fetch()`ed the atlas from
+ * cdn.jsdelivr.net on every visit to `/` and `/start`, inheriting exactly the
+ * runtime-third-party dependency that had just cost the site its old map:
+ * CARTO put their free basemap behind an API key and kept answering HTTP 200
+ * with a valid PNG, every tile stamped "API KEY REQUIRED". No error, no
+ * failed request, nothing for a monitor to see. jsdelivr blocked or slow
+ * meant a map with no countries. Refresh the snapshot with
+ * `node scripts/fetch-world-atlas.mjs` and read its summary (country count +
+ * sha256) — the coordinates themselves are not reviewable in a diff.
+ *
+ * A STATIC IMPORT, deliberately, where `getCtfgProjects()` and
+ * `getGovossCatalogues()` are fail-soft server-side reads. Those are called
+ * on the server and a missing file costs a layer; this is a bundler import in
+ * a client component, so a missing file fails the BUILD. That is the louder
+ * and cheaper failure: nobody can ship a countryless map by accident. It also
+ * means the geometry rides a content-hashed JS chunk our own CDN caches
+ * immutably, instead of being re-sent in every HTML response the way a
+ * server-passed prop would be.
  *
  * No popups: unlike PrimerMapInner's keyboard-navigable GeoJSON layer, this
  * SVG is decorative (aria-label only) and the argument-carrying detail lives
  * in the accessible marker list rendered below it, per the design handoff.
  */
 
-const ATLAS = 'https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json';
+/* The topology itself, unwrapped from the snapshot's provenance envelope
+ * (source, version, countryCount, sha256 — see scripts/fetch-world-atlas.mjs). */
+const world = worldAtlas.topology;
+
 const W = 920;
 const H = 430;
 
@@ -48,21 +70,6 @@ const ANCHOR_OFFSET = { e: [10, 4], w: [-10, 4], n: [0, -10], s: [0, 15], sw: [-
 const ANCHOR_TO_TEXT = { w: 'end', sw: 'end', n: 'middle', s: 'middle', e: 'start' };
 
 export default function UnnycWorldMap({ markers = [], legend = [], mapSource, govoss, ospos, ctfg }) {
-    const [world, setWorld] = useState(null);
-
-    useEffect(() => {
-        let cancelled = false;
-        fetch(ATLAS)
-            .then((r) => r.json())
-            .then((topo) => {
-                if (!cancelled) setWorld(topo);
-            })
-            .catch(() => {});
-        return () => {
-            cancelled = true;
-        };
-    }, []);
-
     const hasFill = Boolean(govoss?.countries?.length && govoss?.geo?.features?.length);
     const hasOspos = Boolean(ospos?.points?.length);
     const hasCtfg = Boolean(ctfg?.projects?.length);

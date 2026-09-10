@@ -3,9 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 
-/** Same ssr:false reasoning as UnnycStartStoryscroller: the map fetches a world
- *  atlas and computes SVG paths client-side, so it must not run during the
- *  server render. */
+/** Same ssr:false reasoning as UnnycStartStoryscroller, and see the note there:
+ *  the map no longer fetches anything (its Natural Earth snapshot is bundled),
+ *  so this is now a bytes decision — 176 country paths belong in a cacheable JS
+ *  chunk, not inlined into every HTML response. */
 const UnnycWorldMap = dynamic(() => import('./UnnycWorldMap'), { ssr: false });
 import Link from 'next/link';
 
