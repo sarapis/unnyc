@@ -1,5 +1,7 @@
 import UnnycStartStoryscroller from '@/components/unnyc/primer/UnnycStartStoryscroller';
 import './start.css';
+/* Shared with the homepage, which draws the same component. See world-map.css. */
+import '../world-map.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import { getContent, getCtfgProjects, getGovossCatalogues, getOspoMapPoints, inlineMd } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';

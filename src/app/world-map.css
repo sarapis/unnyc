@@ -1,0 +1,151 @@
+/* ============================================
+   UnnycWorldMap — the shared world-map panel, legend, accessible country
+   and marker lists, and credit line.
+
+   ⚠ THIS FILE EXISTS BECAUSE THE MAP IS ON TWO ROUTES AND ITS CSS WAS ON ONE.
+   These rules lived in start.css until 2026-09-10. The homepage started
+   drawing the same component that day, and page-level CSS in the App Router
+   is scoped to its own route segment — so a FRESH LOAD of `/` linked no
+   stylesheet defining `.unnyc-start-story__map-panel` and the map rendered
+   unstyled. It looked fine when reached by a nav click from `/start`, because
+   Next keeps that route's sheet in the DOM after a client-side navigation.
+   That is the same cross-route stylesheet trap CLAUDE.md documents for
+   `.unnyc-principles__rail`, with the two cases reversed: there a fresh load
+   was always fine and only nav-click broke.
+
+   Imported by BOTH src/app/page.js and src/app/start/page.js, which Next
+   hoists into one shared chunk. ⚠ Do NOT fix a future gap by copying these
+   rules into home.css: two stylesheets owning one class at equal specificity
+   is a latent bug even when the rules are identical — that is exactly how the
+   rail broke. One owner, imported twice.
+
+   ⚠ The `unnyc-start-story__` prefix is now a MISNOMER — these classes are
+   emitted by UnnycWorldMap on both `/` and `/start`, not by the /start
+   storyscroller. Kept as-is to keep this fix reviewable; the component hard-codes
+   the same strings, so renaming is a separate change to both files at once.
+
+   Colours read the SEMANTIC tier (--wg-*) only. See CLAUDE.md.
+   ============================================ */
+
+@layer unnyc {
+
+  .unnyc-start-story__map-panel {
+    position: relative;
+    border-radius: var(--wg-radius-lg);
+    overflow: hidden;
+    padding: var(--wg-sp-8) var(--wg-sp-6) var(--wg-sp-5);
+    background: linear-gradient(160deg, var(--wg-brand-light) 0%, var(--wg-brand) 55%, var(--wg-brand-deep) 100%);
+    box-shadow: 0 24px 56px rgba(22, 46, 81, 0.14);
+  }
+
+  .unnyc-start-story__map-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 240px;
+  }
+
+  .unnyc-start-story__map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--wg-sp-3) var(--wg-sp-8);
+    margin-top: var(--wg-sp-5);
+    padding-top: var(--wg-sp-4);
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .unnyc-start-story__map-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--wg-sp-2);
+    font-size: var(--wg-fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(238, 243, 249, 0.82);
+  }
+
+  .unnyc-start-story__map-swatch {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+
+  .unnyc-start-story__map-swatch--area {
+    width: 14px;
+    height: 10px;
+    border-radius: 2px;
+  }
+
+  .unnyc-start-story__marker-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--wg-sp-3) var(--wg-sp-8);
+    margin-top: var(--wg-sp-8);
+  }
+
+  @media (max-width: 699px) {
+    .unnyc-start-story__marker-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .unnyc-start-story__marker-row {
+    display: grid;
+    grid-template-columns: 14px minmax(0, 1fr);
+    gap: var(--wg-sp-3);
+    align-items: start;
+    padding: var(--wg-sp-3) 0;
+    border-bottom: 1px solid var(--wg-warm-gray);
+  }
+
+  .unnyc-start-story__marker-dot {
+    width: 12px;
+    height: 12px;
+    margin-top: 5px;
+    border-radius: 999px;
+  }
+
+  .unnyc-start-story__marker-dot--city {
+    background: var(--wg-accent-warm);
+    border: 2px solid var(--wg-accent-warm);
+  }
+
+  .unnyc-start-story__marker-dot--nation {
+    background: var(--wg-surface);
+    border: 2px solid var(--wg-accent);
+  }
+
+  .unnyc-start-story__marker-row p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--wg-text-secondary);
+  }
+
+  .unnyc-start-story__marker-row strong {
+    color: var(--wg-brand);
+    font-weight: 600;
+  }
+
+  .unnyc-start-story__map-credit {
+    margin: var(--wg-sp-6) 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: var(--wg-text-secondary);
+  }
+
+  .unnyc-page .unnyc-start-story__map-credit a,
+  .unnyc-page .unnyc-start-story__map-credit .unnyc-inline-link {
+    color: var(--wg-accent-strong);
+    text-decoration: none;
+  }
+
+  .unnyc-page .unnyc-start-story__map-credit a:hover {
+    color: var(--wg-accent);
+    text-decoration: underline;
+  }
+}

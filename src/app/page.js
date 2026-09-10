@@ -1,4 +1,8 @@
 import './home.css';
+/* The map panel's look. Shared with /start, which draws the same component —
+ * page CSS is per-route, so this must be imported by every route that renders
+ * UnnycWorldMap or the map is unstyled on a fresh load. See world-map.css. */
+import './world-map.css';
 import UnnycHomeStoryscroller from '@/components/unnyc/primer/UnnycHomeStoryscroller';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import {
