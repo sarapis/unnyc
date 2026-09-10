@@ -5,6 +5,18 @@ meta:
   ogTitle: "What Success Looks Like — UNNYC"
   ogDescription: "What Barcelona, Munich, Paris, and France have already won by going open source — and what it would mean for New York."
 title: "A Roadmap for NYC to Follow"
+# Storyscroller hero only (UnnycSuccessStoryscroller). `heroTitle` carries
+# its own <span>s for the underlined words — same convention as
+# content/principles.md's `heroTitle`. NYC carries `class="no-underline"`
+# since it's not underlined (only "Roadmap"/"Follow" are). `title` above
+# (used elsewhere on this page, e.g. UnnycSectionNav's implicit heading)
+# is left alone.
+heroKicker: "Case Studies"
+heroTitle: "A <span>Roadmap</span> for <span class=\"no-underline\">NYC</span> to <span>Follow</span>"
+# The hero's "NYC — Next" card, a link to /campaign standing in for a case
+# study NYC hasn't written yet.
+heroNycLabel: "New York City"
+heroNycSublabel: "Next"
 # Jump menu (UnnycSectionNav) — `id` must match an id rendered on the page.
 sectionNav:
   - id: barcelona
@@ -84,6 +96,10 @@ caseGrid:
   items:
   - place: "Munich"
     image: "/case-images/munich.png"
+    # A wordmark-style logo, not a photo — shown contained on a light field
+    # in the storyscroller carousel instead of cover-cropped like the rest
+    # (see UnnycSuccessStoryscroller's CaseCard).
+    logo: true
     headline: "\"Public money, public code\" as council policy"
     body: "After a decade of hard-won lessons on desktop Linux, Munich came back smarter: a 2023 City Council motion created an OSPO with a dual mandate — use open source where it’s strong, and publish the city’s own software."
     lesson: "The mature posture isn’t all-or-nothing migration — it’s an institutional office with a publish-by-default rule."
