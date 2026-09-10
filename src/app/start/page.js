@@ -1,11 +1,6 @@
-import Link from 'next/link';
-import '../primer.css';
+import UnnycStartStoryscroller from '@/components/unnyc/primer/UnnycStartStoryscroller';
 import './start.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
-import UnnycSectionNav from '@/components/unnyc/UnnycSectionNav';
-import PrimerConcepts from '@/components/unnyc/primer/PrimerConcepts';
-import PrimerMovement from '@/components/unnyc/primer/PrimerMovement';
-import PrimerMovementNow from '@/components/unnyc/primer/PrimerMovementNow';
 import { getContent, getCtfgProjects, getGovossCatalogues, getOspoMapPoints, inlineMd } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
 import StructuredData from '@/components/unnyc/StructuredData';
@@ -17,21 +12,23 @@ export async function generateMetadata() {
 }
 
 /**
- * /start — "The Global Movement." Orientation for a reader who knows what open
- * source is but not how it connects to government and the UN: vocabulary, the
- * the movement's timeline, and who has already signed on.
- *
- * The eight Principles used to sit here too. They are their own top-level page
- * as of 2026-08-13 (/principles), which also carries the per-principle NYC
- * argument that used to be the body of /crosswalk.
+ * /start — "A Global Movement," storyscroller layout (2026-09). Reimplements
+ * a Claude Design handoff: a hero, a sticky icon-swapping sidebar beside the
+ * vocabulary cards / world map / UN timeline, and a d3-rendered world map
+ * (UnnycWorldMap) standing in for the old Leaflet map (PrimerMapInner).
+ * Sibling of the /principles, /crosswalk and /success storyscrollers — same
+ * palette, sidebar shape and reveal system.
  *
  * ALL COPY LIVES IN content/start.md. See docs/EDITING-CONTENT.md.
  */
 export default function StartPage() {
     const doc = getContent('start');
 
+    const terms = (doc.concepts?.terms ?? []).map((t, i) => ({ ...t, delay: 60 + (i % 2) * 90 }));
+    const timeline = (doc.movement?.timeline ?? []).map((e) => ({ ...e, delay: 80 }));
+
     return (
-        <div className="unnyc-pr">
+        <>
             {/* The vocabulary section, as a DefinedTermSet. */}
             <StructuredData
                 data={glossaryLd({
@@ -41,51 +38,27 @@ export default function StartPage() {
                 })}
             />
             <HeaderHeightVar />
-
-            <UnnycSectionNav items={doc.sectionNav} />
-
-            <header className="unnyc-start__header">
-                <div className="unnyc-container">
-                    <h1 className="unnyc-start__title">{doc.title}</h1>
-                    {doc.basicsLink && (
-                        <p
-                            className="unnyc-start__basics-link"
-                            dangerouslySetInnerHTML={{ __html: inlineMd(doc.basicsLink) }}
-                        />
-                    )}
-                    <p
-                        className="unnyc-start__lede"
-                        dangerouslySetInnerHTML={{ __html: inlineMd(doc.lede) }}
-                    />
-                </div>
-            </header>
-
-            {/* Order: vocabulary, then who is already doing it, then how the UN
-                got here. The eight principles used to sit between the first two;
-                they are their own top-level page as of 2026-08-13 (/principles),
-                and the foot CTA below is the hand-off. */}
-            <PrimerConcepts concepts={doc.concepts} />
-            <PrimerMovementNow
-                mapMarkers={doc.mapMarkers}
-                mapLegend={doc.mapLegend}
-                ctfg={getCtfgProjects()}
-                govoss={getGovossCatalogues()}
-                ospos={getOspoMapPoints()}
-                mapSource={doc.mapSource}
-                title={doc.movementNow?.title}
-                lede={doc.movementNow?.lede}
+            <UnnycStartStoryscroller
+                hero={{
+                    kicker: doc.heroKicker,
+                    titleHtml: doc.title,
+                    basicsLinkHtml: doc.basicsLink ? inlineMd(doc.basicsLink) : null,
+                    ledeHtml: inlineMd(doc.lede),
+                }}
+                railItems={doc.sectionNav}
+                concepts={{ title: doc.concepts?.title, ledeHtml: inlineMd(doc.concepts?.lede || ''), terms }}
+                movementNow={{
+                    title: doc.movementNow?.title,
+                    ledeHtml: inlineMd(doc.movementNow?.lede || ''),
+                    mapMarkers: doc.mapMarkers,
+                    mapLegend: doc.mapLegend,
+                    mapSource: doc.mapSource,
+                    ctfg: getCtfgProjects(),
+                    govoss: getGovossCatalogues(),
+                    ospos: getOspoMapPoints(),
+                }}
+                movement={{ title: doc.movement?.title, timeline }}
             />
-            <PrimerMovement movement={doc.movement} />
-
-            {/* Foot CTA — leads into the next section */}
-            <section className="unnyc-start__next">
-                <div className="unnyc-container unnyc-container--narrow">
-                    <p>{doc.next.text}</p>
-                    <Link href={doc.next.href} className="unnyc-btn unnyc-btn--primary">
-                        {doc.next.label}
-                    </Link>
-                </div>
-            </section>
-        </div>
+        </>
     );
 }

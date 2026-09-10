@@ -5,6 +5,7 @@ import UnnycNav from '@/components/unnyc/UnnycNav';
 import UnnycFooter from '@/components/unnyc/UnnycFooter';
 import ScrollReveal from '@/components/unnyc/ScrollReveal';
 import UpdatesBar from '@/components/unnyc/UpdatesBar';
+import BackToTop from '@/components/unnyc/BackToTop';
 import { getContent } from '@/lib/content';
 import { SITE_URL } from '@/lib/seo';
 import { bodyFont, displayFont } from './fonts';
@@ -72,6 +73,7 @@ export default function RootLayout({ children }) {
                     <UpdatesBar copy={getContent('updates')} />
                     <UnnycFooter />
                     <ScrollReveal />
+                    <BackToTop />
                 </div>
             </body>
         </html>
