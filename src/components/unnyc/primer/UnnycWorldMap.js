@@ -1,5 +1,6 @@
 'use client';
 
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { geoNaturalEarth1, geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 
@@ -47,30 +48,56 @@ import worldAtlas from '../../../../content/world-atlas.json';
  * immutably, instead of being re-sent in every HTML response the way a
  * server-passed prop would be.
  *
- * NO POPUPS, AND EVERY LAYER'S DETAIL IS IN TEXT INSTEAD. The SVG is
- * decorative — `role="img"` with one `aria-label`, which deliberately hides
- * its whole subtree from assistive tech. That is why detail is NOT wired onto
- * the shapes: a `tabindex` inside a `role="img"` produces a focus stop with no
- * accessible name, and an SVG `<path>` cannot hold a link at all.
+ * THE PINS ARE INTERACTIVE (2026-09-11). Three of the four layers open a popup
+ * on click, Enter or Space: the policy markers, the OSPO points, and the 13
+ * shaded catalogue countries. ⚠ The CTFG dots are DELIBERATELY NOT
+ * interactive — 62 dots at r=3 are the densest layer and the one where
+ * overlapping 22px hit areas would fight each other at world zoom. Owner's
+ * call; if they ever become clickable, solve the density first.
  *
- * So each layer's detail is rendered as real text below the map:
- *   - the policy markers, in `__marker-list` (8 rows, from the design handoff);
- *   - the GovOSS country fill, in `__catalogues` — ADDED 2026-09-10.
+ * ⚠ `role="img"` HAD TO GO, and that is the load-bearing part. It makes the
+ * whole subtree presentational, so a focusable child inside one is a focus stop
+ * with NO accessible name — which is exactly why an earlier version of this
+ * file put all detail in text and said the shapes could not carry it. The SVG
+ * is now `role="group"` with the same label, every decorative child is
+ * explicitly `aria-hidden`, and only the interactive layers are exposed. Put
+ * `role="img"` back and you must delete the pins with it.
  *
- * ⚠ The catalogue list is not only an accessibility fix. Replacing Leaflet
- * with this SVG dropped the per-country popups, and with them the entry counts
- * and the links to each government's own catalogue — for EVERYONE, mouse users
- * included, not just for keyboard and screen-reader users. The flat fill says
- * "this government publishes a catalogue" and nothing more. A `<details>`
- * disclosure restores the rest without adding thirteen rows of text to a
- * finished design, and `<summary>` is focusable natively, so the keyboard path
- * needs no ARIA of our own.
+ * Each interactive element is a `<g>`/`<path>` with `role="button"`,
+ * `tabIndex`, `aria-expanded` and an `aria-label` that says what the popup
+ * will say — so the information is available without opening anything.
+ * ⚠ Hit areas are a transparent `r=11`/`r=12` circle UNDER the visible dot,
+ * because the dots themselves are 6.8-12px across and WCAG 2.5.8 wants 24px on
+ * a non-inline target. `fill: transparent`, never `fill: none` — `none` is not
+ * hit-testable.
  *
- * ⚠ What is still NOT reachable, stated plainly so nobody records it as done:
- * the geography itself. You cannot tab a country's shape, and hovering a
- * polygon reveals nothing. The counts are reachable; their position on the map
- * is not. PrimerMapInner's per-country tabindex/aria wiring on GeoJSON paths
- * is the implementation that had this, and it is orphaned.
+ * ⚠ TARGET SIZE: THE PINS DO NOT MEET WCAG 2.5.8 ON THEIR OWN, and pretending
+ * otherwise would be the easy lie here. The hit circles are r=11/12 in SVG
+ * user units, but the SVG is scaled to its container — measured 19-21px at a
+ * 1440px viewport and roughly 7px on a 375px phone (the panel is ~279px wide
+ * against a 920-unit viewBox). Enlarging them enough for 24px at phone scale
+ * would make neighbouring European pins overlap into one another.
+ * What carries this instead is 2.5.8's "Equivalent" exception — the same
+ * function available through another control on the SAME page:
+ *   - policy markers  -> `__marker-list`, 8 rows of real text. Covered.
+ *   - country fill    -> the `__catalogues` disclosure, 13 rows. Covered.
+ *   - OSPO points     -> ⚠ NOTHING ON THIS PAGE. Neither `/` nor `/start`
+ *     renders an OSPO list; the credit line links to `/resources#ospos`, which
+ *     is a DIFFERENT page and so does not satisfy the exception.
+ * So the OSPO layer is the one real gap. Fix it by giving OSPOs a text list
+ * beside the other two rather than by inflating the hit circles.
+ *
+ * THE TEXT LISTS STAY, and are not redundant. `__marker-list` (8 rows) and the
+ * `__catalogues` disclosure (13 countries) remain the path that needs no
+ * pointer and no JavaScript beyond hydration. Replacing Leaflet once dropped
+ * the per-country popups and with them the counts and links FOR EVERY READER;
+ * the lists are what fixed that, and deleting them because "the pins have it
+ * now" would re-open the same hole for anyone the pins do not serve.
+ *
+ * ⚠ Still true: the popup is HTML positioned over the panel, not an SVG
+ * `<foreignObject>` — it needs links, wrapping text and normal focus, and JSX
+ * escapes third-party content for free where Leaflet's HTML strings needed a
+ * hand-written `esc()`.
  */
 
 /* The topology itself, unwrapped from the snapshot's provenance envelope
@@ -96,6 +123,59 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
     const hasFill = Boolean(govoss?.countries?.length && govoss?.geo?.features?.length);
     const hasOspos = Boolean(ospos?.points?.length);
     const hasCtfg = Boolean(ctfg?.projects?.length);
+
+    /* The open popup, as {kind, id} — null when none. One at a time, because two
+     * cards open at world zoom would overlap each other more often than not. */
+    const [open, setOpen] = useState(null);
+    const panelRef = useRef(null);
+    const closePopup = useCallback(() => setOpen(null), []);
+
+    /* Escape closes, and focus goes back to whatever opened it — a popup that
+     * strands focus in a dismissed card is worse than no popup. */
+    useEffect(() => {
+        if (!open) return undefined;
+        const onKey = (e) => {
+            if (e.key !== 'Escape') return;
+            e.stopPropagation();
+            closePopup();
+            const opener = panelRef.current?.querySelector(`[data-pin="${open.kind}:${open.id}"]`);
+            if (opener) opener.focus();
+        };
+        /* Pointer-down rather than click: a click listener added during the
+         * click that OPENED the popup fires on that same event and closes it
+         * again immediately. */
+        const onDown = (e) => {
+            if (!panelRef.current) return;
+            const inPopup = e.target.closest?.('.unnyc-start-story__popup');
+            const onPin = e.target.closest?.('[data-pin]');
+            if (!inPopup && !onPin) closePopup();
+        };
+        window.addEventListener('keydown', onKey);
+        window.addEventListener('pointerdown', onDown);
+        return () => {
+            window.removeEventListener('keydown', onKey);
+            window.removeEventListener('pointerdown', onDown);
+        };
+    }, [open, closePopup]);
+
+    const isOpen = (kind, id) => open?.kind === kind && open?.id === id;
+    const toggle = (kind, id) => setOpen((cur) => (cur?.kind === kind && cur?.id === id ? null : { kind, id }));
+    /* SVG user units -> % of the viewBox, so the popup positions itself against
+     * the panel however the SVG is scaled.
+     *
+     * ⚠ TWO CLAMPS, both for the same reason: `.unnyc-start-story__map-panel`
+     * is `overflow: hidden` (it has to be — the panel has rounded corners), so
+     * anything that escapes its box is CLIPPED, not merely ugly. A card opened
+     * on a pin in the top half rendered 123px above the panel and was cut off.
+     *   - vertically: pins above the midline get their card BELOW them.
+     *   - horizontally: the card's centre is kept away from the edges, so a pin
+     *     near the rim doesn't push half the card out of the panel. The card
+     *     has no tail, and the open pin brightens and grows, so a few percent
+     *     of drift costs nothing. */
+    const pct = (x, y) => ({
+        left: `${Math.min(80, Math.max(20, (x / W) * 100))}%`,
+        top: `${(y / H) * 100}%`,
+    });
 
     /* The country fill's data as TEXT — see the accessibility note in the file
      * header. Built outside the projection block on purpose: it needs no
@@ -137,17 +217,31 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
             ? new Map(govoss.countries.map((c) => [codeToName.get(c.code), c]).filter(([name]) => name))
             : new Map();
 
-        countries = all.map((f) => ({
-            key: f.id ?? f.properties.name,
-            d: path(f),
-            catalogue: catalogueByName.get(f.properties.name) || null,
-        }));
+        countries = all.map((f) => {
+            const catalogue = catalogueByName.get(f.properties.name) || null;
+            return {
+                key: f.id ?? f.properties.name,
+                name: f.properties.name,
+                d: path(f),
+                catalogue,
+                /* Only the 13 shaded countries are interactive, so only they pay
+                 * for a centroid — it positions the popup, nothing else. */
+                centroid: catalogue ? path.centroid(f) : null,
+            };
+        });
 
         if (hasOspos) {
+            /* ⚠ KEEP THE PAYLOAD, don't just project the coordinates. Until
+             * 2026-09-11 this was `.map(([x, y]) => ({ x, y }))`, which threw
+             * away the city, the country and the OSPOs themselves — so the dots
+             * could be drawn but nothing could ever be said about them. Same
+             * for the country centroids above. */
             ospoDots = ospos.points
-                .map((p) => projection([p.lng, p.lat]))
-                .filter(Boolean)
-                .map(([x, y]) => ({ x, y }));
+                .map((p) => {
+                    const xy = projection([p.lng, p.lat]);
+                    return xy ? { ...p, x: xy[0], y: xy[1] } : null;
+                })
+                .filter(Boolean);
         }
 
         if (hasCtfg) {
@@ -188,31 +282,120 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
         ospo: { background: 'var(--wg-accent-warm)' },
     };
 
+    /* One shape for all three interactive layers, so the card markup stays a
+     * single component instead of three near-copies. Built here rather than in
+     * the JSX because it needs the projected coordinates from above. */
+    let popup = null;
+    if (open?.kind === 'marker') {
+        const m = markerDots[open.id];
+        if (m) popup = { x: m.x, y: m.y, title: m.label, desc: m.desc };
+    } else if (open?.kind === 'ospo') {
+        const p = ospoDots[open.id];
+        if (p)
+            popup = {
+                x: p.x,
+                y: p.y,
+                title: `${p.city}, ${p.country}`,
+                meta: `${p.ospos.length} public sector open source program ${p.ospos.length === 1 ? 'office' : 'offices'}`,
+                /* ⚠ Each entry keeps its OWN city, because points within 25 km
+                 * are merged onto one dot (OSPO_MERGE_KM) — four French OSPOs
+                 * are in Paris and the IGN's is in Saint-Mandé. Merging changes
+                 * what is DRAWN, never what is CLAIMED. `(HQ)` marks a
+                 * coordinate that is the parent organisation's headquarters
+                 * rather than the body's own seat: "approximately here" and
+                 * "here" are different claims. */
+                links: p.ospos.map((o) => ({
+                    /* May be absent — the markup renders plain text rather than
+                     * an href="#" that goes nowhere. */
+                    href: o.url || null,
+                    label: o.name,
+                    note: [o.city !== p.city ? o.city : null, o.locationBasis === 'hq' ? '(HQ)' : null]
+                        .filter(Boolean)
+                        .join(' ') || null,
+                })),
+            };
+    } else if (open?.kind === 'country') {
+        const c = countries.find((x) => x.catalogue?.code === open.id);
+        if (c?.centroid)
+            popup = {
+                x: c.centroid[0],
+                y: c.centroid[1],
+                title: c.name,
+                /* This country's own figure. ⚠ Never summed with the others —
+                 * see CLAUDE.md; the totals disagree in both directions. */
+                meta: `${c.catalogue.entries.toLocaleString()} open source projects`,
+                links: c.catalogue.catalogues.map((cat) => ({
+                    href: cat.site,
+                    label: cat.label,
+                    note: `(${cat.entries.toLocaleString()})`,
+                })),
+            };
+    }
+
     return (
         <div className="unnyc-start-story__map-block">
-            <div className="unnyc-start-story__map-panel" data-reveal="1" data-delay="120">
+            <div className="unnyc-start-story__map-panel" data-reveal="1" data-delay="120" ref={panelRef}>
+                {/* ⚠ `role="img"` was REMOVED 2026-09-11 and that is the whole
+                    reason the pins can be controls. A role="img" makes the
+                    entire subtree presentational, so a focusable child inside
+                    one is a focus stop with NO accessible name — which is why
+                    the earlier version put all detail in text instead. The
+                    label moved to `role="group"`, every decorative child is
+                    explicitly aria-hidden, and only the three interactive
+                    layers are exposed. If you ever put role="img" back, delete
+                    the pins with it or they become unnamed tab stops. */}
                 <svg
                     viewBox={`0 0 ${W} ${H}`}
                     className="unnyc-start-story__map-svg"
-                    role="img"
+                    role="group"
                     aria-label="World map: countries with public code catalogues, and cities with public-sector open source program offices"
                 >
-                    {countries.map((c) => (
-                        <path
-                            key={c.key}
-                            d={c.d}
-                            style={{
-                                fill: c.catalogue ? 'var(--wg-accent)' : 'var(--wg-surface)',
-                                fillOpacity: c.catalogue ? 0.34 : 0.05,
-                                stroke: 'var(--wg-surface)',
-                                strokeOpacity: 0.22,
-                            }}
-                            strokeWidth={0.6}
-                        />
-                    ))}
+                    {countries.map((c) =>
+                        c.catalogue ? (
+                            <path
+                                key={c.key}
+                                data-pin={`country:${c.catalogue.code}`}
+                                className="unnyc-start-story__pin"
+                                d={c.d}
+                                role="button"
+                                tabIndex={0}
+                                aria-expanded={isOpen('country', c.catalogue.code)}
+                                aria-label={`${c.name}: ${c.catalogue.entries.toLocaleString()} open source projects in ${c.catalogue.catalogues.length} public ${c.catalogue.catalogues.length === 1 ? 'catalogue' : 'catalogues'}`}
+                                onClick={() => toggle('country', c.catalogue.code)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        toggle('country', c.catalogue.code);
+                                    }
+                                }}
+                                style={{
+                                    fill: 'var(--wg-accent)',
+                                    fillOpacity: isOpen('country', c.catalogue.code) ? 0.62 : 0.34,
+                                    stroke: 'var(--wg-surface)',
+                                    strokeOpacity: 0.22,
+                                    cursor: 'pointer',
+                                }}
+                                strokeWidth={0.6}
+                            />
+                        ) : (
+                            <path
+                                key={c.key}
+                                d={c.d}
+                                aria-hidden="true"
+                                style={{
+                                    fill: 'var(--wg-surface)',
+                                    fillOpacity: 0.05,
+                                    stroke: 'var(--wg-surface)',
+                                    strokeOpacity: 0.22,
+                                }}
+                                strokeWidth={0.6}
+                            />
+                        ),
+                    )}
                     {ctfgDots.map((p, i) => (
                         <circle
                             key={`ctfg-${i}`}
+                            aria-hidden="true"
                             cx={p.x}
                             cy={p.y}
                             r={3}
@@ -222,22 +405,62 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                         />
                     ))}
                     {ospoDots.map((p, i) => (
-                        <circle
+                        <g
                             key={`ospo-${i}`}
-                            cx={p.x}
-                            cy={p.y}
-                            r={3.4}
-                            style={{ fill: 'var(--wg-accent-warm)', stroke: 'var(--wg-brand-deep)' }}
-                            strokeOpacity={0.7}
-                            strokeWidth={0.8}
-                        />
+                            data-pin={`ospo:${i}`}
+                            className="unnyc-start-story__pin"
+                            role="button"
+                            tabIndex={0}
+                            aria-expanded={isOpen('ospo', i)}
+                            aria-label={`${p.city}, ${p.country}: ${p.ospos.length} public sector open source program ${p.ospos.length === 1 ? 'office' : 'offices'}`}
+                            onClick={() => toggle('ospo', i)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    toggle('ospo', i);
+                                }
+                            }}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            {/* ⚠ The visible dot is 6.8px across. WCAG 2.5.8 asks for
+                                24px on a non-inline target, so the HIT AREA is this
+                                transparent circle, not the dot. `fill: transparent`
+                                rather than `fill: none` — `none` is not hit-testable. */}
+                            <circle cx={p.x} cy={p.y} r={11} fill="transparent" />
+                            <circle
+                                cx={p.x}
+                                cy={p.y}
+                                r={isOpen('ospo', i) ? 5 : 3.4}
+                                style={{ fill: 'var(--wg-accent-warm)', stroke: 'var(--wg-brand-deep)' }}
+                                strokeOpacity={0.7}
+                                strokeWidth={0.8}
+                            />
+                        </g>
                     ))}
                     {markerDots.map((m, i) => (
-                        <g key={m.label ?? i}>
+                        <g
+                            key={m.label ?? i}
+                            data-pin={`marker:${i}`}
+                            className="unnyc-start-story__pin"
+                            role="button"
+                            tabIndex={0}
+                            aria-expanded={isOpen('marker', i)}
+                            aria-label={`${m.label}: ${m.desc}`}
+                            onClick={() => toggle('marker', i)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    toggle('marker', i);
+                                }
+                            }}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            {/* Hit area, not decoration — see the OSPO note above. */}
+                            <circle cx={m.x} cy={m.y} r={12} fill="transparent" />
                             <circle
                                 cx={m.x}
                                 cy={m.y}
-                                r={m.type === 'city' ? 6 : 5}
+                                r={(m.type === 'city' ? 6 : 5) + (isOpen('marker', i) ? 2 : 0)}
                                 style={{
                                     fill: m.type === 'city' ? 'var(--wg-accent-warm)' : 'var(--wg-surface)',
                                     stroke: m.type === 'city' ? 'var(--wg-surface)' : 'var(--wg-accent)',
@@ -282,6 +505,68 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                         </>
                     )}
                 </svg>
+
+                {/* ── Popups ──────────────────────────────────────────────────
+                    HTML, not <foreignObject>: these need links, real text
+                    wrapping and normal focus behaviour, and JSX escapes the
+                    content for free. The old Leaflet popups built HTML strings
+                    and needed a hand-written esc() for exactly that reason.
+
+                    Positioned in PERCENT of the panel, derived from the
+                    projected SVG coordinate, so the card tracks its pin however
+                    the SVG is scaled — there is no second source of truth for
+                    where a pin is.
+
+                    ⚠ Styled ONCE even though this component renders on a light
+                    page (/start) and a dark one (/): the map PANEL is the same
+                    navy gradient on both, and the card sits on the panel. That
+                    is what makes it safe here — it is not a general licence to
+                    ignore the light/dark split in world-map.css. */}
+                {popup && (
+                    <div
+                        className="unnyc-start-story__popup"
+                        /* Below the pin in the top half, above it in the bottom
+                           half — see the clamp note on `pct`. */
+                        data-below={popup.y < H * 0.5 ? 'true' : 'false'}
+                        style={pct(popup.x, popup.y)}
+                        role="dialog"
+                        aria-label={popup.title}
+                    >
+                        <button
+                            type="button"
+                            className="unnyc-start-story__popup-close"
+                            onClick={() => {
+                                const opener = panelRef.current?.querySelector(
+                                    `[data-pin="${open.kind}:${open.id}"]`,
+                                );
+                                closePopup();
+                                if (opener) opener.focus();
+                            }}
+                            aria-label="Close"
+                        >
+                            ×
+                        </button>
+                        <p className="unnyc-start-story__popup-title">{popup.title}</p>
+                        {popup.meta && <p className="unnyc-start-story__popup-meta">{popup.meta}</p>}
+                        {popup.desc && <p className="unnyc-start-story__popup-desc">{popup.desc}</p>}
+                        {popup.links?.length > 0 && (
+                            <ul className="unnyc-start-story__popup-list">
+                                {popup.links.map((l) => (
+                                    <li key={(l.href || '') + l.label}>
+                                        {l.href ? (
+                                            <a href={l.href} target="_blank" rel="noopener noreferrer">
+                                                {l.label}
+                                            </a>
+                                        ) : (
+                                            l.label
+                                        )}
+                                        {l.note ? <span> {l.note}</span> : null}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+                )}
 
                 <div className="unnyc-start-story__map-legend">
                     {legend.map((item) => (
