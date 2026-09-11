@@ -560,9 +560,40 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   22px line box, under WCAG 2.5.8's 24px minimum for a NON-INLINE target. All
   four carry the padding now and cross-reference each other; copy the pattern for
   a new one. Inline links in prose are exempt, so do not "fix" those.
+- **⚠ WHEN A TWO-COLUMN GRID COLLAPSES TO ONE, IT STACKS IN DOM ORDER — CHECK
+  WHERE THE SECOND CHILD LANDS.** `/campaign/sign` is letter-left/form-right,
+  both starting at the top, and below 899px it became one column. The form is
+  the second DOM child, so it stacked under a letter that is ~4,400px tall on a
+  phone: "Add your name" sat at **5,226px of a 6,505px document — 80% down**,
+  making the page's entire purpose the last thing a phone reader could reach.
+  Nobody caught it because at desktop width it is 16-21% down and obviously
+  fine. Fixed with `order: -1` inside the existing breakpoint (see the long
+  comment in `sign.css`, which also records the tab-order trade-off and names
+  the structural alternative). **The general check: for every responsive grid,
+  measure where each child ends up AFTER the collapse, not just that it fits.**
+- **⚠ EXTRACTING SHARED CSS DE-DUPLICATES THE RULES AND SILENTLY MERGES THEIR
+  ASSUMPTIONS ABOUT CONTEXT.** `world-map.css` was lifted out of `start.css` so
+  both routes could reach it — correct, and it fixed a real bug. But those rules
+  were written for `/start`'s **light** `--wg-surface-warm` page, and the
+  homepage section behind the same component is **dark**, so `--wg-brand` navy
+  text and a `--wg-warm-gray` border became low-contrast text and a stray light
+  bar on `/`. One owner per class is still right; the missing step is checking
+  what each consumer's background is. Fix it with page-scoped overrides in the
+  consumer's own stylesheet, never by forking the shared rules.
 - **next/image `fill` writes position/inset/width/height as INLINE styles**, so a
   class cannot override them. To inset or shrink a filled image, use `transform`
   (see `.unnyc-pr-path__image--logo`) — not `padding`, `inset` or `width`.
+- **⚠ A CONTENT FIELD THAT CARRIES HTML IS NOT INTERCHANGEABLE WITH ONE THAT
+  DOESN'T, and nothing in the build says so.** `content/sign.md`'s `title` marks
+  its underlined phrase with a `<span>`, the same convention `home.md` and
+  `principles.md` use. `src/app/page.js` passed that title straight into
+  `UnnycHomeStoryscroller`'s `headline` prop, which renders **plain text** — so
+  React escaped the markup and the live homepage showed readers the literal
+  string `<span>Endorse</span>`. Green build, green lint, correct-looking JSX.
+  To check: `curl` the page and grep for `&lt;span&gt;`. The fix is not to
+  dangerouslySetInnerHTML the prop — it is to pass the section its OWN headline.
+  Same family as the two rules below; reading the JSX will not show you any of
+  them.
 - **`sections.*.html` goes in a `<div>`; `inlineMd()` goes in a `<p>`/`<h*>`/`<li>`.**
   `sections.*.html` is block-level output — it already carries its own `<p>`. Put it
   inside a `<p>` and you get `<p><p>…</p></p>`, which is invalid: the browser closes

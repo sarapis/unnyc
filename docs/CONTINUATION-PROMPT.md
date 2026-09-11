@@ -3,7 +3,7 @@
 Paste the block below into a new session. Everything above the line is context for
 whoever is maintaining this file.
 
-**Last updated 2026-09-10 (second session).** This file is the standing onboarding brief: where the
+**Last updated 2026-09-11.** This file is the standing onboarding brief: where the
 site lives, how to verify things here, what the pages are. It is the one doc
 guaranteed to be read first, so it is the one most damaging to leave stale — it
 spent 2026-08-19 describing a homepage, a principles grid and a hostname that had
@@ -94,9 +94,26 @@ or "working fine". Ranked by how much time each has cost:
   a component that shows on "scroll OR timeout" will appear on schedule and look
   verified while the scroll half was never tested. Same family as the
   IntersectionObserver limitation below, and it needs a human the same way.
-  ⚠ Also: `resize_window` to the `desktop` preset ("native size") left
-  `innerWidth` reporting **0**, which renders a blank screenshot and degrades any
-  layout logic reading the viewport. Pass explicit `width`/`height` instead.
+  ⚠ **MEASURE NOTHING UNTIL YOU HAVE SET AN EXPLICIT VIEWPORT.** `innerWidth`
+  reports **0** in a fresh tab and after `resize_window`'s `desktop` preset, and
+  every layout number taken in that state is garbage — not obviously wrong,
+  plausibly wrong. On 2026-09-11 it reported `/campaign/sign` as a 12,748px
+  document that was really 3,297px, with every element claiming to have wrapped.
+  Always `resize_window` with explicit `width`/`height` FIRST, then measure, and
+  re-measure at each width you care about.
+  ⚠ **Nothing with `data-reveal` appears in a screenshot**, because
+  IntersectionObserver never fires here — all 74 of them sit at `opacity: 0`.
+  To photograph a section, inject
+  `[data-reveal]{opacity:1 !important;transform:none !important}`. It must be
+  `!important`: an inline `style.opacity` loses to the rule already there.
+  Debug-only, never a source change.
+  ⚠ **A synthetic `KeyboardEvent` does not run default activation.** That is
+  correct browser behaviour for untrusted events, not a bug in the page — so a
+  trusted Enter/Space simply cannot be dispatched from here. Use
+  `element.click()` to prove a control's activation path, and say plainly that
+  the hardware keypress is unverified rather than implying it was tested.
+  ⚠ **Don't string-compare computed pixel values.** `634.664px` vs `634.656px`
+  is sub-pixel rounding; an equality check on it reported a false regression.
   ⚠ And **screenshots come back BLANK at deep scroll offsets** — anything a few
   thousand pixels down a long page cannot be captured, in a fresh tab either.
   `/resources#open-data` sits ~6,100px down and could only be verified by DOM
@@ -276,7 +293,14 @@ body from the live origin and confirm Payload answers 400 "invalid: Email".
 
 ## Open work
 
-Nothing is blocking.
+Nothing is blocking. ⚠ But one thing is worth carrying forward: for about a day
+the homepage rendered readers the literal text `<span>Endorse</span>`, because
+`src/app/page.js` passed `content/sign.md`'s HTML-bearing `title` into a
+plain-text `headline` prop. Green build, green lint, correct-looking JSX. Fixed
+in **#88** (merged 2026-09-11, verified on production), which also corrected the
+map legend's contrast and added the dark-page overrides `world-map.css` needs —
+that second half being fallout from extracting `world-map.css` in #84. The
+durable rules are in CLAUDE.md.
 
 **SEO / AI discoverability: see [SEO-PLAN.md](SEO-PLAN.md)** — audited
 2026-08-20, phase 1 shipped (canonicals on all 12 indexable routes, real
