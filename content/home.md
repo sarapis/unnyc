@@ -109,7 +109,7 @@ storyscroller:
       - "It's time for New York City government to join it."
     # CTA reuses `hero.ctas[0]` above (same label/href) — not repeated here.
   openLetter:
-    kicker: "The Open Letter"
+    kicker: "Take Action"
     lede: "We respectfully call on the Office of Technology & Innovation to:"
     ctaLabel: "Sign the open letter →"
     ctaHref: /campaign

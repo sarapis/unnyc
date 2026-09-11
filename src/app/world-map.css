@@ -63,7 +63,10 @@
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgba(238, 243, 249, 0.82);
+    /* Full --wg-text-inverse (white), not a dimmed --wg-text-on-brand: this
+       sits over the darkest part of the panel's gradient (--wg-brand-deep),
+       and the previous 82%-opacity tint read as too low-contrast there. */
+    color: var(--wg-text-inverse);
   }
 
   .unnyc-start-story__map-swatch {
