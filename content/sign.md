@@ -40,7 +40,7 @@ Dear Chief Technology Officer,
 
 Cities around the world are leaving New York City behind in their adoption of open source software; they are spending their money more efficiently while building more sustainable and secure solutions.
 
-Every June, the United Nations convenes UN Open Source Week at its Headquarters, right here in NYC. It gathers more than 2,600 participants from over 120 countries: the governments, institutions and builders organizing the world’s transition to open source. Our city provides the stage for this movement, is home to the critical technical prowess that would make it a leader on the global stage, but has yet to actually join in.
+Every June, the United Nations convenes UN Open Source Week at its Headquarters, right here in NYC. It gathers more than 2,600 participants from over 120 countries: the governments, institutions and builders organizing the world’s transition to open source. New York City provides the stage for this movement, is home to the critical technical prowess that would make it a leader on the global stage, but has yet to actually join in.
 
 **Government programs run on software**, currently provided by vendors. When the city can’t improve the software, it can’t improve the programs — every new idea becomes a change order, priced by the only vendor who can implement it. A city that knows its open source options can credibly walk away from a vendor, granting it a far better negotiating position.
 
