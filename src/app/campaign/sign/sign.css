@@ -165,7 +165,28 @@
       gap: var(--wg-sp-10);
     }
 
+    /* ⚠ THE FORM MUST COME FIRST IN THE SINGLE-COLUMN LAYOUT.
+       In two columns the letter and the form sit side by side and both start
+       at the top of the grid, so the form is visible immediately. Collapsing
+       to one column stacks them in DOM order — letter, then form — and the
+       letter is ~4,400px tall on a phone, which buried "Add your name" about
+       80% of the way down the page (measured on production at 375px: 5,226px
+       into a 6,505px document). The page's whole purpose is the signature,
+       and it was the last thing a phone reader could reach.
+
+       `order` is used rather than reordering the JSX because the two-column
+       layout above is correct as it stands and should not be disturbed.
+       ⚠ The trade-off, stated so nobody has to rediscover it: DOM order stays
+       letter-then-form, so a keyboard user on a narrow screen tabs through the
+       letter's 6 links before reaching the form that is drawn above them.
+       That is deliberate — the DOM order is the MEANINGFUL one (read the
+       letter, then sign it), and the visual promotion is what changes. If the
+       tab order is ever judged the bigger problem, the fix is to move the
+       aside ahead of the letter in the JSX and place it explicitly with
+       `grid-column: 2` at the wide breakpoint; do not solve it by deleting
+       this rule and re-burying the form. */
     .unnyc-take-action-story__sign-aside {
+      order: -1;
       position: static !important;
       top: auto !important;
     }
