@@ -293,14 +293,14 @@ body from the live origin and confirm Payload answers 400 "invalid: Email".
 
 ## Open work
 
-⚠ **There is a visible defect on production**: the homepage renders the literal
-text `<span>Endorse</span>` in the open-letter headline, because
-`src/app/page.js` passes `content/sign.md`'s HTML-bearing `title` into a
-plain-text `headline` prop. Verify with
-`curl -s https://un.opensource.nyc/ | grep -o "&lt;span&gt;[^&]*&lt;/span&gt;"`.
-Fixed in Olivia's open PR **#88**, which also corrects the map legend's contrast
-and the dark-page overrides `world-map.css` needs. Not reviewed line by line by
-the session that recorded this.
+Nothing is blocking. ⚠ But one thing is worth carrying forward: for about a day
+the homepage rendered readers the literal text `<span>Endorse</span>`, because
+`src/app/page.js` passed `content/sign.md`'s HTML-bearing `title` into a
+plain-text `headline` prop. Green build, green lint, correct-looking JSX. Fixed
+in **#88** (merged 2026-09-11, verified on production), which also corrected the
+map legend's contrast and added the dark-page overrides `world-map.css` needs —
+that second half being fallout from extracting `world-map.css` in #84. The
+durable rules are in CLAUDE.md.
 
 **SEO / AI discoverability: see [SEO-PLAN.md](SEO-PLAN.md)** — audited
 2026-08-20, phase 1 shipped (canonicals on all 12 indexable routes, real

@@ -8,14 +8,14 @@ Supersedes the two earlier 2026-09-10 handoffs.
 
 ---
 
-## 1. READ THIS FIRST — there is a visible defect on production right now
+## 1. The trap that produced a live defect — FIXED, but read it anyway
 
-**The homepage renders the literal text `<span>Endorse</span>`** in the
-open-letter section's headline.
+**For about a day the homepage rendered readers the literal text
+`<span>Endorse</span>`** in the open-letter headline. Fixed in #88, merged and
+verified on production 2026-09-11:
 
 ```bash
-curl -s https://un.opensource.nyc/ | grep -o "&lt;span&gt;[^&]*&lt;/span&gt;"
-# -> &lt;span&gt;Endorse&lt;/span&gt;
+curl -s https://un.opensource.nyc/ | grep -c "&lt;span&gt;"   # -> 0
 ```
 
 `src/app/page.js:139` passes `sign.title` as the `headline` prop.
@@ -24,8 +24,8 @@ the same convention `home.md` and `principles.md` use), and
 `UnnycHomeStoryscroller` renders `headline` as **plain text** — so React
 escapes the markup and the reader sees the tags.
 
-**It is fixed in Olivia's open PR #88** (§2). It was NOT introduced by this
-session's work and was not noticed by it either — which is the lesson: *a
+It was NOT introduced by this session's work and was not noticed by it either,
+across several passes over that page — which is the lesson: *a
 content field that carries HTML is not interchangeable with one that doesn't,
 and nothing in the type system or the build says so.* The general rule this
 repo already had — `sections.*.html` goes in a `<div>`, `inlineMd()` goes in a
@@ -43,11 +43,19 @@ gh pr list --state open --json number,title,author
 ```
 
 - **`origin/main` is at `e6029fa`** — "Merge PR #87".
-- ⚠ **ONE OPEN PR, and it is Olivia's: #88**, `fix/map-legend-contrast`,
-  opened 2026-09-11, +63/−7, five files, all checks pass, `MERGEABLE` /
-  `CLEAN`. **Not reviewed line by line and not merged by this session.** It
-  fixes the `<span>` bug above plus four other homepage issues, and **three of
-  its five files are ones this session created or changed** — see §3.
+- **PR #88 (Olivia's) is MERGED** — `bc3bc51`. Reviewed and browser-verified
+  before merging. It fixed the `<span>` bug above plus four other homepage
+  issues, and **three of its five files were ones this session created or
+  changed** — see §3. The contrast numbers are worth keeping: against the
+  homepage's `rgba(11,31,58,0.84)` section the marker text had been
+  `--wg-brand` at **1.21:1** (effectively invisible) and `--wg-text-secondary`
+  at 3.00:1 (below AA); it is now 14.81:1 and 16.52:1.
+  ⚠ One non-blocking note, recorded in the merge commit: `letterAskList` in
+  `page.js` strips the ask block's lead paragraph with an anchored regex over
+  rendered HTML. Commented and fails safe, but it couples `page.js` to the
+  shape of `sign.md`'s Take Action block — if that block ever starts with
+  something other than a `<p>`, the strip silently no-ops and the sentence
+  returns as a duplicate.
 - **Six PRs merged across the two sessions**: #82 (Olivia's `/resources`
   scrollbar), #84 (the atlas snapshot, catalogue counts, Leaflet deletion),
   #85/#86 (name New York City), #87 (the sign-form layout fix). #83 and earlier
@@ -128,23 +136,21 @@ leaves `/start` untouched, which is the correct shape.
 
 ## 5. Waiting on the human
 
-1. **Review and merge #88** — it fixes the live `<span>` defect in §1. This
-   session did not review it line by line.
-2. ⚠ **NOBODY HAS STILL WATCHED THE STORYSCROLLERS SCROLL.** Seven scroll-driven
+1. ⚠ **NOBODY HAS STILL WATCHED THE STORYSCROLLERS SCROLL.** Seven scroll-driven
    pages, verified only by build, rendered text and invariants. Confirmed again
    why an agent cannot: `document.visibilityState` is `"hidden"` in these tools,
    so IntersectionObserver never fires and **all 74 `[data-reveal]` elements sit
    at `opacity: 0`**. Still the largest untested surface on the site.
-3. **The third orphan**: `UnnycEndorserDirectory.js`, its 25 `unnyc-endorsers__`
+2. **The third orphan**: `UnnycEndorserDirectory.js`, its 25 `unnyc-endorsers__`
    rules in `primer.css` and one in `principles.css`. Nothing imports it —
    `UnnycPrinciplesStoryscroller` reimplemented the directory with its own
    markup (verified against production). Labelled dead in the code, not deleted.
    **Delete all three together or none.**
-4. **Rename `unnyc-start-story__map*`.** The component draws on both routes; the
+3. **Rename `unnyc-start-story__map*`.** The component draws on both routes; the
    prefix claims otherwise, and that misnomer is *why* the CSS looked like it
    belonged in `start.css`. The cause of item 5 above is still in the code.
-5. **The Databook Mapbox token** — Hub `7d5fdeef`, owner-only first step.
-6. Three copy decisions on Hub `841ee0a9` (the declaration's
+4. **The Databook Mapbox token** — Hub `7d5fdeef`, owner-only first step.
+5. Three copy decisions on Hub `841ee0a9` (the declaration's
    two-sections-vs-the-UN's-three, "Hundreds" over a countable 150, retiring
    `old-unnyc.wegov.nyc`) and `168a959d` (CTFG de-indexed linking).
 
@@ -210,8 +216,9 @@ leaves `/start` untouched, which is the correct shape.
 
 ## Coverage — what this session did NOT do
 
-- **Did not review PR #88 line by line**, and did not merge it. It fixes a live
-  defect and touches three files this session wrote.
+- **Reviewed and merged PR #88**, including measuring the contrast ratios and
+  confirming `/start` was untouched — but did NOT review the scroll/reveal
+  behaviour it interacts with, for the structural reason below.
 - **Never watched a storyscroller scroll**, for the structural reason in §5.2.
 - **Never dispatched a trusted keypress** at the new catalogue disclosure. Its
   native `<summary>` behaviour is intact and nothing overrides it (checked: no
