@@ -1,8 +1,14 @@
 import UnnycStartStoryscroller from '@/components/unnyc/primer/UnnycStartStoryscroller';
 import './start.css';
+/* The "Let's keep going" band's look. ⚠ Shared with the other three
+ * storyscroller routes — page CSS is per-route, so every route that renders
+ * UnnycKeepGoing must import it or the band is unstyled on a fresh load.
+ * See src/app/keep-going.css. */
+import '../keep-going.css';
 /* Shared with the homepage, which draws the same component. See world-map.css. */
 import '../world-map.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
+import UnnycKeepGoing from '@/components/unnyc/primer/UnnycKeepGoing';
 import { getContent, getCtfgProjects, getGovossCatalogues, getOspoMapPoints, inlineMd } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
 import StructuredData from '@/components/unnyc/StructuredData';
@@ -61,6 +67,10 @@ export default function StartPage() {
                 }}
                 movement={{ title: doc.movement?.title, timeline }}
             />
+            {/* Sibling of the storyscroller, not inside it: UnnycKeepGoing is a
+                SERVER component (it reads its own copy via getContent) and the
+                storyscroller is 'use client'. It drops the link to this page. */}
+            <UnnycKeepGoing currentPath="/start" />
         </>
     );
 }

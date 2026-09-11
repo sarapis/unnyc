@@ -1,6 +1,12 @@
 import UnnycCrosswalkStoryscroller from '@/components/unnyc/primer/UnnycCrosswalkStoryscroller';
 import './crosswalk.css';
+/* The "Let's keep going" band's look. ⚠ Shared with the other three
+ * storyscroller routes — page CSS is per-route, so every route that renders
+ * UnnycKeepGoing must import it or the band is unstyled on a fresh load.
+ * See src/app/keep-going.css. */
+import '../keep-going.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
+import UnnycKeepGoing from '@/components/unnyc/primer/UnnycKeepGoing';
 import { getContent, inlineMd } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
 
@@ -56,6 +62,10 @@ export default function CrosswalkPage() {
                 intro={sections.intro.html}
                 reasons={reasons}
             />
+            {/* Sibling of the storyscroller, not inside it: UnnycKeepGoing is a
+                SERVER component (it reads its own copy via getContent) and the
+                storyscroller is 'use client'. It drops the link to this page. */}
+            <UnnycKeepGoing currentPath="/crosswalk" />
         </>
     );
 }
