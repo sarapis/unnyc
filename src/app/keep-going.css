@@ -1,0 +1,93 @@
+/* ============================================
+   UnnycKeepGoing — the "Let's keep going" band at the foot of /start,
+   /principles, /crosswalk and /success.
+
+   ⚠ ONE OWNER, FOUR IMPORTERS. Page CSS in the App Router is scoped to its own
+   route segment, so every route that renders the component must import this
+   file or the band is unstyled on a fresh load — exactly how the homepage map
+   shipped with no panel gradient on 2026-09-10 and still looked correct to
+   anyone who arrived by nav click. Never fix a future gap by copying these
+   rules into a page's own stylesheet: two stylesheets owning one class at
+   equal specificity is a latent bug even when the rules are identical, which
+   is how the principles rail broke. Next hoists this into one shared chunk.
+
+   ⚠ The band carries its OWN background, which is what makes one copy safe
+   across four pages with different palettes — unlike world-map.css, whose
+   rules assumed /start's light page and needed home.css overrides once the
+   dark homepage drew the same component. If you ever make this transparent,
+   that protection is gone.
+
+   Visually the same band as /resources' older `foot:` (resources.css), which
+   is where the pattern comes from and which still owns its own copy of these
+   rules. Unifying the two is an owner decision — see UnnycKeepGoing.js.
+
+   Colours read the SEMANTIC tier (--wg-*) only. See CLAUDE.md.
+   ============================================ */
+
+@layer unnyc {
+
+  .unnyc-keep-going {
+    background: var(--wg-surface-alt);
+    border-top: 1px solid var(--wg-warm-gray);
+    padding: var(--wg-sp-20) var(--wg-sp-6) var(--wg-sp-24);
+    text-align: center;
+  }
+
+  .unnyc-keep-going p {
+    margin: 0 0 var(--wg-sp-6);
+    font-family: var(--wg-font-display);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 2.6vw, 2.125rem);
+    line-height: 1.25;
+    color: var(--wg-brand);
+  }
+
+  .unnyc-keep-going__links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--wg-sp-4);
+  }
+
+  .unnyc-keep-going__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--wg-sp-2);
+    padding: 12px 32px;
+    border-radius: var(--wg-radius-pill);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  /* ⚠ `.unnyc-page` on all four: unnyc.css's `.unnyc-page a { color: inherit }`
+     is (0,1,1) and beats a plain single-class rule (0,1,0) in this same layer,
+     so without it these buttons silently inherit the surrounding navy instead
+     of showing their own colour. The trap CLAUDE.md counts six bugs from.
+     The 12px vertical padding also takes the 22px line box past WCAG 2.5.8's
+     24px minimum for a non-inline target — it is not decoration. */
+  .unnyc-page .unnyc-keep-going__btn--outline {
+    border: 1.5px solid var(--wg-brand);
+    color: var(--wg-brand);
+  }
+
+  .unnyc-page .unnyc-keep-going__btn--outline:hover {
+    background: var(--wg-brand);
+    color: var(--wg-surface);
+    text-decoration: none;
+  }
+
+  .unnyc-page .unnyc-keep-going__btn--primary {
+    background: linear-gradient(135deg, var(--wg-accent), var(--wg-accent-strong));
+    color: var(--wg-surface);
+    box-shadow: 0 10px 24px rgba(0, 114, 158, 0.25);
+  }
+
+  .unnyc-page .unnyc-keep-going__btn--primary:hover {
+    color: var(--wg-surface);
+    text-decoration: none;
+    box-shadow: 0 14px 30px rgba(0, 114, 158, 0.35);
+  }
+
+}
