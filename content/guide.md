@@ -119,7 +119,7 @@ An annual week-long event at **UN Headquarters in New York City**, organized by 
 
 ### Why it matters for NYC
 
-This event happens *in your city*. It brings together hundreds of technologists, policymakers, and open-source leaders — a 15-minute subway ride from City Hall.
+This event happens *in New York City*. It brings together hundreds of technologists, policymakers, and open-source leaders — a 15-minute subway ride from City Hall.
 
 - **Present NYC's open-source work** — Showcase tools NYC has built
 - **Participate in the hackathon** — Send developers to collaborate on Digital Public Goods
@@ -246,7 +246,7 @@ Low effort, high signal. Position NYC as a leader among U.S. municipal governmen
 
 ### 2. Send a delegation to UN Open Source Week
 
-June 22–26, 2026. It's in your city — no flights needed.
+June 22–26, 2026. It's in New York City — no flights needed.
 
 ### 3. Establish a lightweight OSPO
 
