@@ -184,6 +184,10 @@
     display: block;
   }
 
+  .unnyc-home-story__h2 > span:not(:first-child) {
+    margin-top: var(--wg-sp-4);
+  }
+
   .unnyc-home-story__h2 > span:last-child {
     text-decoration: underline;
     text-decoration-color: var(--wg-accent-warm);
@@ -201,6 +205,52 @@
     display: flex;
     justify-content: center;
     margin: var(--wg-sp-8) 0 var(--wg-sp-5);
+  }
+
+  /* UnnycWorldMap's marker-list rows (world-map.css, shared with /start) read
+     --wg-brand / --wg-text-secondary for their text — correct against
+     /start's light --wg-surface-warm page, but this wrapper sits inside
+     .unnyc-home-story__section's dark rgba(11, 31, 58, 0.84) background, so
+     that dark-on-light styling reads as dark-on-dark here. Home-scoped
+     override only; world-map.css itself stays page-agnostic per its own
+     "one owner" note — this is a MORE SPECIFIC selector, not a second
+     owner of the same one. */
+  .unnyc-home-story__map .unnyc-start-story__marker-row {
+    border-bottom-color: rgba(255, 255, 255, 0.14);
+  }
+
+  .unnyc-home-story__map .unnyc-start-story__marker-row p {
+    color: var(--wg-text-on-brand);
+  }
+
+  .unnyc-home-story__map .unnyc-start-story__marker-row strong {
+    color: var(--wg-text-inverse);
+  }
+
+  /* Same light-page/dark-page mismatch as the marker rows above, on the
+     "Catalogue counts" <details> right after them: its border-top and text
+     colors are --wg-warm-gray / --wg-accent-strong / --wg-text-secondary,
+     right for /start's light page, and read as a stray light bar plus
+     low-contrast text on this dark one. */
+  .unnyc-home-story__map .unnyc-start-story__catalogues {
+    border-top: none;
+  }
+
+  /* `.unnyc-page` prefix isn't scoping here (redundant with .unnyc-home-story__map
+     inside it) — it's there to OUTWEIGH world-map.css's
+     `.unnyc-page .unnyc-start-story__catalogues-summary`, same (0,2,0) specificity
+     as a plain two-class version of this selector and imported after home.css in
+     page.js, so the later file would otherwise win the tie. */
+  .unnyc-page .unnyc-home-story__map .unnyc-start-story__catalogues-summary {
+    color: var(--wg-text-inverse);
+  }
+
+  .unnyc-page .unnyc-home-story__map .unnyc-start-story__catalogues-summary:hover {
+    color: var(--wg-accent-warm-light);
+  }
+
+  .unnyc-home-story__map .unnyc-start-story__catalogues-count {
+    color: var(--wg-text-on-brand);
   }
 
   .unnyc-home-story__map-svg {

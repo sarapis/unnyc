@@ -558,9 +558,6 @@ export default function UnnycHomeStoryscroller({
 
             <section className="unnyc-home-story__section">
                 <div className="unnyc-container unnyc-home-story__take-action">
-                    <p className="unnyc-home-story__eyebrow" data-reveal="1">
-                        Take Action
-                    </p>
                     <h2 className="unnyc-home-story__h3" data-reveal="1" data-delay="80">
                         {takeAction.title}
                     </h2>
