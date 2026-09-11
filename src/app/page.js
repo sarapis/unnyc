@@ -106,6 +106,12 @@ export default function UnnycPage() {
     });
 
     const letterAsk = sign.sections?.letter?.blocks?.find((b) => b.label === 'Take Action');
+    // The block's own lead sentence ("We respectfully call on...") is now the
+    // section's headline (openLetter.lede, below) — stripped here so it isn't
+    // repeated immediately under itself. sign.md itself is untouched: the
+    // paragraph still belongs on the real /campaign/sign page, where there's
+    // no such headline above it.
+    const letterAskList = (letterAsk?.html || '').replace(/^\s*<p>[\s\S]*?<\/p>\s*/, '');
 
     return (
         <>
@@ -136,8 +142,8 @@ export default function UnnycPage() {
                 cases={{ ...casesBeat, items: cases }}
                 openLetter={{
                     kicker: doc.storyscroller.openLetter.kicker,
-                    headline: sign.title,
-                    askHtml: letterAsk?.html || '',
+                    headline: doc.storyscroller.openLetter.lede,
+                    askHtml: letterAskList,
                     signatureLabel: sign.addressed?.find((a) => a.label === 'From')?.value,
                     signatureCount: endorsers?.organizations.length ?? null,
                     signatureCountLabel: sign.signatureCountLabel,
