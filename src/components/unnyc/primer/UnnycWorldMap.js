@@ -78,21 +78,36 @@ import worldAtlas from '../../../../content/world-atlas.json';
  * against a 920-unit viewBox). Enlarging them enough for 24px at phone scale
  * would make neighbouring European pins overlap into one another.
  * What carries this instead is 2.5.8's "Equivalent" exception — the same
- * function available through another control on the SAME page:
- *   - policy markers  -> `__marker-list`, 8 rows of real text. Covered.
- *   - country fill    -> the `__catalogues` disclosure, 13 rows. Covered.
- *   - OSPO points     -> ⚠ NOTHING ON THIS PAGE. Neither `/` nor `/start`
- *     renders an OSPO list; the credit line links to `/resources#ospos`, which
- *     is a DIFFERENT page and so does not satisfy the exception.
- * So the OSPO layer is the one real gap. Fix it by giving OSPOs a text list
- * beside the other two rather than by inflating the hit circles.
+ * function available through another control on the SAME page. All three
+ * interactive layers now have one (the OSPO list closed the gap 2026-09-12):
+ *   - policy markers  -> `__marker-list`, 8 rows of real text.
+ *   - country fill    -> the `__catalogues` disclosure, 13 countries.
+ *   - OSPO points     -> the `__ospos` disclosure, 12 cities and all 18 offices.
+ * ⚠ THE CREDIT LINE'S `/resources#ospos` LINK NEVER SATISFIED THIS and still
+ * does not — it is attribution, and it points at a DIFFERENT page. Don't let it
+ * stand in for the list again. Equally, don't "fix" a future target-size report
+ * by inflating the hit circles: at phone scale the European pins would merge.
  *
- * THE TEXT LISTS STAY, and are not redundant. `__marker-list` (8 rows) and the
- * `__catalogues` disclosure (13 countries) remain the path that needs no
- * pointer and no JavaScript beyond hydration. Replacing Leaflet once dropped
- * the per-country popups and with them the counts and links FOR EVERY READER;
- * the lists are what fixed that, and deleting them because "the pins have it
- * now" would re-open the same hole for anyone the pins do not serve.
+ * ⚠ A TEXT EQUIVALENT MUST CARRY WHAT ITS POPUP CARRIES. The exception is about
+ * the same FUNCTION being reachable another way, so summarising is not enough —
+ * if a popup ever starts saying something the list does not, the layer silently
+ * stops conforming with a green build. `ospoCities` is built from the same
+ * fields as the OSPO popup, immediately below each other, for that reason.
+ *
+ * THE TEXT LISTS STAY, and are not redundant with the pins. They are the path
+ * that needs no pointer and no JavaScript beyond hydration. Replacing Leaflet
+ * once dropped the per-country popups and with them the counts and links FOR
+ * EVERY READER; the lists are what fixed that, and deleting them because "the
+ * pins have it now" would re-open the same hole for anyone the pins do not
+ * serve.
+ *
+ * ⚠ ANYTHING ADDED BELOW THE PANEL NEEDS A DARK-PAGE OVERRIDE IN `home.css`.
+ * These lists sit OUTSIDE the map panel, on the page itself, and the page is
+ * light on `/start` and dark on `/`. The catalogue disclosure shipped with
+ * overrides for its summary only, so its 13 open rows rendered at 1.35:1 and
+ * 1.84:1 on the homepage — invisible, and unnoticed because a closed
+ * `<details>` hides its own defect. Measured on production 2026-09-12 and fixed
+ * with the OSPO list. See the note over those rules in world-map.css.
  *
  * ⚠ Still true: the popup is HTML positioned over the panel, not an SVG
  * `<foreignObject>` — it needs links, wrapping text and normal focus, and JSX
@@ -118,6 +133,47 @@ const ATLANTIC_LABEL = [-46, 33];
 const ANCHORS = ['sw', 'w', 'e', 'e', 'n', 'e', 's', 's'];
 const ANCHOR_OFFSET = { e: [10, 4], w: [-10, 4], n: [0, -10], s: [0, 15], sw: [-8, 13] };
 const ANCHOR_TO_TEXT = { w: 'end', sw: 'end', n: 'middle', s: 'middle', e: 'start' };
+
+/**
+ * One OSPO point's offices, as {name, href, note} — the SINGLE source for both
+ * the pin's popup and the `__ospos` text list.
+ *
+ * ⚠ IT IS SHARED ON PURPOSE. The text list exists to satisfy WCAG 2.5.8's
+ * "equivalent control on the same page" exception for pins too small to meet
+ * the 24px target, and an equivalent that drifts from what it stands in for
+ * stops being one — silently, with a green build. Two copies of this mapping
+ * existed for about an hour and had already disagreed; they cannot now.
+ *
+ * The notes are claims, not decoration:
+ *   - a different city — points within OSPO_MERGE_KM share ONE dot (four
+ *     French OSPOs are in Paris; the IGN's is in Saint-Mandé, 5 km away), so
+ *     the office keeps its real city. Merging changes what is DRAWN, never
+ *     what is CLAIMED.
+ *   - `(HQ)` — the coordinate is the parent organisation's headquarters rather
+ *     than the body's own seat. "Approximately here" and "here" are different
+ *     claims and this map should not present the second when it means the
+ *     first.
+ * ⚠ The city note is DROPPED when the office's own name already carries it.
+ * `content/resources.md` names one office "Direction de la stratégie et de la
+ * culture numériques (DSCN), Échirolles" with `city: Échirolles`, which read
+ * "…, Échirolles Échirolles" — in the popup as well, live, since the pins
+ * shipped. A note is there to add what the name does not say.
+ */
+function ospoOffices(point) {
+    return point.ospos.map((o) => ({
+        name: o.name,
+        /* May be absent — both consumers render plain text rather than an
+         * href="#" that goes nowhere. */
+        href: o.url || null,
+        note:
+            [
+                o.city !== point.city && !o.name.includes(o.city) ? o.city : null,
+                o.locationBasis === 'hq' ? '(HQ)' : null,
+            ]
+                .filter(Boolean)
+                .join(' ') || null,
+    }));
+}
 
 export default function UnnycWorldMap({ markers = [], legend = [], mapSource, govoss, ospos, ctfg }) {
     const hasFill = Boolean(govoss?.countries?.length && govoss?.geo?.features?.length);
@@ -190,6 +246,26 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                 c.code,
         }))
         .sort((a, b) => b.entries - a.entries);
+
+    /* The OSPO layer's data as TEXT, on the same footing as the two above —
+     * added 2026-09-12 to close the one layer that had no on-page equivalent
+     * (see the TARGET SIZE note in the file header).
+     *
+     * ⚠ IT CARRIES EXACTLY WHAT THE POPUP CARRIES, which is the whole point:
+     * 2.5.8's "Equivalent" exception is about the same FUNCTION being reachable
+     * another way, so a row that summarised where the popup names each office
+     * would not satisfy it. City, country, the office count, and every office
+     * by name with its link — the offices themselves come from the shared
+     * `ospoOffices()` so the two cannot drift.
+     *
+     * Built from `ospos.points` rather than `ospoDots` deliberately: the dots
+     * exist only inside the projection block, so a geometry failure would take
+     * the text with it — the same reason `catalogueCountries` is built here.
+     * Sorted by office count, then alphabetically, mirroring the catalogue
+     * list's "biggest first" order. */
+    const ospoCities = (ospos?.points || [])
+        .map((p) => ({ city: p.city, country: p.country, offices: ospoOffices(p) }))
+        .sort((a, b) => b.offices.length - a.offices.length || a.city.localeCompare(b.city));
 
     let countries = [];
     let ospoDots = [];
@@ -297,22 +373,10 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                 y: p.y,
                 title: `${p.city}, ${p.country}`,
                 meta: `${p.ospos.length} public sector open source program ${p.ospos.length === 1 ? 'office' : 'offices'}`,
-                /* ⚠ Each entry keeps its OWN city, because points within 25 km
-                 * are merged onto one dot (OSPO_MERGE_KM) — four French OSPOs
-                 * are in Paris and the IGN's is in Saint-Mandé. Merging changes
-                 * what is DRAWN, never what is CLAIMED. `(HQ)` marks a
-                 * coordinate that is the parent organisation's headquarters
-                 * rather than the body's own seat: "approximately here" and
-                 * "here" are different claims. */
-                links: p.ospos.map((o) => ({
-                    /* May be absent — the markup renders plain text rather than
-                     * an href="#" that goes nowhere. */
-                    href: o.url || null,
-                    label: o.name,
-                    note: [o.city !== p.city ? o.city : null, o.locationBasis === 'hq' ? '(HQ)' : null]
-                        .filter(Boolean)
-                        .join(' ') || null,
-                })),
+                /* Same rows as the `__ospos` text list below, from the same
+                 * helper — see ospoOffices() for why that is a requirement and
+                 * not a tidy-up. */
+                links: ospoOffices(p).map((o) => ({ href: o.href, label: o.name, note: o.note })),
             };
     } else if (open?.kind === 'country') {
         const c = countries.find((x) => x.catalogue?.code === open.id);
@@ -622,6 +686,63 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                         </div>
                     ))}
                 </div>
+            )}
+
+            {/* The OSPO layer in text. ⚠ Placed between the marker list and the
+                catalogue disclosure to match the LEGEND's own order (markers,
+                OSPOs, then the fill and the programs) — the map stacks the same
+                way, so a reader who works down the page works down the stack.
+                See the TARGET SIZE note in the file header for why this is a
+                conformance requirement and not a nicety. */}
+            {ospoCities.length > 0 && (
+                <details className="unnyc-start-story__ospos" data-reveal="1">
+                    <summary className="unnyc-start-story__ospos-summary">
+                        {mapSource?.ospoLabel || 'Program offices, city by city'}
+                        {/* Derived, never authored — content/start.md's label
+                            deliberately carries no number.
+                            ⚠ The literal space is load-bearing, exactly as it is on
+                            the catalogue summary below: the count is spaced with
+                            `margin-left`, and margin is not text, so without this the
+                            accessible name concatenates to "…city by city12 cities".
+                            Only visible by reading innerText in a browser. */}
+                        {' '}
+                        <span className="unnyc-start-story__ospos-count">
+                            {ospoCities.length} {ospoCities.length === 1 ? 'city' : 'cities'}
+                        </span>
+                    </summary>
+                    {/* A real <ul>, so assistive tech announces the count. Its
+                        margin/padding rules are scoped with `.unnyc-page` in
+                        world-map.css for the (0,1,1) `ul` reset — same trap as the
+                        catalogue list. */}
+                    <ul className="unnyc-start-story__ospo-list">
+                        {ospoCities.map((c) => (
+                            <li key={`${c.city}-${c.country}`} className="unnyc-start-story__ospo-row">
+                                <p className="unnyc-start-story__ospo-city">
+                                    <strong>
+                                        {c.city}, {c.country}
+                                    </strong>
+                                    {' — '}
+                                    {c.offices.length} {c.offices.length === 1 ? 'office' : 'offices'}
+                                </p>
+                                <p className="unnyc-start-story__ospo-offices">
+                                    {c.offices.map((o, i) => (
+                                        <span key={o.name}>
+                                            {i > 0 && ' · '}
+                                            {o.href ? (
+                                                <a href={o.href} target="_blank" rel="noopener noreferrer">
+                                                    {o.name}
+                                                </a>
+                                            ) : (
+                                                o.name
+                                            )}
+                                            {o.note ? ` ${o.note}` : ''}
+                                        </span>
+                                    ))}
+                                </p>
+                            </li>
+                        ))}
+                    </ul>
+                </details>
             )}
 
             {catalogueCountries.length > 0 && (

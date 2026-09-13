@@ -193,6 +193,19 @@ mapSource:
   # they cannot go stale when the snapshot is refreshed. Same rule as the
   # endorser directory's counts.
   cataloguesLabel: "Catalogue counts, country by country"
+  # Label on the disclosure that lists every city with a public sector open source
+  # program office and names the offices themselves.
+  # ⚠ THIS IS NOT DECORATION, it is what makes the OSPO pins legal. The pins
+  # measure 19-21px at desktop and ~7px on a phone, under WCAG 2.5.8's 24px, and
+  # they cannot be enlarged without merging neighbouring European pins. What
+  # carries them is 2.5.8's "equivalent control on the SAME page" exception — the
+  # policy markers have the marker list, the country fill has the catalogue
+  # disclosure, and until 2026-09-12 the OSPOs had nothing (the credit line points
+  # at /resources#ospos, a different page, which does not satisfy it).
+  # ⚠ NO COUNT IN THIS STRING, same rule as cataloguesLabel above: the number of
+  # cities and every per-city figure are derived from content/resources.md's
+  # ospoDirectory in the component, so they cannot go stale when an OSPO is added.
+  ospoLabel: "Program offices, city by city"
 mapLegend:
 - type: "city"
   label: "Cities leading"

@@ -227,12 +227,13 @@
     color: var(--wg-text-inverse);
   }
 
-  /* Same light-page/dark-page mismatch as the marker rows above, on the
-     "Catalogue counts" <details> right after them: its border-top and text
-     colors are --wg-warm-gray / --wg-accent-strong / --wg-text-secondary,
-     right for /start's light page, and read as a stray light bar plus
-     low-contrast text on this dark one. */
-  .unnyc-home-story__map .unnyc-start-story__catalogues {
+  /* Same light-page/dark-page mismatch as the marker rows above, on the two
+     <details> disclosures right after them — "Catalogue counts" and "Program
+     offices": their border-top and text colors are --wg-warm-gray /
+     --wg-accent-strong / --wg-text-secondary, right for /start's light page,
+     and read as a stray light bar plus low-contrast text on this dark one. */
+  .unnyc-home-story__map .unnyc-start-story__catalogues,
+  .unnyc-home-story__map .unnyc-start-story__ospos {
     border-top: none;
   }
 
@@ -241,16 +242,62 @@
      `.unnyc-page .unnyc-start-story__catalogues-summary`, same (0,2,0) specificity
      as a plain two-class version of this selector and imported after home.css in
      page.js, so the later file would otherwise win the tie. */
-  .unnyc-page .unnyc-home-story__map .unnyc-start-story__catalogues-summary {
+  .unnyc-page .unnyc-home-story__map .unnyc-start-story__catalogues-summary,
+  .unnyc-page .unnyc-home-story__map .unnyc-start-story__ospos-summary {
     color: var(--wg-text-inverse);
   }
 
-  .unnyc-page .unnyc-home-story__map .unnyc-start-story__catalogues-summary:hover {
+  .unnyc-page .unnyc-home-story__map .unnyc-start-story__catalogues-summary:hover,
+  .unnyc-page .unnyc-home-story__map .unnyc-start-story__ospos-summary:hover {
     color: var(--wg-accent-warm-light);
   }
 
-  .unnyc-home-story__map .unnyc-start-story__catalogues-count {
+  .unnyc-home-story__map .unnyc-start-story__catalogues-count,
+  .unnyc-home-story__map .unnyc-start-story__ospos-count {
     color: var(--wg-text-on-brand);
+  }
+
+  /* ⚠ THE ROWS INSIDE THE DISCLOSURES, which the overrides above did NOT cover
+     until 2026-09-12 — and the miss is the instructive part. #88 fixed every
+     light-page colour this component brought onto the dark homepage *that was
+     visible*: the marker rows and the catalogue SUMMARY. The 13 catalogue rows
+     BEHIND that summary kept world-map.css's light-page values and were
+     measured on production at --wg-brand 1.35:1 (country names, effectively
+     invisible), --wg-text-secondary 1.84:1 and --wg-accent-strong 1.87:1
+     against the section's composited rgb(50, 67, 90) — all far under AA's
+     4.5:1, with --wg-warm-gray hairlines between them.
+     A closed <details> hides its own defect: nobody opens it on the page where
+     it is broken, so "it looks fine" survives every check that isn't a
+     deliberate one. Contrast-check what a control REVEALS, not just what it
+     shows. */
+  .unnyc-home-story__map .unnyc-start-story__catalogue-row,
+  .unnyc-home-story__map .unnyc-start-story__ospo-row {
+    border-bottom-color: rgba(255, 255, 255, 0.14);
+  }
+
+  .unnyc-home-story__map .unnyc-start-story__catalogue-country,
+  .unnyc-home-story__map .unnyc-start-story__catalogue-sources,
+  .unnyc-home-story__map .unnyc-start-story__ospo-city,
+  .unnyc-home-story__map .unnyc-start-story__ospo-offices {
+    color: var(--wg-text-on-brand);
+  }
+
+  .unnyc-home-story__map .unnyc-start-story__catalogue-country strong,
+  .unnyc-home-story__map .unnyc-start-story__ospo-city strong {
+    color: var(--wg-text-inverse);
+  }
+
+  /* Same (0,2,0)-tie reason as the summary rules above: world-map.css's
+     `.unnyc-page .unnyc-start-story__catalogue-sources a` is imported later, so
+     these need the `.unnyc-page` prefix to win rather than to scope. */
+  .unnyc-page .unnyc-home-story__map .unnyc-start-story__catalogue-sources a,
+  .unnyc-page .unnyc-home-story__map .unnyc-start-story__ospo-offices a {
+    color: var(--wg-accent-warm-light);
+  }
+
+  .unnyc-page .unnyc-home-story__map .unnyc-start-story__catalogue-sources a:hover,
+  .unnyc-page .unnyc-home-story__map .unnyc-start-story__ospo-offices a:hover {
+    color: var(--wg-text-inverse);
   }
 
   .unnyc-home-story__map-svg {
