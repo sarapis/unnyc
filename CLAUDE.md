@@ -974,5 +974,5 @@ the lost glossary tooltip was found by inspection, not by diff.
 | | |
 |---|---|
 | `wegov.nyc/unnyc` | Now 308s to this site (`wegovnyc_front` @ `84a83de`). `/unnyc/guide` → `/resources`. |
-| `old-unnyc.wegov.nyc` | The original Vite "UN meets NYC" hub. Live, untouched. |
+| `old-unnyc.wegov.nyc` | The original Vite "UN meets NYC" hub. Live, untouched — **KEPT, owner's decision 2026-09-14.** Nothing depends on it (its one unique asset, the UN-system guide, is at `/resources/guide`, and `wegov.nyc/unnyc/guide` redirects there), so retiring it was offered and declined. Don't propose it again as cleanup. |
 | Vault workspace | `~/vault/workspaces/unnyc.md` (Hub reads this) |

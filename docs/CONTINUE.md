@@ -112,36 +112,50 @@ the other sections, never linking to themselves.
 
 ## 3. Waiting on the human
 
-1. ⚠ **STILL NOBODY HAS WATCHED THE STORYSCROLLERS SCROLL.** Unchanged across
-   three sessions and now more load-bearing: seven scroll-driven pages plus a
-   new interactive map. `document.visibilityState` is `"hidden"` in these tools,
-   so IntersectionObserver never fires and every `[data-reveal]` element sits at
-   `opacity: 0`. Needs a human with a real browser, not a better check.
-2. ⚠ **Target size on the map pins is an OPEN, ACCEPTED gap** — changed
-   2026-09-14, and the previous version of this item said the opposite. It used
-   to read "the fix is an OSPO text list beside the other two"; the owner then
-   removed **all** the lists, so there is now no equivalent control for **any**
-   layer. Nothing is broken that wasn't a known trade — but if you want it
-   closed, it needs either a text equivalent back or a larger/zoomable map, and
-   **not** bigger hit circles (they would overlap). Say which; don't infer.
-3. **`/resources` was not migrated to the shared band.** It keeps its own older
-   `foot:` block, its own wording ("Looking for something else?") and a shorter
-   list without `/principles`. **Two implementations of one band**, labelled as
-   such in `UnnycKeepGoing.js` and `keep-going.css`. Unifying is a one-line
-   change plus a deletion, but it changes that page's wording and adds a link it
-   does not have — a decision, not a tidy-up.
-4. **The third orphan**: `UnnycEndorserDirectory.js` — **0 importers**, 27
-   `unnyc-endorsers__` rules in `primer.css` and 1 in `principles.css`, all dead,
-   because `UnnycPrinciplesStoryscroller` reimplemented the directory with its
-   own markup. Labelled, not deleted. **Delete all three together or none.**
-5. **Rename `unnyc-start-story__map*`.** The component draws on both routes; the
-   prefix claims otherwise, and that misnomer is *why* the CSS looked like it
-   belonged in `start.css` and shipped the homepage map unstyled. The cause is
-   still in the code, only documented.
-6. **The Databook Mapbox token** — Hub `7d5fdeef`, owner-only first step.
-7. Three copy decisions on Hub `841ee0a9` (the declaration's
-   two-sections-vs-the-UN's-three, "Hundreds" over a countable 150, retiring
-   `old-unnyc.wegov.nyc`) and `168a959d` (CTFG de-indexed linking).
+⚠ **THIS LIST IS NEARLY EMPTY NOW — 2026-09-14.** Everything that was sitting
+here was either actioned or answered in #94, #95 and #96. Read the decisions
+before proposing any of them again.
+
+**Settled — do not re-open as bugs or cleanups:**
+
+1. ✅ **Storyscroller scroll behaviour has been SEEN BY A HUMAN** (Devin,
+   2026-09-14: "it looks great"). This was the largest untested surface on the
+   site for four sessions and no agent could ever close it —
+   `document.visibilityState` is `"hidden"` in these tools, so
+   IntersectionObserver never fires and every `[data-reveal]` sits at
+   `opacity: 0`. Still true for any *new* scroll work: only a human can check it.
+2. ✅ **Map pin target size (WCAG 2.5.8): LEFT AS AN ACCEPTED GAP**, owner's
+   choice from three options. The pins are 19–21px desktop / ~7px phone and
+   nothing covers them since the text lists went. ⚠ Do NOT "fix" it by inflating
+   the hit circles — 24px at phone scale overlaps neighbouring European pins. The
+   options if revisited: a text equivalent, or a larger/zoomable map.
+3. ✅ **`/resources` uses the SHARED "keep going" band** (#96). There is no
+   second implementation left.
+4. ✅ **The third orphan is DELETED** (#96) — `UnnycEndorserDirectory.js`, 27
+   `unnyc-endorsers__` rules, and the stale references.
+5. ✅ **The map classes are RENAMED** to `unnyc-world-map__*` (#96). ⚠ Don't
+   sweep the `unnyc-start-story__` prefix — it still belongs to that storyscroller.
+6. ✅ **The declaration keeps its two-section structure**; ✅ the endorser lede is
+   **"More than 150"** (⚠ unrendered — see below); ✅ **`old-unnyc.wegov.nyc` is
+   KEPT.** All owner decisions, 2026-09-14.
+
+**Genuinely still open:**
+
+7. **The Databook Mapbox token** — Hub `7d5fdeef`. Different workspace,
+   owner-only first step. Not this repo.
+8. **Hub `168a959d`, the CTFG link question — premise void, follow-on blocked.**
+   The map's CTFG dots stopped linking out on 2026-09-10, so nothing points at
+   that directory. The ask to repoint them at `app.civictech.guide` cannot be
+   done as specified: that app addresses profiles by an Airtable `recordId` in a
+   *different id space* from the `airtable_id` CTFG's own API exposes (a real
+   one renders "Record details can no longer be found"), there is no public
+   slug→recordId lookup, and CTFG's `rel=canonical` still names
+   `civictech.guide/projects/<slug>`. The only clean path is to ask CTFG for a
+   stable public profile URL — one line in `scripts/fetch-ctfg-projects.mjs`.
+9. **`endorsers.lede` in `content/principles.md` is dead copy.** Rendering it
+   would ADD a sentence `/principles` does not currently show, and "More than
+   150" reads off-by-one against a directory whose chips total exactly 150.
+   A decision, not a bug.
 
 ---
 
