@@ -170,13 +170,14 @@ export function getContent(name) {
 const OSPO_MERGE_KM = 25;
 
 export function getOspoMapPoints() {
-    let groups;
+    let dir;
     try {
-        groups = matter(fs.readFileSync(path.join(CONTENT_DIR, 'resources.md'), 'utf8')).data
-            ?.ospoDirectory?.groups;
+        dir = matter(fs.readFileSync(path.join(CONTENT_DIR, 'resources.md'), 'utf8')).data
+            ?.ospoDirectory;
     } catch {
         return null;
     }
+    const groups = dir?.groups;
     if (!Array.isArray(groups)) return null;
 
     const items = [];
@@ -210,7 +211,24 @@ export function getOspoMapPoints() {
         points.push({ city: it.city, country: it.country, lat: it.lat, lng: it.lng, ospos: [it] });
     }
 
-    return { count: items.length, cities: points.length, points };
+    /* ⚠ THE PROVENANCE TRAVELS WITH THE DATA, like govoss's and ctfg's. This
+     * directory is the FLOSS-PSO Network's CC0 list, not our compilation — the
+     * map credit line reads these fields rather than naming a source in JSX, so
+     * the credit cannot drift from what content/resources.md records. CC0 needs
+     * no attribution; crediting them anyway is the owner's call (2026-09-14).
+     * ⚠ Do NOT hardcode the licence anywhere. It is read from their footer and
+     * recorded in the markdown with the date and page it was read from; CTFG's
+     * was a hardcoded literal once and this repo shipped a stale claim for two
+     * weeks on a live page. */
+    return {
+        count: items.length,
+        cities: points.length,
+        points,
+        source: dir.source ?? null,
+        sourceUrl: dir.sourceUrl ?? null,
+        licence: dir.licence ?? null,
+        licenceUrl: dir.licenceUrl ?? null,
+    };
 }
 
 /**

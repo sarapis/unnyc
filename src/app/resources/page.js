@@ -3,9 +3,9 @@ import './resources.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import { getContent, inlineMd } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
-import { DATASETS, datasetIndex } from '@/lib/datasets';
+import { datasetIndex } from '@/lib/datasets';
 import StructuredData from '@/components/unnyc/StructuredData';
-import { ospoListLd, datasetLd } from '@/lib/structured-data';
+import { ospoListLd } from '@/lib/structured-data';
 
 export async function generateMetadata() {
     const { meta } = getContent('resources');
@@ -36,11 +36,17 @@ export default function ResourcesPage() {
                     name: doc.ospoDirectory?.title ?? 'Public sector open source programme offices',
                 })}
             />
-            {/* And as a citable Dataset — see the note on datasetLd about why
-                only this site's OWN data gets this treatment. */}
-            <StructuredData
-                data={datasetLd({ dataset: DATASETS['public-sector-ospos'](), path: '/resources' })}
-            />
+            {/* ⚠ NO `Dataset` MARKUP HERE — removed 2026-09-14, and deliberately
+                not replaced. datasetLd is for data THIS SITE MADE, because it
+                emits `creator: this site`. The OSPO directory turned out to be
+                the FLOSS-PSO Network's CC0 list, not our compilation (only the
+                coordinates are ours), so marking it up would nominate us as the
+                thing to cite for someone else's data — which the payload's own
+                attribution string now explicitly tells reusers not to do.
+                The ItemList above stays: it describes what this PAGE shows,
+                which is a different claim from who made the underlying list.
+                /principles keeps its Dataset markup; the endorser transcription
+                really is ours. */}
             <HeaderHeightVar />
             <UnnycResourcesStoryscroller
                 hero={{

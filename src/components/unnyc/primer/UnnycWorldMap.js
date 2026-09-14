@@ -648,12 +648,33 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                             ({ctfg.licence})
                         </span>,
                     );
-                if (ospos)
+                /* ⚠ THIS SAID "OSPOs: this site" AND THAT WAS WRONG — corrected
+                 * 2026-09-14. The directory is the FLOSS-PSO Network's CC0 list,
+                 * not our compilation; `content/resources.md` had recorded
+                 * `sourceUrl: floss-pso.network` all along and only `/resources`
+                 * surfaced it, so the map credited the wrong party while the page
+                 * below it credited the right one.
+                 * ⚠ Read from the data like the two above, never named here — a
+                 * source or licence written into JSX is exactly how CTFG's stale
+                 * CC BY-NC-SA claim stayed on a live page for two weeks.
+                 * ⚠ CC0 requires NO attribution. This credit is a decision, not
+                 * compliance, which means nothing will break if it is dropped and
+                 * that is precisely why it is worth a comment. */
+                if (ospos?.source)
                     parts.push(
                         <span key="ospo">
-                            OSPOs: <a href="/resources#ospos">this site</a>
+                            OSPOs:{' '}
+                            <a href={ospos.sourceUrl} target="_blank" rel="noopener noreferrer">
+                                {ospos.source}
+                            </a>
+                            {ospos.licence ? ` (${ospos.licence})` : ''}
                         </span>,
                     );
+                else if (ospos)
+                    /* Fail-soft: provenance missing from the markdown costs the
+                     * OSPO clause, not the whole credit line — same posture as
+                     * the loaders. Silence is better than a wrong claim. */
+                    parts.push(<span key="ospo">OSPOs: see /resources</span>);
                 if (govoss)
                     parts.push(<span key="ne">boundaries: {govoss.boundariesShort || govoss.boundaries}</span>);
                 if (!parts.length) return null;

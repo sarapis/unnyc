@@ -78,10 +78,12 @@ ${datasets.join('\n')}
   this list cannot be extracted from the source and exists here because somebody
   read the logos. One recorded correction: entry 143 was read as "RTÉ", the Irish
   broadcaster, and is in fact RTE, the French grid operator.
-- **Licences differ by who made the data.** The transcription and the OSPO
-  directory are this site's own work under CC BY 4.0; the Civic Tech Field Guide
-  and GovOSS slices are theirs, and the credit belongs upstream. Each dataset
-  states its own terms.
+- **Licences differ by who made the data, and they are not all the same licence.**
+  The endorser transcription is this site's own work under CC BY 4.0. The OSPO
+  directory, the Civic Tech Field Guide slice and the GovOSS slice are all
+  theirs, and the credit belongs upstream — note the OSPO list is CC0, so no
+  attribution is required for it at all. Each dataset states its own terms above;
+  read those rather than this sentence.
 - **Counts are derived, never authored**, so a number here matches the page it
   came from. One exception is flagged in the content itself: the endorser
   section's lede says "Hundreds" over a countable 150.

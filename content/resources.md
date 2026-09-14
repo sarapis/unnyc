@@ -54,7 +54,15 @@ openData:
   title: "Open Data"
   lede: "Everything the map and the directories are built from, published as JSON with its provenance and licence attached."
   # Rendered after the rows, as one line.
-  note: "Licences differ by who compiled each set — two are this site's own work, two are redistributed and credit their upstream source. Each file states its own terms."
+  # ⚠ NO COUNTS IN THIS STRING. It read "two are this site's own work, two are
+  # redistributed" until 2026-09-14, when the OSPO directory turned out to be the
+  # FLOSS-PSO Network's CC0 list rather than ours — so the split was 1/3, not 2/2,
+  # and the sentence had been wrong for as long as it had been specific. Each row
+  # already states its own licence and whose credit it carries, derived from the
+  # payloads; this line only says that they DIFFER, which stays true however the
+  # mix changes. Same rule as the endorser directory's counts and the map's
+  # catalogue label: don't type a number into copy that data already knows.
+  note: "Licences differ by who compiled each set — some are this site's own work, others are redistributed and credit their upstream source. Each file states its own terms."
   indexLabel: "All four, catalogued"
   llmsLabel: "What this site is, in one file"
 resourceGroups:
@@ -179,7 +187,26 @@ ospoDirectory:
     alt: "Diagram of public-sector OSPO archetypes. Structure (RQ1) is fed by five choices — sponsor, supporting entities, budget, organization, and staffing. Responsibilities (RQ2) branch into ten activities: develop and execute OSS strategy, oversee OSS compliance, establish and improve OSS policies and processes, prioritize and drive OSS upstream development, collaborate with OSS organizations, track performance metrics, implement inner source practices, grow and retain OSS talent inside the organization, provide advice and support on OSS, and manage open source IT infrastructure"
     creditText: "Diagram: Linåker, Nummelin Carlberg & O’Riordan, “Public sector open source program offices — Archetypes for how to grow (common) institutional capabilities”, Journal of Systems and Software 241 (2026) 112998 — CC BY 4.0"
     creditHref: "https://doi.org/10.1016/j.jss.2026.112998"
+  # ⚠ PROVENANCE — this directory is NOT our compilation. All 18 entries come from
+  # the FLOSS-PSO Network's list of public sector OSPOs (run by the OSPO Alliance,
+  # maintained by Boris Baldassari / Philippe Bareille / Bastien Guerry), which is
+  # itself aggregated from each body's own YAML. Checked 2026-09-14: their list and
+  # ours are the same 18 offices, name for name.
+  # ⚠ LICENCE READ FROM THE SOURCE, NOT RECALLED. floss-pso.network's footer states
+  # TWO licences and only one of them applies here: "Website content CC-BY-SA" and
+  # "OSPO list CC0". We use the LIST, so it is CC0 1.0 — no attribution required,
+  # which is exactly why crediting them is a decision worth writing down rather
+  # than a term we are complying with. Verified on the home page and on
+  # /public-sector-ospos/, from the `rel="license"` anchors, same discipline as
+  # scripts/fetch-ctfg-projects.mjs — CTFG's licence was a hardcoded literal here
+  # once and this repo published a stale claim on a live page for two weeks.
+  # What IS ours: the lat/lng and `locationBasis` on each item, hand-placed.
+  source: "FLOSS-PSO Network"
   sourceUrl: "https://floss-pso.network/"
+  licence: "CC0 1.0"
+  licenceUrl: "https://creativecommons.org/publicdomain/zero/1.0/"
+  licenceCheckedFrom: "https://floss-pso.network/"
+  licenceCheckedOn: "2026-09-14"
   groups:
   - country: "United States"
     items:

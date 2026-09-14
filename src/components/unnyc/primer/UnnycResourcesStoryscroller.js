@@ -332,9 +332,24 @@ export default function UnnycResourcesStoryscroller({
                                 </div>
                                 <p className="unnyc-resources-story__note" data-reveal="1">
                                     <span className="unnyc-resources-story__note-label">Source</span>
-                                    <a href={ospoDirectory.sourceUrl} target="_blank" rel="noopener noreferrer">
-                                        floss-pso.network
+                                    {/* ⚠ The literal space is load-bearing, not cosmetic: the
+                                        label is spaced visually with CSS, and CSS is not text,
+                                        so without it the accessible name reads
+                                        "SOURCEfloss-pso.network". Exactly the bug the map's
+                                        catalogue disclosure had ("…COUNTRY BY COUNTRY13
+                                        countries") — only visible by reading innerText in a
+                                        browser, never in the JSX. */}
+                                    {' '}
+                                    <a
+                                        href={ospoDirectory.sourceUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {/* Name read from the content, not typed here — the
+                                            same rule the map credit now follows. */}
+                                        {ospoDirectory.source || ospoDirectory.sourceUrl}
                                     </a>
+                                    {ospoDirectory.licence ? ` (${ospoDirectory.licence})` : ''}
                                 </p>
                             </article>
 
