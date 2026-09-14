@@ -1,12 +1,14 @@
 /* ============================================
-   UnnycWorldMap — the shared world-map panel, legend, accessible country
-   and marker lists, and credit line.
+   UnnycWorldMap — the shared world-map panel, its legend and its credit line.
+   (The accessible country and marker lists this file used to style were
+   removed on 2026-09-14, owner's call: the map keeps a legend and nothing
+   below it. See UnnycWorldMap.js for what that costs.)
 
    ⚠ THIS FILE EXISTS BECAUSE THE MAP IS ON TWO ROUTES AND ITS CSS WAS ON ONE.
    These rules lived in start.css until 2026-09-10. The homepage started
    drawing the same component that day, and page-level CSS in the App Router
    is scoped to its own route segment — so a FRESH LOAD of `/` linked no
-   stylesheet defining `.unnyc-start-story__map-panel` and the map rendered
+   stylesheet defining `.unnyc-world-map__panel` and the map rendered
    unstyled. It looked fine when reached by a nav click from `/start`, because
    Next keeps that route's sheet in the DOM after a client-side navigation.
    That is the same cross-route stylesheet trap CLAUDE.md documents for
@@ -19,17 +21,23 @@
    is a latent bug even when the rules are identical — that is exactly how the
    rail broke. One owner, imported twice.
 
-   ⚠ The `unnyc-start-story__` prefix is now a MISNOMER — these classes are
-   emitted by UnnycWorldMap on both `/` and `/start`, not by the /start
-   storyscroller. Kept as-is to keep this fix reviewable; the component hard-codes
-   the same strings, so renaming is a separate change to both files at once.
+   ⚠ THE CLASSES WERE `unnyc-start-story__map-*` UNTIL 2026-09-14 and are now
+   `unnyc-world-map__*`. That old prefix was a misnomer — the component emits
+   them on BOTH `/` and `/start`, not from the /start storyscroller — and the
+   misnomer is precisely WHY these rules looked like they belonged in start.css
+   and shipped the homepage map unstyled. The name now matches the component
+   and this file, so the next reader has nothing to be misled by.
+   ⚠ Renaming was safe only because all 15 of these classes are emitted by
+   UnnycWorldMap ALONE — checked against UnnycStartStoryscroller before
+   touching them, zero overlap. `unnyc-start-story__*` still exists and still
+   belongs to that storyscroller; don't sweep it.
 
    Colours read the SEMANTIC tier (--wg-*) only. See CLAUDE.md.
    ============================================ */
 
 @layer unnyc {
 
-  .unnyc-start-story__map-panel {
+  .unnyc-world-map__panel {
     position: relative;
     border-radius: var(--wg-radius-lg);
     overflow: hidden;
@@ -38,14 +46,14 @@
     box-shadow: 0 24px 56px rgba(22, 46, 81, 0.14);
   }
 
-  .unnyc-start-story__map-svg {
+  .unnyc-world-map__svg {
     display: block;
     width: 100%;
     height: auto;
     min-height: 240px;
   }
 
-  .unnyc-start-story__map-legend {
+  .unnyc-world-map__legend {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -55,7 +63,7 @@
     border-top: 1px solid rgba(255, 255, 255, 0.14);
   }
 
-  .unnyc-start-story__map-legend-item {
+  .unnyc-world-map__legend-item {
     display: inline-flex;
     align-items: center;
     gap: var(--wg-sp-2);
@@ -69,7 +77,7 @@
     color: var(--wg-text-inverse);
   }
 
-  .unnyc-start-story__map-swatch {
+  .unnyc-world-map__swatch {
     display: inline-block;
     width: 12px;
     height: 12px;
@@ -77,26 +85,26 @@
     flex-shrink: 0;
   }
 
-  .unnyc-start-story__map-swatch--area {
+  .unnyc-world-map__swatch--area {
     width: 14px;
     height: 10px;
     border-radius: 2px;
   }
 
-  .unnyc-start-story__map-credit {
+  .unnyc-world-map__credit {
     margin: var(--wg-sp-6) 0 0;
     font-size: 0.8125rem;
     line-height: 1.7;
     color: var(--wg-text-secondary);
   }
 
-  .unnyc-page .unnyc-start-story__map-credit a,
-  .unnyc-page .unnyc-start-story__map-credit .unnyc-inline-link {
+  .unnyc-page .unnyc-world-map__credit a,
+  .unnyc-page .unnyc-world-map__credit .unnyc-inline-link {
     color: var(--wg-accent-strong);
     text-decoration: none;
   }
 
-  .unnyc-page .unnyc-start-story__map-credit a:hover {
+  .unnyc-page .unnyc-world-map__credit a:hover {
     color: var(--wg-accent);
     text-decoration: underline;
   }
@@ -120,24 +128,24 @@
   /* `outline` on an SVG shape is unreliable across browsers — stroke is not.
      This is the same lesson the deleted Leaflet layer learned for its GeoJSON
      paths, kept because the SVG has exactly the same problem. */
-  .unnyc-start-story__pin:focus {
+  .unnyc-world-map__pin:focus {
     outline: none;
   }
 
-  .unnyc-start-story__pin:focus-visible {
+  .unnyc-world-map__pin:focus-visible {
     outline: none;
     stroke: var(--wg-text-inverse);
     stroke-width: 2.5;
     stroke-opacity: 1;
   }
 
-  .unnyc-start-story__pin:focus-visible circle:not([fill='transparent']) {
+  .unnyc-world-map__pin:focus-visible circle:not([fill='transparent']) {
     stroke: var(--wg-text-inverse);
     stroke-width: 2.5;
     stroke-opacity: 1;
   }
 
-  .unnyc-start-story__popup {
+  .unnyc-world-map__popup {
     position: absolute;
     z-index: 2;
     /* `left`/`top` are the pin, in percent; this lifts the card off it and
@@ -154,7 +162,7 @@
     text-align: left;
   }
 
-  .unnyc-start-story__popup-title {
+  .unnyc-world-map__popup-title {
     margin: 0;
     font-size: 0.9375rem;
     font-weight: 700;
@@ -162,7 +170,7 @@
     color: var(--wg-brand);
   }
 
-  .unnyc-start-story__popup-meta {
+  .unnyc-world-map__popup-meta {
     margin: 2px 0 0;
     font-size: 0.6875rem;
     font-weight: 700;
@@ -171,7 +179,7 @@
     color: var(--wg-accent-warm-dark);
   }
 
-  .unnyc-start-story__popup-desc {
+  .unnyc-world-map__popup-desc {
     margin: var(--wg-sp-2) 0 0;
     font-size: 0.8125rem;
     line-height: 1.6;
@@ -181,7 +189,7 @@
   /* ⚠ `.unnyc-page ul { list-style: none; margin: 0; padding: 0 }` is a (0,1,1)
      reset in this same layer, so this needs `.unnyc-page` to win. Sixth-bug
      rule; see CLAUDE.md. */
-  .unnyc-page .unnyc-start-story__popup-list {
+  .unnyc-page .unnyc-world-map__popup-list {
     margin: var(--wg-sp-3) 0 0;
     padding: 0;
     display: grid;
@@ -193,14 +201,14 @@
 
   /* ⚠ Same reason as the list: `.unnyc-page a { color: inherit }` would render
      these as plain text. Inline links in prose, so no block padding. */
-  .unnyc-page .unnyc-start-story__popup-list a {
+  .unnyc-page .unnyc-world-map__popup-list a {
     color: var(--wg-accent-strong);
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 2px;
   }
 
-  .unnyc-page .unnyc-start-story__popup-list a:hover {
+  .unnyc-page .unnyc-world-map__popup-list a:hover {
     color: var(--wg-accent);
   }
 
@@ -208,7 +216,7 @@
      beats a single-class rule in this layer — the trap CLAUDE.md counts five
      collisions from. Scoped with `.unnyc-page` (0,2,0) so the hit area and
      colour actually apply. 28px square clears WCAG 2.5.8's 24px. */
-  .unnyc-page .unnyc-start-story__popup-close {
+  .unnyc-page .unnyc-world-map__popup-close {
     position: absolute;
     top: 2px;
     right: 2px;
@@ -226,11 +234,11 @@
     cursor: pointer;
   }
 
-  .unnyc-page .unnyc-start-story__popup-close:hover {
+  .unnyc-page .unnyc-world-map__popup-close:hover {
     color: var(--wg-brand);
   }
 
-  .unnyc-page .unnyc-start-story__popup-close:focus-visible {
+  .unnyc-page .unnyc-world-map__popup-close:focus-visible {
     outline: 2px solid var(--wg-accent);
     outline-offset: 2px;
   }
@@ -239,7 +247,7 @@
      off both edges and cover the map it describes. Below the breakpoint it stops
      tracking the pin and sits across the bottom of the panel instead. */
   @media (max-width: 699px) {
-    .unnyc-start-story__popup {
+    .unnyc-world-map__popup {
       left: var(--wg-sp-3) !important;
       right: var(--wg-sp-3);
       top: auto !important;
@@ -250,12 +258,12 @@
     }
   }
 
-  .unnyc-start-story__popup[data-below='true'] {
+  .unnyc-world-map__popup[data-below='true'] {
     transform: translate(-50%, 14px);
   }
 
   @media (max-width: 699px) {
-    .unnyc-start-story__popup[data-below='true'] {
+    .unnyc-world-map__popup[data-below='true'] {
       transform: none;
     }
   }

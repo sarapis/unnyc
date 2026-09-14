@@ -10,13 +10,17 @@
    (#E8E4DC) is the closest existing one and keeps this page off a raw
    literal rather than adding a token for one shade only this page uses.
 
-   The endorser directory here is DELIBERATELY NOT UnnycEndorserDirectory —
-   that component's single-column section doesn't fit this design's
-   sticky-aside/directory split, and its `.unnyc-endorsers__*` look (in
-   primer.css, shared with /start) reads on the cooler --wg-border; this
-   page is warm throughout (surface-warm/surface-alt/warm-gray), so a
-   second, page-scoped set of chip/pagination classes matches the handoff
-   more closely than reusing that one would.
+   The endorser directory here is this page's own markup, and always was.
+   It did not reuse the old shared `UnnycEndorserDirectory` component: that
+   component's single-column section didn't fit this design's sticky-aside
+   /directory split, and its `.unnyc-endorsers__*` look read on the cooler
+   --wg-border where this page is warm throughout (surface-warm/
+   surface-alt/warm-gray), so a page-scoped set of chip/pagination classes
+   matched the handoff more closely than reusing it would have.
+   ⚠ That component and its 27 `.unnyc-endorsers__` rules in primer.css were
+   DELETED on 2026-09-14 (owner's call) once it was confirmed nothing had
+   imported them since the storyscroller rewrite. Nothing to reuse now — if
+   you want a shared directory again, it is a new component.
    ============================================ */
 
 @layer unnyc {

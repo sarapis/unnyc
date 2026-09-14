@@ -191,9 +191,12 @@ Two consequences of the swap, both real:
   the text lists were 2.5.8's *"equivalent control on the same page"* exception; with them
   gone the exception applies to **no layer**, not just OSPOs. This is an accepted cost,
   recorded in `UnnycWorldMap.js`, not an oversight.
+  ⚠ **DECIDED 2026-09-14: LEFT AS AN ACCEPTED GAP.** The owner was offered the three
+  options and chose to leave it. This is settled, not open — don't reopen it as a bug.
   ⚠ **Do NOT "fix" it by inflating the hit circles** — 24px at phone scale makes
   neighbouring European pins overlap, trading a size failure for pins that activate each
-  other. The real options are a text equivalent (just removed) or a larger/zoomable map.
+  other. The options that were live were a text equivalent (removed the same week) or a
+  larger/zoomable map; both remain available if this is ever revisited.
   ⚠ The credit line's `/resources#ospos` link has never satisfied 2.5.8 and still doesn't:
   it is attribution, and it points at a **different page**.
   What makes this survivable is that the pins are real controls — `role="button"`, in the
@@ -230,8 +233,9 @@ Two consequences of the swap, both real:
   A trap worth knowing, because it shipped: those rules lived in `start.css`, the homepage
   started drawing the same component on 2026-09-10, and page CSS in the App Router is
   scoped to its own route segment — so a **fresh load of `/` linked no stylesheet defining
-  `.unnyc-start-story__map-panel`** and the map rendered with no panel gradient, no radius,
-  no padding, and the marker list as a plain block instead of a two-column grid. Confirmed
+  `.unnyc-world-map__panel`** (then named `.unnyc-start-story__map-panel`) and the map
+  rendered with no panel gradient, no radius, no padding, and the marker list as a plain
+  block instead of a two-column grid. Confirmed
   in a browser against production: `getComputedStyle(panel).backgroundImage` was `none`.
   **It looked fine every time anyone checked by clicking through from `/start`**, because
   Next keeps that route's sheet in the DOM after a client-side navigation. This is the same
@@ -241,9 +245,15 @@ Two consequences of the swap, both real:
   one class at equal specificity is a latent bug even when the rules are identical, which
   is how the rail broke. One owner, imported twice — Next hoists it into one shared chunk
   (verified: both routes link the same file).
-  ⚠ The `unnyc-start-story__` prefix on these classes is now a **misnomer** — the component
-  emits them on both routes. Renaming means touching the component and the stylesheet
-  together.
+  ⚠ **THE CLASSES ARE `unnyc-world-map__*` AS OF 2026-09-14** — renamed from
+  `unnyc-start-story__map-*`, which was a misnomer: the component emits them on BOTH
+  routes, not from the /start storyscroller, and that misnomer is exactly *why* the rules
+  looked like they belonged in `start.css`. The name now matches the component and the
+  file. 55 occurrences across `UnnycWorldMap.js`, `world-map.css` and `home.css`.
+  ⚠ It was safe only because all 15 of those classes are emitted by `UnnycWorldMap`
+  **alone** — checked against `UnnycStartStoryscroller` first, zero overlap.
+  `unnyc-start-story__*` still exists and still belongs to that storyscroller; **don't
+  sweep the prefix.**
 
 ## The four map layers (rescoped 2026-08-17 — data still current, renderer replaced)
 
@@ -881,15 +891,18 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   — so: **there is nothing to keep or restore; the history is in git.** The pan/zoom and
   per-country keyboard access it had are genuinely lost, and bringing it back would bring
   the CARTO watermark with it.
-- **⚠ `UnnycEndorserDirectory.js` IS A SEPARATE ORPHAN, still present, deliberately.**
-  Found while tracing Leaflet's consumers. Nothing imports it, because
-  `UnnycPrinciplesStoryscroller` reimplemented the directory with its own
-  `unnyc-pr-story__endorsers*` markup (its comment says why: the single-column section did
-  not fit the sticky-aside split). Verified against production — that is what `/principles`
-  actually serves. So the component, the 25 `unnyc-endorsers__` rules in `primer.css` and
-  the one in `principles.css` are all dead. The primer.css block is now LABELLED as dead
-  rather than left looking alive. **Delete all three together or none** — and it is an
-  owner decision, the same kind that was just made about Leaflet.
+- **`UnnycEndorserDirectory.js` IS DELETED (2026-09-14, owner's call)** — the
+  component, its 27 `unnyc-endorsers__` rules in `primer.css`, and the stale
+  references in `UnnycPrinciplesStoryscroller.js`. Orphanhood was re-verified
+  before deleting rather than taken from these docs: zero importers.
+  ⚠ **`principles.css` had NO `.unnyc-endorsers__` rule** — only a comment saying
+  why that page doesn't reuse the component. Earlier notes here counted "1 rule in
+  principles.css"; that was wrong, and the comment was reworded instead.
+  `/principles` renders its own directory markup and always did.
+  ⚠ One casualty worth knowing: `endorsers.lede` in `content/principles.md` was
+  rendered ONLY by this component, so deleting it leaves that key as dead copy —
+  which is how we found that the "Hundreds over a countable 150" issue had not
+  been on the page since 2026-09-10. Kept, wording corrected; see the note there.
 - **Glossary definitions live once**, in `content/start.md` under `concepts.terms`.
   `src/lib/content.js` reads them so a `[term](gloss:slug)` link anywhere gets a
   hover definition. The old `GlossaryTerm` React component was deleted; re-adding a

@@ -61,11 +61,28 @@ railLabel: "The eight principles"
 # the data, so an authored total is the one thing that can go stale.
 endorsers:
   title: "These Organizations have Endorsed the Principles"
-  # ⚠ "Hundreds" is the client's wording, kept as given. The directory shows
-  # 150, and 68+36+32+8+6 is countable from the chips, so a reader can check
-  # it. If that matters, "150 organizations" or "More than 150 organizations"
-  # is accurate and no weaker — the count is derived, so it cannot go stale.
-  lede: "Hundreds of organizations that have publicly endorsed the UN Open Source Principles."
+  # ⚠⚠ NOTHING RENDERS THIS KEY TODAY — verified in a browser 2026-09-14, on the
+  # page: neither the old "Hundreds" nor this replacement appears anywhere in
+  # /principles. UnnycPrinciplesStoryscroller reads `title`, `ctaLabel`,
+  # `filterLabel`, the pagination labels, `note` and `sourceUrl` from this block
+  # and NO `lede`. The only component that ever rendered it was
+  # UnnycEndorserDirectory (`copy?.lede`), which nothing imported and which was
+  # deleted the same day.
+  # This is the trap CLAUDE.md already records for `endorsers.title` in start.md:
+  # A FRONTMATTER KEY IS NOT PROOF THE VALUE REACHES THE PAGE. Worth knowing that
+  # the "Hundreds" overstatement sat on the board as a live copy issue from
+  # 2026-08-20 while, since the storyscroller rewrite on 09-10, it had not been
+  # on the page at all.
+  # ⚠ The wording is corrected rather than the key deleted, so that rendering it
+  # later cannot resurrect the overstatement. Rendering it WOULD add a sentence
+  # the page does not currently show — a visible change, so ask first.
+  # ⚠ And if it is ever rendered, check the number against what the directory
+  # shows. The chips total exactly 150, so "More than 150" reads as off-by-one
+  # against them; it is defensible only as a claim about endorsement in the world
+  # (the UN's page carried 154 logos, and ten more organizations are known to have
+  # endorsed without appearing there) and NOT as a description of this directory.
+  # "150 organizations" is the unambiguous alternative.
+  lede: "More than 150 organizations have publicly endorsed the UN Open Source Principles."
   # CTA beside the directory heading on the storyscroller layout.
   ctaLabel: "Add Your Organization →"
   ctaHref: /campaign/endorse

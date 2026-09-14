@@ -200,7 +200,7 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
          * again immediately. */
         const onDown = (e) => {
             if (!panelRef.current) return;
-            const inPopup = e.target.closest?.('.unnyc-start-story__popup');
+            const inPopup = e.target.closest?.('.unnyc-world-map__popup');
             const onPin = e.target.closest?.('[data-pin]');
             if (!inPopup && !onPin) closePopup();
         };
@@ -217,7 +217,7 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
     /* SVG user units -> % of the viewBox, so the popup positions itself against
      * the panel however the SVG is scaled.
      *
-     * ⚠ TWO CLAMPS, both for the same reason: `.unnyc-start-story__map-panel`
+     * ⚠ TWO CLAMPS, both for the same reason: `.unnyc-world-map__panel`
      * is `overflow: hidden` (it has to be — the panel has rounded corners), so
      * anything that escapes its box is CLIPPED, not merely ugly. A card opened
      * on a pin in the top half rendered 123px above the panel and was cut off.
@@ -360,8 +360,8 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
     }
 
     return (
-        <div className="unnyc-start-story__map-block">
-            <div className="unnyc-start-story__map-panel" data-reveal="1" data-delay="120" ref={panelRef}>
+        <div className="unnyc-world-map__block">
+            <div className="unnyc-world-map__panel" data-reveal="1" data-delay="120" ref={panelRef}>
                 {/* ⚠ `role="img"` was REMOVED 2026-09-11 and that is the whole
                     reason the pins can be controls. A role="img" makes the
                     entire subtree presentational, so a focusable child inside
@@ -373,7 +373,7 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                     the pins with it or they become unnamed tab stops. */}
                 <svg
                     viewBox={`0 0 ${W} ${H}`}
-                    className="unnyc-start-story__map-svg"
+                    className="unnyc-world-map__svg"
                     role="group"
                     aria-label="World map: countries with public code catalogues, and cities with public-sector open source program offices"
                 >
@@ -382,7 +382,7 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                             <path
                                 key={c.key}
                                 data-pin={`country:${c.catalogue.code}`}
-                                className="unnyc-start-story__pin"
+                                className="unnyc-world-map__pin"
                                 d={c.d}
                                 role="button"
                                 tabIndex={0}
@@ -435,7 +435,7 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                         <g
                             key={`ospo-${i}`}
                             data-pin={`ospo:${i}`}
-                            className="unnyc-start-story__pin"
+                            className="unnyc-world-map__pin"
                             role="button"
                             tabIndex={0}
                             aria-expanded={isOpen('ospo', i)}
@@ -468,7 +468,7 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                         <g
                             key={m.label ?? i}
                             data-pin={`marker:${i}`}
-                            className="unnyc-start-story__pin"
+                            className="unnyc-world-map__pin"
                             role="button"
                             tabIndex={0}
                             aria-expanded={isOpen('marker', i)}
@@ -551,7 +551,7 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                     ignore the light/dark split in world-map.css. */}
                 {popup && (
                     <div
-                        className="unnyc-start-story__popup"
+                        className="unnyc-world-map__popup"
                         /* Below the pin in the top half, above it in the bottom
                            half — see the clamp note on `pct`. */
                         data-below={popup.y < H * 0.5 ? 'true' : 'false'}
@@ -561,7 +561,7 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                     >
                         <button
                             type="button"
-                            className="unnyc-start-story__popup-close"
+                            className="unnyc-world-map__popup-close"
                             onClick={() => {
                                 const opener = panelRef.current?.querySelector(
                                     `[data-pin="${open.kind}:${open.id}"]`,
@@ -573,11 +573,11 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                         >
                             ×
                         </button>
-                        <p className="unnyc-start-story__popup-title">{popup.title}</p>
-                        {popup.meta && <p className="unnyc-start-story__popup-meta">{popup.meta}</p>}
-                        {popup.desc && <p className="unnyc-start-story__popup-desc">{popup.desc}</p>}
+                        <p className="unnyc-world-map__popup-title">{popup.title}</p>
+                        {popup.meta && <p className="unnyc-world-map__popup-meta">{popup.meta}</p>}
+                        {popup.desc && <p className="unnyc-world-map__popup-desc">{popup.desc}</p>}
                         {popup.links?.length > 0 && (
-                            <ul className="unnyc-start-story__popup-list">
+                            <ul className="unnyc-world-map__popup-list">
                                 {popup.links.map((l) => (
                                     <li key={(l.href || '') + l.label}>
                                         {l.href ? (
@@ -595,29 +595,29 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                     </div>
                 )}
 
-                <div className="unnyc-start-story__map-legend">
+                <div className="unnyc-world-map__legend">
                     {legend.map((item) => (
-                        <span key={item.type} className="unnyc-start-story__map-legend-item">
+                        <span key={item.type} className="unnyc-world-map__legend-item">
                             <i
-                                className="unnyc-start-story__map-swatch"
+                                className="unnyc-world-map__swatch"
                                 style={SWATCH_STYLE[item.type] || SWATCH_STYLE.ospo}
                             />
                             {item.label}
                         </span>
                     ))}
                     {hasFill && (
-                        <span className="unnyc-start-story__map-legend-item">
+                        <span className="unnyc-world-map__legend-item">
                             <i
-                                className="unnyc-start-story__map-swatch unnyc-start-story__map-swatch--area"
+                                className="unnyc-world-map__swatch unnyc-world-map__swatch--area"
                                 style={{ background: 'var(--wg-accent)', border: '1px solid rgba(255,255,255,0.3)' }}
                             />
                             {mapSource?.govossLegendLabel || 'National open source catalogs'}
                         </span>
                     )}
                     {hasCtfg && (
-                        <span className="unnyc-start-story__map-legend-item">
+                        <span className="unnyc-world-map__legend-item">
                             <i
-                                className="unnyc-start-story__map-swatch"
+                                className="unnyc-world-map__swatch"
                                 style={{ background: 'var(--wg-accent-strong)' }}
                             />
                             {mapSource?.ctfgLegendLabel || 'Government-built programs'}
@@ -679,7 +679,7 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                     parts.push(<span key="ne">boundaries: {govoss.boundariesShort || govoss.boundaries}</span>);
                 if (!parts.length) return null;
                 return (
-                    <p className="unnyc-start-story__map-credit" data-reveal="1">
+                    <p className="unnyc-world-map__credit" data-reveal="1">
                         {mapSource?.creditLead || 'Map data —'}{' '}
                         {parts.map((el, i) => (
                             <span key={i}>

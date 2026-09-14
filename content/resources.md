@@ -1,19 +1,12 @@
 ---
-foot:
-  text: "Looking for something else?"
-  links:
-    - href: /start
-      label: "New to government open source?"
-      style: outline
-    - href: /crosswalk
-      label: "Why does this matter?"
-      style: outline
-    - href: /success
-      label: "What success looks like"
-      style: outline
-    - href: /campaign
-      label: "Sign the open letter"
-      style: primary
+# ⚠ THE `foot:` BLOCK THAT WAS HERE IS GONE (2026-09-14, owner's call).
+# /resources was the last page running its own copy of the "keep going" band —
+# its own wording ("Looking for something else?") and a shorter list missing
+# /principles. It now renders the SHARED band with the other four storyscroller
+# routes; the destinations and the heading live once, in content/keep-going.md,
+# and the component drops the row pointing at the page it is on.
+# ⚠ Two visible changes to this page, both intended: the heading now reads
+# "Let's keep going", and the band gained a link to /principles.
 # ⚠ `title` and `lede` render as the page's <h1> and intro paragraph. /resources
 # was the ONLY route with no header at all, so it had no <h1> — an outline that
 # opens at <h2> reads to a crawler and a screen reader as a page with no subject.

@@ -8,7 +8,8 @@ import Image from 'next/image';
  * UnnycResourcesStoryscroller — the storyscroller redesign of /resources
  * ("Related Resources"): a hero, then a sticky icon-crossfading sidebar
  * beside four articles — Primary Sources, People to Call, Find an OSPO, and
- * Open Data — and a foot CTA band. Sibling of the /start, /principles,
+ * Open Data. The foot band is the shared <UnnycKeepGoing />, mounted as a
+ * sibling in page.js. Sibling of the /start, /principles,
  * /crosswalk and /success storyscrollers — same palette, sidebar shape and
  * reveal system, reimplemented here against this page's own content. See
  * page.js for how the props here are shaped from content/resources.md and
@@ -29,7 +30,6 @@ export default function UnnycResourcesStoryscroller({
     ospoDirectory,
     openData,
     datasets,
-    foot,
 }) {
     const rootRef = useRef(null);
     const [active, setActive] = useState(railItems[0]?.id);
@@ -393,18 +393,11 @@ export default function UnnycResourcesStoryscroller({
                 </div>
             </section>
 
-            <section className="unnyc-resources-story__foot">
-                <div className="unnyc-container unnyc-container--narrow">
-                    <p data-reveal="1">{foot.text}</p>
-                    <div className="unnyc-resources-story__foot-links" data-reveal="1" data-delay="100">
-                        {foot.links.map((l) => (
-                            <Link key={l.href} href={l.href} className={`unnyc-resources-story__foot-btn unnyc-resources-story__foot-btn--${l.style}`}>
-                                {l.label}
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            </section>
+            {/* ⚠ NO FOOT BAND HERE — this page's own `foot:` block was replaced
+                by the shared <UnnycKeepGoing /> on 2026-09-14, mounted as a
+                SIBLING in resources/page.js because it is a server component
+                and this one is 'use client'. It was the last of two
+                implementations of one band. Don't add one back inside here. */}
         </div>
     );
 }
