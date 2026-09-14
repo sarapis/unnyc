@@ -374,10 +374,23 @@ Nothing blocks phase 4.
    ⚠ **The old "photo for homepage card 1" item is RETIRED, not forgotten** — the
    homepage has no cards any more. The first storyscroller section's stat row is
    its own visual, so there is no placeholder and nothing to license.
-2. **Decide the two-sections-vs-the-UN's-three question** for the endorsement
-   declaration before it goes to OTI.
-3. **"Hundreds" vs 150** in the endorser lede.
-4. **Retire `old-unnyc.wegov.nyc`** whenever wanted; nothing depends on it.
-5. **The CTFG directory question** — Hub task `168a959d`.
+2. ✅ **The two-sections-vs-the-UN's-three question is DECIDED (2026-09-14):
+   keep the two-section structure.** Nothing is misquoted; the structure a
+   reader would attribute to the UN is WeGovNYC's editorial reading, and the
+   owner is content with that. Settled, not open.
+3. ✅ **"Hundreds" vs 150 is DECIDED (2026-09-14): "More than 150".** ⚠ But the
+   key is NOT RENDERED — see the long note in `content/principles.md`. Nothing
+   on `/principles` shows a lede; the only component that ever did was the
+   deleted `UnnycEndorserDirectory`. Rendering it would ADD a sentence, so ask.
+4. ✅ **`old-unnyc.wegov.nyc` is KEPT (2026-09-14, owner's decision.)** Nothing
+   depends on it; retiring it was offered and declined. Don't re-propose it.
+5. **The CTFG directory question** — Hub task `168a959d`. ⚠ Its premise is void:
+   the map's CTFG dots stopped linking out on 2026-09-10. The follow-on ask —
+   point them at `app.civictech.guide` instead — is BLOCKED, not skipped: that
+   app addresses profiles by an Airtable `recordId` in a different id space from
+   the one CTFG's own API exposes, there is no public slug lookup, and CTFG's
+   `rel=canonical` still names `civictech.guide/projects/<slug>`. ⚠ A bogus
+   `recordId` there returns HTTP **200** (client-rendered shell), so status
+   codes prove nothing — only the rendered text does.
 6. **A shared component package** — Hub task `7656df36` (Backburner).
 7. **Exposed keys in `wegovnyc_front` history** — Hub task `51968fc0`.
