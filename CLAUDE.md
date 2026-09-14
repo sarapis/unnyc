@@ -309,6 +309,17 @@ the whole credit — the same fail-soft posture as the loaders.
 the SAME list `/resources` renders, never a copy, because a second list drifts the
 first time somebody adds an OSPO to one of them.
 
+⚠ **THE LIST IS NOT OURS.** All 18 entries come from the **FLOSS-PSO Network**
+(`floss-pso.network`, OSPO Alliance), which aggregates each body's own YAML; the
+list is **CC0 1.0** and the licence is read from their footer and recorded in
+`ospoDirectory` (`source`, `sourceUrl`, `licence`, `licenceUrl`,
+`licenceCheckedFrom`, `licenceCheckedOn`), never written into JSX. The map credit,
+`/resources`' source line and `/data/public-sector-ospos.json` all read those
+fields. What is ours is the geocoding. ⚠ Their entry for Échirolles is named
+"Direction de la stratégie et de la culture numériques (DSCN)"; ours appends
+", Échirolles" — a local edit, and the one that produced the "Échirolles
+Échirolles" popup bug. Check upstream before "fixing" a name here.
+
 - **Coordinates are hand-placed on each item**, with `locationBasis`: `seat` where the
   body's own city is unambiguous, `hq` where it sits at the parent organisation's
   headquarters. The popup marks `(HQ)`, because "approximately here" and "here" are
@@ -387,8 +398,10 @@ ask. Invert it and the page argues something else.
 ### Coverage audit vs CTFG (2026-08-07)
 Every project/org/resource/OSPO on this site was cross-checked against the full CTFG directory:
 **61 entities — 20 have CTFG profiles, 41 don't** (30 civic/gov-tech, 11 general FOSS). Largest gap:
-**17 of 18 OSPOs** in `/resources` are absent from CTFG — this site's OSPO directory is the better
-source. Also: `/success` says "Sovereign Tech **Fund**"; it renamed to **Agency** in 2025.
+**17 of 18 OSPOs** in `/resources` are absent from CTFG — so that directory is the better source
+for public-sector OSPOs. ⚠ Credit for that belongs to the **FLOSS-PSO Network**, not to this
+site: the list is theirs (CC0), as of a 2026-09-14 correction. This sentence read "this site's
+OSPO directory" and was wrong about whose it was. Also: `/success` says "Sovereign Tech **Fund**"; it renamed to **Agency** in 2025.
 ⚠️ Method note if you redo it: match on homepage domain, but **exclude shared hosts**
 (`un.org`, `nyc.gov`, `github.com`, `ec.europa.eu`) — a domain hit there proves nothing and produced
 several false positives on the first pass.
@@ -727,14 +740,26 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   `src/lib/datasets.js` from the SAME `content/*` files the pages render, never
   copies, and prerendered at build. ⚠ **Slugs are published addresses**: renaming
   one breaks whatever cited it, so add rather than rename.
-  ⚠ **Each payload states its OWN licence and attribution.** The endorser
-  transcription and the OSPO directory are ours (CC BY 4.0, owner decision
-  2026-08-21); the CTFG and GovOSS slices are redistributed and say *credit them,
-  not this site*. Do not factor these into one shared constant — they match today
-  by coincidence, and CTFG's was CC BY-NC-SA six weeks ago.
-  ⚠ **`Dataset` JSON-LD is only for OUR two.** Marking up the upstream slices
-  would nominate this site as the thing to cite for someone else's data, which
-  those payloads explicitly warn against.
+  ⚠ **Each payload states its OWN licence and attribution.** ONE of the four is
+  ours — the endorser transcription (CC BY 4.0, owner decision 2026-08-21). The
+  CTFG, GovOSS **and OSPO** slices are redistributed and say *credit them, not
+  this site*. Do not factor these into one shared constant — CTFG's was
+  CC BY-NC-SA six weeks ago and the OSPO list is CC0, not CC BY at all.
+  ⚠ **THE OSPO DIRECTORY WAS LISTED HERE AS OURS UNTIL 2026-09-14 AND IT NEVER
+  WAS.** All 18 entries are the **FLOSS-PSO Network**'s list
+  (`floss-pso.network`, run by the OSPO Alliance), released **CC0 1.0** —
+  verified name-for-name against their page. `content/resources.md` had recorded
+  their `sourceUrl` the whole time and only `/resources` surfaced it, so the map
+  credited "this site" while the page below it credited them. **Only the
+  `lat`/`lng` and `locationBasis` are ours.** ⚠ CC0 requires NO attribution, so
+  nothing enforces this credit — it is a decision, which makes it the easiest of
+  the four to lose in a future edit.
+  ⚠ **`Dataset` JSON-LD is only for data THIS SITE MADE — now just `/principles`'
+  endorser payload.** `/resources` emitted one for the OSPO directory and it was
+  removed 2026-09-14: `datasetLd` writes `creator: this site`, which would
+  nominate us as the thing to cite for someone else's CC0 list. The OSPO
+  `ItemList` stays — describing what the PAGE shows is a different claim from
+  who made the underlying list.
 - **JSON-LD lives in `src/lib/structured-data.js`**, rendered by
   `src/components/unnyc/StructuredData.js`, and is built from the content files
   so it cannot drift from the visible page. ⚠ **Mark up only what is

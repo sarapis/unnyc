@@ -11,8 +11,10 @@ import { SITE_URL } from '@/lib/seo';
  * asset the site has: the UN's own endorsers page carries 154 logos and ZERO
  * names — every card's title element is empty — so no crawler and no model can
  * extract that list from the source. It exists here because somebody read the
- * logos. The OSPO directory is similar in kind: 17 of its 18 entries have no
- * Civic Tech Field Guide listing, which is the largest directory in the field.
+ * logos. The OSPO directory earns its place differently: it is the FLOSS-PSO
+ * Network's CC0 list (not ours — see the licence note below), republished here
+ * WITH COORDINATES, and 17 of its 18 entries have no Civic Tech Field Guide
+ * listing, which is the largest directory in the field.
  *
  * ── SERVED FROM THE SAME SOURCE AS THE PAGES, NEVER A COPY ──────────────────
  * A published copy of a dataset drifts from the page the first time somebody
@@ -22,12 +24,19 @@ import { SITE_URL } from '@/lib/seo';
  * ── LICENCES DIFFER BY WHO MADE THE DATA, AND THAT IS THE POINT ─────────────
  * Every payload states its own terms, because "who to credit" is not the same
  * question for all four:
- *   • The endorser transcription and the OSPO directory are OUR work, published
- *     CC BY 4.0 (owner decision, 2026-08-21) — matching what Sarapis already
- *     does with GovOSS's catalogue data.
- *   • The CTFG and GovOSS slices are THEIRS. Same CC BY 4.0 string today, but
- *     the credit belongs upstream, and each payload says so. Their licence
- *     values are read from the snapshots, which read them from the source.
+ *   • The endorser transcription is OUR work, published CC BY 4.0 (owner
+ *     decision, 2026-08-21) — matching what Sarapis already does with GovOSS's
+ *     catalogue data.
+ *   • The CTFG, GovOSS and OSPO slices are THEIRS. The credit belongs upstream
+ *     and each payload says so; their licence values are read from the
+ *     snapshots (or, for OSPOs, from content/resources.md), which read them
+ *     from the source.
+ * ⚠ THE OSPO DIRECTORY MOVED FROM THE FIRST BULLET TO THE SECOND ON 2026-09-14,
+ *   and that was a correction, not a change of mind. All 18 entries are the
+ *   FLOSS-PSO Network's CC0 list; this payload had been telling reusers to
+ *   credit this campaign for someone else's compilation. Only the geocoding is
+ *   ours. ⚠ CC0 means no attribution is required — so nothing enforces the
+ *   credit, which makes it the easiest one to lose in a future edit.
  * ⚠ Do not collapse these into one shared constant. CTFG was CC BY-NC-SA until
  * July 2026 and this repo published the stale claim for two weeks; the licences
  * agreeing today is a coincidence, not an invariant.
@@ -109,13 +118,23 @@ function ospos() {
             slug: 'public-sector-ospos',
             name: 'Public sector open source programme offices',
             description:
-                'Government and public-sector OSPOs with their own websites, contact addresses and open source policies, compiled for this campaign.',
+                'Government and public-sector OSPOs with their own websites, contact addresses and open source policies, from the FLOSS-PSO Network’s list, with coordinates added.',
             count: offices.length,
-            licence: OURS,
-            source: 'UNNYC — compiled from each office’s own website',
-            sourceUrl: `${SITE_URL}/resources`,
+            /* ⚠ THIS PAYLOAD CLAIMED TO BE OURS UNTIL 2026-09-14 — `licence: OURS`,
+             * `source: 'UNNYC — compiled from each office's own website'`,
+             * `sourceUrl: /resources`. It is not: all 18 entries are the FLOSS-PSO
+             * Network's CC0 list, and content/resources.md had recorded their URL
+             * the whole time. A machine-readable file telling reusers to credit
+             * this campaign for someone else's compilation is the worst place for
+             * that error to sit, which is why it is corrected here rather than
+             * only on the map. Read from the markdown, never asserted. */
+            licence: { licence: dir.licence ?? null, licenceUrl: dir.licenceUrl ?? null },
+            attribution: `${dir.source ?? 'FLOSS-PSO Network'} (${dir.sourceUrl ?? 'https://floss-pso.network/'}) — the list is CC0, so no credit is required; credit them anyway, not this site. Coordinates and locationBasis added by UNNYC (${SITE_URL}).`,
+            source: dir.source ?? null,
+            sourceUrl: dir.sourceUrl ?? null,
             generated: null,
             notes: [
+                'The list of offices is the FLOSS-PSO Network’s, released CC0 — no attribution required. What this site adds is the geocoding: `lat`/`lng` and `locationBasis` on each office.',
                 'Coordinates are hand-placed. `locationBasis: "seat"` means the body’s own city; `"hq"` means it sits at its parent organisation’s headquarters, so the point is approximate — the two are different claims and are not interchangeable.',
                 'The map at /start groups these by city and merges cities within 25 km, which changes what is DRAWN and never what is claimed. This dataset is ungrouped.',
             ],
