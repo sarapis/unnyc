@@ -3,7 +3,7 @@
 Paste the block below into a new session. Everything above the line is context for
 whoever is maintaining this file.
 
-**Last updated 2026-09-11.** This file is the standing onboarding brief: where the
+**Last updated 2026-09-12.** This file is the standing onboarding brief: where the
 site lives, how to verify things here, what the pages are. It is the one doc
 guaranteed to be read first, so it is the one most damaging to leave stale — it
 spent 2026-08-19 describing a homepage, a principles grid and a hostname that had
@@ -101,6 +101,11 @@ or "working fine". Ranked by how much time each has cost:
   document that was really 3,297px, with every element claiming to have wrapped.
   Always `resize_window` with explicit `width`/`height` FIRST, then measure, and
   re-measure at each width you care about.
+  ⚠ **The hidden pane throttles timers, so `await` inside a single
+  `javascript_tool` call stalls and times out.** React state updates are async,
+  so a click and the reading of its result must be SPLIT ACROSS TWO TOOL CALLS —
+  click in one, read in the next. Awaiting a `setTimeout` between them does not
+  work here.
   ⚠ **Nothing with `data-reveal` appears in a screenshot**, because
   IntersectionObserver never fires here — all 74 of them sit at `opacity: 0`.
   To photograph a section, inject
@@ -160,6 +165,17 @@ Thirteen routes. Reader path and nav order: `/` -> `/start` -> `/principles` ->
   by BOTH routes — it was rendering unstyled on a fresh load of `/` until then,
   because page CSS is per-route. See CLAUDE.md.
   ⚠ Resources still has no homepage section and is not in the footer.
+  **THE MAP'S PINS ARE INTERACTIVE (2026-09-11)** — policy markers, OSPO points
+  and the 13 shaded catalogue countries open a popup on `/` and `/start`; CTFG's
+  62 dots stay decorative. ⚠ `role="img"` had to be dropped for that (it makes
+  the subtree presentational, so a focusable child has no accessible name), and
+  the pins are under WCAG 2.5.8's target size — carried by the "equivalent
+  control on the same page" exception, which **OSPOs do not have**. See
+  CLAUDE.md and docs/CONTINUE.md §3.2.
+  **`/start`, `/principles`, `/crosswalk` and `/success` end with a shared
+  "Let's keep going" band** (`content/keep-going.md` + `UnnycKeepGoing`), one
+  list for all four with the current page filtered out. ⚠ `/resources` still has
+  its own older `foot:` block — two implementations of one band.
 - **`/principles` is two named sections**, each opening on one principle as a
   full-width card then three in columns: **Software Principles** (Open by default
   + Secure by design / Design for reusability / Well documented) and **Community

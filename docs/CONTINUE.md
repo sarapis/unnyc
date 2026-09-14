@@ -1,229 +1,257 @@
-# Continue here — UNNYC, after the 2026-09-10/11 session
+# Continue here — UNNYC, after the 2026-09-11/14 sessions
 
 Written from the repo, not from memory. Every number below has the command that
 produced it. If a claim here disagrees with the code, **the code is right and
 this file is stale** — fix it.
 
-Supersedes the two earlier 2026-09-10 handoffs.
+Supersedes the 2026-09-10 and 2026-09-10/11 handoffs.
 
 ---
 
-## 1. The trap that produced a live defect — FIXED, but read it anyway
-
-**For about a day the homepage rendered readers the literal text
-`<span>Endorse</span>`** in the open-letter headline. Fixed in #88, merged and
-verified on production 2026-09-11:
-
-```bash
-curl -s https://un.opensource.nyc/ | grep -c "&lt;span&gt;"   # -> 0
-```
-
-`src/app/page.js:139` passes `sign.title` as the `headline` prop.
-`content/sign.md`'s title carries HTML (`<span>` marks the underlined phrase,
-the same convention `home.md` and `principles.md` use), and
-`UnnycHomeStoryscroller` renders `headline` as **plain text** — so React
-escapes the markup and the reader sees the tags.
-
-It was NOT introduced by this session's work and was not noticed by it either,
-across several passes over that page — which is the lesson: *a
-content field that carries HTML is not interchangeable with one that doesn't,
-and nothing in the type system or the build says so.* The general rule this
-repo already had — `sections.*.html` goes in a `<div>`, `inlineMd()` goes in a
-`<p>` — now has a third case: **a raw-HTML field passed to a text prop renders
-its tags.**
-
----
-
-## 2. State — verified 2026-09-11
+## 1. State — verified 2026-09-14
 
 ```bash
 cd /Users/devin/Antigravity/unnyc
-git fetch origin && git log --oneline origin/main -1   # e6029fa
-gh pr list --state open --json number,title,author
+git fetch origin && git log --oneline origin/main -1   # d8f4062
+gh pr list --state open --json number
 ```
 
-- **`origin/main` is at `e6029fa`** — "Merge PR #87".
-- **PR #88 (Olivia's) is MERGED** — `bc3bc51`. Reviewed and browser-verified
-  before merging. It fixed the `<span>` bug above plus four other homepage
-  issues, and **three of its five files were ones this session created or
-  changed** — see §3. The contrast numbers are worth keeping: against the
-  homepage's `rgba(11,31,58,0.84)` section the marker text had been
-  `--wg-brand` at **1.21:1** (effectively invisible) and `--wg-text-secondary`
-  at 3.00:1 (below AA); it is now 14.81:1 and 16.52:1.
-  ⚠ One non-blocking note, recorded in the merge commit: `letterAskList` in
-  `page.js` strips the ask block's lead paragraph with an anchored regex over
-  rendered HTML. Commented and fails safe, but it couples `page.js` to the
-  shape of `sign.md`'s Take Action block — if that block ever starts with
-  something other than a `<p>`, the strip silently no-ops and the sentence
-  returns as a duplicate.
-- **Six PRs merged across the two sessions**: #82 (Olivia's `/resources`
-  scrollbar), #84 (the atlas snapshot, catalogue counts, Leaflet deletion),
-  #85/#86 (name New York City), #87 (the sign-form layout fix). #83 and earlier
-  belong to the previous handoff.
-- **Branches are clean**: `origin` has `main` plus the two merged branches from
-  #86/#87 that were never deleted, and Olivia's `fix/map-legend-contrast`.
-  55 merged remote branches and 46 local ones were pruned on 09-10 — verified
-  first that every one was an ancestor of `origin/main` and that no local branch
-  held a commit absent from `origin`. The record with tip SHAs is at
-  `.git/deleted-remote-branches-2026-09-10.txt` (never committed). Recovery
-  doesn't need it: every commit is reachable from `main`, and each merged PR
-  page still has its "Restore branch" button.
-- **Production is healthy apart from §1.** All 13 routes 200.
+- **`origin/main` is at `d8f4062`** — "Merge PR #94".
+- **All 13 routes 200.** Everything below was verified **live on production, in
+  a browser** — see §2 for why `curl` cannot see the map at all.
+- **Eight PRs merged across this stretch:** #86 and #87 (name New York City; the
+  sign-form layout), #88 (Olivia's homepage readability), #89 (docs), #90
+  (interactive map pins), #91 (the "Let's keep going" band), #94 (the maps keep
+  a legend and nothing below it), #92 (this handoff).
+- **#93 was CLOSED, not merged** — it added an OSPO text list under the map, and
+  the owner then decided there should be no lists under the maps at all. Its two
+  independent fixes (the shared `ospoOffices()` and the credit-line contrast)
+  were carried into #94. ⚠ Don't mine it for the list; that part is rejected.
 
 ---
 
-## 3. What this session shipped, and what it cost
+## 2. What shipped, and the thing that nearly hid it
 
-Four items plus two bugs. All verified in a browser, because `UnnycWorldMap` is
-`dynamic(..., { ssr: false })` and **none of the map is in the prerendered
-HTML** — `curl` structurally cannot see it.
+⚠ **`UnnycWorldMap` is `dynamic(..., { ssr: false })`, so its chunk is not in
+the initial HTML's script list.** Grepping the page's chunks for the popup
+markup returns **0** — a FALSE NEGATIVE, not an absence. Only a browser sees it.
+That is the third zero-result-nearly-became-a-fact of the session; see §5.
 
-1. **The world atlas is a repo snapshot** (`content/world-atlas.json` +
-   `scripts/fetch-world-atlas.mjs`), not a runtime jsdelivr fetch. It was the
-   last third-party runtime dependency on `/` and `/start`. Verified on
-   production: 62 requests on a page load, **all same-origin**.
-2. **The GovOSS per-country counts are reachable** — a native `<details>` under
-   the map, 13 countries with counts and catalogue links. Not only an a11y fix:
-   replacing Leaflet had dropped the popups, and with them those counts and
-   links, for *every* reader.
-3. **Leaflet deleted** — 483 lines, the dependency, 163 lines of dead CSS.
-4. **Three `#ffffff` literals** → `var(--wg-surface)`; `wg-lint-tokens` clean.
-5. **The homepage map was unstyled on every fresh load of `/`** — found while
-   doing (1). Fixed by extracting the rules into `src/app/world-map.css`,
-   imported by both routes.
-6. **The `/campaign/sign` form was 80% down the page on phones** — reported by
-   the owner, fixed with `order: -1` at the existing breakpoint.
+### Interactive map pins (#90)
 
-### ⚠ Item 5 created the problem Olivia's #88 is now fixing
+Three of the four layers open a popup on click/Enter/Space, on `/` and
+`/start`: policy markers (8), OSPO points (12), the 13 shaded catalogue
+countries. **CTFG's 62 dots stay decorative** — owner's call, and the right one:
+they are the densest layer, where overlapping hit areas would fight each other.
 
-Moving the map's rules into a stylesheet **shared by `/start` and `/`** was the
-right call for the bug it fixed — but those rules were written for `/start`'s
-**light** `--wg-surface-warm` page, and the homepage section behind them is
-**dark**. So `--wg-brand` navy text and a `--wg-warm-gray` border, correct on
-one page, became low-contrast text and a stray light bar on the other.
+- **The data was already there and was being thrown away.** `ospoDots` was
+  `.map(([x, y]) => ({ x, y }))`, discarding the city, the country and the
+  offices themselves; country centroids were never computed. Both kept now.
+- ⚠ **`role="img"` had to go.** It makes the whole subtree presentational, so a
+  focusable child inside one is a focus stop with NO accessible name — which is
+  exactly why an earlier version put all detail in text and recorded that the
+  shapes could not carry it. Now `role="group"`, decorative children
+  `aria-hidden`, pins are `role="button"` + `tabIndex` + `aria-expanded` with an
+  `aria-label` that states what the popup says.
+- ⚠ **Hit areas are transparent circles UNDER the visible dots.**
+  `fill: transparent`, never `fill: none` — `none` is not hit-testable.
+- **Two clipping bugs, found only by measuring:** the panel is
+  `overflow: hidden`, so a card on a top-half pin rendered 123px above it and
+  was cut off (pins above the midline now open downward), and a rim pin pushed
+  half the card out sideways (centre clamped to 20–80%).
+- The popup is HTML over the panel, not `<foreignObject>` — it needs links,
+  wrapping text and normal focus, and JSX escapes third-party content for free
+  where Leaflet's HTML strings needed a hand-written `esc()`.
 
-**The general lesson, worth more than the incident:** *extracting shared CSS
-de-duplicates the rules and silently merges their assumptions about context.*
-One owner for a class is still right; just check what each consumer's background
-is before assuming the values travel. #88 adds `home.css`-scoped overrides and
-leaves `/start` untouched, which is the correct shape.
+### The maps keep a legend and nothing below it (#94, 2026-09-14)
+
+**Owner's decision.** `/` and `/start` carry the four layers, the legend and the
+credit line. Deleted: `__marker-list` (8 rows), the `__catalogues` `<details>`
+(13 countries), `mapSource.cataloguesLabel`, ~160 lines of `world-map.css` and
+the `home.css` overrides that existed only for them. **−362 / +157.**
+
+⚠ **This area has now been rebuilt on a DECISION twice in five days** — the
+lists were added 09-10 and removed 09-14. Don't reintroduce one as a
+side-effect of fixing something else; ask.
+
+- ⚠ **The pins no longer meet WCAG 2.5.8 and nothing covers them.** 19–21px at
+  1440px, ~7px at 375px. The lists were 2.5.8's "equivalent control on the same
+  page" exception, so it now applies to **no layer**. Accepted cost, written
+  into `UnnycWorldMap.js` and `CLAUDE.md` so it reads as a decision.
+  ⚠ **Do NOT inflate the hit circles** — 24px at phone scale makes neighbouring
+  European pins overlap, trading a size failure for pins that activate each
+  other. The options are a text equivalent (just removed) or a bigger/zoomable
+  map. Both are owner calls.
+- **What makes it survivable:** the pins are real controls — `role="button"`,
+  in the tab order, with an `aria-label` stating what the popup says. Verified
+  intact: all 8 marker one-liners, the per-country counts, the OSPO offices.
+  **Those labels are load-bearing now.** ⚠ Popups gone AND no lists is the state
+  that was a genuine defect on 09-10.
+- **Two live production defects fixed on the way**, both found by looking rather
+  than by a check: the **credit line at 1.84:1** on the homepage (§5), and
+  **"Échirolles Échirolles"** in the OSPO popup, live since the pins shipped —
+  `resources.md` names an office "… (DSCN), Échirolles" with `city: Échirolles`
+  and the note appended it again. The new shared `ospoOffices()` drops a city
+  note the name already carries; Saint-Mandé and every `(HQ)` are untouched,
+  because those add what the name does not say.
+
+### The "Let's keep going" band (#91)
+
+`/start`, `/principles`, `/crosswalk` and `/success` each end with 5 buttons to
+the other sections, never linking to themselves.
+
+- **One list, not four**: `content/keep-going.md` holds every destination and
+  the heading; the component drops the row matching the current page.
+- **One stylesheet, four importers**: verified all four routes link the *same*
+  hoisted chunk, and the rules appear in exactly **one** chunk.
+- A **server** component rendered as a *sibling* after each storyscroller — it
+  reads its own copy via `getContent` (server-only) and the storyscrollers are
+  `'use client'`. That keeps each call site to one line.
 
 ---
 
-## 4. Invariants — break these and something already fixed re-breaks
+## 3. Waiting on the human
 
-1. **`data-count` takes a RAW number; the element's CHILDREN take the formatted
-   one.** `Number("2,789")` is `NaN`, and hydration overwrites a correct
-   server-rendered figure with it.
-2. **Never type a count or a teaser title into `content/home.md`.** Every
-   homepage figure and teaser is derived in `page.js` from the file its target
-   page renders.
-3. **The map's markers/legend/credit are READ from `content/start.md`** by both
-   `/` and `/start`.
-4. **Scope any `@layer unnyc` rule that styles `a`, `button`, `ul` or `ol` with
-   `.unnyc-page`.** Six bugs so far.
-5. **`src/app/world-map.css` has ONE owner and two importers.** Never fix a gap
-   by copying its rules into `home.css` — two stylesheets owning one class is
-   how the principles rail broke. Override deliberately and page-scoped instead,
-   the way #88 does.
-6. **Attribution is a licence term for GovOSS and CTFG.** Both CC BY 4.0
-   *today*; that is a coincidence, not an invariant. Keep the strings per-source.
-7. **On `/campaign/sign` below 899px the form must stay above the letter.**
-   The rule and its trade-off are documented in `sign.css`; don't delete it to
-   "fix" the tab order.
-
----
-
-## 5. Waiting on the human
-
-1. ⚠ **NOBODY HAS STILL WATCHED THE STORYSCROLLERS SCROLL.** Seven scroll-driven
-   pages, verified only by build, rendered text and invariants. Confirmed again
-   why an agent cannot: `document.visibilityState` is `"hidden"` in these tools,
-   so IntersectionObserver never fires and **all 74 `[data-reveal]` elements sit
-   at `opacity: 0`**. Still the largest untested surface on the site.
-2. **The third orphan**: `UnnycEndorserDirectory.js`, its 25 `unnyc-endorsers__`
-   rules in `primer.css` and one in `principles.css`. Nothing imports it —
-   `UnnycPrinciplesStoryscroller` reimplemented the directory with its own
-   markup (verified against production). Labelled dead in the code, not deleted.
-   **Delete all three together or none.**
-3. **Rename `unnyc-start-story__map*`.** The component draws on both routes; the
+1. ⚠ **STILL NOBODY HAS WATCHED THE STORYSCROLLERS SCROLL.** Unchanged across
+   three sessions and now more load-bearing: seven scroll-driven pages plus a
+   new interactive map. `document.visibilityState` is `"hidden"` in these tools,
+   so IntersectionObserver never fires and every `[data-reveal]` element sits at
+   `opacity: 0`. Needs a human with a real browser, not a better check.
+2. ⚠ **Target size on the map pins is an OPEN, ACCEPTED gap** — changed
+   2026-09-14, and the previous version of this item said the opposite. It used
+   to read "the fix is an OSPO text list beside the other two"; the owner then
+   removed **all** the lists, so there is now no equivalent control for **any**
+   layer. Nothing is broken that wasn't a known trade — but if you want it
+   closed, it needs either a text equivalent back or a larger/zoomable map, and
+   **not** bigger hit circles (they would overlap). Say which; don't infer.
+3. **`/resources` was not migrated to the shared band.** It keeps its own older
+   `foot:` block, its own wording ("Looking for something else?") and a shorter
+   list without `/principles`. **Two implementations of one band**, labelled as
+   such in `UnnycKeepGoing.js` and `keep-going.css`. Unifying is a one-line
+   change plus a deletion, but it changes that page's wording and adds a link it
+   does not have — a decision, not a tidy-up.
+4. **The third orphan**: `UnnycEndorserDirectory.js` — **0 importers**, 27
+   `unnyc-endorsers__` rules in `primer.css` and 1 in `principles.css`, all dead,
+   because `UnnycPrinciplesStoryscroller` reimplemented the directory with its
+   own markup. Labelled, not deleted. **Delete all three together or none.**
+5. **Rename `unnyc-start-story__map*`.** The component draws on both routes; the
    prefix claims otherwise, and that misnomer is *why* the CSS looked like it
-   belonged in `start.css`. The cause of item 5 above is still in the code.
-4. **The Databook Mapbox token** — Hub `7d5fdeef`, owner-only first step.
-5. Three copy decisions on Hub `841ee0a9` (the declaration's
+   belonged in `start.css` and shipped the homepage map unstyled. The cause is
+   still in the code, only documented.
+6. **The Databook Mapbox token** — Hub `7d5fdeef`, owner-only first step.
+7. Three copy decisions on Hub `841ee0a9` (the declaration's
    two-sections-vs-the-UN's-three, "Hundreds" over a countable 150, retiring
    `old-unnyc.wegov.nyc`) and `168a959d` (CTFG de-indexed linking).
 
 ---
 
-## 6. Traps
+## 4. Invariants
 
-**Looks fine, isn't:**
-
-- **A page checked by nav-click is not a page checked.** Page CSS is per-route;
-  Next keeps the previous route's sheet in the DOM after a client-side
-  navigation. This is how the homepage map shipped unstyled and looked correct
-  to everyone who arrived from `/start`.
-- **A green `curl` proves nothing about client behaviour.** `ssr: false` means
-  the map isn't in the HTML at all.
-- **A selector returning 0 is not evidence of absence.** Cost a false a11y claim
-  in CLAUDE.md, and cost time again this session when a stylesheet-introspection
-  helper returned `null` for a rule that was demonstrably applying.
-- **A raw-HTML content field passed to a text prop renders its tags.** §1.
-- **Extracting shared CSS merges assumptions, not just rules.** §3.
-
-**Tooling limits — check these before believing a measurement:**
-
-- ⚠ **`innerWidth` reports `0` until you set an explicit viewport, and every
-  layout number measured in that state is garbage.** It bit this session twice:
-  `/campaign/sign` reported a 12,748px document that was really 3,297px, and
-  every element reported as wrapped. **Call `resize_window` with explicit
-  `width`/`height` — never the `desktop` preset — before measuring anything.**
-- **Screenshots come back blank at deep scroll offsets** (~990px was already too
-  far on a 1440x900 desktop viewport; a 375px mobile capture at 930px worked).
-- ⚠ **Nothing with `data-reveal` is visible in a screenshot**, because
-  IntersectionObserver never fires. To photograph a section, inject
-  `[data-reveal]{opacity:1 !important;transform:none !important}` — an
-  `!important` rule, because an inline `style.opacity` loses to the existing
-  one. Debug-only; never a source change.
-- **A synthetic `KeyboardEvent` does not run default activation** — correct
-  browser behaviour for untrusted events, not a page bug. A trusted Enter/Space
-  cannot be dispatched from here. Use `element.click()` to prove a control's
-  activation path, and say plainly that the hardware keypress is unverified.
-- **Don't string-compare computed pixel values.** `634.664px` vs `634.656px` is
-  sub-pixel rounding, not a regression; an equality check reported a false
-  "desktop changed".
-- ⚠ **`.claude/` is NOT inherited by a git worktree**, `launch.json` included, so
-  `preview_start` silently starts a dev server on the MAIN checkout and verifies
-  code that is not yours. Add a second entry to the main `.claude/launch.json`
-  with `runtimeExecutable: "sh"` and `runtimeArgs: ["-c", "cd <worktree> && npm
-  run dev -- --port 3101"]`, and put it back when you finish.
-- **`cp -Rc <main>/node_modules <worktree>/`** clones ~290 MB in seconds on APFS.
-
-**Looks broken, is deliberate:**
-
-- **`"World map — coming soon"` still exists in `UnnycHomeStoryscroller.js`** —
-  the fallback branch if `worldMap` isn't passed.
-- **`ssr: false` on the map is now a BYTES decision**, not a technical necessity.
-- **The atlas snapshot is imported, not loaded fail-soft** — a missing snapshot
-  fails the BUILD, which is the louder and cheaper failure.
-- **`unnyc.css` shows a naive brace imbalance (currently 208/207).**
-  Pre-existing and benign: `@layer unnyc {` at line 39 is never closed, so
-  everything to EOF is inside it — which is the intent, and parsers auto-close.
-- **`localhost` can't submit any form.** Not in Payload's CORS allowlist.
+1. **`data-count` takes a RAW number; the element's CHILDREN take the formatted
+   one.** `Number("2,789")` is `NaN`, and hydration overwrites a correct
+   server-rendered figure with it.
+2. **Never type a count or a teaser title into `content/home.md`** — every
+   figure and teaser is derived in `page.js` from the file its target page
+   renders.
+3. **A content field carrying HTML is not interchangeable with one that
+   doesn't.** `sign.md`'s `title` has a `<span>`; passed to a plain-text prop it
+   showed readers the literal `<span>Endorse</span>` for a day.
+4. **Scope any `@layer unnyc` rule styling `a`, `button`, `ul` or `ol` with
+   `.unnyc-page`.** Six bugs so far.
+5. **One owner per class, imported by every route that needs it** —
+   `world-map.css` and `keep-going.css` both. Never copy rules into a page's own
+   stylesheet to fix a gap.
+6. **Extracting shared CSS merges assumptions about context, not just rules**,
+   and ⚠ **it took THREE passes to finish here, which is the real lesson.**
+   `world-map.css` carries `/start`'s light-page values onto the dark homepage.
+   #88 fixed what was **visible** (the marker rows at 1.21:1, and the catalogue
+   *summary*); the 13 catalogue rows behind that closed `<details>` stayed at
+   **1.35:1** for four days; and the **credit line** — the CC BY attribution —
+   sat at **1.84:1** until #94. **Enumerate every element the shared sheet
+   colours and check each against the consumer's real background. Don't check
+   what you happen to see.** Today `world-map.css` only styles the panel (dark
+   on both routes) and the credit line (overridden in `home.css`); anything new
+   below the panel needs an override the day it lands.
+7. **On `/campaign/sign` below 899px the form stays above the letter.**
+8. **Attribution is a licence term for GovOSS and CTFG.** Both CC BY 4.0
+   *today*; a coincidence, not an invariant. Keep the strings per-source.
+9. **Never sum the GovOSS country counts.**
 
 ---
 
-## Coverage — what this session did NOT do
+## 5. Traps
 
-- **Reviewed and merged PR #88**, including measuring the contrast ratios and
-  confirming `/start` was untouched — but did NOT review the scroll/reveal
-  behaviour it interacts with, for the structural reason below.
-- **Never watched a storyscroller scroll**, for the structural reason in §5.2.
-- **Never dispatched a trusted keypress** at the new catalogue disclosure. Its
-  native `<summary>` behaviour is intact and nothing overrides it (checked: no
-  global keydown `preventDefault`), and `element.click()` toggles correctly.
-- **Never opened a Vercel preview** — SSO-gated for an agent.
-- **Did not delete the third orphan**, did not rename the misnamed map classes.
-- **Did not photograph the desktop hero or the desktop sign layout** — blank at
-  those scroll offsets. Both were verified by DOM measurement instead.
+**A closed disclosure hides its own defect.** The catalogue rows sat at 1.35:1
+on the homepage for four days after #88 fixed everything around them, because
+nobody opens a `<details>` on the page where it is broken — so "it looks fine"
+survived every check that wasn't deliberate. The credit line lasted longer still:
+four lines of small grey type look deliberate when they are unreadable.
+**Contrast-check what a control REVEALS, not only what it shows.**
+
+**A zero result is not evidence — three times in the 09-12 session:**
+
+- Popup markup grepped from `/start`'s chunks → **0**, because the map chunk is
+  `ssr: false` and lazily loaded. It is live.
+- "We respectfully call on…" grepped on `/campaign/sign` → **0**, because it
+  renders with `<strong>` inside it. It is there.
+- A stylesheet-introspection helper returned `null` for a rule that was
+  demonstrably applying.
+
+**Tooling limits, all paid for:**
+
+- ⚠ **MEASURE NOTHING UNTIL YOU SET AN EXPLICIT VIEWPORT.** `innerWidth` is `0`
+  in a fresh tab and after the `desktop` preset, and numbers taken then are
+  *plausibly* wrong, not obviously wrong — it reported `/campaign/sign` as a
+  12,748px document that was really 3,297px.
+- ⚠ **The hidden pane throttles timers, so `await` inside one `javascript_tool`
+  call stalls and times out.** React state is async, so a click and its result
+  must be **split across two tool calls** — click in one, read in the next.
+- ⚠ **Nothing with `data-reveal` appears in a screenshot.** Inject
+  `[data-reveal]{opacity:1 !important;transform:none !important}` — `!important`
+  matters, an inline `style.opacity` loses to the rule already there. Debug
+  only, never a source change.
+- **Screenshots are blank at deep scroll offsets** (~990px+ on desktop).
+- **A synthetic `KeyboardEvent` does not run default activation** — correct
+  behaviour for untrusted events, not a page bug. Use `element.click()` and say
+  plainly that the hardware keypress is unverified.
+- **Don't string-compare computed pixel values.** `634.664` vs `634.656` is
+  sub-pixel rounding; an equality check on it reported a false regression.
+- ⚠ **`.claude/` is NOT inherited by a git worktree**, `launch.json` included, so
+  `preview_start` silently serves the MAIN checkout instead of your worktree.
+
+**Process:**
+
+- ⚠ **A commit landed on local `main` instead of a branch this session.** Never
+  pushed, so nothing deployed; it was moved onto a branch and `main` reset, with
+  the patch proved byte-identical before and after. **Check
+  `git rev-parse --abbrev-ref HEAD` before committing** — "push to main deploys"
+  is what makes this the cheapest possible near-miss to keep cheap.
+
+**Looks broken, is deliberate:**
+
+- `"World map — coming soon"` still exists in `UnnycHomeStoryscroller.js` — the
+  fallback branch if `worldMap` isn't passed.
+- `ssr: false` on the map is now a **bytes** decision, not a technical one.
+- The atlas snapshot is a static import, so a missing file fails the **build**.
+- `unnyc.css`'s naive brace imbalance is pre-existing and benign: `@layer unnyc {`
+  at line 39 is never closed, which is the intent, and parsers auto-close.
+- `localhost` cannot submit any form — not in Payload's CORS allowlist.
+
+---
+
+## Coverage — what these sessions did NOT do
+
+- **Never watched a storyscroller scroll** — four sessions now — and never
+  exercised the map's reveal-gated states. Structural: see §3.1.
+- **Never dispatched a trusted keypress** at a map pin. The handlers are plain
+  code with nothing intercepting them, and click activation is confirmed.
+- **Never photographed the desktop map, hero or sign layout** — screenshots come
+  back blank at those scroll offsets (~990px+ on desktop; a 375px capture at
+  2.6k worked). All verified by DOM measurement instead.
+- **Did not review #88 line by line.** It was reviewed against this repo's known
+  traps and its contrast claim was measured (1.21:1 → 14.81:1), not read line by
+  line. ⚠ Its *residue* is what #94 then had to clean up — see §4.6.
+- **Did not migrate `/resources`** to the shared band (§3.3), **did not delete
+  the third orphan** (§3.4), **did not rename the map classes** (§3.5).
+  ⚠ The rename is now cheaper than it was: `world-map.css` is 172 lines
+  lighter, so there is far less carrying the misnamed prefix.
