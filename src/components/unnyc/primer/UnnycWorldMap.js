@@ -71,28 +71,44 @@ import worldAtlas from '../../../../content/world-atlas.json';
  * a non-inline target. `fill: transparent`, never `fill: none` — `none` is not
  * hit-testable.
  *
- * ⚠ TARGET SIZE: THE PINS DO NOT MEET WCAG 2.5.8 ON THEIR OWN, and pretending
- * otherwise would be the easy lie here. The hit circles are r=11/12 in SVG
- * user units, but the SVG is scaled to its container — measured 19-21px at a
- * 1440px viewport and roughly 7px on a 375px phone (the panel is ~279px wide
- * against a 920-unit viewBox). Enlarging them enough for 24px at phone scale
- * would make neighbouring European pins overlap into one another.
- * What carries this instead is 2.5.8's "Equivalent" exception — the same
- * function available through another control on the SAME page:
- *   - policy markers  -> `__marker-list`, 8 rows of real text. Covered.
- *   - country fill    -> the `__catalogues` disclosure, 13 rows. Covered.
- *   - OSPO points     -> ⚠ NOTHING ON THIS PAGE. Neither `/` nor `/start`
- *     renders an OSPO list; the credit line links to `/resources#ospos`, which
- *     is a DIFFERENT page and so does not satisfy the exception.
- * So the OSPO layer is the one real gap. Fix it by giving OSPOs a text list
- * beside the other two rather than by inflating the hit circles.
+ * ⚠⚠ NO TEXT LISTS UNDER THE MAP — OWNER'S DECISION, 2026-09-14. The map
+ * carries its four layers, a legend and the credit line, and nothing else.
+ * Deleted with it: `__marker-list` (8 rows), the `__catalogues` disclosure
+ * (13 countries) and their CSS in world-map.css + home.css. Do not
+ * reintroduce one as a fix for something else without asking — this is the
+ * second time the area has been rebuilt on a decision rather than a bug, and
+ * it has now moved in both directions.
  *
- * THE TEXT LISTS STAY, and are not redundant. `__marker-list` (8 rows) and the
- * `__catalogues` disclosure (13 countries) remain the path that needs no
- * pointer and no JavaScript beyond hydration. Replacing Leaflet once dropped
- * the per-country popups and with them the counts and links FOR EVERY READER;
- * the lists are what fixed that, and deleting them because "the pins have it
- * now" would re-open the same hole for anyone the pins do not serve.
+ * ⚠ THAT DECISION HAS A KNOWN, ACCEPTED COST. Read this before "fixing" it:
+ *
+ * 1. TARGET SIZE. The pins DO NOT meet WCAG 2.5.8 and now nothing covers
+ *    them. The hit circles are r=11/12 in SVG user units, but the SVG scales
+ *    to its container — measured 19-21px at a 1440px viewport and roughly 7px
+ *    on a 375px phone (the panel is ~279px wide against a 920-unit viewBox).
+ *    Until 2026-09-14 the lists were 2.5.8's "Equivalent" exception, the same
+ *    function reachable through another control on the SAME page; with them
+ *    gone the exception no longer applies to ANY layer, not just OSPOs.
+ *    ⚠ DO NOT "FIX" THIS BY INFLATING THE HIT CIRCLES. 24px at phone scale
+ *    makes neighbouring European pins overlap into one another, which trades
+ *    a size failure for a worse one: pins that activate each other. The real
+ *    options are a text equivalent (just removed, deliberately) or a
+ *    larger/zoomable map. Both are owner calls.
+ *    The credit line's `/resources#ospos` link has never satisfied 2.5.8 and
+ *    still does not — it is attribution, and it points at a DIFFERENT page.
+ *
+ * 2. THE PINS ARE NOW THE ONLY PATH TO THE DETAIL — the per-country counts
+ *    and catalogue links, the OSPO offices, and the marker one-liners. That
+ *    is survivable ONLY because the pins are real controls: `role="button"`,
+ *    in the tab order, with an `aria-label` that states what the popup says.
+ *    ⚠ So the aria-labels are now load-bearing, not a nicety. The CTFG dots
+ *    stay decorative and say nothing, which is fine — they are the one layer
+ *    the section does not argue from.
+ *    ⚠ And this is exactly the hole the lists were added to close on
+ *    2026-09-10, when replacing Leaflet dropped the popups and took the
+ *    counts and links with them FOR EVERY READER. The difference today is
+ *    that the popups came back on 09-11, so the detail is reachable again by
+ *    pointer AND keyboard. If the popups are ever removed, the lists are not
+ *    optional — that combination is the state that was a real defect.
  *
  * ⚠ Still true: the popup is HTML positioned over the panel, not an SVG
  * `<foreignObject>` — it needs links, wrapping text and normal focus, and JSX
@@ -118,6 +134,44 @@ const ATLANTIC_LABEL = [-46, 33];
 const ANCHORS = ['sw', 'w', 'e', 'e', 'n', 'e', 's', 's'];
 const ANCHOR_OFFSET = { e: [10, 4], w: [-10, 4], n: [0, -10], s: [0, 15], sw: [-8, 13] };
 const ANCHOR_TO_TEXT = { w: 'end', sw: 'end', n: 'middle', s: 'middle', e: 'start' };
+
+/**
+ * One OSPO point's offices, as {name, href, note} — what the pin's popup
+ * lists. ⚠ Since the text lists went (see the header), this popup is the ONLY
+ * place these offices are named on the page, so what it says is the whole
+ * claim rather than a convenience copy of one.
+ *
+ * The notes are claims, not decoration:
+ *   - a different city — points within OSPO_MERGE_KM share ONE dot (four
+ *     French OSPOs are in Paris; the IGN's is in Saint-Mandé, 5 km away), so
+ *     the office keeps its real city. Merging changes what is DRAWN, never
+ *     what is CLAIMED.
+ *   - `(HQ)` — the coordinate is the parent organisation's headquarters
+ *     rather than the body's own seat. "Approximately here" and "here" are
+ *     different claims and this map should not present the second when it
+ *     means the first.
+ * ⚠ The city note is DROPPED when the office's own name already carries it.
+ * `content/resources.md` names one office "Direction de la stratégie et de la
+ * culture numériques (DSCN), Échirolles" with `city: Échirolles`, which read
+ * "…, Échirolles Échirolles" on production from the day the pins shipped
+ * (2026-09-11) until this was fixed. A note exists to add what the name does
+ * not already say.
+ */
+function ospoOffices(point) {
+    return point.ospos.map((o) => ({
+        name: o.name,
+        /* May be absent — the markup renders plain text rather than an
+         * href="#" that goes nowhere. */
+        href: o.url || null,
+        note:
+            [
+                o.city !== point.city && !o.name.includes(o.city) ? o.city : null,
+                o.locationBasis === 'hq' ? '(HQ)' : null,
+            ]
+                .filter(Boolean)
+                .join(' ') || null,
+    }));
+}
 
 export default function UnnycWorldMap({ markers = [], legend = [], mapSource, govoss, ospos, ctfg }) {
     const hasFill = Boolean(govoss?.countries?.length && govoss?.geo?.features?.length);
@@ -176,20 +230,6 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
         left: `${Math.min(80, Math.max(20, (x / W) * 100))}%`,
         top: `${(y / H) * 100}%`,
     });
-
-    /* The country fill's data as TEXT — see the accessibility note in the file
-     * header. Built outside the projection block on purpose: it needs no
-     * geometry, so it still renders if the atlas ever fails to decode.
-     * Sorted by size because "who publishes the most" is the readable order;
-     * `entries` is each country's own figure and they are NEVER summed. */
-    const catalogueCountries = (govoss?.countries || [])
-        .map((c) => ({
-            ...c,
-            name:
-                govoss?.geo?.features?.find((f) => f.properties.code === c.code)?.properties.name ||
-                c.code,
-        }))
-        .sort((a, b) => b.entries - a.entries);
 
     let countries = [];
     let ospoDots = [];
@@ -297,22 +337,9 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                 y: p.y,
                 title: `${p.city}, ${p.country}`,
                 meta: `${p.ospos.length} public sector open source program ${p.ospos.length === 1 ? 'office' : 'offices'}`,
-                /* ⚠ Each entry keeps its OWN city, because points within 25 km
-                 * are merged onto one dot (OSPO_MERGE_KM) — four French OSPOs
-                 * are in Paris and the IGN's is in Saint-Mandé. Merging changes
-                 * what is DRAWN, never what is CLAIMED. `(HQ)` marks a
-                 * coordinate that is the parent organisation's headquarters
-                 * rather than the body's own seat: "approximately here" and
-                 * "here" are different claims. */
-                links: p.ospos.map((o) => ({
-                    /* May be absent — the markup renders plain text rather than
-                     * an href="#" that goes nowhere. */
-                    href: o.url || null,
-                    label: o.name,
-                    note: [o.city !== p.city ? o.city : null, o.locationBasis === 'hq' ? '(HQ)' : null]
-                        .filter(Boolean)
-                        .join(' ') || null,
-                })),
+                /* See ospoOffices() for what the `(HQ)` and own-city notes
+                 * claim, and why one of them is suppressed. */
+                links: ospoOffices(p).map((o) => ({ href: o.href, label: o.name, note: o.note })),
             };
     } else if (open?.kind === 'country') {
         const c = countries.find((x) => x.catalogue?.code === open.id);
@@ -598,77 +625,6 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                     )}
                 </div>
             </div>
-
-            {markers.length > 0 && (
-                <div className="unnyc-start-story__marker-list">
-                    {markers.map((m, i) => (
-                        <div
-                            key={m.label}
-                            className="unnyc-start-story__marker-row"
-                            data-reveal="1"
-                            data-delay={40 + (i % 2) * 70}
-                        >
-                            <span
-                                className={
-                                    'unnyc-start-story__marker-dot' +
-                                    (m.type === 'city'
-                                        ? ' unnyc-start-story__marker-dot--city'
-                                        : ' unnyc-start-story__marker-dot--nation')
-                                }
-                            />
-                            <p>
-                                <strong>{m.label}</strong> — {m.desc}
-                            </p>
-                        </div>
-                    ))}
-                </div>
-            )}
-
-            {catalogueCountries.length > 0 && (
-                <details className="unnyc-start-story__catalogues" data-reveal="1">
-                    <summary className="unnyc-start-story__catalogues-summary">
-                        {mapSource?.cataloguesLabel || 'Catalogue counts, country by country'}
-                        {/* Derived, never authored — the label in content/start.md
-                            deliberately carries no number.
-                            ⚠ The literal space matters and is not cosmetic: the span
-                            is spaced visually by `margin-left`, but margin is not
-                            text, so without this the accessible name concatenated to
-                            "…country by country13 countries". Caught by reading
-                            innerText in a browser, which is the only place it shows. */}
-                        {' '}
-                        <span className="unnyc-start-story__catalogues-count">
-                            {catalogueCountries.length} countries
-                        </span>
-                    </summary>
-                    {/* A real <ul>, so assistive tech announces how many countries
-                        there are. ⚠ Its margin/padding rules are scoped with
-                        `.unnyc-page` in world-map.css: `.unnyc-page ul { margin: 0 }`
-                        is a (0,1,1) reset that beats a single-class rule in the same
-                        layer — the trap CLAUDE.md counts six bugs from. */}
-                    <ul className="unnyc-start-story__catalogue-list">
-                        {catalogueCountries.map((c) => (
-                            <li key={c.code} className="unnyc-start-story__catalogue-row">
-                                <p className="unnyc-start-story__catalogue-country">
-                                    <strong>{c.name}</strong>
-                                    {' — '}
-                                    {c.entries.toLocaleString()} projects
-                                </p>
-                                <p className="unnyc-start-story__catalogue-sources">
-                                    {c.catalogues.map((cat, i) => (
-                                        <span key={cat.site}>
-                                            {i > 0 && ' · '}
-                                            <a href={cat.site} target="_blank" rel="noopener noreferrer">
-                                                {cat.label}
-                                            </a>{' '}
-                                            ({cat.entries.toLocaleString()})
-                                        </span>
-                                    ))}
-                                </p>
-                            </li>
-                        ))}
-                    </ul>
-                </details>
-            )}
 
             {(() => {
                 const parts = [];
