@@ -9,12 +9,12 @@
 # copy of /crosswalk's reason titles and contradicted them within a day.
 # Add a destination here once and every page gains it except its own.
 #
-# ⚠ /resources is NOT one of these pages yet — it has its own older `foot:`
-# block in content/resources.md, with its own wording ("Looking for something
-# else?") and its own shorter list. Two implementations of one band is a known
-# smell; migrating it is a one-line change plus deleting that block, but it
-# would also change its wording and add /principles to its links, so it was
-# left as an owner decision.
+# ⚠ ALL FIVE STORYSCROLLER ROUTES USE THIS NOW — /start, /principles,
+# /crosswalk, /success and, since 2026-09-14, /resources. That last one had
+# kept its own `foot:` block with different wording and a shorter list; the
+# owner decided to unify, which changed its heading to "Let's keep going" and
+# gave it a /principles link it did not have. There is no second
+# implementation left — if you find one, it is new.
 text: "Let's keep going"
 
 # Order follows the reader path, which is also the nav order. The campaign CTA

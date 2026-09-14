@@ -1,6 +1,12 @@
 import UnnycResourcesStoryscroller from '@/components/unnyc/primer/UnnycResourcesStoryscroller';
 import './resources.css';
+/* The "Let's keep going" band's look. ⚠ Shared with the other four
+ * storyscroller routes — page CSS is per-route, so every route that renders
+ * UnnycKeepGoing must import it or the band is unstyled on a fresh load.
+ * See src/app/keep-going.css. */
+import '../keep-going.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
+import UnnycKeepGoing from '@/components/unnyc/primer/UnnycKeepGoing';
 import { getContent, inlineMd } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
 import { datasetIndex } from '@/lib/datasets';
@@ -15,9 +21,10 @@ export async function generateMetadata() {
 /**
  * /resources — storyscroller layout (2026-09). Reimplements a Claude Design
  * handoff: a hero, a sticky icon-swapping sidebar beside four reference
- * sections — Primary Sources, People to Call, Find an OSPO, Open Data — and
- * a foot CTA band. Sibling of the /start, /principles, /crosswalk and
- * /success storyscrollers — same palette, sidebar shape and reveal system.
+ * sections — Primary Sources, People to Call, Find an OSPO, Open Data — then
+ * the shared "Let's keep going" band. Sibling of the /start, /principles,
+ * /crosswalk and /success storyscrollers — same palette, sidebar shape and
+ * reveal system, and since 2026-09-14 the same foot band as well.
  *
  * ALL COPY LIVES IN content/resources.md. See docs/EDITING-CONTENT.md.
  * Dataset rows are never authored — see the note in UnnycResourcesStoryscroller.
@@ -60,8 +67,13 @@ export default function ResourcesPage() {
                 ospoDirectory={doc.ospoDirectory}
                 openData={doc.openData}
                 datasets={datasetIndex().datasets}
-                foot={doc.foot}
             />
+            {/* Sibling of the storyscroller, not inside it: UnnycKeepGoing is a
+                SERVER component (it reads its own copy via getContent) and the
+                storyscroller is 'use client'. It drops the link to this page.
+                ⚠ This replaced /resources' own `foot:` block on 2026-09-14 —
+                the last of the two implementations of one band. */}
+            <UnnycKeepGoing currentPath="/resources" />
         </>
     );
 }

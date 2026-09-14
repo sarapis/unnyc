@@ -23,9 +23,9 @@ const WINDOW = 7;
  * scroll-driven motion (reveal, draw-in, the latching trunk growth, branch
  * gating). Content — principle prose, endorser copy, the endorsing
  * organizations themselves — is still read server-side in page.js and
- * passed down as props, same reason UnnycEndorserDirectory and UpdatesBar
- * are client components that take their data as props: getContent() and
- * getUnEndorsers() read the filesystem and cannot run in the browser.
+ * passed down as props, same reason UpdatesBar is a client component that
+ * takes its data as props: getContent() and getUnEndorsers() read the
+ * filesystem and cannot run in the browser.
  *
  * MOTION STAYS IMPERATIVE DOM, same as ScrollReveal.js site-wide: reveal/
  * draw/trunk state is real-time scroll math (a trunk's fill height, an
@@ -62,10 +62,13 @@ export default function UnnycPrinciplesStoryscroller({ hero, groups, endorsers }
     const activeItem = rail.find((r) => r.slug === active) || rail[0];
 
     /* ---------------------------------------------------------------------
-       Endorser directory: sector filter + pagination. Same shape as
-       UnnycEndorserDirectory (this page doesn't reuse that component — its
-       single-column section doesn't fit this design's sticky-aside/directory
-       split — but the filtering/pagination logic is deliberately identical).
+       Endorser directory: sector filter + pagination. THE ONLY ONE — the
+       shared UnnycEndorserDirectory this was modelled on was deleted on
+       2026-09-14 (owner's call) once it was confirmed nothing had imported
+       it since this rewrite. It was not reused here because its
+       single-column section didn't fit this design's sticky-aside/directory
+       split; the filtering/pagination logic below was deliberately kept
+       identical to it, so this is now where that logic lives.
        --------------------------------------------------------------------- */
     const orgs = endorsers?.organizations ?? [];
     const [sector, setSector] = useState(null); // null = all sectors
