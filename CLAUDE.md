@@ -175,34 +175,33 @@ without failing; monitoring for errors would never have seen this.**
 
 Two consequences of the swap, both real:
 
-- **The accessible marker list EXISTS — an earlier version of this bullet said it "could
-  not be found in the DOM" and that was WRONG.** It is
-  `.unnyc-start-story__marker-list` (UnnycWorldMap.js:274) and renders 8 rows of real text
-  ("Barcelona — First city in the world to endorse the UN Principles…"), none aria-hidden,
-  on both `/` and `/start`. The claim came from a browser query for `li` children of a
-  `[class*="marker-list"]`; the rows are `div`s, so the selector matched nothing and the
-  absence looked confirmed. ⚠ **A selector that returns 0 is not evidence that a thing is
-  missing** — check the component source before writing down an absence.
-  What IS still true, and milder: the geography carries no per-country detail. The SVG is
-  `role="img"` with one `aria-label`, so you cannot tab a country's shape or hover a
-  polygon. ⚠ But the **counts** are no longer unreachable — see the catalogue disclosure
-  below; that half of this bullet was fixed 2026-09-10.
-- **The GovOSS country counts ARE reachable, in text, as of 2026-09-10** —
-  `.unnyc-start-story__catalogues`, a native `<details>` under the map listing all 13
-  countries with their entry counts and a link to each government's own catalogue.
-  ⚠ **This was never only an accessibility gap.** Replacing Leaflet dropped the
-  per-country popups, and with them the counts and catalogue links, **for every reader** —
-  the flat fill says "this government publishes a catalogue" and nothing else. Detail is
-  deliberately NOT wired onto the shapes: a `tabindex` inside a `role="img"` is a focus
-  stop with no accessible name, and a `<path>` cannot hold a link at all. Same pattern as
-  the marker list — each layer's detail lives in text below the map.
-  Every figure is derived from `content/govoss-catalogues.json`; the label in
-  `content/start.md` (`mapSource.cataloguesLabel`) carries no number on purpose.
-  ⚠ Do NOT set `display` on that `<summary>`: moving it off `list-item` deletes the native
-  disclosure triangle, which is the only affordance saying it opens.
-  ⚠ And the space before the derived count is load-bearing — `margin-left` is not text, so
-  without it the accessible name reads "…COUNTRY BY COUNTRY13 countries". Only visible by
-  reading `innerText` in a browser.
+- **⚠ THERE ARE NO TEXT LISTS UNDER THE MAP — owner's decision, 2026-09-14.** The map
+  carries its four layers, a legend and the credit line, and nothing else. Deleted that
+  day: `.unnyc-start-story__marker-list` (8 rows), the `.unnyc-start-story__catalogues`
+  `<details>` (13 countries), `mapSource.cataloguesLabel`, and their rules in
+  `world-map.css` + `home.css`. This area has now been rebuilt on a DECISION twice in
+  five days — don't reintroduce a list to fix something else without asking.
+  ⚠ Two earlier versions of this bullet claimed the marker list was missing, then that it
+  existed; the first was wrong because a browser query for `li` children matched `div`s.
+  **A selector that returns 0 is not evidence that a thing is missing** — check the
+  component source. That lesson is why this bullet keeps being edited, and it still holds.
+- **⚠ THE PINS ARE NOW THE ONLY PATH TO THE MAP'S DETAIL, and they DO NOT meet WCAG
+  2.5.8.** Hit circles are `r=11`/`r=12` in SVG user units but the SVG scales to its
+  container: measured **19-21px at 1440px and ~7px on a 375px phone**. Until 2026-09-14
+  the text lists were 2.5.8's *"equivalent control on the same page"* exception; with them
+  gone the exception applies to **no layer**, not just OSPOs. This is an accepted cost,
+  recorded in `UnnycWorldMap.js`, not an oversight.
+  ⚠ **Do NOT "fix" it by inflating the hit circles** — 24px at phone scale makes
+  neighbouring European pins overlap, trading a size failure for pins that activate each
+  other. The real options are a text equivalent (just removed) or a larger/zoomable map.
+  ⚠ The credit line's `/resources#ospos` link has never satisfied 2.5.8 and still doesn't:
+  it is attribution, and it points at a **different page**.
+  What makes this survivable is that the pins are real controls — `role="button"`, in the
+  tab order, with an `aria-label` that states what the popup says (all 8 marker
+  one-liners, the per-country counts, the OSPO offices). **Those labels are load-bearing
+  now.** The geography itself still carries nothing: you cannot tab a country's shape.
+  ⚠ If the popups are ever removed, the lists are not optional — popups gone AND no lists
+  is the state that was a real defect on 2026-09-10.
 - **The world geometry is a SNAPSHOT IN THE REPO as of 2026-09-10** —
   `content/world-atlas.json`, refreshed by `node scripts/fetch-world-atlas.mjs`, imported
   directly by `UnnycWorldMap`. ⚠ It used to be fetched from
@@ -580,6 +579,18 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   bar on `/`. One owner per class is still right; the missing step is checking
   what each consumer's background is. Fix it with page-scoped overrides in the
   consumer's own stylesheet, never by forking the shared rules.
+  ⚠ **IT TOOK THREE PASSES TO FINISH, AND THE PATTERN IN THE MISSES IS THE
+  LESSON.** #88 fixed what was *visible* — the marker rows (`--wg-brand` at
+  **1.21:1**) and the catalogue *summary*. The 13 catalogue rows behind that
+  closed `<details>` stayed at **1.35:1** for four more days, because **a closed
+  disclosure hides its own defect**: nobody opens it on the page where it is
+  broken, so "it looks fine" survives every check that isn't deliberate. And the
+  map **credit line** — four lines of small grey type that look deliberate when
+  they are unreadable — sat at **1.84:1** on production until 2026-09-14, which
+  matters extra because it is the **CC BY attribution**, and a credit nobody can
+  read is not a credit. **Enumerate every element the shared sheet colours, then
+  check each against the consumer's real background — don't check what you happen
+  to see.**
 - **next/image `fill` writes position/inset/width/height as INLINE styles**, so a
   class cannot override them. To inset or shrink a filled image, use `transform`
   (see `.unnyc-pr-path__image--logo`) — not `padding`, `inset` or `width`.

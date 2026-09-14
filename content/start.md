@@ -182,17 +182,12 @@ mapSource:
   # stay per-source. Reword the lead-in freely; never drop a source, its link or its
   # licence.
   creditLead: "Map data —"
-  # Label on the disclosure under the map that lists each country's catalogue
-  # count and links to the catalogues themselves. The map paints those counts as
-  # a flat country fill, which says "this government publishes a catalogue" but
-  # not how many and not where — and an SVG path cannot hold a link or take
-  # keyboard focus, so before this existed the per-country detail was reachable
-  # by nobody, mouse users included.
-  # ⚠ NO COUNT IN THIS STRING. The number of countries and every per-country
-  # figure are derived from content/govoss-catalogues.json in the component, so
-  # they cannot go stale when the snapshot is refreshed. Same rule as the
-  # endorser directory's counts.
-  cataloguesLabel: "Catalogue counts, country by country"
+  # ⚠ `cataloguesLabel` was here and is GONE (2026-09-14, owner's decision): the
+  # map carries its layers, a legend and this credit line, and no lists of mapped
+  # items below it. The per-country catalogue counts and links now live only in
+  # the country pins' popups, which is why those pins are real keyboard controls
+  # with an aria-label that states what the popup says. If a list is ever wanted
+  # back, the label belongs here again — copy lives in markdown, never in the JSX.
 mapLegend:
 - type: "city"
   label: "Cities leading"
