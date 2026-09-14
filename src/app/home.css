@@ -207,50 +207,37 @@
     margin: var(--wg-sp-8) 0 var(--wg-sp-5);
   }
 
-  /* UnnycWorldMap's marker-list rows (world-map.css, shared with /start) read
-     --wg-brand / --wg-text-secondary for their text — correct against
-     /start's light --wg-surface-warm page, but this wrapper sits inside
-     .unnyc-home-story__section's dark rgba(11, 31, 58, 0.84) background, so
-     that dark-on-light styling reads as dark-on-dark here. Home-scoped
-     override only; world-map.css itself stays page-agnostic per its own
-     "one owner" note — this is a MORE SPECIFIC selector, not a second
-     owner of the same one. */
-  .unnyc-home-story__map .unnyc-start-story__marker-row {
-    border-bottom-color: rgba(255, 255, 255, 0.14);
-  }
+  /* THE MAP CREDIT LINE, which is the ONLY thing UnnycWorldMap still renders
+     outside the dark map panel — the marker rows and the catalogue disclosure
+     that used to sit here are gone (owner's call, 2026-09-14: the map keeps a
+     legend and nothing else). Everything else the component draws is inside
+     the panel, which is dark on both routes and needs no split.
 
-  .unnyc-home-story__map .unnyc-start-story__marker-row p {
+     ⚠ THIS ONE IS A LICENCE TERM, NOT STYLING. GovOSS and the Civic Tech
+     Field Guide are both CC BY 4.0, so the credit has to be *readable* to be
+     a credit. world-map.css gives it --wg-text-secondary / --wg-accent-strong,
+     right for /start's light --wg-surface-warm page; against this section's
+     rgba(11, 31, 58, 0.84) it measured 1.84:1 and 1.87:1 on PRODUCTION —
+     the same defect as the marker rows (1.21:1, #88) and the catalogue rows
+     (1.35:1), and the last survivor of it. It was never noticed because it is
+     four lines of small grey type that look deliberate when they are unreadable.
+     ⚠ Anything added below the panel again needs an override here too. That is
+     now three separate times this exact mismatch has shipped. */
+  .unnyc-home-story__map .unnyc-start-story__map-credit {
     color: var(--wg-text-on-brand);
   }
 
-  .unnyc-home-story__map .unnyc-start-story__marker-row strong {
-    color: var(--wg-text-inverse);
-  }
-
-  /* Same light-page/dark-page mismatch as the marker rows above, on the
-     "Catalogue counts" <details> right after them: its border-top and text
-     colors are --wg-warm-gray / --wg-accent-strong / --wg-text-secondary,
-     right for /start's light page, and read as a stray light bar plus
-     low-contrast text on this dark one. */
-  .unnyc-home-story__map .unnyc-start-story__catalogues {
-    border-top: none;
-  }
-
-  /* `.unnyc-page` prefix isn't scoping here (redundant with .unnyc-home-story__map
-     inside it) — it's there to OUTWEIGH world-map.css's
-     `.unnyc-page .unnyc-start-story__catalogues-summary`, same (0,2,0) specificity
-     as a plain two-class version of this selector and imported after home.css in
-     page.js, so the later file would otherwise win the tie. */
-  .unnyc-page .unnyc-home-story__map .unnyc-start-story__catalogues-summary {
-    color: var(--wg-text-inverse);
-  }
-
-  .unnyc-page .unnyc-home-story__map .unnyc-start-story__catalogues-summary:hover {
+  /* `.unnyc-page` is here to OUTWEIGH world-map.css's
+     `.unnyc-page .unnyc-start-story__map-credit a` — same (0,2,0) as a plain
+     two-class version of this selector, and imported after home.css in
+     page.js, so the later file would otherwise win the tie. Not scoping. */
+  .unnyc-page .unnyc-home-story__map .unnyc-start-story__map-credit a,
+  .unnyc-page .unnyc-home-story__map .unnyc-start-story__map-credit .unnyc-inline-link {
     color: var(--wg-accent-warm-light);
   }
 
-  .unnyc-home-story__map .unnyc-start-story__catalogues-count {
-    color: var(--wg-text-on-brand);
+  .unnyc-page .unnyc-home-story__map .unnyc-start-story__map-credit a:hover {
+    color: var(--wg-text-inverse);
   }
 
   .unnyc-home-story__map-svg {
