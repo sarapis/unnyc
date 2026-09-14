@@ -1,4 +1,4 @@
-# Continue here — UNNYC, after the 2026-09-11/12 session
+# Continue here — UNNYC, after the 2026-09-11/14 sessions
 
 Written from the repo, not from memory. Every number below has the command that
 produced it. If a claim here disagrees with the code, **the code is right and
@@ -8,22 +8,25 @@ Supersedes the 2026-09-10 and 2026-09-10/11 handoffs.
 
 ---
 
-## 1. State — verified 2026-09-12
+## 1. State — verified 2026-09-14
 
 ```bash
 cd /Users/devin/Antigravity/unnyc
-git fetch origin && git log --oneline origin/main -1   # f773df7
-gh pr list --state open --json number                  # 0
+git fetch origin && git log --oneline origin/main -1   # d8f4062
+gh pr list --state open --json number
 ```
 
-- **`origin/main` is at `f773df7`**, and the local checkout is on it, clean.
-- **Zero open PRs. One branch — `main` — locally and on origin**; every merged
-  branch pruned, including Olivia's.
-- **All 13 routes 200.** Both of this session's features verified **live on
-  production, in a browser** — see §2 for why `curl` cannot see one of them.
-- **Six PRs merged across this stretch:** #86 and #87 (name New York City; the
+- **`origin/main` is at `d8f4062`** — "Merge PR #94".
+- **All 13 routes 200.** Everything below was verified **live on production, in
+  a browser** — see §2 for why `curl` cannot see the map at all.
+- **Eight PRs merged across this stretch:** #86 and #87 (name New York City; the
   sign-form layout), #88 (Olivia's homepage readability), #89 (docs), #90
-  (interactive map pins), #91 (the "Let's keep going" band).
+  (interactive map pins), #91 (the "Let's keep going" band), #94 (the maps keep
+  a legend and nothing below it), #92 (this handoff).
+- **#93 was CLOSED, not merged** — it added an OSPO text list under the map, and
+  the owner then decided there should be no lists under the maps at all. Its two
+  independent fixes (the shared `ospoOffices()` and the credit-line contrast)
+  were carried into #94. ⚠ Don't mine it for the list; that part is rejected.
 
 ---
 
@@ -60,6 +63,38 @@ they are the densest layer, where overlapping hit areas would fight each other.
   wrapping text and normal focus, and JSX escapes third-party content for free
   where Leaflet's HTML strings needed a hand-written `esc()`.
 
+### The maps keep a legend and nothing below it (#94, 2026-09-14)
+
+**Owner's decision.** `/` and `/start` carry the four layers, the legend and the
+credit line. Deleted: `__marker-list` (8 rows), the `__catalogues` `<details>`
+(13 countries), `mapSource.cataloguesLabel`, ~160 lines of `world-map.css` and
+the `home.css` overrides that existed only for them. **−362 / +157.**
+
+⚠ **This area has now been rebuilt on a DECISION twice in five days** — the
+lists were added 09-10 and removed 09-14. Don't reintroduce one as a
+side-effect of fixing something else; ask.
+
+- ⚠ **The pins no longer meet WCAG 2.5.8 and nothing covers them.** 19–21px at
+  1440px, ~7px at 375px. The lists were 2.5.8's "equivalent control on the same
+  page" exception, so it now applies to **no layer**. Accepted cost, written
+  into `UnnycWorldMap.js` and `CLAUDE.md` so it reads as a decision.
+  ⚠ **Do NOT inflate the hit circles** — 24px at phone scale makes neighbouring
+  European pins overlap, trading a size failure for pins that activate each
+  other. The options are a text equivalent (just removed) or a bigger/zoomable
+  map. Both are owner calls.
+- **What makes it survivable:** the pins are real controls — `role="button"`,
+  in the tab order, with an `aria-label` stating what the popup says. Verified
+  intact: all 8 marker one-liners, the per-country counts, the OSPO offices.
+  **Those labels are load-bearing now.** ⚠ Popups gone AND no lists is the state
+  that was a genuine defect on 09-10.
+- **Two live production defects fixed on the way**, both found by looking rather
+  than by a check: the **credit line at 1.84:1** on the homepage (§5), and
+  **"Échirolles Échirolles"** in the OSPO popup, live since the pins shipped —
+  `resources.md` names an office "… (DSCN), Échirolles" with `city: Échirolles`
+  and the note appended it again. The new shared `ospoOffices()` drops a city
+  note the name already carries; Saint-Mandé and every `(HQ)` are untouched,
+  because those add what the name does not say.
+
 ### The "Let's keep going" band (#91)
 
 `/start`, `/principles`, `/crosswalk` and `/success` each end with 5 buttons to
@@ -82,13 +117,13 @@ the other sections, never linking to themselves.
    new interactive map. `document.visibilityState` is `"hidden"` in these tools,
    so IntersectionObserver never fires and every `[data-reveal]` element sits at
    `opacity: 0`. Needs a human with a real browser, not a better check.
-2. ⚠ **The OSPO pins have no on-page text equivalent.** Pins measure 19–21px at
-   1440px and ~7px at 375px, under WCAG 2.5.8's 24px. What carries markers and
-   countries is 2.5.8's "equivalent control on the same page" exception —
-   `__marker-list` and the `__catalogues` disclosure. **OSPOs have neither**: the
-   credit line points at `/resources#ospos`, a different page, which does not
-   satisfy it. The fix is an OSPO text list beside the other two, **not** bigger
-   hit circles. Written into `UnnycWorldMap.js`.
+2. ⚠ **Target size on the map pins is an OPEN, ACCEPTED gap** — changed
+   2026-09-14, and the previous version of this item said the opposite. It used
+   to read "the fix is an OSPO text list beside the other two"; the owner then
+   removed **all** the lists, so there is now no equivalent control for **any**
+   layer. Nothing is broken that wasn't a known trade — but if you want it
+   closed, it needs either a text equivalent back or a larger/zoomable map, and
+   **not** bigger hit circles (they would overlap). Say which; don't infer.
 3. **`/resources` was not migrated to the shared band.** It keeps its own older
    `foot:` block, its own wording ("Looking for something else?") and a shorter
    list without `/principles`. **Two implementations of one band**, labelled as
@@ -126,9 +161,17 @@ the other sections, never linking to themselves.
 5. **One owner per class, imported by every route that needs it** —
    `world-map.css` and `keep-going.css` both. Never copy rules into a page's own
    stylesheet to fix a gap.
-6. **Extracting shared CSS merges assumptions about context, not just rules.**
-   `world-map.css` carried `/start`'s light-page styling onto the dark homepage
-   and needed `home.css` overrides (#88).
+6. **Extracting shared CSS merges assumptions about context, not just rules**,
+   and ⚠ **it took THREE passes to finish here, which is the real lesson.**
+   `world-map.css` carries `/start`'s light-page values onto the dark homepage.
+   #88 fixed what was **visible** (the marker rows at 1.21:1, and the catalogue
+   *summary*); the 13 catalogue rows behind that closed `<details>` stayed at
+   **1.35:1** for four days; and the **credit line** — the CC BY attribution —
+   sat at **1.84:1** until #94. **Enumerate every element the shared sheet
+   colours and check each against the consumer's real background. Don't check
+   what you happen to see.** Today `world-map.css` only styles the panel (dark
+   on both routes) and the credit line (overridden in `home.css`); anything new
+   below the panel needs an override the day it lands.
 7. **On `/campaign/sign` below 899px the form stays above the letter.**
 8. **Attribution is a licence term for GovOSS and CTFG.** Both CC BY 4.0
    *today*; a coincidence, not an invariant. Keep the strings per-source.
@@ -138,7 +181,14 @@ the other sections, never linking to themselves.
 
 ## 5. Traps
 
-**A zero result is not evidence — three times this session:**
+**A closed disclosure hides its own defect.** The catalogue rows sat at 1.35:1
+on the homepage for four days after #88 fixed everything around them, because
+nobody opens a `<details>` on the page where it is broken — so "it looks fine"
+survived every check that wasn't deliberate. The credit line lasted longer still:
+four lines of small grey type look deliberate when they are unreadable.
+**Contrast-check what a control REVEALS, not only what it shows.**
+
+**A zero result is not evidence — three times in the 09-12 session:**
 
 - Popup markup grepped from `/start`'s chunks → **0**, because the map chunk is
   `ssr: false` and lazily loaded. It is live.
@@ -189,18 +239,19 @@ the other sections, never linking to themselves.
 
 ---
 
-## Coverage — what this session did NOT do
+## Coverage — what these sessions did NOT do
 
-- **Never watched a storyscroller scroll**, and never exercised the map's
-  reveal-gated states, for the structural reason in §3.1.
-- **Never dispatched a trusted keypress** at a map pin or the catalogue
-  disclosure. The handlers are plain code with nothing intercepting them, and
-  click activation is confirmed.
-- **Never photographed the desktop map, hero or sign layout** — blank at those
-  scroll offsets. All verified by DOM measurement instead.
+- **Never watched a storyscroller scroll** — four sessions now — and never
+  exercised the map's reveal-gated states. Structural: see §3.1.
+- **Never dispatched a trusted keypress** at a map pin. The handlers are plain
+  code with nothing intercepting them, and click activation is confirmed.
+- **Never photographed the desktop map, hero or sign layout** — screenshots come
+  back blank at those scroll offsets (~990px+ on desktop; a 375px capture at
+  2.6k worked). All verified by DOM measurement instead.
 - **Did not review #88 line by line.** It was reviewed against this repo's known
   traps and its contrast claim was measured (1.21:1 → 14.81:1), not read line by
-  line.
-- **Did not add the OSPO text list** (§3.2), **did not migrate `/resources`**
-  (§3.3), **did not delete the third orphan** (§3.4), **did not rename the map
-  classes** (§3.5).
+  line. ⚠ Its *residue* is what #94 then had to clean up — see §4.6.
+- **Did not migrate `/resources`** to the shared band (§3.3), **did not delete
+  the third orphan** (§3.4), **did not rename the map classes** (§3.5).
+  ⚠ The rename is now cheaper than it was: `world-map.css` is 172 lines
+  lighter, so there is far less carrying the misnamed prefix.
