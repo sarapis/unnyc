@@ -3,7 +3,7 @@
 Paste the block below into a new session. Everything above the line is context for
 whoever is maintaining this file.
 
-**Last updated 2026-09-12.** This file is the standing onboarding brief: where the
+**Last updated 2026-09-15.** This file is the standing onboarding brief: where the
 site lives, how to verify things here, what the pages are. It is the one doc
 guaranteed to be read first, so it is the one most damaging to leave stale — it
 spent 2026-08-19 describing a homepage, a principles grid and a hostname that had
@@ -169,13 +169,21 @@ Thirteen routes. Reader path and nav order: `/` -> `/start` -> `/principles` ->
   and the 13 shaded catalogue countries open a popup on `/` and `/start`; CTFG's
   62 dots stay decorative. ⚠ `role="img"` had to be dropped for that (it makes
   the subtree presentational, so a focusable child has no accessible name), and
-  the pins are under WCAG 2.5.8's target size — carried by the "equivalent
-  control on the same page" exception, which **OSPOs do not have**. See
-  CLAUDE.md and docs/CONTINUE.md §3.2.
-  **`/start`, `/principles`, `/crosswalk` and `/success` end with a shared
-  "Let's keep going" band** (`content/keep-going.md` + `UnnycKeepGoing`), one
-  list for all four with the current page filtered out. ⚠ `/resources` still has
-  its own older `foot:` block — two implementations of one band.
+  the pins are under WCAG 2.5.8's target size. ⚠ That gap USED to be carried
+  by the "equivalent control on the same page" exception — the text lists were
+  that equivalent, and they were deleted 2026-09-14, so the exception now
+  applies to **no layer**, not just OSPOs. **DECIDED the same day: left as an
+  ACCEPTED GAP**, so don't reopen it as a bug — and don't "fix" it by inflating
+  the hit circles, because 24px at phone scale makes neighbouring European pins
+  activate each other. What makes it survivable is that the pins are real
+  controls whose `aria-label`s are now load-bearing. See CLAUDE.md and
+  docs/CONTINUE.md §5.
+  **`/start`, `/principles`, `/crosswalk`, `/success` and `/resources` end
+  with a shared "Let's keep going" band** (`content/keep-going.md` +
+  `UnnycKeepGoing`), one list for all five with the current page filtered out.
+  ✅ `/resources` was folded onto it in #96 (2026-09-14); it used to carry its
+  own older `foot:` block, and `content/resources.md` no longer has that key.
+  One implementation, five consumers.
 - **`/principles` is two named sections**, each opening on one principle as a
   full-width card then three in columns: **Software Principles** (Open by default
   + Secure by design / Design for reusability / Well documented) and **Community
@@ -365,12 +373,19 @@ Nothing blocks phase 4.
 
 1. **RESOLVED 2026-09-10 — the Leaflet map was deleted**, with its CSS and the
    `leaflet` dependency. What it cost: pan/zoom, and keyboard focus on the
-   geography itself. The per-country COUNTS came back as text (a `<details>`
-   under the map); the shapes did not. ⚠ A THIRD ORPHAN was found while tracing
-   its consumers and is still open: `UnnycEndorserDirectory.js` has no importers
-   either, and its 25 `unnyc-endorsers__` rules in `primer.css` plus one in
-   `principles.css` are dead with it. Not deleted — same kind of owner decision.
-   See CONTINUE.md §4.
+   geography itself. ⚠ The per-country counts came back as text for four days
+   only — that `<details>` was deleted along with the rest of the text lists on
+   2026-09-14. The counts now live in the pins' popups and `aria-label`s; the
+   shapes still carry nothing.
+   ✅ **The third orphan is GONE (2026-09-14, owner's call)** —
+   `UnnycEndorserDirectory.js` is deleted and `primer.css` now has **0**
+   `unnyc-endorsers__` rules. Orphanhood was re-verified against the code
+   before deleting, rather than taken from these docs. ⚠ `principles.css`
+   never had such a rule — earlier notes here counted one, and that was wrong;
+   `/principles` always rendered its own directory markup. Comments naming the
+   component survive on purpose. Its one casualty is `endorsers.lede` in
+   `content/principles.md`, now dead copy — the only question still open here.
+   See CONTINUE.md §4.2.
    ⚠ **The old "photo for homepage card 1" item is RETIRED, not forgotten** — the
    homepage has no cards any more. The first storyscroller section's stat row is
    its own visual, so there is no placeholder and nothing to license.
