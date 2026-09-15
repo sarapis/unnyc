@@ -44,8 +44,14 @@ git log --oneline origin/main..HEAD               # empty
 gh pr list --state open --json number -q length   # 0
 ```
 
-- **`origin/main` is at `b37214f`** ("Merge PR #97"), local `main` equal to it,
-  **working tree clean, nothing unpushed**.
+- **`origin/main` was at `b37214f`** ("Merge PR #97") when this section was
+  written. ⚠ **Don't trust that hash — or any hash in a handoff. Run the block
+  above.** It was already wrong by the time anyone could read it: #98 merged
+  *this very file* on top of it (`0900ee2`), and #99 moved it again
+  (`acae135`). **A handoff cannot pin its own HEAD**, so the hash is the one
+  line here guaranteed to go stale; everything below it is what to check.
+- Local `main` equal to `origin/main`, **working tree clean, nothing
+  unpushed**.
 - **`main` is the only branch**, locally and on origin. One worktree.
 - **Zero open PRs.**
 - **All 17 production endpoints 200** — 13 routes plus `robots.txt`,
