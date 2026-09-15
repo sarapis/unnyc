@@ -517,6 +517,19 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   grepping the rendered output found `2,789` and passed. **A rendered-HTML check
   structurally cannot see a defect that hydration introduces.** Anything involving a
   client component's `useEffect` needs a browser, not `curl`.
+- **⚠ A `curl | grep` HIT IS NOT PROOF A STRING RENDERS.** An unused key on an
+  object passed as a prop to a client component is **serialised into the RSC
+  flight payload** and ships in the HTML anyway. `content/principles.md`'s
+  `endorsers.lede` is the live example: nothing reads `copy?.lede` — the
+  storyscroller destructures 15 other `copy?.*` fields and not that one — yet
+  `curl https://un.opensource.nyc/principles | grep "More than 150"` returns a
+  hit, from inside an escaped JSON string in a `<script>`. Confirmed in a
+  browser: `document.body.innerText` does NOT contain it.
+  **This is the exact mirror of the hydration trap below** — that one is a
+  defect the rendered HTML cannot show you; this one is a string the rendered
+  HTML shows you that no reader ever sees. Check `innerText` in a browser, not
+  the transport. The same applies to any prop object with unused keys: it is
+  bytes on every response and readable by anyone viewing source.
 - **`getContent()` must be called inside the component or `generateMetadata`, not
   at module scope.** The markdown isn't a module dependency, so a module-level call
   is evaluated once per dev-server process and edits won't appear until a restart.
