@@ -34,7 +34,8 @@ live CMS. Copy `.env.example` to `.env.local` if you need to point elsewhere.
   repo (`content/world-atlas.json`), with no tile server and no API key.
   Leaflet was removed on 2026-09-10; see CLAUDE.md for why (CARTO put their
   free basemap behind a key and kept serving watermarked tiles with HTTP 200).
-- **CSS cascade layers**, no CSS framework, no build step beyond Next
+- **Plain CSS, no cascade layers** (removed 2026-09-19 — see below), no CSS
+  framework, no build step beyond Next
 - Deployed on **Vercel**
 
 ## Site structure
@@ -157,17 +158,25 @@ credential beyond the public brand key.
 
 ## CSS architecture
 
-Cascade layers, declared in [`src/app/base.css`](src/app/base.css):
+Plain CSS: ordinary specificity and source order, no cascade layers.
 
-```
-reset < components < unnyc < site
-```
+⚠ **`@layer` was removed on 2026-09-19 and must not come back.** It shipped in
+Chrome 99 / Firefox 97 / Safari 15.4 — all within weeks of March 2022 — and a
+browser that does not know the at-rule **discards everything inside it**. 86% of
+this site's CSS was wrapped in `@layer`, so every older browser rendered the
+site with no stylesheet at all. `npm run lint:css` fails the build if one
+reappears, and warns about any other CSS feature above the **Chrome 80 /
+Safari 13.1** floor that the JS already sets.
 
-- `unnyc.css` and `primer.css` wrap their rules in `@layer unnyc`.
-- **`site` sits above `unnyc` on purpose.** The nav lives inside `.unnyc-page`
-  so it inherits that scope's tokens — which also means
-  `.unnyc-page a { color: inherit }` would otherwise paint the nav links
-  navy-on-navy. A later layer beats it with no specificity hacks.
+- **Scope component rules with `.unnyc-page`.** The resets
+  (`.unnyc-page a { color: inherit }`, `.unnyc-page button { … }`,
+  `.unnyc-page ul, ol { margin: 0 }`) are (0,1,1) and beat a bare single-class
+  rule. Six bugs have come from this; the layers used to hide a seventh class of
+  it, so the scoping matters more now, not less.
+- **The nav and footer wordmark need the component root too** —
+  `.unnyc-page .unnyc-nav .unnyc-nav__link` (0,3,0) — because `unnyc.css` has
+  its own (0,2,0) rules for `.unnyc-footer__logo` and `.unnyc-btn` and is
+  imported later, so a tie goes to `unnyc.css`.
 - **Tokens come from [`@wegovnyc/design-tokens`](https://github.com/sarapis/wegovnyc-design-tokens)**,
   imported in `base.css` along with the `unnyc` brand variant. Rules read the
   SEMANTIC tier (`--wg-*`) directly — the local `--unnyc-*` alias layer and the
