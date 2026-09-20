@@ -2,13 +2,12 @@
    /resources/guide — "The UN System & NYC Government Technology"
    Long-form briefing ported from old-unnyc.wegov.nyc/guide.html.
    Scoped under `.unnyc-guide`, prefix `unnyc-guide-`.
-   Lives in @layer unnyc, like the rest of the site's page CSS.
+   Unlayered, like the rest of the site's page CSS (see base.css: the cascade
+   layers were removed 2026-09-19 because they broke every pre-2022 browser).
 
    Colours read the SEMANTIC tier (--wg-*) only — never a literal, never
    --db-*. See CLAUDE.md.
    ============================================ */
-
-@layer unnyc {
 
   .unnyc-guide__header {
     padding: var(--wg-sp-16) 0 var(--wg-sp-10);
@@ -192,4 +191,3 @@
       overflow-x: auto;
     }
   }
-}

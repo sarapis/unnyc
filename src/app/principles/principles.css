@@ -23,8 +23,6 @@
    you want a shared directory again, it is a new component.
    ============================================ */
 
-@layer unnyc {
-
   /* Orange-on-dark vertical scrollbar, this page only — matches the
      design handoff's `html { scrollbar-color: ... }` rule, scoped with
      :has() so it doesn't reach in and restyle every other route's
@@ -673,5 +671,3 @@
       justify-content: space-between;
     }
   }
-
-}

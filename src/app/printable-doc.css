@@ -10,8 +10,6 @@
    a real document, not a marketing page.
    ============================================ */
 
-@layer unnyc {
-
   .unnyc-doc-wrap {
     background: var(--wg-surface-alt, #f2efe9);
     padding: var(--wg-sp-10) var(--wg-sp-4) var(--wg-sp-20);
@@ -257,4 +255,3 @@
       margin: 0.75in;
     }
   }
-}

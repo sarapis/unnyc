@@ -11,8 +11,6 @@
    closest existing one, same substitution the other storyscrollers made.
    ============================================ */
 
-@layer unnyc {
-
   /* Orange-on-dark vertical scrollbar, this page only — same treatment as
      the other three storyscrollers, scoped with :has() so it doesn't reach
      in and restyle every other route's scrollbar. Reads
@@ -482,5 +480,3 @@
       left: -1px;
     }
   }
-
-}

@@ -1,11 +1,9 @@
 /* ============================================
    UNNYC Campaign Page — open letter + signatures
    Scoped under `.unnyc-cmp`, prefix `unnyc-cmp-`.
-   Lives in @layer unnyc (same layer as unnyc.css);
-   inherits the --unnyc-* tokens from .unnyc-page.
+   Unlayered, like unnyc.css (see base.css — the cascade layers came out on
+   2026-09-19); inherits the --unnyc-* tokens from .unnyc-page.
    ============================================ */
-
-@layer unnyc {
 
   .unnyc-cmp {
     color: var(--wg-text);
@@ -315,8 +313,8 @@
 
   /* ⚠ These three are scoped with `.unnyc-page` ON PURPOSE — do not "simplify"
      them back to a bare class. unnyc.css carries a global `.unnyc-page button`
-     reset (border: none; background: none) at specificity 0-1-1, in this same
-     @layer. A bare `.unnyc-cmp-form__tab` is 0-1-0, so the reset WINS: it
+     reset (border: none; background: none) at specificity 0-1-1.
+     A bare `.unnyc-cmp-form__tab` is 0-1-0, so the reset WINS: it
      stripped the pill border off both tabs and the gold fill off the active
      one, leaving --wg-brand-deep text on the navy form panel — dark blue on
      dark blue, unreadable. Only `color` survived, because the reset doesn't
@@ -621,4 +619,3 @@
       columns: 1;
     }
   }
-}

@@ -12,8 +12,6 @@
    closest existing one, same substitution the other storyscrollers made.
    ============================================ */
 
-@layer unnyc {
-
   /* Orange-on-navy scrollbar, this page only — same treatment as the other
      storyscrollers (/start, /resources): a dark track regardless of this
      page's own (light/cream) canvas, so the scrollbar itself reads
@@ -594,4 +592,3 @@
       columns: 1;
     }
   }
-}

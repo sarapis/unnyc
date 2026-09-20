@@ -10,8 +10,6 @@
    closest existing one, same substitution the other storyscrollers made.
    ============================================ */
 
-@layer unnyc {
-
   /* Orange-on-dark scrollbar, this page only, scoped with :has() so it
      doesn't reach in and restyle every other route's scrollbar. The track
      is an explicit dark navy, not literal transparency: this page is
@@ -515,6 +513,3 @@
   .unnyc-page .unnyc-resources-story__data-links a {
     color: var(--wg-accent-strong);
   }
-
-
-}

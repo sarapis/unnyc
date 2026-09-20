@@ -1,11 +1,10 @@
 /* ============================================
    UNNYC hub (/) — the education-first "primer" framing
    Scoped under `.unnyc-pr`, prefix `unnyc-pr-`.
-   Lives in @layer unnyc; inherits --unnyc-* tokens from .unnyc-page
+   Unlayered like the rest of the site's CSS (the cascade layers came out on
+   2026-09-19 — see base.css); inherits --unnyc-* tokens from .unnyc-page
    and reuses the hub's section/hero/policy/map classes from unnyc.css.
    ============================================ */
-
-@layer unnyc {
 
   /* Hub hash jumps (global UNNYC submenu → /#section) must land below
      the sticky site-header — --pr-header-h (measured by HeaderHeightVar)
@@ -247,7 +246,7 @@
     gap: var(--wg-sp-6);
   }
 
-  .unnyc-pr-path {
+  .unnyc-page .unnyc-pr-path {
     display: block;
     overflow: hidden;
     padding: var(--wg-sp-8);
@@ -484,7 +483,7 @@
     margin-bottom: var(--wg-sp-4);
   }
 
-  .unnyc-pr-concept__link {
+  .unnyc-page .unnyc-pr-concept__link {
     margin-top: auto;
     /* 22px -> 30px, clearing WCAG 2.5.8's 24px for a non-inline target. Same
        treatment as the three other card links on this site — see
@@ -976,7 +975,7 @@
     margin-bottom: var(--wg-sp-1);
   }
 
-  .unnyc-pr-case__link {
+  .unnyc-page .unnyc-pr-case__link {
     margin-top: auto;
     /* 22px -> 30px, clearing WCAG 2.5.8's 24px for a non-inline target. Same
        treatment as the three other card links on this site — see
@@ -1132,7 +1131,7 @@
     margin-bottom: var(--wg-sp-1);
   }
 
-  .unnyc-pr-contact__link {
+  .unnyc-page .unnyc-pr-contact__link {
     margin-top: auto;
     /* 4px top/bottom takes a 22px line to a 30px target, clearing the 24px
        WCAG 2.5.8 minimum for a NON-INLINE target. Padding rather than
@@ -1427,5 +1426,3 @@
       padding: var(--wg-sp-6);
     }
   }
-
-}

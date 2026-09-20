@@ -35,8 +35,6 @@
    Colours read the SEMANTIC tier (--wg-*) only. See CLAUDE.md.
    ============================================ */
 
-@layer unnyc {
-
   .unnyc-world-map__panel {
     position: relative;
     border-radius: var(--wg-radius-lg);
@@ -267,4 +265,3 @@
       transform: none;
     }
   }
-}

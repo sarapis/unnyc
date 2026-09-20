@@ -1,4 +1,4 @@
-# Validates content/*.md on every push and pull request.
+# Validates content/*.md and the CSS browser-support floor on every push and PR.
 #
 # The point is the pull-request run: a push to `main` deploys to production
 # immediately, so the useful place to catch a malformed content file is before
@@ -6,7 +6,7 @@
 #
 # It duplicates the `prebuild` check on purpose — this reports in seconds
 # against the commit, rather than as a failed deploy several minutes later.
-name: Validate content
+name: Validate content and CSS
 
 on:
   push:
@@ -29,3 +29,8 @@ jobs:
       - run: npm ci
 
       - run: npm run lint:content
+
+      # Guards the CSS browser-support floor. `@layer` made a pre-2022 engine
+      # skip 86% of the site's CSS and render it unstyled; this fails the PR if
+      # one comes back. See scripts/validate-css.mjs.
+      - run: npm run lint:css

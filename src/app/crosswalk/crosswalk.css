@@ -12,8 +12,6 @@
    /principles storyscroller made.
    ============================================ */
 
-@layer unnyc {
-
   /* Orange-on-dark vertical scrollbar, this page only — same treatment
      as the other two storyscrollers, scoped with :has() so it doesn't
      reach in and restyle every other route's scrollbar. Reads
@@ -456,5 +454,3 @@
     color: var(--wg-accent);
     text-decoration: underline;
   }
-
-}

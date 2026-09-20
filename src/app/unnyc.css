@@ -1,12 +1,16 @@
 /* ============================================
    UNNYC — Styles for wegov.nyc/unnyc
 
-   All rules live in `@layer unnyc`, declared LAST in the app cascade order
-   (see src/app/base.css: reset < theme < components < unnyc). Later layers
-   win regardless of specificity, so these plain `.unnyc-page …` selectors
-   beat the global WeGov theme's element rules
-   (`:root[data-theme='wegov'] h1/h2/h3/a`) with no `:root`/`!important`
-   hacks. `.unnyc-page` is kept only to scope styles to the UNNYC subtree.
+   ⚠ THE CASCADE LAYERS ARE GONE (2026-09-19) — see the long note at the top
+   of src/app/base.css for why (`@layer` made every pre-2022 browser render
+   this site with no stylesheet at all). Nothing here is layered any more, so
+   ORDINARY SPECIFICITY AND SOURCE ORDER decide everything in this file. The
+   `.unnyc-page …` selectors that used to win by being in the last layer now
+   win because they are (0,2,0) and the rules they beat are (0,1,1) or lower.
+   ⚠ That margin is thin: a bare single-class rule here is (0,1,0) and LOSES
+   to this file's own `.unnyc-page a` / `button` / `ul,ol` resets. Scope new
+   rules with `.unnyc-page`; `npm run lint:css` catches the text-decoration
+   case but not the others.
    The palette is aliased onto the shared token core
    (src/styles/wegov-tokens.css). Class names match components/.
    ============================================ */
@@ -17,12 +21,17 @@
    chained two cold third-party connections before text could paint, while
    asking for a weight and an italic the site never uses.
 
-   ⚠ UNLAYERED, DELIBERATELY, AND THIS IS THE ONLY UNLAYERED RULE IN THIS FILE.
+   ⚠ THIS OVERRIDE IS STILL LOAD-BEARING, BUT THE MECHANISM CHANGED.
+   It used to be the one UNLAYERED rule in this file, because
    @wegovnyc/design-tokens declares these two tokens at `:root` with no layer
-   (see the note in base.css), and unlayered styles beat EVERY layer — so the
-   same override inside `@layer unnyc` would silently lose and the fonts would
-   quietly stay unloaded. Same specificity as the token, later in the cascade,
-   which is what makes it win.
+   and unlayered beats every layer — inside `@layer unnyc` it would have lost
+   and the fonts would silently never load. With the layers gone (2026-09-19)
+   that reasoning is void: it is now `:root` vs `:root`, equal specificity, so
+   SOURCE ORDER decides. It still wins only because base.css `@import`s the
+   design tokens and layout.js imports base.css BEFORE unnyc.css.
+   ⚠ So the import order in layout.js is now what keeps the fonts loading.
+   Verified after the change: --wg-font-display resolves to "DM Serif Display"
+   and --wg-font-body to "Inter", both faces loaded.
 
    The var() fallbacks are the old token values, so if the classNames in
    layout.js are ever dropped the page degrades to the previous behaviour
@@ -35,8 +44,6 @@
   --wg-font-display: var(--unnyc-font-display, 'DM Serif Display'), Georgia, serif;
   --wg-font-body: var(--unnyc-font-body, 'Inter'), -apple-system, BlinkMacSystemFont, sans-serif;
 }
-
-@layer unnyc {
 
 /* --- Design Tokens + page base (scoped) --- */
 .unnyc-page {

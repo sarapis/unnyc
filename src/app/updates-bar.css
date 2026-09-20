@@ -2,13 +2,14 @@
    UpdatesBar — the site-wide email capture (components/unnyc/UpdatesBar.js),
    in the flow between <main> and the footer.
 
-   ⚠ @layer site, NOT @layer unnyc, for the same reason the nav and footer are
-   there (see the note at the top of base.css): this renders INSIDE .unnyc-page
-   to inherit its tokens, so unnyc.css's element rules — `.unnyc-page a { color:
-   inherit }` and `.unnyc-page button { border: none; background: none }`, both
-   (0,1,1) — would otherwise beat any single-class rule here. A later layer wins
-   without specificity games. The `.unnyc-page` prefixes below are belt AND
-   braces: five bugs in this repo have come from exactly that reset.
+   ⚠ EVERY SELECTOR HERE IS SCOPED WITH .unnyc-page, and that is load-bearing.
+   This renders INSIDE .unnyc-page to inherit its tokens, so unnyc.css's element
+   rules — `.unnyc-page a { color: inherit }` and `.unnyc-page button { border:
+   none; background: none }`, both (0,1,1) — beat any single-class rule here.
+   This block used to sit in `@layer site` and win by layer order; the layers
+   were removed on 2026-09-19 (they made the whole site render unstyled on
+   pre-2022 engines — see base.css), so the scoping is now the ONLY thing
+   holding it. Six bugs in this repo have come from exactly that reset.
 
    ⚠ WHAT IS NO LONGER HERE, because this stopped being a fixed overlay:
    position/inset/z-index, a slide-in keyframe, the `prefers-reduced-motion`
@@ -19,9 +20,7 @@
    which is a CLS penalty rather than an interstitial one.
    ============================================ */
 
-@layer site {
-
-  .unnyc-updates {
+  .unnyc-page .unnyc-updates {
     /* One step lighter than the footer's --wg-brand-deep, so the two dark bands
        read as distinct rather than as one over-tall footer, with the header's
        orange rule repeated on top to mark where the content ends. */
@@ -34,10 +33,10 @@
      page. (The component also suppresses itself on the two printable routes;
      this covers printing any other page.) */
   @media print {
-    .unnyc-updates { display: none; }
+    .unnyc-page .unnyc-updates { display: none; }
   }
 
-  .unnyc-updates__inner {
+  .unnyc-page .unnyc-updates__inner {
     max-width: 1120px;
     margin: 0 auto;
     padding: var(--wg-sp-10, 2.5rem) var(--wg-sp-5, 1.25rem);
@@ -47,7 +46,7 @@
     gap: var(--wg-sp-4, 1rem) var(--wg-sp-8, 2rem);
   }
 
-  .unnyc-updates__copy { flex: 1 1 20rem; min-width: 0; }
+  .unnyc-page .unnyc-updates__copy { flex: 1 1 20rem; min-width: 0; }
 
   .unnyc-page .unnyc-updates__title {
     font-family: var(--wg-font-display, Georgia, serif);
@@ -65,7 +64,7 @@
     margin: var(--wg-sp-2, 0.5rem) 0 0;
   }
 
-  .unnyc-updates__form {
+  .unnyc-page .unnyc-updates__form {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -76,7 +75,7 @@
   /* The visible placeholder is not a label. Kept in the DOM for screen readers
      and hidden visually — NOT `display: none`, which would take it out of the
      accessibility tree and defeat the point. */
-  .unnyc-updates__label {
+  .unnyc-page .unnyc-updates__label {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -141,14 +140,14 @@
   }
 
   @media (max-width: 720px) {
-    .unnyc-updates__inner {
+    .unnyc-page .unnyc-updates__inner {
       padding: var(--wg-sp-8, 2rem) var(--wg-sp-5, 1.25rem);
       gap: var(--wg-sp-3, 0.75rem);
     }
 
     /* Input and button share a row rather than stacking. Both keep their 44px
        height, so the tap targets are untouched. */
-    .unnyc-updates__form {
+    .unnyc-page .unnyc-updates__form {
       flex: 1 1 100%;
       flex-wrap: nowrap;
     }
@@ -161,4 +160,3 @@
       font-size: var(--wg-fs-sm, 0.9375rem);
     }
   }
-}

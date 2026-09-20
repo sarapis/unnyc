@@ -24,8 +24,6 @@
    Colours read the SEMANTIC tier (--wg-*) only. See CLAUDE.md.
    ============================================ */
 
-@layer unnyc {
-
   .unnyc-keep-going {
     background: var(--wg-surface-alt);
     border-top: 1px solid var(--wg-warm-gray);
@@ -49,7 +47,7 @@
     gap: var(--wg-sp-4);
   }
 
-  .unnyc-keep-going__btn {
+  .unnyc-page .unnyc-keep-going__btn {
     display: inline-flex;
     align-items: center;
     gap: var(--wg-sp-2);
@@ -89,5 +87,3 @@
     text-decoration: none;
     box-shadow: 0 14px 30px rgba(0, 114, 158, 0.35);
   }
-
-}
