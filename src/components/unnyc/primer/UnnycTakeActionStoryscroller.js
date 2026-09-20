@@ -31,6 +31,8 @@ export default function UnnycTakeActionStoryscroller({ hero, letter, sign, wall 
         const EASE = 'cubic-bezier(0.22,1,0.36,1)';
         const pending = new Set();
         let io;
+        let ioFired = false;
+        let ioDead = false;
 
         const play = (el) => {
             el.style.opacity = '1';
@@ -38,8 +40,13 @@ export default function UnnycTakeActionStoryscroller({ hero, letter, sign, wall 
         };
 
         const sweep = () => {
+            /* ⚠ `|| Infinity` is load-bearing. A headless or backgrounded
+               renderer can report innerHeight 0, and `top < 0` is false for
+               every element — so nothing would reveal and the section would
+               sit permanently blank. */
+            const fold = window.innerHeight || Infinity;
             pending.forEach((el) => {
-                if (el.getBoundingClientRect().top < window.innerHeight) {
+                if (el.getBoundingClientRect().top < fold) {
                     play(el);
                     io?.unobserve(el);
                     pending.delete(el);
@@ -50,6 +57,14 @@ export default function UnnycTakeActionStoryscroller({ hero, letter, sign, wall 
         const wireOne = (el, index) => {
             if (el.dataset.wired) return;
             el.dataset.wired = '1';
+            /* ⚠ The backstop has already concluded the observer is dead and
+               run its one-shot reveal. Anything wired AFTER that must not be
+               hidden at all, or it stays invisible forever with no second
+               reveal coming. */
+            if (ioDead) {
+                play(el);
+                return;
+            }
             const d = Number(el.dataset.delay || (index % 2) * 40);
             el.style.opacity = '0';
             el.style.transform = 'translateY(22px)';
@@ -66,6 +81,10 @@ export default function UnnycTakeActionStoryscroller({ hero, letter, sign, wall 
             if (!io) {
                 io = new IntersectionObserver(
                     (entries) => {
+                        /* A delivered callback — even one with nothing
+                           intersecting — is proof the observer is alive, which
+                           is what the backstop below keys off. */
+                        ioFired = true;
                         entries.forEach((e) => {
                             if (!e.isIntersecting && e.boundingClientRect.top >= 0) return;
                             play(e.target);
@@ -112,10 +131,36 @@ export default function UnnycTakeActionStoryscroller({ hero, letter, sign, wall 
         const t1 = setTimeout(setup, 400);
         const t2 = setTimeout(setup, 1400);
 
+        /* ⚠ CONTENT MUST NEVER DEPEND ON IntersectionObserver FIRING TO BE
+           VISIBLE. `data-reveal` is hidden in JS (opacity 0) and shown again
+           only when the observer reports it, so a renderer that HAS an
+           IntersectionObserver but never delivers a callback leaves the page
+           blank — the markup is all there and none of it can be seen. That is
+           real: on 2026-09-20 two of GeoPeeker's render nodes showed
+           un.opensource.nyc with a correct nav and an empty hero for exactly
+           this reason, and the same applies to link-preview crawlers and to a
+           tab backgrounded while it loads.
+
+           This fires ONLY if the observer has delivered nothing at all by now,
+           so a working browser is untouched: IO reports on every observed
+           element almost immediately, including the ones off screen, which
+           sets ioFired long before this runs. `sweep()` alone is not enough —
+           it only covers what is above the fold. */
+        const tReveal = setTimeout(() => {
+            if (ioFired) return;
+            ioDead = true;
+            pending.forEach((el) => {
+                play(el);
+                io?.unobserve(el);
+            });
+            pending.clear();
+        }, 2200);
+
         return () => {
             cancelAnimationFrame(raf1);
             clearTimeout(t1);
             clearTimeout(t2);
+            clearTimeout(tReveal);
             window.removeEventListener('scroll', onScroll);
             window.removeEventListener('scrollend', onScroll);
             io?.disconnect();

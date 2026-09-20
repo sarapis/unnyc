@@ -13,8 +13,15 @@ import { usePathname } from 'next/navigation';
  *
  * The class is added HERE, in JS, rather than hardcoded on the elements in
  * JSX — so if JS is disabled or this component errors, elements just never
- * get `.unnyc-reveal` and render normally visible. Nothing gets stuck at
- * opacity: 0. Respects prefers-reduced-motion by skipping entirely.
+ * get `.unnyc-reveal` and render normally visible. Respects
+ * prefers-reduced-motion by skipping entirely.
+ *
+ * ⚠ That covers JS not running AT ALL. It does NOT cover the case that bit us
+ * on 2026-09-20: an engine that HAS an IntersectionObserver but never delivers
+ * a callback (headless screenshotters, link-preview crawlers, a tab
+ * backgrounded while it loads). There the class IS added, the observer never
+ * reports, and every card stays at opacity: 0 permanently. Hence the backstop
+ * below — see the same fix in the seven storyscrollers.
  */
 const SELECTORS = [
     '.unnyc-pr-path',
@@ -53,8 +60,12 @@ export default function ScrollReveal() {
             el.style.setProperty('--reveal-delay', `${Math.min(i * STAGGER_MS, STAGGER_CAP_MS)}ms`);
         });
 
+        let ioFired = false;
         const observer = new IntersectionObserver(
             (entries) => {
+                // A delivered callback is proof the observer is alive, even if
+                // nothing in it is intersecting. The backstop keys off this.
+                ioFired = true;
                 entries.forEach((entry) => {
                     if (!entry.isIntersecting) return;
                     entry.target.classList.add('unnyc-visible');
@@ -76,8 +87,18 @@ export default function ScrollReveal() {
             });
         });
 
+        // Fires ONLY if the observer has reported nothing at all by now, so a
+        // working browser is untouched. Reveals rather than leaves hidden: the
+        // fade is an enhancement, the content is the point.
+        const tReveal = setTimeout(() => {
+            if (ioFired) return;
+            elements.forEach((el) => el.classList.add('unnyc-visible'));
+            observer.disconnect();
+        }, 2200);
+
         return () => {
             cancelAnimationFrame(raf1);
+            clearTimeout(tReveal);
             observer.disconnect();
         };
     }, [pathname]);
