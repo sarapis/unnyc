@@ -2,7 +2,7 @@
   "name": "unnyc",
   "version": "0.1.0",
   "private": true,
-  "description": "UNNYC — the campaign to make New York the first city in the Americas to endorse the UN Open Source Principles.",
+  "description": "UNNYC \u2014 the campaign to make New York the first city in the Americas to endorse the UN Open Source Principles.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,7 +10,8 @@
     "lint": "next lint",
     "lint:tokens": "wg-lint-tokens",
     "lint:content": "node scripts/validate-content.mjs",
-    "prebuild": "wg-lint-tokens || true; node scripts/validate-content.mjs"
+    "prebuild": "wg-lint-tokens || true; node scripts/validate-content.mjs; node scripts/validate-css.mjs",
+    "lint:css": "node scripts/validate-css.mjs"
   },
   "dependencies": {
     "@wegovnyc/design-tokens": "github:sarapis/wegovnyc-design-tokens",

@@ -23,655 +23,651 @@
    you want a shared directory again, it is a new component.
    ============================================ */
 
-@layer unnyc {
+/* Orange-on-dark vertical scrollbar, this page only — matches the
+   design handoff's `html { scrollbar-color: ... }` rule, scoped with
+   :has() so it doesn't reach in and restyle every other route's
+   scrollbar too. The track is an explicit dark navy, not literal
+   transparency: this page is light (warm cream), and "transparent"
+   would show that background through the track instead of reading as
+   the same dark scrollbar the homepage storyscroller uses.
 
-  /* Orange-on-dark vertical scrollbar, this page only — matches the
-     design handoff's `html { scrollbar-color: ... }` rule, scoped with
-     :has() so it doesn't reach in and restyle every other route's
-     scrollbar too. The track is an explicit dark navy, not literal
-     transparency: this page is light (warm cream), and "transparent"
-     would show that background through the track instead of reading as
-     the same dark scrollbar the homepage storyscroller uses.
+   Reads --wg-nyc-orange for the thumb — the one reference-tier token
+   this file uses directly (everywhere else reads the semantic tier —
+   see the note up top): `<html>` sits OUTSIDE `.wg-unnyc`, the div
+   layout.js puts the brand variant class on, so a semantic
+   --wg-accent-warm here would silently resolve to the default (wegov)
+   variant's gold, not UNNYC's orange remap — the exact silent-failure
+   mode CLAUDE.md warns about, just in the other direction. The
+   reference token is variant-agnostic by design, which is what a rule
+   outside the variant's own scope needs. --wg-brand-deep, by contrast,
+   is safe as the semantic token it is: neither variant file remaps it,
+   so it resolves to the same navy whether or not `<html>` is inside
+   `.wg-unnyc`. */
+html:has(.unnyc-pr-story) {
+  scrollbar-color: var(--wg-nyc-orange) var(--wg-brand-deep);
+  scrollbar-width: thin;
+}
 
-     Reads --wg-nyc-orange for the thumb — the one reference-tier token
-     this file uses directly (everywhere else reads the semantic tier —
-     see the note up top): `<html>` sits OUTSIDE `.wg-unnyc`, the div
-     layout.js puts the brand variant class on, so a semantic
-     --wg-accent-warm here would silently resolve to the default (wegov)
-     variant's gold, not UNNYC's orange remap — the exact silent-failure
-     mode CLAUDE.md warns about, just in the other direction. The
-     reference token is variant-agnostic by design, which is what a rule
-     outside the variant's own scope needs. --wg-brand-deep, by contrast,
-     is safe as the semantic token it is: neither variant file remaps it,
-     so it resolves to the same navy whether or not `<html>` is inside
-     `.wg-unnyc`. */
-  html:has(.unnyc-pr-story) {
-    scrollbar-color: var(--wg-nyc-orange) var(--wg-brand-deep);
-    scrollbar-width: thin;
-  }
+html:has(.unnyc-pr-story)::-webkit-scrollbar {
+  width: 9px;
+  background: var(--wg-brand-deep);
+}
 
-  html:has(.unnyc-pr-story)::-webkit-scrollbar {
-    width: 9px;
-    background: var(--wg-brand-deep);
-  }
+html:has(.unnyc-pr-story)::-webkit-scrollbar-track {
+  background: var(--wg-brand-deep);
+}
 
-  html:has(.unnyc-pr-story)::-webkit-scrollbar-track {
-    background: var(--wg-brand-deep);
-  }
+html:has(.unnyc-pr-story)::-webkit-scrollbar-corner {
+  background: var(--wg-brand-deep);
+}
 
-  html:has(.unnyc-pr-story)::-webkit-scrollbar-corner {
-    background: var(--wg-brand-deep);
-  }
+html:has(.unnyc-pr-story)::-webkit-scrollbar-thumb {
+  background: var(--wg-nyc-orange);
+  border-radius: 999px;
+}
 
-  html:has(.unnyc-pr-story)::-webkit-scrollbar-thumb {
-    background: var(--wg-nyc-orange);
-    border-radius: 999px;
-  }
+html:has(.unnyc-pr-story)::-webkit-scrollbar-thumb:hover {
+  background: var(--wg-nyc-orange-light);
+}
 
-  html:has(.unnyc-pr-story)::-webkit-scrollbar-thumb:hover {
-    background: var(--wg-nyc-orange-light);
-  }
+/* ---------------------------------------------------------------------
+   Hero
+   --------------------------------------------------------------------- */
 
-  /* ---------------------------------------------------------------------
-     Hero
-     --------------------------------------------------------------------- */
+.unnyc-pr-story__hero {
+  background: var(--wg-surface-warm);
+  padding: var(--wg-sp-24) var(--wg-sp-6) var(--wg-sp-16);
+}
 
-  .unnyc-pr-story__hero {
-    background: var(--wg-surface-warm);
-    padding: var(--wg-sp-24) var(--wg-sp-6) var(--wg-sp-16);
-  }
+.unnyc-pr-story__hero-grid {
+  max-width: var(--wg-container);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--wg-sp-12);
+  align-items: center;
+}
 
+@media (min-width: 720px) {
   .unnyc-pr-story__hero-grid {
-    max-width: var(--wg-container);
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--wg-sp-12);
-    align-items: center;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--wg-sp-16);
   }
+}
 
-  @media (min-width: 720px) {
-    .unnyc-pr-story__hero-grid {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-      gap: var(--wg-sp-16);
-    }
-  }
+.unnyc-pr-story__kicker {
+  display: flex;
+  align-items: center;
+  gap: var(--wg-sp-4);
+  margin: 0 0 var(--wg-sp-6);
+  font-size: var(--wg-fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--wg-accent-warm-dark);
+}
 
-  .unnyc-pr-story__kicker {
-    display: flex;
-    align-items: center;
-    gap: var(--wg-sp-4);
-    margin: 0 0 var(--wg-sp-6);
-    font-size: var(--wg-fs-xs);
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--wg-accent-warm-dark);
-  }
+.unnyc-pr-story__kicker-rule {
+  display: block;
+  width: 48px;
+  height: 1px;
+  background: var(--wg-accent-warm);
+  flex-shrink: 0;
+}
 
-  .unnyc-pr-story__kicker-rule {
-    display: block;
-    width: 48px;
-    height: 1px;
-    background: var(--wg-accent-warm);
-    flex-shrink: 0;
-  }
+.unnyc-pr-story__h1 {
+  margin: 0 0 var(--wg-sp-6);
+  font-family: var(--wg-font-display);
+  font-weight: 400;
+  font-size: clamp(2.25rem, 4.4vw, 4.25rem);
+  line-height: 1.08;
+  color: var(--wg-brand);
+  text-wrap: pretty;
+}
 
-  .unnyc-pr-story__h1 {
-    margin: 0 0 var(--wg-sp-6);
-    font-family: var(--wg-font-display);
-    font-weight: 400;
-    font-size: clamp(2.25rem, 4.4vw, 4.25rem);
-    line-height: 1.08;
-    color: var(--wg-brand);
-    text-wrap: pretty;
-  }
+.unnyc-pr-story__h1 span {
+  text-decoration: underline;
+  text-decoration-color: var(--wg-accent-warm);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 10px;
+}
 
-  .unnyc-pr-story__h1 span {
-    text-decoration: underline;
-    text-decoration-color: var(--wg-accent-warm);
-    text-decoration-thickness: 3px;
-    text-underline-offset: 10px;
-  }
+.unnyc-pr-story__lede {
+  margin: 0;
+  max-width: 56ch;
+  font-size: var(--wg-fs-lg);
+  line-height: 1.7;
+  color: var(--wg-text-secondary);
+}
 
-  .unnyc-pr-story__lede {
-    margin: 0;
-    max-width: 56ch;
-    font-size: var(--wg-fs-lg);
-    line-height: 1.7;
-    color: var(--wg-text-secondary);
-  }
+.unnyc-pr-story__hero-image {
+  display: flex;
+  justify-content: center;
+}
 
-  .unnyc-pr-story__hero-image {
-    display: flex;
-    justify-content: center;
-  }
+.unnyc-pr-story__hero-image img {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  display: block;
+}
 
-  .unnyc-pr-story__hero-image img {
-    width: 100%;
-    max-width: 480px;
-    height: auto;
-    display: block;
-  }
+/* ---------------------------------------------------------------------
+   "The eight" — rail + tree
+   --------------------------------------------------------------------- */
 
-  /* ---------------------------------------------------------------------
-     "The eight" — rail + tree
-     --------------------------------------------------------------------- */
+.unnyc-pr-story__eight {
+  background: var(--wg-surface-warm);
+  padding: var(--wg-sp-10) var(--wg-sp-6) 0;
+}
 
-  .unnyc-pr-story__eight {
-    background: var(--wg-surface-warm);
-    padding: var(--wg-sp-10) var(--wg-sp-6) 0;
-  }
+.unnyc-pr-story__detail {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--wg-sp-10);
+  align-items: start;
+}
 
+@media (min-width: 820px) {
   .unnyc-pr-story__detail {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--wg-sp-10);
-    align-items: start;
+    grid-template-columns: 200px minmax(0, 1fr);
   }
+}
 
-  @media (min-width: 820px) {
-    .unnyc-pr-story__detail {
-      grid-template-columns: 200px minmax(0, 1fr);
-    }
+@media (min-width: 1100px) {
+  .unnyc-pr-story__detail {
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: var(--wg-sp-16);
   }
+}
 
-  @media (min-width: 1100px) {
-    .unnyc-pr-story__detail {
-      grid-template-columns: 240px minmax(0, 1fr);
-      gap: var(--wg-sp-16);
-    }
-  }
+/* --- Rail --- */
 
-  /* --- Rail --- */
+.unnyc-pr-story__rail {
+  display: none;
+}
 
+@media (min-width: 820px) {
   .unnyc-pr-story__rail {
+    display: block;
+    position: sticky;
+    top: calc(var(--pr-header-h, 68px) + var(--wg-sp-4));
+    align-self: start;
+    padding-top: var(--wg-sp-4);
+    margin-bottom: 160px;
+  }
+}
+
+.unnyc-pr-story__rail-icon-slot {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--wg-sp-5);
+}
+
+.unnyc-pr-story__rail-icon {
+  display: inline-flex;
+  width: 56px;
+  height: 56px;
+  color: var(--wg-accent);
+  transition: opacity 0.35s ease, transform 0.35s var(--wg-ease);
+}
+
+.unnyc-pr-story__rail-icon--lead {
+  color: var(--wg-accent-warm);
+}
+
+.unnyc-pr-story__rail-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 2px;
+}
+
+.unnyc-pr-story__rail-item--indent {
+  padding-left: var(--wg-sp-4);
+}
+
+/* Scoped with .unnyc-page (0-2-0) — unnyc.css's `.unnyc-page a { color:
+   inherit }` is (0,1,1) in this same layer and would otherwise win over a
+   single-class rule here, same trap documented on UnnycPrinciplesRail. */
+.unnyc-page .unnyc-pr-story__rail-link {
+  display: block;
+  padding: 7px var(--wg-sp-3);
+  border-radius: var(--wg-radius-sm);
+  font-size: var(--wg-fs-sm);
+  line-height: 1.4;
+  font-weight: 400;
+  color: var(--wg-text-muted);
+  text-wrap: pretty;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.unnyc-page .unnyc-pr-story__rail-link--lead {
+  font-weight: 600;
+  color: var(--wg-text-secondary);
+}
+
+.unnyc-page .unnyc-pr-story__rail-link--active {
+  background: var(--wg-surface);
+  color: var(--wg-brand);
+  font-weight: 600;
+}
+
+.unnyc-page .unnyc-pr-story__rail-link:hover:not(.unnyc-pr-story__rail-link--active) {
+  color: var(--wg-brand);
+  text-decoration: none;
+}
+
+.unnyc-page .unnyc-pr-story__rail-link:focus-visible {
+  outline: 2px solid var(--wg-accent);
+  outline-offset: -2px;
+}
+
+/* --- Tree --- */
+
+.unnyc-pr-story__tree {
+  position: relative;
+  min-width: 0;
+  padding: var(--wg-sp-4) 0 120px 72px;
+}
+
+@media (min-width: 1100px) {
+  .unnyc-pr-story__tree {
+    padding-left: 96px;
+  }
+}
+
+.unnyc-pr-story__groups,
+.unnyc-pr-story__group {
+  display: grid;
+  gap: 120px;
+}
+
+.unnyc-pr-story__group {
+  position: relative;
+}
+
+.unnyc-pr-story__trunkline {
+  position: absolute;
+  left: -45px;
+  top: 24px;
+  bottom: 0;
+  width: 2px;
+  background: var(--wg-warm-gray);
+}
+
+@media (min-width: 1100px) {
+  .unnyc-pr-story__trunkline {
+    left: -69px;
+  }
+}
+
+/* The growing orange fill, latched by JS to never shrink on scroll-up. */
+.unnyc-pr-story__trunkline--fill {
+  background: var(--wg-accent-warm);
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.unnyc-pr-story__article {
+  position: relative;
+  scroll-margin-top: calc(var(--pr-header-h, 68px) + var(--wg-sp-5));
+}
+
+.unnyc-pr-story__branch {
+  position: absolute;
+  left: -72px;
+  top: -70px;
+  overflow: visible;
+}
+
+@media (min-width: 1100px) {
+  .unnyc-pr-story__branch {
+    left: -96px;
+  }
+}
+
+.unnyc-pr-story__branch--lead {
+  top: -6px;
+}
+
+.unnyc-pr-story__group-kicker {
+  margin: 0 0 10px;
+  font-size: var(--wg-fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--wg-accent-warm-dark);
+}
+
+.unnyc-pr-story__heading-row {
+  display: flex;
+  align-items: center;
+  gap: var(--wg-sp-4);
+  margin-bottom: var(--wg-sp-4);
+}
+
+.unnyc-pr-story__heading-row--lead {
+  gap: 18px;
+  margin-bottom: var(--wg-sp-5);
+}
+
+.unnyc-pr-story__title {
+  position: relative;
+  margin: 0;
+  font-family: var(--wg-font-display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  line-height: 1.2;
+  color: var(--wg-brand);
+}
+
+.unnyc-pr-story__article--lead .unnyc-pr-story__title {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.15;
+}
+
+.unnyc-pr-story__uline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;
+  height: 2px;
+  background: var(--wg-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.7s cubic-bezier(0.2, 0.6, 0.3, 1) 0.65s;
+}
+
+.unnyc-pr-story__uline--warm {
+  background: var(--wg-accent-warm);
+  transition-delay: 0.66s;
+}
+
+.unnyc-pr-story__byline {
+  margin: 0 0 28px;
+  font-size: var(--wg-fs-base);
+  color: var(--wg-text-secondary);
+}
+
+.unnyc-pr-story__byline--lead {
+  margin: 0 0 var(--wg-sp-8);
+  font-family: var(--wg-font-display);
+  font-size: 1.375rem;
+  line-height: 1.4;
+  color: var(--wg-brand);
+  text-wrap: pretty;
+}
+
+.unnyc-pr-story__cw {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--wg-sp-8);
+  align-items: start;
+}
+
+@media (min-width: 720px) {
+  .unnyc-pr-story__cw {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+}
+
+.unnyc-pr-story__prose {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--wg-brand);
+}
+
+.unnyc-pr-story__prose p {
+  margin: 0;
+}
+
+.unnyc-pr-story__prose p + p {
+  margin-top: var(--wg-sp-4);
+}
+
+.unnyc-pr-story__gap {
+  border: 1px solid var(--wg-warm-gray);
+  border-radius: var(--wg-radius-lg);
+  padding: 26px 28px;
+  background: var(--wg-surface);
+  box-shadow: var(--wg-shadow-sm);
+}
+
+.unnyc-pr-story__gap-label {
+  margin: 0 0 var(--wg-sp-3);
+  font-size: var(--wg-fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--wg-accent-warm-dark);
+}
+
+.unnyc-pr-story__gap p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--wg-brand);
+}
+
+/* ---------------------------------------------------------------------
+   Endorser directory
+   --------------------------------------------------------------------- */
+
+.unnyc-pr-story__endorsers {
+  background: var(--wg-surface-alt);
+  padding: var(--wg-sp-24) var(--wg-sp-6);
+  border-top: 1px solid var(--wg-warm-gray);
+  scroll-margin-top: calc(var(--pr-header-h, 68px) + var(--wg-sp-5));
+}
+
+.unnyc-pr-story__endorsers-grid {
+  max-width: var(--wg-container);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--wg-sp-12);
+  align-items: start;
+}
+
+@media (min-width: 720px) {
+  .unnyc-pr-story__endorsers-grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--wg-sp-16);
+  }
+}
+
+.unnyc-pr-story__endorsers-aside {
+  display: grid;
+  gap: var(--wg-sp-6);
+  align-content: start;
+  justify-items: start;
+}
+
+@media (min-width: 720px) {
+  .unnyc-pr-story__endorsers-aside {
+    position: sticky;
+    top: calc(var(--pr-header-h, 68px) + var(--wg-sp-10));
+  }
+}
+
+.unnyc-pr-story__endorsers-title {
+  margin: 0;
+  font-family: var(--wg-font-display);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  line-height: 1.15;
+  color: var(--wg-brand);
+  text-wrap: pretty;
+}
+
+.unnyc-pr-story__directory {
+  min-width: 0;
+}
+
+.unnyc-pr-story__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--wg-sp-2);
+  margin: 0 0 var(--wg-sp-5);
+}
+
+.unnyc-page .unnyc-pr-story__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--wg-sp-2);
+  min-height: 40px;
+  padding: var(--wg-sp-2) var(--wg-sp-4);
+  border-radius: 999px;
+  border: 1px solid var(--wg-warm-gray);
+  background: var(--wg-surface);
+  color: var(--wg-brand);
+  font-family: var(--wg-font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.unnyc-page .unnyc-pr-story__chip:hover:not(.unnyc-pr-story__chip--active) {
+  border-color: var(--wg-accent);
+}
+
+.unnyc-page .unnyc-pr-story__chip:focus-visible {
+  outline: 2px solid var(--wg-accent);
+  outline-offset: 2px;
+}
+
+.unnyc-page .unnyc-pr-story__chip--active {
+  background: var(--wg-accent);
+  border-color: var(--wg-accent);
+  color: var(--wg-text-inverse);
+}
+
+.unnyc-pr-story__chip-count {
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.75;
+}
+
+.unnyc-pr-story__status {
+  margin: 0 0 var(--wg-sp-5);
+  font-size: 0.8125rem;
+  color: var(--wg-text-secondary);
+}
+
+.unnyc-pr-story__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--wg-sp-3);
+}
+
+.unnyc-pr-story__org {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  padding: var(--wg-sp-3) var(--wg-sp-4);
+  background: var(--wg-surface);
+  border: 1px solid var(--wg-warm-gray);
+  border-radius: var(--wg-radius-sm);
+}
+
+.unnyc-pr-story__org-name {
+  font-size: var(--wg-fs-sm);
+  font-weight: 600;
+  color: var(--wg-brand);
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.unnyc-pr-story__org-sector {
+  font-size: var(--wg-fs-xs);
+  color: var(--wg-text-secondary);
+}
+
+.unnyc-pr-story__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--wg-sp-2);
+  margin-top: var(--wg-sp-6);
+}
+
+.unnyc-pr-story__pages {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.unnyc-page .unnyc-pr-story__page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0 var(--wg-sp-3);
+  border: 1px solid var(--wg-warm-gray);
+  border-radius: var(--wg-radius-sm);
+  background: var(--wg-surface);
+  color: var(--wg-brand);
+  font-family: var(--wg-font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.unnyc-page .unnyc-pr-story__page:hover:not(:disabled):not(.unnyc-pr-story__page--active) {
+  border-color: var(--wg-accent);
+}
+
+.unnyc-page .unnyc-pr-story__page:focus-visible {
+  outline: 2px solid var(--wg-accent);
+  outline-offset: 2px;
+}
+
+.unnyc-page .unnyc-pr-story__page--active {
+  background: var(--wg-accent);
+  border-color: var(--wg-accent);
+  color: var(--wg-text-inverse);
+}
+
+.unnyc-page .unnyc-pr-story__page:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.unnyc-pr-story__page-ellipsis {
+  padding: 0 var(--wg-sp-1);
+  color: var(--wg-text-secondary);
+}
+
+.unnyc-pr-story__note {
+  margin: var(--wg-sp-8) 0 0;
+  font-size: var(--wg-fs-xs);
+  line-height: 1.6;
+  color: var(--wg-text-secondary);
+}
+
+.unnyc-pr-story__note a {
+  color: var(--wg-accent-strong);
+}
+
+@media (max-width: 640px) {
+  .unnyc-pr-story__pages {
     display: none;
   }
 
-  @media (min-width: 820px) {
-    .unnyc-pr-story__rail {
-      display: block;
-      position: sticky;
-      top: calc(var(--pr-header-h, 68px) + var(--wg-sp-4));
-      align-self: start;
-      padding-top: var(--wg-sp-4);
-      margin-bottom: 160px;
-    }
-  }
-
-  .unnyc-pr-story__rail-icon-slot {
-    height: 72px;
-    display: flex;
-    align-items: center;
-    margin-bottom: var(--wg-sp-5);
-  }
-
-  .unnyc-pr-story__rail-icon {
-    display: inline-flex;
-    width: 56px;
-    height: 56px;
-    color: var(--wg-accent);
-    transition: opacity 0.35s ease, transform 0.35s var(--wg-ease);
-  }
-
-  .unnyc-pr-story__rail-icon--lead {
-    color: var(--wg-accent-warm);
-  }
-
-  .unnyc-pr-story__rail-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    gap: 2px;
-  }
-
-  .unnyc-pr-story__rail-item--indent {
-    padding-left: var(--wg-sp-4);
-  }
-
-  /* Scoped with .unnyc-page (0-2-0) — unnyc.css's `.unnyc-page a { color:
-     inherit }` is (0,1,1) in this same layer and would otherwise win over a
-     single-class rule here, same trap documented on UnnycPrinciplesRail. */
-  .unnyc-page .unnyc-pr-story__rail-link {
-    display: block;
-    padding: 7px var(--wg-sp-3);
-    border-radius: var(--wg-radius-sm);
-    font-size: var(--wg-fs-sm);
-    line-height: 1.4;
-    font-weight: 400;
-    color: var(--wg-text-muted);
-    text-wrap: pretty;
-    text-decoration: none;
-    transition: background 0.2s ease, color 0.2s ease;
-  }
-
-  .unnyc-page .unnyc-pr-story__rail-link--lead {
-    font-weight: 600;
-    color: var(--wg-text-secondary);
-  }
-
-  .unnyc-page .unnyc-pr-story__rail-link--active {
-    background: var(--wg-surface);
-    color: var(--wg-brand);
-    font-weight: 600;
-  }
-
-  .unnyc-page .unnyc-pr-story__rail-link:hover:not(.unnyc-pr-story__rail-link--active) {
-    color: var(--wg-brand);
-    text-decoration: none;
-  }
-
-  .unnyc-page .unnyc-pr-story__rail-link:focus-visible {
-    outline: 2px solid var(--wg-accent);
-    outline-offset: -2px;
-  }
-
-  /* --- Tree --- */
-
-  .unnyc-pr-story__tree {
-    position: relative;
-    min-width: 0;
-    padding: var(--wg-sp-4) 0 120px 72px;
-  }
-
-  @media (min-width: 1100px) {
-    .unnyc-pr-story__tree {
-      padding-left: 96px;
-    }
-  }
-
-  .unnyc-pr-story__groups,
-  .unnyc-pr-story__group {
-    display: grid;
-    gap: 120px;
-  }
-
-  .unnyc-pr-story__group {
-    position: relative;
-  }
-
-  .unnyc-pr-story__trunkline {
-    position: absolute;
-    left: -45px;
-    top: 24px;
-    bottom: 0;
-    width: 2px;
-    background: var(--wg-warm-gray);
-  }
-
-  @media (min-width: 1100px) {
-    .unnyc-pr-story__trunkline {
-      left: -69px;
-    }
-  }
-
-  /* The growing orange fill, latched by JS to never shrink on scroll-up. */
-  .unnyc-pr-story__trunkline--fill {
-    background: var(--wg-accent-warm);
-    transform: scaleY(0);
-    transform-origin: top;
-  }
-
-  .unnyc-pr-story__article {
-    position: relative;
-    scroll-margin-top: calc(var(--pr-header-h, 68px) + var(--wg-sp-5));
-  }
-
-  .unnyc-pr-story__branch {
-    position: absolute;
-    left: -72px;
-    top: -70px;
-    overflow: visible;
-  }
-
-  @media (min-width: 1100px) {
-    .unnyc-pr-story__branch {
-      left: -96px;
-    }
-  }
-
-  .unnyc-pr-story__branch--lead {
-    top: -6px;
-  }
-
-  .unnyc-pr-story__group-kicker {
-    margin: 0 0 10px;
-    font-size: var(--wg-fs-xs);
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--wg-accent-warm-dark);
-  }
-
-  .unnyc-pr-story__heading-row {
-    display: flex;
-    align-items: center;
-    gap: var(--wg-sp-4);
-    margin-bottom: var(--wg-sp-4);
-  }
-
-  .unnyc-pr-story__heading-row--lead {
-    gap: 18px;
-    margin-bottom: var(--wg-sp-5);
-  }
-
-  .unnyc-pr-story__title {
-    position: relative;
-    margin: 0;
-    font-family: var(--wg-font-display);
-    font-weight: 400;
-    font-size: clamp(1.5rem, 2.4vw, 2rem);
-    line-height: 1.2;
-    color: var(--wg-brand);
-  }
-
-  .unnyc-pr-story__article--lead .unnyc-pr-story__title {
-    font-size: clamp(1.75rem, 3vw, 2.5rem);
-    line-height: 1.15;
-  }
-
-  .unnyc-pr-story__uline {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -8px;
-    height: 2px;
-    background: var(--wg-accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.7s cubic-bezier(0.2, 0.6, 0.3, 1) 0.65s;
-  }
-
-  .unnyc-pr-story__uline--warm {
-    background: var(--wg-accent-warm);
-    transition-delay: 0.66s;
-  }
-
-  .unnyc-pr-story__byline {
-    margin: 0 0 28px;
-    font-size: var(--wg-fs-base);
-    color: var(--wg-text-secondary);
-  }
-
-  .unnyc-pr-story__byline--lead {
-    margin: 0 0 var(--wg-sp-8);
-    font-family: var(--wg-font-display);
-    font-size: 1.375rem;
-    line-height: 1.4;
-    color: var(--wg-brand);
-    text-wrap: pretty;
-  }
-
-  .unnyc-pr-story__cw {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--wg-sp-8);
-    align-items: start;
-  }
-
-  @media (min-width: 720px) {
-    .unnyc-pr-story__cw {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    }
-  }
-
-  .unnyc-pr-story__prose {
-    margin: 0;
-    font-size: 1.0625rem;
-    line-height: 1.75;
-    color: var(--wg-brand);
-  }
-
-  .unnyc-pr-story__prose p {
-    margin: 0;
-  }
-
-  .unnyc-pr-story__prose p + p {
-    margin-top: var(--wg-sp-4);
-  }
-
-  .unnyc-pr-story__gap {
-    border: 1px solid var(--wg-warm-gray);
-    border-radius: var(--wg-radius-lg);
-    padding: 26px 28px;
-    background: var(--wg-surface);
-    box-shadow: var(--wg-shadow-sm);
-  }
-
-  .unnyc-pr-story__gap-label {
-    margin: 0 0 var(--wg-sp-3);
-    font-size: var(--wg-fs-xs);
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--wg-accent-warm-dark);
-  }
-
-  .unnyc-pr-story__gap p {
-    margin: 0;
-    font-size: 0.9375rem;
-    line-height: 1.7;
-    color: var(--wg-brand);
-  }
-
-  /* ---------------------------------------------------------------------
-     Endorser directory
-     --------------------------------------------------------------------- */
-
-  .unnyc-pr-story__endorsers {
-    background: var(--wg-surface-alt);
-    padding: var(--wg-sp-24) var(--wg-sp-6);
-    border-top: 1px solid var(--wg-warm-gray);
-    scroll-margin-top: calc(var(--pr-header-h, 68px) + var(--wg-sp-5));
-  }
-
-  .unnyc-pr-story__endorsers-grid {
-    max-width: var(--wg-container);
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--wg-sp-12);
-    align-items: start;
-  }
-
-  @media (min-width: 720px) {
-    .unnyc-pr-story__endorsers-grid {
-      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-      gap: var(--wg-sp-16);
-    }
-  }
-
-  .unnyc-pr-story__endorsers-aside {
-    display: grid;
-    gap: var(--wg-sp-6);
-    align-content: start;
-    justify-items: start;
-  }
-
-  @media (min-width: 720px) {
-    .unnyc-pr-story__endorsers-aside {
-      position: sticky;
-      top: calc(var(--pr-header-h, 68px) + var(--wg-sp-10));
-    }
-  }
-
-  .unnyc-pr-story__endorsers-title {
-    margin: 0;
-    font-family: var(--wg-font-display);
-    font-weight: 400;
-    font-size: clamp(1.75rem, 3.2vw, 2.75rem);
-    line-height: 1.15;
-    color: var(--wg-brand);
-    text-wrap: pretty;
-  }
-
-  .unnyc-pr-story__directory {
-    min-width: 0;
-  }
-
-  .unnyc-pr-story__chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--wg-sp-2);
-    margin: 0 0 var(--wg-sp-5);
-  }
-
-  .unnyc-page .unnyc-pr-story__chip {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--wg-sp-2);
-    min-height: 40px;
-    padding: var(--wg-sp-2) var(--wg-sp-4);
-    border-radius: 999px;
-    border: 1px solid var(--wg-warm-gray);
-    background: var(--wg-surface);
-    color: var(--wg-brand);
-    font-family: var(--wg-font-body);
-    font-size: 0.8125rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-  }
-
-  .unnyc-page .unnyc-pr-story__chip:hover:not(.unnyc-pr-story__chip--active) {
-    border-color: var(--wg-accent);
-  }
-
-  .unnyc-page .unnyc-pr-story__chip:focus-visible {
-    outline: 2px solid var(--wg-accent);
-    outline-offset: 2px;
-  }
-
-  .unnyc-page .unnyc-pr-story__chip--active {
-    background: var(--wg-accent);
-    border-color: var(--wg-accent);
-    color: var(--wg-text-inverse);
-  }
-
-  .unnyc-pr-story__chip-count {
-    font-size: 0.6875rem;
-    font-variant-numeric: tabular-nums;
-    opacity: 0.75;
-  }
-
-  .unnyc-pr-story__status {
-    margin: 0 0 var(--wg-sp-5);
-    font-size: 0.8125rem;
-    color: var(--wg-text-secondary);
-  }
-
-  .unnyc-pr-story__grid {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: var(--wg-sp-3);
-  }
-
-  .unnyc-pr-story__org {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    min-width: 0;
-    padding: var(--wg-sp-3) var(--wg-sp-4);
-    background: var(--wg-surface);
-    border: 1px solid var(--wg-warm-gray);
-    border-radius: var(--wg-radius-sm);
-  }
-
-  .unnyc-pr-story__org-name {
-    font-size: var(--wg-fs-sm);
-    font-weight: 600;
-    color: var(--wg-brand);
-    line-height: 1.4;
-    text-wrap: pretty;
-  }
-
-  .unnyc-pr-story__org-sector {
-    font-size: var(--wg-fs-xs);
-    color: var(--wg-text-secondary);
-  }
-
   .unnyc-pr-story__pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: var(--wg-sp-2);
-    margin-top: var(--wg-sp-6);
+    justify-content: space-between;
   }
-
-  .unnyc-pr-story__pages {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .unnyc-page .unnyc-pr-story__page {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 40px;
-    min-height: 40px;
-    padding: 0 var(--wg-sp-3);
-    border: 1px solid var(--wg-warm-gray);
-    border-radius: var(--wg-radius-sm);
-    background: var(--wg-surface);
-    color: var(--wg-brand);
-    font-family: var(--wg-font-body);
-    font-size: 0.8125rem;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    cursor: pointer;
-  }
-
-  .unnyc-page .unnyc-pr-story__page:hover:not(:disabled):not(.unnyc-pr-story__page--active) {
-    border-color: var(--wg-accent);
-  }
-
-  .unnyc-page .unnyc-pr-story__page:focus-visible {
-    outline: 2px solid var(--wg-accent);
-    outline-offset: 2px;
-  }
-
-  .unnyc-page .unnyc-pr-story__page--active {
-    background: var(--wg-accent);
-    border-color: var(--wg-accent);
-    color: var(--wg-text-inverse);
-  }
-
-  .unnyc-page .unnyc-pr-story__page:disabled {
-    opacity: 0.45;
-    cursor: default;
-  }
-
-  .unnyc-pr-story__page-ellipsis {
-    padding: 0 var(--wg-sp-1);
-    color: var(--wg-text-secondary);
-  }
-
-  .unnyc-pr-story__note {
-    margin: var(--wg-sp-8) 0 0;
-    font-size: var(--wg-fs-xs);
-    line-height: 1.6;
-    color: var(--wg-text-secondary);
-  }
-
-  .unnyc-pr-story__note a {
-    color: var(--wg-accent-strong);
-  }
-
-  @media (max-width: 640px) {
-    .unnyc-pr-story__pages {
-      display: none;
-    }
-
-    .unnyc-pr-story__pagination {
-      justify-content: space-between;
-    }
-  }
-
 }

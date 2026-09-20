@@ -1,1431 +1,1428 @@
 /* ============================================
    UNNYC hub (/) — the education-first "primer" framing
    Scoped under `.unnyc-pr`, prefix `unnyc-pr-`.
-   Lives in @layer unnyc; inherits --unnyc-* tokens from .unnyc-page
+   Unlayered like the rest of the site's CSS (the cascade layers came out on
+   2026-09-19 — see base.css); inherits --unnyc-* tokens from .unnyc-page
    and reuses the hub's section/hero/policy/map classes from unnyc.css.
    ============================================ */
 
-@layer unnyc {
+/* Hub hash jumps (global UNNYC submenu → /#section) must land below
+   the sticky site-header — --pr-header-h (measured by HeaderHeightVar)
+   captures its height and only a small gap is added. */
+.unnyc-pr .unnyc-reveal section[id],
+.unnyc-pr .unnyc-campaign[id],
+.unnyc-pr .unnyc-section[id] {
+  scroll-margin-top: calc(var(--pr-header-h, 68px) + var(--pr-subnav-h, 0px) + 28px);
+}
 
-  /* Hub hash jumps (global UNNYC submenu → /#section) must land below
-     the sticky site-header — --pr-header-h (measured by HeaderHeightVar)
-     captures its height and only a small gap is added. */
-  .unnyc-pr .unnyc-reveal section[id],
-  .unnyc-pr .unnyc-campaign[id],
-  .unnyc-pr .unnyc-section[id] {
-    scroll-margin-top: calc(var(--pr-header-h, 68px) + var(--pr-subnav-h, 0px) + 28px);
+/* --- Hero tweaks ---
+   The combined hero carries a full two-sentence campaign headline, so dial
+   the display size down from the hub hero's clamp and cap the measure. */
+.unnyc-pr-hero .unnyc-hero__title {
+  /* The FLOOR is --wg-fs-3xl (2rem), not --wg-fs-2xl (1.5rem). 3.4vw only
+     clears 32px above ~941px wide, so every phone and tablet hit the floor —
+     and a 1.5rem floor rendered this h1 at 24px on a 375px screen, smaller
+     than the h1 on every other page (they run 32-44px). Raising only the
+     floor leaves desktop untouched: at 1280px both the old and new clamp
+     compute 43.52px, because the vw term and the cap are unchanged. */
+  font-size: clamp(var(--wg-fs-3xl), 3.4vw, var(--wg-fs-4xl));
+  /* Wide measure: the headline is two full sentences, and a narrow column
+     (it was 20ch) stacked it into five cramped lines. */
+  max-width: 34ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.unnyc-pr-hero__line {
+  display: block;
+}
+
+/* Line 1 (context) sits back a touch; line 2 (the ask) pops in the
+   blue→gold gradient so the call to action reads as the emphasis. */
+.unnyc-pr-hero__line--ask {
+  margin-top: var(--wg-sp-3);
+  background: linear-gradient(135deg, var(--wg-accent-soft), var(--wg-accent-warm-light));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* <small> inside a title line, from content/home.md's inlineMd() pass (see
+   PrimerHero.js) — sized relative to the line's own clamp()'d font-size
+   rather than a fixed value, so it scales the same way across breakpoints.
+   Inherits color/-webkit-text-fill-color, so it still picks up the
+   --line--ask gradient when nested in the ask line. */
+.unnyc-pr-hero__line small {
+  font-size: 0.75em;
+  font-weight: 400;
+}
+
+/* ------------------------------------------------------------------
+   FULL-BLEED HERO (PrimerHeroFullBleed) — a second, competing option
+   for the homepage hero: a photo background with a dark scrim instead
+   of the abstract gradient. Not wired into page.js by default.
+   ------------------------------------------------------------------ */
+
+/* Pixel-sampled from the actual source photo (public/images/home/UNHQ.jpeg,
+   5472x3648): the Secretariat tower's roofline sits at ~17% of the image's
+   height, found by scanning for the first sky->non-sky transition per
+   column and locating the flat plateau (the roofline is flat; sky-vs-cloud
+   noise elsewhere isn't). Two variables for the one figure, not one shared
+   between the two rules below, because CSS resolves them differently:
+   object-position's Y is a genuine height-relative anchor, but
+   padding-top's percentage — despite being a "vertical" property — resolves
+   against the containing block's WIDTH, not height (a real CSS quirk), so
+   it needs a viewport-relative unit instead to mean the same 17%.
+   ⚠ UNVERIFIED VISUALLY — this session's preview can't render screenshots,
+   so this is computed, not eyeballed. Check the real page and adjust both
+   if the kicker doesn't sit exactly on the roofline. */
+.unnyc-hero-fb {
+  --hero-fb-roofline-y: 17%;
+  --hero-fb-roofline-vh: 17vh;
+}
+
+.unnyc-hero-fb {
+  position: relative;
+  /* Not decorative — the image/scrim below sit at negative z-index, which
+     only stacks correctly INSIDE a stacking context this section
+     establishes itself. Without it (position:relative alone doesn't
+     establish one at z-index:auto), they render behind other page content
+     instead of just behind this section's own text. Same reason
+     .unnyc-hero (the original hero, unnyc.css) sets z-index: 0. */
+  z-index: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  overflow: hidden;
+  /* Top padding replaces the roofline offset (was a fixed --wg-sp-24) —
+     this is what actually moves the kicker up to the roofline. */
+  padding: var(--hero-fb-roofline-vh) 0 var(--wg-sp-16);
+}
+
+.unnyc-hero-fb__img {
+  z-index: -2;
+  object-fit: cover;
+  /* Biased toward the top of the source rather than a plain center crop,
+     so the roofline (near the top of a tall source photo) doesn't get
+     cropped away on viewports taller-relative-to-width than the photo. */
+  object-position: center var(--hero-fb-roofline-y);
+}
+
+/* Darkens left-to-right so the right-aligned text stays legible over a
+   busy photo without flattening the whole image — the left side (mostly
+   sky/water in the source photo) stays bright. A second, even vertical
+   wash keeps the bottom-anchored content readable regardless of what's
+   directly behind it. */
+.unnyc-hero-fb__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+  linear-gradient(90deg, transparent 0%, rgba(11, 31, 58, 0.65) 45%, rgba(11, 31, 58, 0.94) 100%),
+  linear-gradient(0deg, rgba(11, 31, 58, 0.82) 0%, rgba(11, 31, 58, 0.24) 45%, rgba(11, 31, 58, 0.44) 100%);
+}
+
+.unnyc-hero-fb__inner {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.unnyc-hero-fb__content {
+  /* Widest atomic title segment ("The Open Source Government") measures
+     689px at this font size — 640px clipped/overflowed it. 720px gives
+     real margin above all three segments that were too wide, not just
+     the one that happened to be widest today. */
+  max-width: 720px;
+  text-align: right;
+}
+
+.unnyc-hero-fb__kicker {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--wg-sp-4);
+  font-size: var(--wg-fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--wg-accent-warm-light);
+  margin: 0 0 var(--wg-sp-6);
+}
+
+.unnyc-hero-fb__kicker i {
+  display: block;
+  width: 48px;
+  height: 1px;
+  background: var(--wg-accent-warm-light);
+  flex-shrink: 0;
+}
+
+.unnyc-hero-fb__title {
+  font-family: var(--wg-font-display);
+  font-weight: 400;
+  font-size: clamp(var(--wg-fs-3xl), 3.6vw, var(--wg-fs-5xl));
+  line-height: 1.15;
+  color: var(--wg-text-inverse);
+  margin: 0 0 var(--wg-sp-6);
+}
+
+.unnyc-hero-fb__line {
+  display: block;
+}
+
+.unnyc-hero-fb__line--ask {
+  margin-top: var(--wg-sp-2);
+  color: var(--wg-accent-warm-light);
+}
+
+.unnyc-hero-fb__line small {
+  font-size: 0.75em;
+  font-weight: 400;
+}
+
+/* Wraps each <br>-delimited segment in content/home.md's titleLines/
+   subtitle for this hero. Plain <br>s alone aren't enough to guarantee a
+   specific line break: at this font size a long segment can still wrap
+   BEFORE reaching its <br>, orphaning the last word or two onto their own
+   line — a real bug this fixed (see the commit this landed in). Forcing
+   each segment atomic means the break happens exactly where written,
+   never mid-segment; the tradeoff is a segment can overflow the column on
+   a narrow viewport instead of wrapping gracefully, which is why this is
+   scoped to the title/subtitle specifically, not the button row below. */
+.unnyc-hero-fb__line span,
+.unnyc-hero-fb__subtitle span {
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .unnyc-hero-fb__line span,
+  .unnyc-hero-fb__subtitle span {
+    white-space: normal;
   }
+}
 
-  /* --- Hero tweaks ---
-     The combined hero carries a full two-sentence campaign headline, so dial
-     the display size down from the hub hero's clamp and cap the measure. */
-  .unnyc-pr-hero .unnyc-hero__title {
-    /* The FLOOR is --wg-fs-3xl (2rem), not --wg-fs-2xl (1.5rem). 3.4vw only
-       clears 32px above ~941px wide, so every phone and tablet hit the floor —
-       and a 1.5rem floor rendered this h1 at 24px on a 375px screen, smaller
-       than the h1 on every other page (they run 32-44px). Raising only the
-       floor leaves desktop untouched: at 1280px both the old and new clamp
-       compute 43.52px, because the vw term and the cap are unchanged. */
-    font-size: clamp(var(--wg-fs-3xl), 3.4vw, var(--wg-fs-4xl));
-    /* Wide measure: the headline is two full sentences, and a narrow column
-       (it was 20ch) stacked it into five cramped lines. */
-    max-width: 34ch;
-    margin-left: auto;
-    margin-right: auto;
-  }
+.unnyc-hero-fb__subtitle {
+  font-size: var(--wg-fs-lg);
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.7;
+  margin: 0 0 var(--wg-sp-8);
+}
 
-  .unnyc-pr-hero__line {
-    display: block;
-  }
+.unnyc-hero-fb__cta {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--wg-sp-4);
+}
 
-  /* Line 1 (context) sits back a touch; line 2 (the ask) pops in the
-     blue→gold gradient so the call to action reads as the emphasis. */
-  .unnyc-pr-hero__line--ask {
-    margin-top: var(--wg-sp-3);
-    background: linear-gradient(135deg, var(--wg-accent-soft), var(--wg-accent-warm-light));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-  }
-
-  /* <small> inside a title line, from content/home.md's inlineMd() pass (see
-     PrimerHero.js) — sized relative to the line's own clamp()'d font-size
-     rather than a fixed value, so it scales the same way across breakpoints.
-     Inherits color/-webkit-text-fill-color, so it still picks up the
-     --line--ask gradient when nested in the ask line. */
-  .unnyc-pr-hero__line small {
-    font-size: 0.75em;
-    font-weight: 400;
-  }
-
-  /* ------------------------------------------------------------------
-     FULL-BLEED HERO (PrimerHeroFullBleed) — a second, competing option
-     for the homepage hero: a photo background with a dark scrim instead
-     of the abstract gradient. Not wired into page.js by default.
-     ------------------------------------------------------------------ */
-
-  /* Pixel-sampled from the actual source photo (public/images/home/UNHQ.jpeg,
-     5472x3648): the Secretariat tower's roofline sits at ~17% of the image's
-     height, found by scanning for the first sky->non-sky transition per
-     column and locating the flat plateau (the roofline is flat; sky-vs-cloud
-     noise elsewhere isn't). Two variables for the one figure, not one shared
-     between the two rules below, because CSS resolves them differently:
-     object-position's Y is a genuine height-relative anchor, but
-     padding-top's percentage — despite being a "vertical" property — resolves
-     against the containing block's WIDTH, not height (a real CSS quirk), so
-     it needs a viewport-relative unit instead to mean the same 17%.
-     ⚠ UNVERIFIED VISUALLY — this session's preview can't render screenshots,
-     so this is computed, not eyeballed. Check the real page and adjust both
-     if the kicker doesn't sit exactly on the roofline. */
+@media (max-width: 720px) {
   .unnyc-hero-fb {
-    --hero-fb-roofline-y: 17%;
-    --hero-fb-roofline-vh: 17vh;
-  }
-
-  .unnyc-hero-fb {
-    position: relative;
-    /* Not decorative — the image/scrim below sit at negative z-index, which
-       only stacks correctly INSIDE a stacking context this section
-       establishes itself. Without it (position:relative alone doesn't
-       establish one at z-index:auto), they render behind other page content
-       instead of just behind this section's own text. Same reason
-       .unnyc-hero (the original hero, unnyc.css) sets z-index: 0. */
-    z-index: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: flex-start;
-    overflow: hidden;
-    /* Top padding replaces the roofline offset (was a fixed --wg-sp-24) —
-       this is what actually moves the kicker up to the roofline. */
-    padding: var(--hero-fb-roofline-vh) 0 var(--wg-sp-16);
-  }
-
-  .unnyc-hero-fb__img {
-    z-index: -2;
-    object-fit: cover;
-    /* Biased toward the top of the source rather than a plain center crop,
-       so the roofline (near the top of a tall source photo) doesn't get
-       cropped away on viewports taller-relative-to-width than the photo. */
-    object-position: center var(--hero-fb-roofline-y);
-  }
-
-  /* Darkens left-to-right so the right-aligned text stays legible over a
-     busy photo without flattening the whole image — the left side (mostly
-     sky/water in the source photo) stays bright. A second, even vertical
-     wash keeps the bottom-anchored content readable regardless of what's
-     directly behind it. */
-  .unnyc-hero-fb__scrim {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background:
-      linear-gradient(90deg, transparent 0%, rgba(11, 31, 58, 0.65) 45%, rgba(11, 31, 58, 0.94) 100%),
-      linear-gradient(0deg, rgba(11, 31, 58, 0.82) 0%, rgba(11, 31, 58, 0.24) 45%, rgba(11, 31, 58, 0.44) 100%);
+    align-items: center;
+    padding: var(--wg-sp-16) 0;
   }
 
   .unnyc-hero-fb__inner {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
+    justify-content: center;
   }
 
-  .unnyc-hero-fb__content {
-    /* Widest atomic title segment ("The Open Source Government") measures
-       689px at this font size — 640px clipped/overflowed it. 720px gives
-       real margin above all three segments that were too wide, not just
-       the one that happened to be widest today. */
-    max-width: 720px;
-    text-align: right;
-  }
-
-  .unnyc-hero-fb__kicker {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: var(--wg-sp-4);
-    font-size: var(--wg-fs-xs);
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--wg-accent-warm-light);
-    margin: 0 0 var(--wg-sp-6);
-  }
-
-  .unnyc-hero-fb__kicker i {
-    display: block;
-    width: 48px;
-    height: 1px;
-    background: var(--wg-accent-warm-light);
-    flex-shrink: 0;
-  }
-
-  .unnyc-hero-fb__title {
-    font-family: var(--wg-font-display);
-    font-weight: 400;
-    font-size: clamp(var(--wg-fs-3xl), 3.6vw, var(--wg-fs-5xl));
-    line-height: 1.15;
-    color: var(--wg-text-inverse);
-    margin: 0 0 var(--wg-sp-6);
-  }
-
-  .unnyc-hero-fb__line {
-    display: block;
-  }
-
-  .unnyc-hero-fb__line--ask {
-    margin-top: var(--wg-sp-2);
-    color: var(--wg-accent-warm-light);
-  }
-
-  .unnyc-hero-fb__line small {
-    font-size: 0.75em;
-    font-weight: 400;
-  }
-
-  /* Wraps each <br>-delimited segment in content/home.md's titleLines/
-     subtitle for this hero. Plain <br>s alone aren't enough to guarantee a
-     specific line break: at this font size a long segment can still wrap
-     BEFORE reaching its <br>, orphaning the last word or two onto their own
-     line — a real bug this fixed (see the commit this landed in). Forcing
-     each segment atomic means the break happens exactly where written,
-     never mid-segment; the tradeoff is a segment can overflow the column on
-     a narrow viewport instead of wrapping gracefully, which is why this is
-     scoped to the title/subtitle specifically, not the button row below. */
-  .unnyc-hero-fb__line span,
-  .unnyc-hero-fb__subtitle span {
-    white-space: nowrap;
-  }
-
-  @media (max-width: 720px) {
-    .unnyc-hero-fb__line span,
-    .unnyc-hero-fb__subtitle span {
-      white-space: normal;
-    }
-  }
-
-  .unnyc-hero-fb__subtitle {
-    font-size: var(--wg-fs-lg);
-    color: rgba(255, 255, 255, 0.82);
-    line-height: 1.7;
-    margin: 0 0 var(--wg-sp-8);
-  }
-
+  .unnyc-hero-fb__content,
+  .unnyc-hero-fb__kicker,
   .unnyc-hero-fb__cta {
-    display: flex;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    gap: var(--wg-sp-4);
-  }
-
-  @media (max-width: 720px) {
-    .unnyc-hero-fb {
-      align-items: center;
-      padding: var(--wg-sp-16) 0;
-    }
-
-    .unnyc-hero-fb__inner {
-      justify-content: center;
-    }
-
-    .unnyc-hero-fb__content,
-    .unnyc-hero-fb__kicker,
-    .unnyc-hero-fb__cta {
-      text-align: center;
-      justify-content: center;
-    }
-  }
-
-  /* --- Hub path cards: the four-question entry point --- */
-  .unnyc-pr-paths {
-    padding: var(--wg-sp-16) 0;
-  }
-
-  .unnyc-pr-paths__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--wg-sp-6);
-  }
-
-  .unnyc-pr-path {
-    display: block;
-    overflow: hidden;
-    padding: var(--wg-sp-8);
-    background: var(--wg-surface);
-    border: 1px solid var(--wg-border);
-    border-radius: var(--wg-radius-lg);
-    box-shadow: var(--wg-shadow-sm);
-    text-decoration: none;
-    color: inherit;
-    transition: transform 0.2s var(--wg-ease), box-shadow 0.2s var(--wg-ease), border-color 0.2s var(--wg-ease);
-  }
-
-  .unnyc-pr-path:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--wg-shadow-lg);
-    border-color: var(--wg-accent-warm);
-  }
-
-  /* Bleeds to the card's edges despite its padding (negative margin cancels
-     it out on three sides); overflow: hidden on .unnyc-pr-path clips it to
-     the card's own rounded corners, so it doesn't need its own radius. */
-  /* Holds a next/image with `fill` (see UnnycPathCards.js), so it needs
-     position + overflow; object-fit on the image reproduces what
-     `background-size: cover` / `background-position: center` used to do. */
-  .unnyc-pr-path__image {
-    position: relative;
-    height: 160px;
-    margin: calc(-1 * var(--wg-sp-8)) calc(-1 * var(--wg-sp-8)) var(--wg-sp-6);
-    overflow: hidden;
-  }
-
-  .unnyc-pr-path__image-img {
-    object-fit: cover;
-    object-position: center;
-  }
-
-  /* A card whose art is a LOGO, not a photograph (`imageStyle: logo` in the
-     content file). `cover` is right for a photo and wrong for a mark: the
-     favicon is a 100x100 square, so covering a 560x160 band scaled it ~5.6x and
-     cropped away everything but a horizontal slice. Contain it on a brand tint
-     instead, scaled down so it sits inside the band rather than touching both
-     edges. `transform` does the insetting because next/image's `fill` writes
-     inset/width/height as INLINE styles, which a class cannot override. */
-  .unnyc-pr-path__image--logo {
-    background: var(--wg-surface-alt);
-    border-bottom: 1px solid var(--wg-border);
-  }
-
-  .unnyc-pr-path__image--logo .unnyc-pr-path__image-img {
-    object-fit: contain;
-    transform: scale(0.42);
-  }
-
-  .unnyc-pr-path__question {
-    font-family: var(--wg-font-display);
-    font-weight: 400;
-    font-size: var(--wg-fs-2xl);
-    color: var(--wg-brand);
-    margin: 0 0 var(--wg-sp-3);
-  }
-
-  .unnyc-pr-path__answer {
-    font-size: var(--wg-fs-base);
-    color: var(--wg-text-secondary);
-    line-height: 1.6;
-    margin: 0;
-  }
-
-  .unnyc-pr-path__arrow {
-    display: inline-block;
-    color: var(--wg-accent-strong);
-    font-weight: 700;
-    transition: transform 0.2s var(--wg-ease);
-  }
-
-  .unnyc-pr-path:hover .unnyc-pr-path__arrow {
-    transform: translateX(4px);
-  }
-
-  /* --- Combined "The World is Going Open Source": endorsers block under the
-     map, separated by a divider. --- */
-  .unnyc-pr-mn__endorsers {
-    margin-top: var(--wg-sp-16);
-    padding-top: var(--wg-sp-12);
-    border-top: 1px solid var(--wg-border);
-  }
-
-  .unnyc-pr-mn__subhead {
-    font-family: var(--wg-font-display);
-    font-weight: 400;
-    font-size: var(--wg-fs-2xl);
-    color: var(--wg-brand);
     text-align: center;
-    margin: 0 0 var(--wg-sp-3);
+    justify-content: center;
   }
+}
 
-  .unnyc-pr-mn__lede {
-    text-align: center;
-    max-width: 720px;
-    margin: 0 auto var(--wg-sp-8);
-    font-size: var(--wg-fs-base);
-    color: var(--wg-text-secondary);
-    line-height: 1.6;
-  }
+/* --- Hub path cards: the four-question entry point --- */
+.unnyc-pr-paths {
+  padding: var(--wg-sp-16) 0;
+}
 
-  /* --- Timeline --- */
-  .unnyc-pr-timeline {
-    list-style: none;
-    margin: 0 auto;
-    padding: 0;
-    max-width: 820px;
-    position: relative;
-  }
+.unnyc-pr-paths__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--wg-sp-6);
+}
 
-  .unnyc-pr-timeline::before {
-    content: '';
-    position: absolute;
-    left: 92px;
-    top: 8px;
-    bottom: 8px;
-    width: 2px;
-    background: linear-gradient(180deg, var(--wg-accent) 0%, var(--wg-accent-warm) 100%);
-    opacity: 0.35;
-  }
+.unnyc-page .unnyc-pr-path {
+  display: block;
+  overflow: hidden;
+  padding: var(--wg-sp-8);
+  background: var(--wg-surface);
+  border: 1px solid var(--wg-border);
+  border-radius: var(--wg-radius-lg);
+  box-shadow: var(--wg-shadow-sm);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s var(--wg-ease), box-shadow 0.2s var(--wg-ease), border-color 0.2s var(--wg-ease);
+}
 
-  .unnyc-pr-timeline__item {
-    display: flex;
-    gap: var(--wg-sp-8);
-    padding: var(--wg-sp-4) 0;
-    position: relative;
-  }
+.unnyc-pr-path:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--wg-shadow-lg);
+  border-color: var(--wg-accent-warm);
+}
 
-  .unnyc-pr-timeline__item::before {
-    content: '';
-    position: absolute;
-    left: 87px;
-    top: calc(var(--wg-sp-4) + 8px);
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--wg-accent-warm);
-    border: 2px solid var(--wg-surface-warm);
-    box-shadow: 0 0 0 2px rgba(212, 168, 67, 0.35);
-  }
+/* Bleeds to the card's edges despite its padding (negative margin cancels
+   it out on three sides); overflow: hidden on .unnyc-pr-path clips it to
+   the card's own rounded corners, so it doesn't need its own radius. */
+/* Holds a next/image with `fill` (see UnnycPathCards.js), so it needs
+   position + overflow; object-fit on the image reproduces what
+   `background-size: cover` / `background-position: center` used to do. */
+.unnyc-pr-path__image {
+  position: relative;
+  height: 160px;
+  margin: calc(-1 * var(--wg-sp-8)) calc(-1 * var(--wg-sp-8)) var(--wg-sp-6);
+  overflow: hidden;
+}
 
-  .unnyc-pr-timeline__year {
-    flex: 0 0 72px;
-    font-size: var(--wg-fs-sm);
-    font-weight: 700;
-    color: var(--wg-accent-strong);
-    text-align: right;
-    padding-top: 4px;
-    white-space: nowrap;
-  }
+.unnyc-pr-path__image-img {
+  object-fit: cover;
+  object-position: center;
+}
 
-  .unnyc-pr-timeline__body {
-    padding-left: var(--wg-sp-4);
-  }
+/* A card whose art is a LOGO, not a photograph (`imageStyle: logo` in the
+   content file). `cover` is right for a photo and wrong for a mark: the
+   favicon is a 100x100 square, so covering a 560x160 band scaled it ~5.6x and
+   cropped away everything but a horizontal slice. Contain it on a brand tint
+   instead, scaled down so it sits inside the band rather than touching both
+   edges. `transform` does the insetting because next/image's `fill` writes
+   inset/width/height as INLINE styles, which a class cannot override. */
+.unnyc-pr-path__image--logo {
+  background: var(--wg-surface-alt);
+  border-bottom: 1px solid var(--wg-border);
+}
 
-  .unnyc-pr-timeline__title {
-    font-family: var(--wg-font-body);
-    font-size: var(--wg-fs-lg);
-    font-weight: 600;
-    color: var(--wg-text);
-    margin: 0 0 var(--wg-sp-1);
-  }
+.unnyc-pr-path__image--logo .unnyc-pr-path__image-img {
+  object-fit: contain;
+  transform: scale(0.42);
+}
 
-  .unnyc-pr-timeline__desc {
-    font-size: var(--wg-fs-sm);
-    color: var(--wg-text-secondary);
-    line-height: 1.65;
-    margin: 0;
-  }
+.unnyc-pr-path__question {
+  font-family: var(--wg-font-display);
+  font-weight: 400;
+  font-size: var(--wg-fs-2xl);
+  color: var(--wg-brand);
+  margin: 0 0 var(--wg-sp-3);
+}
 
-  /* --- Concepts (glossary) --- */
-  .unnyc-pr-concepts__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--wg-sp-5);
-  }
+.unnyc-pr-path__answer {
+  font-size: var(--wg-fs-base);
+  color: var(--wg-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
 
-  .unnyc-pr-concept {
-    background: var(--wg-surface);
-    border: 1px solid var(--wg-border);
-    border-radius: var(--wg-radius-md);
-    padding: var(--wg-sp-6);
-    box-shadow: var(--wg-shadow-sm);
-    scroll-margin-top: calc(var(--pr-header-h, 68px) + var(--pr-subnav-h, 0px) + 28px);
-  }
+.unnyc-pr-path__arrow {
+  display: inline-block;
+  color: var(--wg-accent-strong);
+  font-weight: 700;
+  transition: transform 0.2s var(--wg-ease);
+}
 
-  .unnyc-pr-concept__term {
-    font-family: var(--wg-font-display);
-    font-weight: 400;
-    font-size: var(--wg-fs-xl);
-    color: var(--wg-brand);
-    margin: 0 0 var(--wg-sp-2);
-  }
+.unnyc-pr-path:hover .unnyc-pr-path__arrow {
+  transform: translateX(4px);
+}
 
-  .unnyc-pr-concept__def {
-    font-size: var(--wg-fs-sm);
-    color: var(--wg-text-secondary);
-    line-height: 1.65;
-    margin: 0 0 var(--wg-sp-4);
-  }
+/* --- Combined "The World is Going Open Source": endorsers block under the
+   map, separated by a divider. --- */
+.unnyc-pr-mn__endorsers {
+  margin-top: var(--wg-sp-16);
+  padding-top: var(--wg-sp-12);
+  border-top: 1px solid var(--wg-border);
+}
 
-  .unnyc-pr-concept__nyc {
-    font-size: var(--wg-fs-sm);
-    color: var(--wg-text);
-    line-height: 1.6;
-    margin: 0;
-    padding: var(--wg-sp-3) var(--wg-sp-4);
-    background: rgba(75, 146, 219, 0.07);
-    border-left: 3px solid var(--wg-accent);
-    border-radius: 0 var(--wg-radius-sm) var(--wg-radius-sm) 0;
-  }
+.unnyc-pr-mn__subhead {
+  font-family: var(--wg-font-display);
+  font-weight: 400;
+  font-size: var(--wg-fs-2xl);
+  color: var(--wg-brand);
+  text-align: center;
+  margin: 0 0 var(--wg-sp-3);
+}
 
-  .unnyc-pr-concept__nyc-label {
-    display: block;
-    font-size: var(--wg-fs-xs);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--wg-accent-strong);
-    margin-bottom: var(--wg-sp-1);
-  }
+.unnyc-pr-mn__lede {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto var(--wg-sp-8);
+  font-size: var(--wg-fs-base);
+  color: var(--wg-text-secondary);
+  line-height: 1.6;
+}
 
-  /* Make the concept card a column so the reference link pins to the base. */
-  .unnyc-pr-concept {
-    display: flex;
-    flex-direction: column;
-  }
+/* --- Timeline --- */
+.unnyc-pr-timeline {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 820px;
+  position: relative;
+}
 
-  .unnyc-pr-concept__nyc {
-    margin-bottom: var(--wg-sp-4);
-  }
+.unnyc-pr-timeline::before {
+  content: '';
+  position: absolute;
+  left: 92px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--wg-accent) 0%, var(--wg-accent-warm) 100%);
+  opacity: 0.35;
+}
 
-  .unnyc-pr-concept__link {
-    margin-top: auto;
-    /* 22px -> 30px, clearing WCAG 2.5.8's 24px for a non-inline target. Same
-       treatment as the three other card links on this site — see
-       .unnyc-pr-case__link, .unnyc-pr-contact__link, .unnyc-pr-ospo__links a. */
-    padding: 4px 0;
-    font-size: var(--wg-fs-sm);
-    font-weight: 600;
-    color: var(--wg-accent-strong);
-    text-decoration: none;
-  }
+.unnyc-pr-timeline__item {
+  display: flex;
+  gap: var(--wg-sp-8);
+  padding: var(--wg-sp-4) 0;
+  position: relative;
+}
 
-  .unnyc-pr-concept__link:hover {
-    text-decoration: underline;
-  }
+.unnyc-pr-timeline__item::before {
+  content: '';
+  position: absolute;
+  left: 87px;
+  top: calc(var(--wg-sp-4) + 8px);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--wg-accent-warm);
+  border: 2px solid var(--wg-surface-warm);
+  box-shadow: 0 0 0 2px rgba(212, 168, 67, 0.35);
+}
 
-  /* --- Crosswalk cards link out; add affordance + hover lift --- */
-  .unnyc-page .unnyc-policy__card--link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    transition: transform 0.2s var(--wg-ease), box-shadow 0.2s var(--wg-ease);
-  }
+.unnyc-pr-timeline__year {
+  flex: 0 0 72px;
+  font-size: var(--wg-fs-sm);
+  font-weight: 700;
+  color: var(--wg-accent-strong);
+  text-align: right;
+  padding-top: 4px;
+  white-space: nowrap;
+}
 
-  .unnyc-page .unnyc-policy__card--link:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--wg-shadow-lg);
-  }
+.unnyc-pr-timeline__body {
+  padding-left: var(--wg-sp-4);
+}
 
-  .unnyc-pr-policy__more {
-    display: inline-block;
-    margin-top: var(--wg-sp-4);
-    font-size: var(--wg-fs-sm);
-    font-weight: 600;
-    color: var(--wg-accent-strong);
-  }
+.unnyc-pr-timeline__title {
+  font-family: var(--wg-font-body);
+  font-size: var(--wg-fs-lg);
+  font-weight: 600;
+  color: var(--wg-text);
+  margin: 0 0 var(--wg-sp-1);
+}
 
-  /* --- Crosswalk detail page (/crosswalk) --- */
-  .unnyc-pr-cw__header {
-    padding: var(--wg-sp-12) 0 var(--wg-sp-10);
-    background:
-      radial-gradient(ellipse at 80% -20%, rgba(75, 146, 219, 0.12), transparent 55%),
-      var(--wg-surface-warm);
-    border-bottom: 1px solid var(--wg-border);
-    text-align: center;
-  }
+.unnyc-pr-timeline__desc {
+  font-size: var(--wg-fs-sm);
+  color: var(--wg-text-secondary);
+  line-height: 1.65;
+  margin: 0;
+}
 
-  .unnyc-pr-cw__header-title {
-    font-family: var(--wg-font-display);
-    font-weight: 400;
-    font-size: var(--wg-fs-4xl);
-    line-height: 1.15;
-    color: var(--wg-brand);
-    margin: 0 0 var(--wg-sp-5);
-  }
+/* --- Concepts (glossary) --- */
+.unnyc-pr-concepts__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--wg-sp-5);
+}
 
-  .unnyc-pr-cw__lede {
-    font-size: var(--wg-fs-lg);
-    color: var(--wg-text-secondary);
-    line-height: 1.7;
-    max-width: 760px;
-    margin: 0 auto;
-  }
+.unnyc-pr-concept {
+  background: var(--wg-surface);
+  border: 1px solid var(--wg-border);
+  border-radius: var(--wg-radius-md);
+  padding: var(--wg-sp-6);
+  box-shadow: var(--wg-shadow-sm);
+  scroll-margin-top: calc(var(--pr-header-h, 68px) + var(--pr-subnav-h, 0px) + 28px);
+}
 
-  .unnyc-pr-cw__section {
-    padding: var(--wg-sp-12) 0;
-    scroll-margin-top: calc(var(--pr-header-h, 68px) + var(--pr-subnav-h, 0px) + 72px);
-    border-bottom: 1px solid var(--wg-border);
-  }
+.unnyc-pr-concept__term {
+  font-family: var(--wg-font-display);
+  font-weight: 400;
+  font-size: var(--wg-fs-xl);
+  color: var(--wg-brand);
+  margin: 0 0 var(--wg-sp-2);
+}
 
-  .unnyc-pr-cw__heading {
-    display: flex;
-    align-items: center;
-    gap: var(--wg-sp-3);
-    margin-bottom: var(--wg-sp-6);
-  }
+.unnyc-pr-concept__def {
+  font-size: var(--wg-fs-sm);
+  color: var(--wg-text-secondary);
+  line-height: 1.65;
+  margin: 0 0 var(--wg-sp-4);
+}
 
-  /* Inline SVG (UnnycIcon), so `color` drives the stroke — object-fit is no
-     longer needed, and the icon finally takes a semantic token like everything
-     else on the page. --wg-accent is UN blue; the gold (--wg-accent-warm) is
-     reserved for "active"/emphasis states, which a static principle icon is
-     not. */
-  .unnyc-pr-cw__icon {
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
-    color: var(--wg-accent);
-  }
+.unnyc-pr-concept__nyc {
+  font-size: var(--wg-fs-sm);
+  color: var(--wg-text);
+  line-height: 1.6;
+  margin: 0;
+  padding: var(--wg-sp-3) var(--wg-sp-4);
+  background: rgba(75, 146, 219, 0.07);
+  border-left: 3px solid var(--wg-accent);
+  border-radius: 0 var(--wg-radius-sm) var(--wg-radius-sm) 0;
+}
 
-  .unnyc-pr-cw__title {
-    font-family: var(--wg-font-display);
-    font-weight: 400;
-    font-size: var(--wg-fs-3xl);
-    color: var(--wg-brand);
-    margin: 0;
-  }
+.unnyc-pr-concept__nyc-label {
+  display: block;
+  font-size: var(--wg-fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--wg-accent-strong);
+  margin-bottom: var(--wg-sp-1);
+}
 
-  /* --- Glossary term popup (GlossaryTerm.js) --- */
-  .unnyc-gloss {
-    position: relative;
-    display: inline-block;
-  }
+/* Make the concept card a column so the reference link pins to the base. */
+.unnyc-pr-concept {
+  display: flex;
+  flex-direction: column;
+}
 
-  .unnyc-page .unnyc-gloss__link {
-    color: inherit;
-    text-decoration: underline solid;
-    text-decoration-color: var(--wg-accent-warm-dark);
-    text-decoration-thickness: 1.5px;
-    text-underline-offset: 3px;
-  }
+.unnyc-pr-concept__nyc {
+  margin-bottom: var(--wg-sp-4);
+}
 
-  .unnyc-page .unnyc-gloss__link:hover,
-  .unnyc-page .unnyc-gloss__link:focus {
-    color: var(--wg-accent-strong);
-  }
+.unnyc-page .unnyc-pr-concept__link {
+  margin-top: auto;
+  /* 22px -> 30px, clearing WCAG 2.5.8's 24px for a non-inline target. Same
+     treatment as the three other card links on this site — see
+     .unnyc-pr-case__link, .unnyc-pr-contact__link, .unnyc-pr-ospo__links a. */
+  padding: 4px 0;
+  font-size: var(--wg-fs-sm);
+  font-weight: 600;
+  color: var(--wg-accent-strong);
+  text-decoration: none;
+}
 
+.unnyc-pr-concept__link:hover {
+  text-decoration: underline;
+}
+
+/* --- Crosswalk cards link out; add affordance + hover lift --- */
+.unnyc-page .unnyc-policy__card--link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s var(--wg-ease), box-shadow 0.2s var(--wg-ease);
+}
+
+.unnyc-page .unnyc-policy__card--link:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--wg-shadow-lg);
+}
+
+.unnyc-pr-policy__more {
+  display: inline-block;
+  margin-top: var(--wg-sp-4);
+  font-size: var(--wg-fs-sm);
+  font-weight: 600;
+  color: var(--wg-accent-strong);
+}
+
+/* --- Crosswalk detail page (/crosswalk) --- */
+.unnyc-pr-cw__header {
+  padding: var(--wg-sp-12) 0 var(--wg-sp-10);
+  background:
+  radial-gradient(ellipse at 80% -20%, rgba(75, 146, 219, 0.12), transparent 55%),
+  var(--wg-surface-warm);
+  border-bottom: 1px solid var(--wg-border);
+  text-align: center;
+}
+
+.unnyc-pr-cw__header-title {
+  font-family: var(--wg-font-display);
+  font-weight: 400;
+  font-size: var(--wg-fs-4xl);
+  line-height: 1.15;
+  color: var(--wg-brand);
+  margin: 0 0 var(--wg-sp-5);
+}
+
+.unnyc-pr-cw__lede {
+  font-size: var(--wg-fs-lg);
+  color: var(--wg-text-secondary);
+  line-height: 1.7;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.unnyc-pr-cw__section {
+  padding: var(--wg-sp-12) 0;
+  scroll-margin-top: calc(var(--pr-header-h, 68px) + var(--pr-subnav-h, 0px) + 72px);
+  border-bottom: 1px solid var(--wg-border);
+}
+
+.unnyc-pr-cw__heading {
+  display: flex;
+  align-items: center;
+  gap: var(--wg-sp-3);
+  margin-bottom: var(--wg-sp-6);
+}
+
+/* Inline SVG (UnnycIcon), so `color` drives the stroke — object-fit is no
+   longer needed, and the icon finally takes a semantic token like everything
+   else on the page. --wg-accent is UN blue; the gold (--wg-accent-warm) is
+   reserved for "active"/emphasis states, which a static principle icon is
+   not. */
+.unnyc-pr-cw__icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  color: var(--wg-accent);
+}
+
+.unnyc-pr-cw__title {
+  font-family: var(--wg-font-display);
+  font-weight: 400;
+  font-size: var(--wg-fs-3xl);
+  color: var(--wg-brand);
+  margin: 0;
+}
+
+/* --- Glossary term popup (GlossaryTerm.js) --- */
+.unnyc-gloss {
+  position: relative;
+  display: inline-block;
+}
+
+.unnyc-page .unnyc-gloss__link {
+  color: inherit;
+  text-decoration: underline solid;
+  text-decoration-color: var(--wg-accent-warm-dark);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.unnyc-page .unnyc-gloss__link:hover,
+.unnyc-page .unnyc-gloss__link:focus {
+  color: var(--wg-accent-strong);
+}
+
+.unnyc-gloss__tip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  width: max-content;
+  max-width: 280px;
+  padding: var(--wg-sp-3) var(--wg-sp-4);
+  background: var(--wg-brand-deep);
+  color: var(--wg-text-inverse);
+  font-size: var(--wg-fs-xs);
+  line-height: 1.5;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  border-radius: var(--wg-radius-sm);
+  box-shadow: var(--wg-shadow-lg);
+  pointer-events: none;
+}
+
+.unnyc-gloss__tip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--wg-brand-deep);
+}
+
+@media (max-width: 640px) {
   .unnyc-gloss__tip {
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 50;
-    width: max-content;
-    max-width: 280px;
-    padding: var(--wg-sp-3) var(--wg-sp-4);
-    background: var(--wg-brand-deep);
-    color: var(--wg-text-inverse);
-    font-size: var(--wg-fs-xs);
-    line-height: 1.5;
-    font-weight: 400;
-    text-transform: none;
-    letter-spacing: normal;
-    border-radius: var(--wg-radius-sm);
-    box-shadow: var(--wg-shadow-lg);
-    pointer-events: none;
+    left: 0;
+    transform: none;
+    max-width: 240px;
   }
 
   .unnyc-gloss__tip::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 6px solid transparent;
-    border-top-color: var(--wg-brand-deep);
+    left: 16px;
+    transform: none;
+  }
+}
+
+/* --- Persuasive intro ("why it matters") --- */
+.unnyc-pr-why {
+  padding: var(--wg-sp-16) 0;
+  border-bottom: 1px solid var(--wg-border);
+}
+
+.unnyc-pr-why__heading {
+  font-family: var(--wg-font-display);
+  font-weight: 400;
+  font-size: var(--wg-fs-3xl);
+  color: var(--wg-brand);
+  margin: var(--wg-sp-10) 0 var(--wg-sp-5);
+}
+
+.unnyc-pr-why__heading:first-child {
+  margin-top: 0;
+}
+
+.unnyc-pr-why p {
+  font-size: var(--wg-fs-lg);
+  line-height: 1.75;
+  color: var(--wg-text);
+  margin: 0 0 var(--wg-sp-5);
+}
+
+.unnyc-pr-why__flag {
+  display: inline-block;
+  font-size: var(--wg-fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--wg-accent-warm-dark);
+  background: rgba(212, 168, 67, 0.12);
+  padding: 2px 8px;
+  border-radius: var(--wg-radius-sm);
+}
+
+/* Prose + pull-quote float side by side instead of stacking. Clearfix on
+   the wrapping block so its floated children aren't collapsed out of the
+   section's height. Stacks back to one column under 900px — see
+   Responsive at the bottom of this file. Also the jump target for
+   crosswalk.css's reasons rail — same offset formula as
+   `.unnyc-pr-cw__section` below, so a rail click doesn't land the
+   heading under the sticky header. */
+.unnyc-pr-why__block {
+  scroll-margin-top: calc(var(--pr-header-h, 68px) + var(--pr-subnav-h, 0px) + 28px);
+}
+
+.unnyc-pr-why__block::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+/* Two-column only when there is actually a pull-quote to sit beside. The 56%
+   was sized against `.unnyc-pr-why__quote`'s 40%; when /crosswalk's Barcelona
+   quote was removed on 2026-08-14 every block kept the narrow column with
+   nothing in the other half. `:has()` ties the layout to the content instead
+   of to a page. */
+.unnyc-pr-why__block:has(blockquote) .unnyc-pr-why__prose {
+  float: left;
+  width: 56%;
+}
+
+.unnyc-pr-why__quote {
+  float: right;
+  width: 40%;
+  margin: 0 0 0 4%;
+  padding: var(--wg-sp-6) var(--wg-sp-8);
+  background: var(--wg-surface);
+  border-left: 3px solid var(--wg-accent-warm);
+  border-radius: 0 var(--wg-radius-md) var(--wg-radius-md) 0;
+}
+
+
+.unnyc-pr-why__quote p {
+  font-family: var(--wg-font-display);
+  font-size: var(--wg-fs-xl);
+  line-height: 1.5;
+  color: var(--wg-brand);
+  margin: 0 0 var(--wg-sp-3);
+}
+
+.unnyc-pr-why__quote cite {
+  display: block;
+  font-style: normal;
+  font-size: var(--wg-fs-sm);
+  color: var(--wg-text-secondary);
+}
+
+.unnyc-pr-why__quote cite a {
+  color: var(--wg-accent-strong);
+  font-weight: 600;
+}
+
+/* --- Principle breakdown: three labeled parts, the gap emphasized ---
+   The main text and the Gap box float side by side rather than stack; the
+   section's own container clears the floats so its height still wraps
+   them. Stacks back to one column under 900px — see Responsive at the
+   bottom of this file. */
+.unnyc-pr-cw__section .unnyc-container--narrow::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.unnyc-pr-cw__part {
+  float: left;
+  width: 56%;
+  margin-bottom: var(--wg-sp-6);
+}
+
+.unnyc-pr-cw__part p {
+  font-size: var(--wg-fs-lg);
+  line-height: 1.75;
+  color: var(--wg-text);
+  margin: 0;
+}
+
+.unnyc-pr-cw__part-label {
+  font-size: var(--wg-fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--wg-text-muted);
+  margin: 0 0 var(--wg-sp-2);
+}
+
+.unnyc-pr-cw__part--gap {
+  float: right;
+  width: 40%;
+  margin: 0 0 0 4%;
+  padding: var(--wg-sp-8);
+  background: rgba(212, 168, 67, 0.09);
+  border: 1.5px solid var(--wg-accent-warm);
+  border-radius: var(--wg-radius-md);
+}
+
+.unnyc-pr-cw__part--gap p {
+  color: var(--wg-brand);
+  font-weight: 500;
+}
+
+.unnyc-pr-cw__part-label--gap {
+  color: var(--wg-accent-warm-dark);
+}
+
+/* --- Closing: why NYC is central --- */
+.unnyc-pr-cw__closing {
+  padding: var(--wg-sp-16) 0;
+  background: var(--wg-surface-alt);
+  border-bottom: 1px solid var(--wg-border);
+}
+
+.unnyc-pr-cw__closing-title {
+  font-family: var(--wg-font-display);
+  font-weight: 400;
+  font-size: var(--wg-fs-3xl);
+  color: var(--wg-brand);
+  margin: 0 0 var(--wg-sp-6);
+}
+
+/* Both paragraphs float left at the same (narrower) width, so the second
+   stacks directly under the first instead of running full width. */
+.unnyc-pr-cw__closing-body::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.unnyc-pr-cw__closing p {
+  float: left;
+  clear: left;
+  width: 56%;
+  font-size: var(--wg-fs-lg);
+  line-height: 1.75;
+  color: var(--wg-text);
+  margin: 0 0 var(--wg-sp-5);
+}
+
+.unnyc-pr-cw__closing p:last-of-type {
+  margin-bottom: 0;
+}
+
+.unnyc-pr-cw__foot {
+  padding: var(--wg-sp-16) 0;
+  text-align: center;
+}
+
+.unnyc-pr-cw__foot p {
+  font-size: var(--wg-fs-xl);
+  font-family: var(--wg-font-display);
+  color: var(--wg-brand);
+  margin: 0 0 var(--wg-sp-6);
+}
+
+.unnyc-pr-cw__foot-ctas {
+  display: flex;
+  justify-content: center;
+  gap: var(--wg-sp-4);
+  flex-wrap: wrap;
+}
+
+.unnyc-pr-cw__foot-ctas .unnyc-btn--outline {
+  color: var(--wg-brand);
+  border-color: var(--wg-border);
+}
+
+/* --- Case studies: infinite carousel ---
+   The item list is rendered twice (see PrimerCases.js) and the track
+   scrolls exactly one set-width (-50%) before looping, so the seam is
+   invisible. Pauses on hover/focus so the text can actually be read. */
+.unnyc-pr-cases__viewport {
+  overflow: hidden;
+  width: 100%;
+  margin-top: var(--wg-sp-8);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 48px, black calc(100% - 48px), transparent);
+  mask-image: linear-gradient(to right, transparent, black 48px, black calc(100% - 48px), transparent);
+}
+
+.unnyc-pr-cases__track {
+  display: flex;
+  align-items: stretch;
+  gap: var(--wg-sp-5);
+  width: max-content;
+  animation: unnyc-cases-scroll 50s linear infinite;
+}
+
+.unnyc-pr-cases__viewport:hover .unnyc-pr-cases__track,
+.unnyc-pr-cases__viewport:focus-within .unnyc-pr-cases__track {
+  animation-play-state: paused;
+}
+
+@keyframes unnyc-cases-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unnyc-pr-cases__track {
+    animation: none;
   }
 
-  @media (max-width: 640px) {
-    .unnyc-gloss__tip {
-      left: 0;
-      transform: none;
-      max-width: 240px;
-    }
+  /* Stopping the marquee is only half the job. The viewport is
+     `overflow: hidden` and the track is `width: max-content` — 3340px against
+     a 375px screen — so with the animation off every card past the first was
+     clipped with no way to reach it. Anyone who sets reduce-motion simply lost
+     the case studies. Let the viewport scroll instead, and drop the edge mask
+     so the region reads as scrollable rather than faded-out. */
+  .unnyc-pr-cases__viewport {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
 
-    .unnyc-gloss__tip::after {
-      left: 16px;
-      transform: none;
-    }
+.unnyc-pr-case {
+  flex: 0 0 340px;
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  background: var(--wg-surface);
+  border: 1px solid var(--wg-border);
+  border-radius: var(--wg-radius-md);
+  overflow: hidden;
+  box-shadow: var(--wg-shadow-sm);
+}
+
+.unnyc-pr-case__image-wrap {
+  width: 100%;
+  height: 160px;
+  background: var(--wg-surface-alt);
+}
+
+.unnyc-pr-case__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.unnyc-pr-case__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: var(--wg-sp-6);
+}
+
+.unnyc-pr-case__place {
+  font-size: var(--wg-fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--wg-accent-warm-dark);
+  margin-bottom: var(--wg-sp-3);
+}
+
+.unnyc-pr-case__headline {
+  font-family: var(--wg-font-display);
+  font-weight: 400;
+  font-size: var(--wg-fs-xl);
+  color: var(--wg-brand);
+  margin: 0 0 var(--wg-sp-3);
+}
+
+.unnyc-pr-case__body {
+  font-size: var(--wg-fs-sm);
+  color: var(--wg-text-secondary);
+  line-height: 1.65;
+  margin: 0 0 var(--wg-sp-4);
+}
+
+.unnyc-pr-case__lesson {
+  font-size: var(--wg-fs-sm);
+  color: var(--wg-text);
+  line-height: 1.6;
+  margin: 0 0 var(--wg-sp-4);
+  padding: var(--wg-sp-3) var(--wg-sp-4);
+  background: rgba(212, 168, 67, 0.1);
+  border-left: 3px solid var(--wg-accent-warm);
+  border-radius: 0 var(--wg-radius-sm) var(--wg-radius-sm) 0;
+}
+
+.unnyc-pr-case__lesson-label {
+  display: block;
+  font-size: var(--wg-fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--wg-accent-warm-dark);
+  margin-bottom: var(--wg-sp-1);
+}
+
+.unnyc-page .unnyc-pr-case__link {
+  margin-top: auto;
+  /* 22px -> 30px, clearing WCAG 2.5.8's 24px for a non-inline target. Same
+     treatment as the three other card links on this site — see
+     .unnyc-pr-concept__link, .unnyc-pr-contact__link, .unnyc-pr-ospo__links a. */
+  padding: 4px 0;
+  font-size: var(--wg-fs-sm);
+  font-weight: 600;
+  color: var(--wg-accent-strong);
+  text-decoration: none;
+}
+
+.unnyc-pr-case__link:hover {
+  text-decoration: underline;
+}
+
+/* --- Barcelona-first / NYC-should-follow callout, combined with the map --- */
+.unnyc-pr-mn__barcelona {
+  max-width: 720px;
+  margin: var(--wg-sp-6) auto 0;
+  padding: var(--wg-sp-5) var(--wg-sp-6);
+  background: var(--wg-surface);
+  border: 1.5px solid var(--wg-accent-warm);
+  border-radius: var(--wg-radius-md);
+  box-shadow: var(--wg-shadow-md);
+}
+
+.unnyc-pr-mn__barcelona p {
+  margin: 0;
+  font-size: var(--wg-fs-base);
+  color: var(--wg-text);
+  line-height: 1.65;
+  text-align: center;
+}
+
+.unnyc-pr-mn__barcelona strong {
+  color: var(--wg-accent-warm-dark);
+}
+
+/* --- Resources --- */
+.unnyc-pr-resources__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--wg-sp-5);
+}
+
+.unnyc-pr-resources__group {
+  background: var(--wg-surface);
+  border: 1px solid var(--wg-border);
+  border-radius: var(--wg-radius-md);
+  padding: var(--wg-sp-6);
+  box-shadow: var(--wg-shadow-sm);
+}
+
+.unnyc-pr-resources__group-header {
+  margin-bottom: var(--wg-sp-4);
+}
+
+.unnyc-pr-resources__group-title {
+  font-family: var(--wg-font-display);
+  font-weight: 400;
+  font-size: var(--wg-fs-xl);
+  color: var(--wg-brand);
+  margin: 0;
+}
+
+.unnyc-pr-resources__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--wg-sp-4);
+}
+
+.unnyc-pr-resources__links a {
+  font-size: var(--wg-fs-sm);
+  font-weight: 600;
+  color: var(--wg-accent-strong);
+  text-decoration: none;
+}
+
+.unnyc-pr-resources__links a:hover {
+  text-decoration: underline;
+}
+
+.unnyc-pr-resources__links p {
+  font-size: var(--wg-fs-xs);
+  color: var(--wg-text-muted);
+  line-height: 1.55;
+  margin: 2px 0 0;
+}
+
+/* --- Contacts --- */
+.unnyc-pr-contacts__group {
+  margin-bottom: var(--wg-sp-10);
+}
+
+.unnyc-pr-contacts__group-title {
+  font-family: var(--wg-font-body);
+  font-size: var(--wg-fs-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--wg-text-muted);
+  margin: 0 0 var(--wg-sp-5);
+}
+
+.unnyc-pr-contacts__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--wg-sp-5);
+}
+
+.unnyc-pr-contact {
+  display: flex;
+  flex-direction: column;
+  background: var(--wg-surface);
+  border: 1px solid var(--wg-border);
+  border-radius: var(--wg-radius-md);
+  padding: var(--wg-sp-6);
+  box-shadow: var(--wg-shadow-sm);
+}
+
+.unnyc-pr-contact__org {
+  font-family: var(--wg-font-body);
+  font-size: var(--wg-fs-base);
+  font-weight: 700;
+  color: var(--wg-brand);
+  margin: 0 0 var(--wg-sp-2);
+}
+
+.unnyc-pr-contact__role {
+  font-size: var(--wg-fs-sm);
+  color: var(--wg-text-secondary);
+  line-height: 1.6;
+  margin: 0 0 var(--wg-sp-3);
+}
+
+.unnyc-pr-contact__helps {
+  font-size: var(--wg-fs-sm);
+  color: var(--wg-text);
+  line-height: 1.55;
+  margin: 0 0 var(--wg-sp-4);
+}
+
+.unnyc-pr-contact__helps-label {
+  display: block;
+  font-size: var(--wg-fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--wg-accent-warm-dark);
+  margin-bottom: var(--wg-sp-1);
+}
+
+.unnyc-page .unnyc-pr-contact__link {
+  margin-top: auto;
+  /* 4px top/bottom takes a 22px line to a 30px target, clearing the 24px
+     WCAG 2.5.8 minimum for a NON-INLINE target. Padding rather than
+     min-height or line-height: it grows the hit area without moving the type
+     or opening a gap between the link and the card's other rows. */
+  padding: 4px 0;
+  font-size: var(--wg-fs-sm);
+  font-weight: 600;
+  color: var(--wg-accent-strong);
+  text-decoration: none;
+}
+
+.unnyc-pr-contact__link:hover {
+  text-decoration: underline;
+}
+
+.unnyc-pr-contacts__note {
+  font-size: var(--wg-fs-xs);
+  color: var(--wg-text-muted);
+  text-align: center;
+  margin: 0;
+}
+
+/* --- Find an OSPO --- */
+.unnyc-pr-ospo__intro {
+  font-size: var(--wg-fs-lg);
+  line-height: 1.75;
+  color: var(--wg-text);
+  max-width: 760px;
+  margin: 0 auto var(--wg-sp-10);
+  text-align: center;
+}
+
+.unnyc-pr-ospo__diagram {
+  max-width: 900px;
+  margin: 0 auto var(--wg-sp-10);
+}
+
+.unnyc-pr-ospo__diagram img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--wg-border);
+  border-radius: var(--wg-radius-md);
+  background: var(--wg-surface);
+}
+
+.unnyc-pr-ospo__diagram figcaption {
+  margin-top: var(--wg-sp-2);
+  font-size: var(--wg-fs-xs);
+  color: var(--wg-text-muted);
+  text-align: center;
+}
+
+.unnyc-pr-ospo__diagram figcaption a {
+  color: var(--wg-text-muted);
+  text-decoration: underline;
+}
+
+.unnyc-pr-ospo__source {
+  font-size: var(--wg-fs-sm);
+  color: var(--wg-text-secondary);
+  text-align: center;
+  margin: 0 0 var(--wg-sp-10);
+}
+
+.unnyc-pr-ospo__source a {
+  color: var(--wg-accent-strong);
+  font-weight: 600;
+}
+
+.unnyc-pr-ospo__country {
+  display: inline-block;
+  font-size: var(--wg-fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--wg-accent-warm-dark);
+  margin-bottom: var(--wg-sp-2);
+}
+
+.unnyc-pr-ospo__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--wg-sp-5);
+}
+
+.unnyc-pr-ospo__card {
+  display: flex;
+  flex-direction: column;
+  background: var(--wg-surface);
+  border: 1px solid var(--wg-border);
+  border-radius: var(--wg-radius-md);
+  padding: var(--wg-sp-6);
+  box-shadow: var(--wg-shadow-sm);
+}
+
+.unnyc-pr-ospo__name {
+  font-family: var(--wg-font-body);
+  font-size: var(--wg-fs-base);
+  font-weight: 700;
+  color: var(--wg-brand);
+  margin: 0 0 var(--wg-sp-2);
+}
+
+.unnyc-pr-ospo__desc {
+  font-size: var(--wg-fs-sm);
+  color: var(--wg-text-secondary);
+  line-height: 1.6;
+  margin: 0 0 var(--wg-sp-4);
+}
+
+.unnyc-pr-ospo__links {
+  display: flex;
+  gap: var(--wg-sp-4);
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+/* 44 of these on /resources — the largest block of undersized targets on the
+   site. Same 4px as .unnyc-pr-contact__link above: 22px -> 30px, clearing
+   WCAG 2.5.8's 24px. These are flex items in a row, so the padding widens the
+   row's height only, not the gap between the two links. */
+.unnyc-pr-ospo__links a {
+  padding: 4px 0;
+  font-size: var(--wg-fs-sm);
+  font-weight: 600;
+  color: var(--wg-accent-strong);
+  text-decoration: none;
+}
+
+.unnyc-pr-ospo__links a:hover {
+  text-decoration: underline;
+}
+
+/* --- Sticky rail nav look (UnnycPrinciplesRail) ---
+   Shared by /principles and /crosswalk, which each reuse the same
+   component for a different list (the eight principles; the six
+   reasons). This is only the title/list/link/active LOOK — each page's
+   positioning (width, sticky offset, how it makes room for itself) stays
+   in that page's own CSS (principles.css / crosswalk.css), since the two
+   pages' layouts differ enough that the math shouldn't be shared.
+
+   Moved here 2026-08-15 from two byte-identical copies. The duplication
+   is what caused a real bug: both files declared the RAIL'S POSITIONING
+   under a bare `.unnyc-principles__rail` selector too, and Next.js keeps
+   both stylesheets in the DOM after a client-side nav between the two
+   pages — so whichever loaded second won, dropping one page's rail into
+   the other's positioning. That part is fixed by scoping each page's
+   positioning rules to its own wrapper class instead (see the comments in
+   principles.css / crosswalk.css); moving the LOOK rules here just
+   removes the duplication that made the bug possible, now that nothing
+   here is page-specific enough to collide over. */
+.unnyc-principles__rail-title {
+  font-size: var(--wg-fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--wg-text-muted);
+  margin: 0 0 var(--wg-sp-3);
+}
+
+.unnyc-principles__rail-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 2px solid var(--wg-border);
+}
+
+/* SCOPED WITH .unnyc-page (0-2-0) — required, not stylistic. unnyc.css's
+   `.unnyc-page a { color: inherit }` is (0,1,1) in this same layer, so an
+   unscoped `.unnyc-principles__rail-link` (0,1,0) LOSES and every item
+   renders navy: the muted/active distinction silently disappears and only
+   the weight and border differ.
+
+   display:flex, so the number and the label sit side by side and a
+   two-line label indents under itself rather than under the number. */
+.unnyc-page .unnyc-principles__rail-link {
+  display: flex;
+  gap: var(--wg-sp-2);
+  padding: var(--wg-sp-2) var(--wg-sp-3);
+  margin-left: -2px;
+  border-left: 2px solid transparent;
+  font-size: var(--wg-fs-sm);
+  line-height: 1.4;
+  color: var(--wg-text-muted);
+  text-decoration: none;
+  transition: color 0.2s var(--wg-ease), border-color 0.2s var(--wg-ease);
+}
+
+.unnyc-page .unnyc-principles__rail-link:hover:not(.unnyc-principles__rail-link--active) {
+  color: var(--wg-brand);
+}
+
+.unnyc-page .unnyc-principles__rail-link:focus-visible {
+  outline: 2px solid var(--wg-accent);
+  outline-offset: -2px;
+}
+
+.unnyc-principles__rail-n {
+  color: var(--wg-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Scoped past :hover — :hover is one class more specific than a plain
+   modifier and would otherwise repaint the active item. That exact bug
+   shipped on /principles once already. */
+.unnyc-page .unnyc-principles__rail-link--active,
+.unnyc-page .unnyc-principles__rail-link--active:hover {
+  color: var(--wg-brand);
+  font-weight: 600;
+  border-left-color: var(--wg-accent);
+}
+
+.unnyc-page .unnyc-principles__rail-link--active .unnyc-principles__rail-n {
+  color: var(--wg-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unnyc-page .unnyc-principles__rail-link {
+    transition: none;
+  }
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .unnyc-pr-contacts__grid,
+  .unnyc-pr-ospo__grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  /* --- Persuasive intro ("why it matters") --- */
-  .unnyc-pr-why {
-    padding: var(--wg-sp-16) 0;
-    border-bottom: 1px solid var(--wg-border);
-  }
-
-  .unnyc-pr-why__heading {
-    font-family: var(--wg-font-display);
-    font-weight: 400;
-    font-size: var(--wg-fs-3xl);
-    color: var(--wg-brand);
-    margin: var(--wg-sp-10) 0 var(--wg-sp-5);
-  }
-
-  .unnyc-pr-why__heading:first-child {
-    margin-top: 0;
-  }
-
-  .unnyc-pr-why p {
-    font-size: var(--wg-fs-lg);
-    line-height: 1.75;
-    color: var(--wg-text);
-    margin: 0 0 var(--wg-sp-5);
-  }
-
-  .unnyc-pr-why__flag {
-    display: inline-block;
-    font-size: var(--wg-fs-xs);
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: var(--wg-accent-warm-dark);
-    background: rgba(212, 168, 67, 0.12);
-    padding: 2px 8px;
-    border-radius: var(--wg-radius-sm);
-  }
-
-  /* Prose + pull-quote float side by side instead of stacking. Clearfix on
-     the wrapping block so its floated children aren't collapsed out of the
-     section's height. Stacks back to one column under 900px — see
-     Responsive at the bottom of this file. Also the jump target for
-     crosswalk.css's reasons rail — same offset formula as
-     `.unnyc-pr-cw__section` below, so a rail click doesn't land the
-     heading under the sticky header. */
-  .unnyc-pr-why__block {
-    scroll-margin-top: calc(var(--pr-header-h, 68px) + var(--pr-subnav-h, 0px) + 28px);
-  }
-
-  .unnyc-pr-why__block::after {
-    content: '';
-    display: table;
-    clear: both;
-  }
-
-  /* Two-column only when there is actually a pull-quote to sit beside. The 56%
-     was sized against `.unnyc-pr-why__quote`'s 40%; when /crosswalk's Barcelona
-     quote was removed on 2026-08-14 every block kept the narrow column with
-     nothing in the other half. `:has()` ties the layout to the content instead
-     of to a page. */
-  .unnyc-pr-why__block:has(blockquote) .unnyc-pr-why__prose {
-    float: left;
-    width: 56%;
-  }
-
-  .unnyc-pr-why__quote {
-    float: right;
-    width: 40%;
-    margin: 0 0 0 4%;
-    padding: var(--wg-sp-6) var(--wg-sp-8);
-    background: var(--wg-surface);
-    border-left: 3px solid var(--wg-accent-warm);
-    border-radius: 0 var(--wg-radius-md) var(--wg-radius-md) 0;
-  }
-
-
-  .unnyc-pr-why__quote p {
-    font-family: var(--wg-font-display);
-    font-size: var(--wg-fs-xl);
-    line-height: 1.5;
-    color: var(--wg-brand);
-    margin: 0 0 var(--wg-sp-3);
-  }
-
-  .unnyc-pr-why__quote cite {
-    display: block;
-    font-style: normal;
-    font-size: var(--wg-fs-sm);
-    color: var(--wg-text-secondary);
-  }
-
-  .unnyc-pr-why__quote cite a {
-    color: var(--wg-accent-strong);
-    font-weight: 600;
-  }
-
-  /* --- Principle breakdown: three labeled parts, the gap emphasized ---
-     The main text and the Gap box float side by side rather than stack; the
-     section's own container clears the floats so its height still wraps
-     them. Stacks back to one column under 900px — see Responsive at the
-     bottom of this file. */
-  .unnyc-pr-cw__section .unnyc-container--narrow::after {
-    content: '';
-    display: table;
-    clear: both;
-  }
-
-  .unnyc-pr-cw__part {
-    float: left;
-    width: 56%;
-    margin-bottom: var(--wg-sp-6);
-  }
-
-  .unnyc-pr-cw__part p {
-    font-size: var(--wg-fs-lg);
-    line-height: 1.75;
-    color: var(--wg-text);
-    margin: 0;
-  }
-
-  .unnyc-pr-cw__part-label {
-    font-size: var(--wg-fs-xs);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--wg-text-muted);
-    margin: 0 0 var(--wg-sp-2);
-  }
-
-  .unnyc-pr-cw__part--gap {
-    float: right;
-    width: 40%;
-    margin: 0 0 0 4%;
-    padding: var(--wg-sp-8);
-    background: rgba(212, 168, 67, 0.09);
-    border: 1.5px solid var(--wg-accent-warm);
-    border-radius: var(--wg-radius-md);
-  }
-
-  .unnyc-pr-cw__part--gap p {
-    color: var(--wg-brand);
-    font-weight: 500;
-  }
-
-  .unnyc-pr-cw__part-label--gap {
-    color: var(--wg-accent-warm-dark);
-  }
-
-  /* --- Closing: why NYC is central --- */
-  .unnyc-pr-cw__closing {
-    padding: var(--wg-sp-16) 0;
-    background: var(--wg-surface-alt);
-    border-bottom: 1px solid var(--wg-border);
-  }
-
-  .unnyc-pr-cw__closing-title {
-    font-family: var(--wg-font-display);
-    font-weight: 400;
-    font-size: var(--wg-fs-3xl);
-    color: var(--wg-brand);
+  .unnyc-pr-why__prose,
+  .unnyc-pr-why__quote,
+  .unnyc-pr-cw__part,
+  .unnyc-pr-cw__part--gap,
+  .unnyc-pr-cw__closing p:first-of-type,
+  .unnyc-pr-cw__closing p:last-of-type {
+    float: none;
+    width: 100%;
     margin: 0 0 var(--wg-sp-6);
-  }
-
-  /* Both paragraphs float left at the same (narrower) width, so the second
-     stacks directly under the first instead of running full width. */
-  .unnyc-pr-cw__closing-body::after {
-    content: '';
-    display: table;
-    clear: both;
-  }
-
-  .unnyc-pr-cw__closing p {
-    float: left;
-    clear: left;
-    width: 56%;
-    font-size: var(--wg-fs-lg);
-    line-height: 1.75;
-    color: var(--wg-text);
-    margin: 0 0 var(--wg-sp-5);
   }
 
   .unnyc-pr-cw__closing p:last-of-type {
     margin-bottom: 0;
   }
+}
 
-  .unnyc-pr-cw__foot {
-    padding: var(--wg-sp-16) 0;
-    text-align: center;
-  }
-
-  .unnyc-pr-cw__foot p {
-    font-size: var(--wg-fs-xl);
-    font-family: var(--wg-font-display);
-    color: var(--wg-brand);
-    margin: 0 0 var(--wg-sp-6);
-  }
-
-  .unnyc-pr-cw__foot-ctas {
-    display: flex;
-    justify-content: center;
-    gap: var(--wg-sp-4);
-    flex-wrap: wrap;
-  }
-
-  .unnyc-pr-cw__foot-ctas .unnyc-btn--outline {
-    color: var(--wg-brand);
-    border-color: var(--wg-border);
-  }
-
-  /* --- Case studies: infinite carousel ---
-     The item list is rendered twice (see PrimerCases.js) and the track
-     scrolls exactly one set-width (-50%) before looping, so the seam is
-     invisible. Pauses on hover/focus so the text can actually be read. */
-  .unnyc-pr-cases__viewport {
-    overflow: hidden;
-    width: 100%;
-    margin-top: var(--wg-sp-8);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 48px, black calc(100% - 48px), transparent);
-    mask-image: linear-gradient(to right, transparent, black 48px, black calc(100% - 48px), transparent);
-  }
-
-  .unnyc-pr-cases__track {
-    display: flex;
-    align-items: stretch;
-    gap: var(--wg-sp-5);
-    width: max-content;
-    animation: unnyc-cases-scroll 50s linear infinite;
-  }
-
-  .unnyc-pr-cases__viewport:hover .unnyc-pr-cases__track,
-  .unnyc-pr-cases__viewport:focus-within .unnyc-pr-cases__track {
-    animation-play-state: paused;
-  }
-
-  @keyframes unnyc-cases-scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .unnyc-pr-cases__track {
-      animation: none;
-    }
-
-    /* Stopping the marquee is only half the job. The viewport is
-       `overflow: hidden` and the track is `width: max-content` — 3340px against
-       a 375px screen — so with the animation off every card past the first was
-       clipped with no way to reach it. Anyone who sets reduce-motion simply lost
-       the case studies. Let the viewport scroll instead, and drop the edge mask
-       so the region reads as scrollable rather than faded-out. */
-    .unnyc-pr-cases__viewport {
-      overflow-x: auto;
-      -webkit-mask-image: none;
-      mask-image: none;
-    }
-  }
-
+@media (max-width: 640px) {
   .unnyc-pr-case {
-    flex: 0 0 340px;
-    width: 340px;
-    display: flex;
+    flex-basis: 260px;
+    width: 260px;
+  }
+
+  .unnyc-pr-concepts__grid,
+  .unnyc-pr-resources__grid,
+  .unnyc-pr-contacts__grid,
+  .unnyc-pr-ospo__grid,
+  .unnyc-pr-paths__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .unnyc-pr-timeline::before {
+    left: 8px;
+  }
+
+  .unnyc-pr-timeline__item {
     flex-direction: column;
-    background: var(--wg-surface);
-    border: 1px solid var(--wg-border);
-    border-radius: var(--wg-radius-md);
-    overflow: hidden;
-    box-shadow: var(--wg-shadow-sm);
+    gap: var(--wg-sp-1);
+    padding-left: var(--wg-sp-8);
   }
 
-  .unnyc-pr-case__image-wrap {
-    width: 100%;
-    height: 160px;
-    background: var(--wg-surface-alt);
+  .unnyc-pr-timeline__item::before {
+    left: 3px;
+    top: calc(var(--wg-sp-4) + 6px);
   }
 
-  .unnyc-pr-case__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  .unnyc-pr-timeline__year {
+    flex: none;
+    text-align: left;
+    padding-top: 0;
   }
 
-  .unnyc-pr-case__content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+  .unnyc-pr-timeline__body {
+    padding-left: 0;
+  }
+
+  .unnyc-pr-why__quote {
+    padding: var(--wg-sp-4) var(--wg-sp-5);
+  }
+
+  .unnyc-pr-cw__part--gap {
     padding: var(--wg-sp-6);
   }
-
-  .unnyc-pr-case__place {
-    font-size: var(--wg-fs-xs);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--wg-accent-warm-dark);
-    margin-bottom: var(--wg-sp-3);
-  }
-
-  .unnyc-pr-case__headline {
-    font-family: var(--wg-font-display);
-    font-weight: 400;
-    font-size: var(--wg-fs-xl);
-    color: var(--wg-brand);
-    margin: 0 0 var(--wg-sp-3);
-  }
-
-  .unnyc-pr-case__body {
-    font-size: var(--wg-fs-sm);
-    color: var(--wg-text-secondary);
-    line-height: 1.65;
-    margin: 0 0 var(--wg-sp-4);
-  }
-
-  .unnyc-pr-case__lesson {
-    font-size: var(--wg-fs-sm);
-    color: var(--wg-text);
-    line-height: 1.6;
-    margin: 0 0 var(--wg-sp-4);
-    padding: var(--wg-sp-3) var(--wg-sp-4);
-    background: rgba(212, 168, 67, 0.1);
-    border-left: 3px solid var(--wg-accent-warm);
-    border-radius: 0 var(--wg-radius-sm) var(--wg-radius-sm) 0;
-  }
-
-  .unnyc-pr-case__lesson-label {
-    display: block;
-    font-size: var(--wg-fs-xs);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--wg-accent-warm-dark);
-    margin-bottom: var(--wg-sp-1);
-  }
-
-  .unnyc-pr-case__link {
-    margin-top: auto;
-    /* 22px -> 30px, clearing WCAG 2.5.8's 24px for a non-inline target. Same
-       treatment as the three other card links on this site — see
-       .unnyc-pr-concept__link, .unnyc-pr-contact__link, .unnyc-pr-ospo__links a. */
-    padding: 4px 0;
-    font-size: var(--wg-fs-sm);
-    font-weight: 600;
-    color: var(--wg-accent-strong);
-    text-decoration: none;
-  }
-
-  .unnyc-pr-case__link:hover {
-    text-decoration: underline;
-  }
-
-  /* --- Barcelona-first / NYC-should-follow callout, combined with the map --- */
-  .unnyc-pr-mn__barcelona {
-    max-width: 720px;
-    margin: var(--wg-sp-6) auto 0;
-    padding: var(--wg-sp-5) var(--wg-sp-6);
-    background: var(--wg-surface);
-    border: 1.5px solid var(--wg-accent-warm);
-    border-radius: var(--wg-radius-md);
-    box-shadow: var(--wg-shadow-md);
-  }
-
-  .unnyc-pr-mn__barcelona p {
-    margin: 0;
-    font-size: var(--wg-fs-base);
-    color: var(--wg-text);
-    line-height: 1.65;
-    text-align: center;
-  }
-
-  .unnyc-pr-mn__barcelona strong {
-    color: var(--wg-accent-warm-dark);
-  }
-
-  /* --- Resources --- */
-  .unnyc-pr-resources__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--wg-sp-5);
-  }
-
-  .unnyc-pr-resources__group {
-    background: var(--wg-surface);
-    border: 1px solid var(--wg-border);
-    border-radius: var(--wg-radius-md);
-    padding: var(--wg-sp-6);
-    box-shadow: var(--wg-shadow-sm);
-  }
-
-  .unnyc-pr-resources__group-header {
-    margin-bottom: var(--wg-sp-4);
-  }
-
-  .unnyc-pr-resources__group-title {
-    font-family: var(--wg-font-display);
-    font-weight: 400;
-    font-size: var(--wg-fs-xl);
-    color: var(--wg-brand);
-    margin: 0;
-  }
-
-  .unnyc-pr-resources__links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--wg-sp-4);
-  }
-
-  .unnyc-pr-resources__links a {
-    font-size: var(--wg-fs-sm);
-    font-weight: 600;
-    color: var(--wg-accent-strong);
-    text-decoration: none;
-  }
-
-  .unnyc-pr-resources__links a:hover {
-    text-decoration: underline;
-  }
-
-  .unnyc-pr-resources__links p {
-    font-size: var(--wg-fs-xs);
-    color: var(--wg-text-muted);
-    line-height: 1.55;
-    margin: 2px 0 0;
-  }
-
-  /* --- Contacts --- */
-  .unnyc-pr-contacts__group {
-    margin-bottom: var(--wg-sp-10);
-  }
-
-  .unnyc-pr-contacts__group-title {
-    font-family: var(--wg-font-body);
-    font-size: var(--wg-fs-sm);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: var(--wg-text-muted);
-    margin: 0 0 var(--wg-sp-5);
-  }
-
-  .unnyc-pr-contacts__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--wg-sp-5);
-  }
-
-  .unnyc-pr-contact {
-    display: flex;
-    flex-direction: column;
-    background: var(--wg-surface);
-    border: 1px solid var(--wg-border);
-    border-radius: var(--wg-radius-md);
-    padding: var(--wg-sp-6);
-    box-shadow: var(--wg-shadow-sm);
-  }
-
-  .unnyc-pr-contact__org {
-    font-family: var(--wg-font-body);
-    font-size: var(--wg-fs-base);
-    font-weight: 700;
-    color: var(--wg-brand);
-    margin: 0 0 var(--wg-sp-2);
-  }
-
-  .unnyc-pr-contact__role {
-    font-size: var(--wg-fs-sm);
-    color: var(--wg-text-secondary);
-    line-height: 1.6;
-    margin: 0 0 var(--wg-sp-3);
-  }
-
-  .unnyc-pr-contact__helps {
-    font-size: var(--wg-fs-sm);
-    color: var(--wg-text);
-    line-height: 1.55;
-    margin: 0 0 var(--wg-sp-4);
-  }
-
-  .unnyc-pr-contact__helps-label {
-    display: block;
-    font-size: var(--wg-fs-xs);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--wg-accent-warm-dark);
-    margin-bottom: var(--wg-sp-1);
-  }
-
-  .unnyc-pr-contact__link {
-    margin-top: auto;
-    /* 4px top/bottom takes a 22px line to a 30px target, clearing the 24px
-       WCAG 2.5.8 minimum for a NON-INLINE target. Padding rather than
-       min-height or line-height: it grows the hit area without moving the type
-       or opening a gap between the link and the card's other rows. */
-    padding: 4px 0;
-    font-size: var(--wg-fs-sm);
-    font-weight: 600;
-    color: var(--wg-accent-strong);
-    text-decoration: none;
-  }
-
-  .unnyc-pr-contact__link:hover {
-    text-decoration: underline;
-  }
-
-  .unnyc-pr-contacts__note {
-    font-size: var(--wg-fs-xs);
-    color: var(--wg-text-muted);
-    text-align: center;
-    margin: 0;
-  }
-
-  /* --- Find an OSPO --- */
-  .unnyc-pr-ospo__intro {
-    font-size: var(--wg-fs-lg);
-    line-height: 1.75;
-    color: var(--wg-text);
-    max-width: 760px;
-    margin: 0 auto var(--wg-sp-10);
-    text-align: center;
-  }
-
-  .unnyc-pr-ospo__diagram {
-    max-width: 900px;
-    margin: 0 auto var(--wg-sp-10);
-  }
-
-  .unnyc-pr-ospo__diagram img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border: 1px solid var(--wg-border);
-    border-radius: var(--wg-radius-md);
-    background: var(--wg-surface);
-  }
-
-  .unnyc-pr-ospo__diagram figcaption {
-    margin-top: var(--wg-sp-2);
-    font-size: var(--wg-fs-xs);
-    color: var(--wg-text-muted);
-    text-align: center;
-  }
-
-  .unnyc-pr-ospo__diagram figcaption a {
-    color: var(--wg-text-muted);
-    text-decoration: underline;
-  }
-
-  .unnyc-pr-ospo__source {
-    font-size: var(--wg-fs-sm);
-    color: var(--wg-text-secondary);
-    text-align: center;
-    margin: 0 0 var(--wg-sp-10);
-  }
-
-  .unnyc-pr-ospo__source a {
-    color: var(--wg-accent-strong);
-    font-weight: 600;
-  }
-
-  .unnyc-pr-ospo__country {
-    display: inline-block;
-    font-size: var(--wg-fs-xs);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--wg-accent-warm-dark);
-    margin-bottom: var(--wg-sp-2);
-  }
-
-  .unnyc-pr-ospo__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--wg-sp-5);
-  }
-
-  .unnyc-pr-ospo__card {
-    display: flex;
-    flex-direction: column;
-    background: var(--wg-surface);
-    border: 1px solid var(--wg-border);
-    border-radius: var(--wg-radius-md);
-    padding: var(--wg-sp-6);
-    box-shadow: var(--wg-shadow-sm);
-  }
-
-  .unnyc-pr-ospo__name {
-    font-family: var(--wg-font-body);
-    font-size: var(--wg-fs-base);
-    font-weight: 700;
-    color: var(--wg-brand);
-    margin: 0 0 var(--wg-sp-2);
-  }
-
-  .unnyc-pr-ospo__desc {
-    font-size: var(--wg-fs-sm);
-    color: var(--wg-text-secondary);
-    line-height: 1.6;
-    margin: 0 0 var(--wg-sp-4);
-  }
-
-  .unnyc-pr-ospo__links {
-    display: flex;
-    gap: var(--wg-sp-4);
-    flex-wrap: wrap;
-    margin-top: auto;
-  }
-
-  /* 44 of these on /resources — the largest block of undersized targets on the
-     site. Same 4px as .unnyc-pr-contact__link above: 22px -> 30px, clearing
-     WCAG 2.5.8's 24px. These are flex items in a row, so the padding widens the
-     row's height only, not the gap between the two links. */
-  .unnyc-pr-ospo__links a {
-    padding: 4px 0;
-    font-size: var(--wg-fs-sm);
-    font-weight: 600;
-    color: var(--wg-accent-strong);
-    text-decoration: none;
-  }
-
-  .unnyc-pr-ospo__links a:hover {
-    text-decoration: underline;
-  }
-
-  /* --- Sticky rail nav look (UnnycPrinciplesRail) ---
-     Shared by /principles and /crosswalk, which each reuse the same
-     component for a different list (the eight principles; the six
-     reasons). This is only the title/list/link/active LOOK — each page's
-     positioning (width, sticky offset, how it makes room for itself) stays
-     in that page's own CSS (principles.css / crosswalk.css), since the two
-     pages' layouts differ enough that the math shouldn't be shared.
-
-     Moved here 2026-08-15 from two byte-identical copies. The duplication
-     is what caused a real bug: both files declared the RAIL'S POSITIONING
-     under a bare `.unnyc-principles__rail` selector too, and Next.js keeps
-     both stylesheets in the DOM after a client-side nav between the two
-     pages — so whichever loaded second won, dropping one page's rail into
-     the other's positioning. That part is fixed by scoping each page's
-     positioning rules to its own wrapper class instead (see the comments in
-     principles.css / crosswalk.css); moving the LOOK rules here just
-     removes the duplication that made the bug possible, now that nothing
-     here is page-specific enough to collide over. */
-  .unnyc-principles__rail-title {
-    font-size: var(--wg-fs-xs);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--wg-text-muted);
-    margin: 0 0 var(--wg-sp-3);
-  }
-
-  .unnyc-principles__rail-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-left: 2px solid var(--wg-border);
-  }
-
-  /* SCOPED WITH .unnyc-page (0-2-0) — required, not stylistic. unnyc.css's
-     `.unnyc-page a { color: inherit }` is (0,1,1) in this same layer, so an
-     unscoped `.unnyc-principles__rail-link` (0,1,0) LOSES and every item
-     renders navy: the muted/active distinction silently disappears and only
-     the weight and border differ.
-
-     display:flex, so the number and the label sit side by side and a
-     two-line label indents under itself rather than under the number. */
-  .unnyc-page .unnyc-principles__rail-link {
-    display: flex;
-    gap: var(--wg-sp-2);
-    padding: var(--wg-sp-2) var(--wg-sp-3);
-    margin-left: -2px;
-    border-left: 2px solid transparent;
-    font-size: var(--wg-fs-sm);
-    line-height: 1.4;
-    color: var(--wg-text-muted);
-    text-decoration: none;
-    transition: color 0.2s var(--wg-ease), border-color 0.2s var(--wg-ease);
-  }
-
-  .unnyc-page .unnyc-principles__rail-link:hover:not(.unnyc-principles__rail-link--active) {
-    color: var(--wg-brand);
-  }
-
-  .unnyc-page .unnyc-principles__rail-link:focus-visible {
-    outline: 2px solid var(--wg-accent);
-    outline-offset: -2px;
-  }
-
-  .unnyc-principles__rail-n {
-    color: var(--wg-text-muted);
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* Scoped past :hover — :hover is one class more specific than a plain
-     modifier and would otherwise repaint the active item. That exact bug
-     shipped on /principles once already. */
-  .unnyc-page .unnyc-principles__rail-link--active,
-  .unnyc-page .unnyc-principles__rail-link--active:hover {
-    color: var(--wg-brand);
-    font-weight: 600;
-    border-left-color: var(--wg-accent);
-  }
-
-  .unnyc-page .unnyc-principles__rail-link--active .unnyc-principles__rail-n {
-    color: var(--wg-accent);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .unnyc-page .unnyc-principles__rail-link {
-      transition: none;
-    }
-  }
-
-  /* --- Responsive --- */
-  @media (max-width: 900px) {
-    .unnyc-pr-contacts__grid,
-    .unnyc-pr-ospo__grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .unnyc-pr-why__prose,
-    .unnyc-pr-why__quote,
-    .unnyc-pr-cw__part,
-    .unnyc-pr-cw__part--gap,
-    .unnyc-pr-cw__closing p:first-of-type,
-    .unnyc-pr-cw__closing p:last-of-type {
-      float: none;
-      width: 100%;
-      margin: 0 0 var(--wg-sp-6);
-    }
-
-    .unnyc-pr-cw__closing p:last-of-type {
-      margin-bottom: 0;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .unnyc-pr-case {
-      flex-basis: 260px;
-      width: 260px;
-    }
-
-    .unnyc-pr-concepts__grid,
-    .unnyc-pr-resources__grid,
-    .unnyc-pr-contacts__grid,
-    .unnyc-pr-ospo__grid,
-    .unnyc-pr-paths__grid {
-      grid-template-columns: 1fr;
-    }
-
-    .unnyc-pr-timeline::before {
-      left: 8px;
-    }
-
-    .unnyc-pr-timeline__item {
-      flex-direction: column;
-      gap: var(--wg-sp-1);
-      padding-left: var(--wg-sp-8);
-    }
-
-    .unnyc-pr-timeline__item::before {
-      left: 3px;
-      top: calc(var(--wg-sp-4) + 6px);
-    }
-
-    .unnyc-pr-timeline__year {
-      flex: none;
-      text-align: left;
-      padding-top: 0;
-    }
-
-    .unnyc-pr-timeline__body {
-      padding-left: 0;
-    }
-
-    .unnyc-pr-why__quote {
-      padding: var(--wg-sp-4) var(--wg-sp-5);
-    }
-
-    .unnyc-pr-cw__part--gap {
-      padding: var(--wg-sp-6);
-    }
-  }
-
 }

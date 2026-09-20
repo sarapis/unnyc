@@ -5,7 +5,7 @@
 > (the apex `opensource.nyc`, `www` and `unnyc.wegov.nyc` all 307 there — see
 > docs/CONTINUATION-PROMPT.md for the full map and why every hop is a 307).
 
-Read [README.md](README.md) first — routes, the two form paths, env, CSS layers.
+Read [README.md](README.md) first — routes, the two form paths, env, CSS architecture.
 Read [docs/EDITING-CONTENT.md](docs/EDITING-CONTENT.md) before changing any copy.
 This file is the agent-specific delta.
 
@@ -536,8 +536,8 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   This was a real bug; don't "optimise" it back.
 - **`getContent()` is server-only** (uses `node:fs`). Never import it in a
   `"use client"` file.
-- **⚠ THE ONE CSS RULE THAT WOULD HAVE PREVENTED SIX BUGS: in `@layer unnyc`,
-  scope any component rule styling an element the `.unnyc-page` resets touch —
+- **⚠ THE ONE CSS RULE THAT WOULD HAVE PREVENTED SIX BUGS: scope any component
+  rule styling an element the `.unnyc-page` resets touch —
   `a`, `button`, `ul`, `ol` — with `.unnyc-page`.** The sixth instance was
   MARGINS, not color: `.unnyc-page ul { margin: 0 }` silently zeroed a
   single-class list rule on the homepage journey and parked the CTA button on
@@ -558,8 +558,8 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   even when the rules are identical.
 - **`.unnyc-page button` is a 0-1-1 reset that beats every single-class component
   rule.** `unnyc.css` resets `border: none; background: none` on every button under
-  `.unnyc-page`. A component rule like `.unnyc-cmp-form__tab--active` is 0-1-0, in
-  the SAME `@layer`, so the reset wins. On 2026-08-14 that made the sign-form's
+  `.unnyc-page`. A component rule like `.unnyc-cmp-form__tab--active` is 0-1-0, so
+  the reset wins on specificity. On 2026-08-14 that made the sign-form's
   active tab render navy text on the navy panel — dark blue on dark blue — because
   only `color` survived (the reset doesn't set it) while the background and border
   were stripped. **Scope any styled `<button>` with `.unnyc-page` (0-2-0)**, the way
@@ -652,10 +652,26 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   phrasing-element case; every other consumer in the repo already uses it.
   To check a page: `curl` it and look for a block tag inside a `<p>`. Reading the
   JSX will not show you this.
-- **CSS layer order `reset < components < unnyc < site` must be preserved.** The
-  nav sits inside `.unnyc-page` to inherit its tokens, so `.unnyc-page a { color:
-  inherit }` in `@layer unnyc` will paint nav links navy-on-navy if `site` stops
-  being last.
+- **⚠ THERE ARE NO CASCADE LAYERS, AND `@layer` MUST NEVER COME BACK
+  (removed 2026-09-19).** It shipped in Chrome 99 / Firefox 97 / Safari 15.4 —
+  all within weeks of March 2022 — and an engine that does not know the at-rule
+  **discards everything inside it**. 86% of this site's CSS was in `@layer`, so
+  every older browser got the site with no stylesheet at all: Times headings,
+  default-blue nav links, the Manhattan outline SVG rendering black. Found on
+  geopeeker.com; reproduced by deleting only the seven layer blocks from the
+  live page. `npm run lint:css` (prebuild + CI) now fails the build on
+  `@layer`, `@container` or `@scope`, and warns on anything else above the
+  **Chrome 80 / Safari 13.1** floor the JS already sets.
+  ⚠ Two relationships the layers used to guarantee are now held by
+  **specificity**, and both broke when the wrappers came out:
+  the nav/footer wordmark and the nav CTA need the component root
+  (`.unnyc-page .unnyc-nav .unnyc-nav__link`, 0-3-0) because unnyc.css has its
+  own **0-2-0** rules for `.unnyc-footer__logo` and `.unnyc-btn` and is imported
+  later — a tie goes to unnyc.css. And base.css's reset, once the lowest layer,
+  is now ordinary CSS: `a:hover { text-decoration: underline }` is **(0,1,1)**
+  and beats a single-class rule, which is a **`:hover` regression a
+  rendered-output diff structurally cannot see**. `lint:css` check 2 watches
+  that one.
 - **An unterminated `"` in frontmatter is the failure mode to know.** YAML reads
   on into the following lines hunting for the closing quote. Sometimes that
   fails the build pointing several lines *below* the real mistake (this is what
@@ -697,11 +713,14 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   Google. The `@import` that used to head `unnyc.css` was the first line of a
   render-blocking stylesheet and chained two cold third-party connections before
   text could paint, while asking for Inter 300 and a DM Serif italic that appear
-  nowhere in the CSS. ⚠ **The token override in `unnyc.css` is the file's ONLY
-  UNLAYERED RULE, and that is load-bearing**: @wegovnyc/design-tokens declares
-  `--wg-font-display`/`--wg-font-body` at `:root` with no layer, and unlayered
-  styles beat EVERY layer — the same override inside `@layer unnyc` would lose
-  silently and the fonts would simply never load. ⚠ Also note this makes a BUILD
+  nowhere in the CSS. ⚠ **The token override in `unnyc.css` is still load-bearing, but its
+  MECHANISM CHANGED on 2026-09-19.** It used to win by being the file's only
+  unlayered rule (unlayered beats every layer). With the layers gone it is
+  `:root` vs @wegovnyc/design-tokens' `:root` — equal specificity, so **source
+  order decides**, and it wins only because `layout.js` imports `base.css`
+  (which `@import`s the tokens) *before* `unnyc.css`. **That import order is now
+  what keeps the fonts loading.** Verified after the change: `--wg-font-display`
+  resolves to "DM Serif Display", `--wg-font-body` to "Inter", both loaded. ⚠ Also note this makes a BUILD
   depend on fonts.googleapis being reachable; that is a deliberate trade (it
   replaces a per-visitor dependency with a per-build one), reasoned through in
   `fonts.js`.
@@ -851,10 +870,11 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
     as a broken site — and both printables are meant to reach paper. The
     `@media print` rule matters MORE now, not less: in the flow this would
     otherwise print at the end of every other page.
-  - Its CSS is in **`@layer site`**, like the nav and footer, for the same
-    reason: it renders inside `.unnyc-page`, so `.unnyc-page button { border:
-    none; background: none }` (0,1,1) would beat any single-class rule in
-    `@layer unnyc`.
+  - ⚠ **Every selector in its CSS is scoped with `.unnyc-page`, and that is now
+    the ONLY thing holding it.** It renders inside `.unnyc-page`, so
+    `.unnyc-page button { border: none; background: none }` (0,1,1) beats any
+    single-class rule. It used to sit in `@layer site` and win by layer order;
+    the layers were removed 2026-09-19.
   - Background is `--wg-brand`, one step lighter than the footer's
     `--wg-brand-deep`, with the header's orange rule repeated on top — so the two
     dark bands read as distinct rather than as one over-tall footer.
