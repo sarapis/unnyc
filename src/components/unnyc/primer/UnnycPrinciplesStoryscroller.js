@@ -136,6 +136,8 @@ export default function UnnycPrinciplesStoryscroller({ hero, groups, endorsers }
         const pending = new Set();
         const trunkMax = {};
         let io;
+        let ioFired = false;
+        let ioDead = false;
         let focusId = null;
 
         const play = (el) => {
@@ -147,8 +149,13 @@ export default function UnnycPrinciplesStoryscroller({ hero, groups, endorsers }
         };
 
         const sweep = () => {
+            /* ⚠ `|| Infinity` is load-bearing. A headless or backgrounded
+               renderer can report innerHeight 0, and `top < 0` is false for
+               every element — so nothing would reveal and the section would
+               sit permanently blank. */
+            const fold = window.innerHeight || Infinity;
             pending.forEach((el) => {
-                if (el.getBoundingClientRect().top < window.innerHeight) {
+                if (el.getBoundingClientRect().top < fold) {
                     play(el);
                     io?.unobserve(el);
                     pending.delete(el);
@@ -230,6 +237,10 @@ export default function UnnycPrinciplesStoryscroller({ hero, groups, endorsers }
             if (!io) {
                 io = new IntersectionObserver(
                     (entries) => {
+                        /* A delivered callback — even one with nothing
+                           intersecting — is proof the observer is alive, which
+                           is what the backstop below keys off. */
+                        ioFired = true;
                         entries.forEach((e) => {
                             // Also plays anything already scrolled PAST — a jumped-over
                             // element (anchor jump, scrollbar drag) never intersects.
@@ -245,6 +256,17 @@ export default function UnnycPrinciplesStoryscroller({ hero, groups, endorsers }
             nodes.forEach((el) => {
                 if (el.dataset.wired) return;
                 el.dataset.wired = '1';
+                /* ⚠ The backstop has already concluded the observer is dead
+                   and run its one-shot reveal. Anything wired AFTER that — a
+                   late-hydrating child such as the ssr:false world map — must
+                   not be hidden at all, or it stays invisible forever with no
+                   second reveal coming. Found exactly that way: the map panel
+                   and its credit line were the last two elements still at
+                   opacity 0 after the first version of this fix. */
+                if (ioDead) {
+                    play(el);
+                    return;
+                }
                 // Branch graphics are gated on the trunk reaching them (see
                 // trunk()/gateBranches()), not on plain visibility.
                 const gated = !!el.closest('[data-branch]');
@@ -346,12 +368,38 @@ export default function UnnycPrinciplesStoryscroller({ hero, groups, endorsers }
             layoutStems();
             setup();
         }, 1400);
+
+        /* ⚠ CONTENT MUST NEVER DEPEND ON IntersectionObserver FIRING TO BE
+           VISIBLE. `data-reveal` is hidden in JS (opacity 0) and shown again
+           only when the observer reports it, so a renderer that HAS an
+           IntersectionObserver but never delivers a callback leaves the page
+           blank — the markup is all there and none of it can be seen. That is
+           real: on 2026-09-20 two of GeoPeeker's render nodes showed
+           un.opensource.nyc with a correct nav and an empty hero for exactly
+           this reason, and the same applies to link-preview crawlers and to a
+           tab backgrounded while it loads.
+
+           This fires ONLY if the observer has delivered nothing at all by now,
+           so a working browser is untouched: IO reports on every observed
+           element almost immediately, including the ones off screen, which
+           sets ioFired long before this runs. `sweep()` alone is not enough —
+           it only covers what is above the fold. */
+        const tReveal = setTimeout(() => {
+            if (ioFired) return;
+            ioDead = true;
+            pending.forEach((el) => {
+                play(el);
+                io?.unobserve(el);
+            });
+            pending.clear();
+        }, 2200);
         document.fonts?.ready?.then(layoutStems).catch(() => {});
 
         return () => {
             cancelAnimationFrame(raf1);
             clearTimeout(t1);
             clearTimeout(t2);
+            clearTimeout(tReveal);
             window.removeEventListener('scroll', onScroll);
             window.removeEventListener('scrollend', onScroll);
             window.removeEventListener('resize', onResize);
