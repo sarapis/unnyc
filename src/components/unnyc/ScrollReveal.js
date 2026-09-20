@@ -91,7 +91,12 @@ export default function ScrollReveal() {
         // working browser is untouched. Reveals rather than leaves hidden: the
         // fade is an enhancement, the content is the point.
         const tReveal = setTimeout(() => {
-            if (ioFired) return;
+            // ⚠ ioFired alone is not enough — an observer reports on every
+            // element it observes immediately, including the off-screen ones,
+            // so it goes true even where nothing will ever scroll.
+            // visibilityState is the real test: nobody is watching a fade on a
+            // document that is not being displayed.
+            if (document.visibilityState === 'visible' && ioFired) return;
             elements.forEach((el) => el.classList.add('unnyc-visible'));
             observer.disconnect();
         }, 2200);

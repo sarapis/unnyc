@@ -184,7 +184,20 @@ export default function UnnycStartStoryscroller({ hero, railItems, concepts, mov
            sets ioFired long before this runs. `sweep()` alone is not enough —
            it only covers what is above the fold. */
         const tReveal = setTimeout(() => {
-            if (ioFired) return;
+            /* ⚠ `ioFired` ALONE IS NOT ENOUGH, and shipping it that way proved
+               it: an observer delivers an initial callback for everything it
+               observes — reporting the off-screen ones as not intersecting —
+               so ioFired goes true within a frame even in a renderer that will
+               never scroll and never report another thing. On production that
+               left 61 of 64 homepage elements hidden with the backstop
+               switched off by its own guard.
+
+               `document.visibilityState` is the real discriminator. If the
+               document is not being looked at — a headless screenshotter, a
+               prerender, a background tab — there is no scroll coming and no
+               animation for anyone to see, so reveal everything. A visible
+               page with a live observer keeps its scroll animation untouched. */
+            if (document.visibilityState === 'visible' && ioFired) return;
             ioDead = true;
             pending.forEach((el) => {
                 play(el);
