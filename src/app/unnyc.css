@@ -135,9 +135,9 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 30% 20%, rgba(75, 146, 219, 0.12) 0%, transparent 60%),
-    radial-gradient(ellipse at 70% 80%, rgba(212, 168, 67, 0.08) 0%, transparent 50%),
-    linear-gradient(175deg, var(--wg-brand-deep) 0%, var(--wg-brand) 40%, var(--wg-brand-light) 100%);
+  radial-gradient(ellipse at 30% 20%, rgba(75, 146, 219, 0.12) 0%, transparent 60%),
+  radial-gradient(ellipse at 70% 80%, rgba(212, 168, 67, 0.08) 0%, transparent 50%),
+  linear-gradient(175deg, var(--wg-brand-deep) 0%, var(--wg-brand) 40%, var(--wg-brand-light) 100%);
   z-index: -1;
 }
 
@@ -146,8 +146,8 @@
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle at 20% 50%, rgba(75, 146, 219, 0.05) 1px, transparent 1px),
-    radial-gradient(circle at 80% 30%, rgba(212, 168, 67, 0.05) 1px, transparent 1px);
+  radial-gradient(circle at 20% 50%, rgba(75, 146, 219, 0.05) 1px, transparent 1px),
+  radial-gradient(circle at 80% 30%, rgba(212, 168, 67, 0.05) 1px, transparent 1px);
   background-size: 60px 60px, 80px 80px;
   animation: unnyc-drift 30s linear infinite;
 }
@@ -1120,8 +1120,8 @@
 /* --- Campaign section (dark band) --- */
 .unnyc-page .unnyc-campaign {
   background:
-    radial-gradient(ellipse at 20% -10%, rgba(75, 146, 219, 0.25), transparent 55%),
-    linear-gradient(175deg, var(--wg-brand-deep) 0%, var(--wg-brand) 100%);
+  radial-gradient(ellipse at 20% -10%, rgba(75, 146, 219, 0.25), transparent 55%),
+  linear-gradient(175deg, var(--wg-brand-deep) 0%, var(--wg-brand) 100%);
 }
 
 .unnyc-page .unnyc-campaign__title {
