@@ -11,7 +11,8 @@
     "lint:tokens": "wg-lint-tokens",
     "lint:content": "node scripts/validate-content.mjs",
     "prebuild": "wg-lint-tokens || true; node scripts/validate-content.mjs; node scripts/validate-css.mjs",
-    "lint:css": "node scripts/validate-css.mjs"
+    "lint:css": "node scripts/validate-css.mjs",
+    "gen:flex-gap": "node scripts/generate-flex-gap-fallback.mjs"
   },
   "dependencies": {
     "@wegovnyc/design-tokens": "github:sarapis/wegovnyc-design-tokens",

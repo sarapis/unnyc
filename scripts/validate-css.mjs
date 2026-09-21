@@ -54,6 +54,9 @@ const ABOVE_FLOOR = [
    text-decoration below this loses to it. */
 const HOVER_RESET = [0, 1, 1];
 
+/* The generated flex-gap fallback sheet; check 4 compares it against source. */
+const FALLBACK = join(SRC, 'app', 'flex-gap-fallback.css');
+
 /* .unnyc-home-story__sdg is a <div>, so `a:hover` cannot match it. Verified in
    the DOM, not inferred from the name — the class sits on a wrapper, and the
    <a> inside it is .unnyc-home-story__sdg-stat, which is scoped. */
@@ -145,6 +148,42 @@ for (const f of files) {
         if (!css.includes(needle)) continue;
         if (!aboveFloor.has(needle)) aboveFloor.set(needle, { since, files: [] });
         aboveFloor.get(needle).files.push(rel);
+    }
+}
+
+/* ---- Check 4: is flex-gap-fallback.css stale? -------------------------------
+   `gap` in a flex container does nothing before Safari 14.1 / Chrome 84, so
+   every such rule needs a margin fallback in the generated sheet. Adding a new
+   flex gap and forgetting to re-run the generator would silently leave that one
+   container collapsed on those browsers — invisible in any modern browser and
+   therefore invisible in review. */
+{
+    let fallback = '';
+    try { fallback = readFileSync(FALLBACK, 'utf8'); } catch { /* handled below */ }
+    if (!fallback) {
+        errors.push('src/app/flex-gap-fallback.css is missing — run `npm run gen:flex-gap`.');
+    } else {
+        const missing = new Set();
+        for (const f of files) {
+            if (f === FALLBACK) continue;
+            const css = stripComments(readFileSync(f, 'utf8'));
+            for (const m of css.matchAll(/([^{}]+)\{([^}]*)\}/g)) {
+                const body = m[2];
+                if (!/display\s*:\s*(inline-)?flex/.test(body)) continue;
+                if (!/(?:^|;|\s)(gap|row-gap|column-gap)\s*:/.test(body)) continue;
+                for (const part of m[1].split(',').map((x) => x.trim().replace(/\s+/g, ' '))) {
+                    if (part && !part.startsWith('@') && !fallback.includes(`.no-flexgap ${part} >`)) {
+                        missing.add(part);
+                    }
+                }
+            }
+        }
+        for (const sel of missing) {
+            errors.push(
+                `flex-gap-fallback.css has no rule for \`${sel}\` — it uses flex + gap, which does ` +
+                'nothing before Safari 14.1 / Chrome 84. Run `npm run gen:flex-gap` and commit the result.',
+            );
+        }
     }
 }
 
