@@ -17,8 +17,15 @@
  * on an advocacy page, and a snapshot is reviewable where a runtime fetch is not.
  *
  * GovOSS catalogue data is CC BY 4.0 — its own footer: "Catalogue data CC BY 4.0;
- * code MIT. Individual entries remain under the terms of their own sources."
+ * code MIT. Individual entries remain under the terms of the government catalogue
+ * that published them — every entry links back to its source."
  * Attribution is a licence term. Boundaries are Natural Earth, public domain.
+ *
+ * ⚠ GOVOSS MOVED TO govoss.cat (2026-09-24). `govoss-catalog.vercel.app` still
+ * 301s there, so nothing broke — but `sourceUrl` below is what the credit line
+ * under the map RENDERS, and a credit pointing at a domain the project no longer
+ * uses is the attribution going stale quietly. Both the API base and `sourceUrl`
+ * are literals here; there is no third place.
  *
  * ⚠ THIS LICENCE IS A LITERAL HERE, AND THAT IS THE RISK THE CTFG SCRIPT JUST GOT
  * BITTEN BY: it asserted CC BY-NC-SA long after CTFG had relicensed, and a refresh
@@ -27,12 +34,13 @@
  * publishes NO `rel="license"` anchor — the only Creative Commons strings on its
  * pages are facet values for the licences of the catalogued PROJECTS, which is a
  * different fact entirely and would parse into a confidently wrong answer.
- * Verified by hand against the footer on 2026-08-21. Re-read it when you refresh,
- * and move the date.
+ * Verified by hand against the footer on 2026-09-24 — unchanged, still CC BY 4.0,
+ * though the sentence about individual entries has been reworded (quoted above as
+ * it now reads). Re-read it when you refresh, and move the date.
  */
 import { writeFileSync } from 'node:fs';
 
-const GOVOSS = 'https://govoss-catalog.vercel.app';
+const GOVOSS = 'https://govoss.cat';
 const NE =
     'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson';
 
@@ -174,7 +182,7 @@ features.sort((a, b) => a.properties.code.localeCompare(b.properties.code));
 const countries = [...byCountry.values()].sort((a, b) => b.entries - a.entries);
 const data = {
     source: 'GovOSS',
-    sourceUrl: 'https://govoss-catalog.vercel.app',
+    sourceUrl: 'https://govoss.cat',
     sourceApi: `${GOVOSS}/meta.json`,
     licence: 'CC BY 4.0',
     boundaries: 'Natural Earth 1:110m (public domain)',
