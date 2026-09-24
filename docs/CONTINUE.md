@@ -1,40 +1,37 @@
-# Continue here — UNNYC, after the 2026-09-14/15 sessions
+# Continue here — UNNYC, after the 2026-09-19/20 and 09-24 sessions
 
-Written from the repo, not from memory: every number below has the command that
-produced it, and the absences were checked rather than assumed. If a claim here
-disagrees with the code, **the code is right and this file is stale** — fix it.
+Written from the repo, not from memory: every number below has a command that
+produced it. If a claim here disagrees with the code, **the code is right and
+this file is stale** — fix it.
 
-Supersedes the 2026-09-11/12 handoff.
+Supersedes the 2026-09-14/15 handoff (in git; nothing else references it).
 
 ---
 
 ## 1. The one idea
 
-**A licence, a source and a credit are the licensor's facts, not ours — and
-this repo has now got each of them wrong at least once by writing the value
-into code instead of reading it from the source.**
+**Four bugs shipped or nearly shipped in this stretch. A green build, a passing
+lint and a correct-looking diff certified every one of them. Each was caught
+only by measuring the real thing in the condition that breaks it.**
 
-Three incidents, same shape:
+- `@layer` — 86% of the CSS silently discarded on any pre-March-2022 engine.
+  The site had rendered unstyled there for an unknown period. **Found by a human
+  looking at geopeeker.com**, not by any check we had.
+- The reveal backstop **shipped in #102 and did nothing**, because its guard
+  keyed off "has IntersectionObserver ever fired" — which is true in exactly the
+  renderers it existed for. Local passed, production didn't; same code.
+- The flex-gap probe set `height: 0` on the box it was measuring, so it reported
+  "unsupported" **everywhere** and doubled every gap on the site.
+- A generated fallback applied a child combinator to only the last part of a
+  comma selector.
 
-- CTFG's licence was a hardcoded literal in a fetch script, so the site
-  published **CC BY-NC-SA** for two weeks after CTFG relicensed to CC BY 4.0.
-- The OSPO directory was declared **ours, CC BY 4.0** in a published dataset
-  and on the map credit. It is the **FLOSS-PSO Network's CC0 list** — verified
-  name-for-name, 18 for 18 — and `content/resources.md` had recorded their
-  `sourceUrl` the whole time. Only `/resources` ever read it, so the map
-  credited "this site" while the page below it credited them, and nothing in
-  the build noticed the two disagreeing.
-- `/resources` emitted `Dataset` JSON-LD naming **this site as `creator`** of
-  that same CC0 list.
-
-The rule that falls out: **provenance lives in content, is read from the
-source, and every consumer reads the same fields.** Never name a source or a
-licence in JSX. A source recorded in the data but read by only one consumer is
-a coincidence, not provenance.
+The transferable rule: **"the API is alive" is not "the API will tell me what I
+need", and an environment that passes is not the environment that fails.** If a
+fix targets a condition, reproduce that condition before believing the fix.
 
 ---
 
-## 2. State — verified 2026-09-15
+## 2. State — verified 2026-09-24
 
 ```bash
 export DEVELOPER_DIR=/Library/Developer/CommandLineTools   # ⚠ see §6
@@ -42,98 +39,109 @@ cd /Users/devin/Antigravity/unnyc
 git status --short && git branch --show-current   # clean, main
 git log --oneline origin/main..HEAD               # empty
 gh pr list --state open --json number -q length   # 0
+npm run build                                     # runs all three lints
 ```
 
-- **`origin/main` was at `b37214f`** ("Merge PR #97") when this section was
-  written. ⚠ **Don't trust that hash — or any hash in a handoff. Run the block
-  above.** It was already wrong by the time anyone could read it: #98 merged
-  *this very file* on top of it (`0900ee2`), and #99 moved it again
-  (`acae135`). **A handoff cannot pin its own HEAD**, so the hash is the one
-  line here guaranteed to go stale; everything below it is what to check.
-- Local `main` equal to `origin/main`, **working tree clean, nothing
-  unpushed**.
-- **`main` is the only branch**, locally and on origin. One worktree.
-- **Zero open PRs.**
-- **All 17 production endpoints 200** — 13 routes plus `robots.txt`,
-  `sitemap.xml`, `llms.txt`, `/data/index.json`.
-- `lint:content`, `lint:tokens` and `build` all clean.
-- **Five PRs merged across these sessions:** #94 (maps keep a legend and
-  nothing below), #95 (credit the FLOSS-PSO Network), #96 (orphan deleted, band
-  unified, map classes renamed), #97 (decisions recorded), plus #92 (the
-  previous handoff).
+- **`origin/main` at `726b52a`** when this was written. ⚠ Don't trust that hash
+  — run the block above. A handoff cannot pin its own HEAD; the previous one
+  was wrong the moment its own PR merged.
+- Clean tree, **nothing unpushed**, `main` the only branch, one worktree,
+  **zero open PRs**.
+- **All 17 production endpoints 200** (13 routes + `robots.txt`, `sitemap.xml`,
+  `llms.txt`, `/data/index.json`).
+- `lint:content` ✓ `lint:css` ✓ (2 warnings, expected) `lint:tokens` ✓ `build` ✓.
+- Production CSS: **0 `@layer`**, 76,519 bytes, 210 `.no-flexgap` rules.
+- **Six PRs merged:** #101 (drop cascade layers), #102 + #103 (reveal backstop —
+  #102 did not work, #103 fixed it), #104 (flex-gap fallback), #105 (govoss.cat
+  on /resources), #106 (GovOSS refresh + credit URL).
+
+**The browser floor moved from March 2022 to roughly early 2020.** Three
+`lint:css` checks hold it there.
 
 ---
 
 ## 3. Invariants — break these and something already fixed re-breaks
 
-1. **Provenance is read, never written.** `source`, `licence`, `licenceUrl`,
-   `licenceCheckedFrom`, `licenceCheckedOn` live in `content/`; the map credit,
-   `/resources` and `/data/*.json` all read the same fields. Naming a source in
-   JSX is how the map and the page disagreed for weeks.
-2. **Never collapse the four datasets' licences into one constant.** One is
-   ours (the endorser transcription, CC BY 4.0); CTFG and GovOSS are CC BY 4.0
-   *today*; the OSPO list is **CC0** — a different licence entirely. They have
-   already disagreed twice.
-3. **`Dataset` JSON-LD only for data this site made** — now just `/principles`.
-   `datasetLd` emits `creator: this site`.
-4. **`data-count` takes a RAW number; the element's CHILDREN take the formatted
-   one.** `Number("2,789")` is `NaN` and hydration overwrites a correct figure.
-5. **Never type a count or a teaser title into `content/home.md`.**
-6. **Scope any `@layer unnyc` rule styling `a`, `button`, `ul` or `ol` with
-   `.unnyc-page`.** Six bugs so far.
-7. **One owner per class, imported by every route that needs it** —
-   `world-map.css`, `keep-going.css`. But ⚠ **extracting shared CSS merges
-   assumptions about context, not just rules**: enumerate every element the
-   sheet colours and check each against the consumer's real background. That
-   one took **three** passes to finish (1.21:1 → 1.35:1 → 1.84:1, §6).
-8. **On `/campaign/sign` below 899px the form stays above the letter.**
-9. **Never sum the GovOSS country counts.**
+Tested ones are one line naming the check; `npm run lint:css` runs all four.
+
+1. **No `@layer` / `@container` / `@scope`** — `lint:css` check 1. A pre-2022
+   engine discards the whole block and the site renders unstyled.
+2. **No `text-decoration: none` below (0,1,1)** — `lint:css` check 2. base.css's
+   `a:hover` underline beats a single-class rule; a `:hover` regression is
+   invisible to a rendered-output diff.
+3. **`flex-gap-fallback.css` must not go stale** — `lint:css` check 4. Add a
+   flex `gap`, run `npm run gen:flex-gap`, commit the result.
+4. **Content must never depend on IntersectionObserver firing to be visible.**
+   The backstop gates on `document.visibilityState`, not on whether IO fired.
+   See the long comment in any storyscroller; 8 files carry it.
+5. **base.css's nav/footer rules need the component root** —
+   `.unnyc-page .unnyc-nav .unnyc-nav__link` (0-3-0). unnyc.css has its own
+   (0-2-0) rules for `.unnyc-footer__logo` and `.unnyc-btn` and is imported
+   later, so (0-2-0) loses the tie. This regressed when the layers came out:
+   the footer wordmark turned `flex`, and flex drops whitespace-only children,
+   so its text lost the spaces in "UN + NYC".
+6. **The font token override wins by IMPORT ORDER now**, not by being unlayered.
+   `layout.js` must import `base.css` (which `@import`s the design tokens)
+   before `unnyc.css`, or the fonts silently stop loading.
+7. **Provenance is read, never written.** `source`, `licence`, `licenceUrl`,
+   `licenceCheckedFrom/On` live in `content/`; the map credit, `/resources` and
+   `/data/*.json` all read the same fields. ⚠ Two literals remain by necessity:
+   GovOSS's licence and its domain, both in `scripts/fetch-govoss-catalogues.mjs`,
+   whose header tells you to re-read the footer and move the date on every
+   refresh. Do that.
+8. **Never collapse the four datasets' licences into one constant.** One is ours
+   (endorser transcription, CC BY 4.0); CTFG and GovOSS are CC BY 4.0 *today*;
+   the OSPO list is **CC0**. They have already disagreed twice.
+9. **`Dataset` JSON-LD only for data this site made** — now just `/principles`.
+10. **`data-count` takes a RAW number; the element's CHILDREN take the formatted
+    one.** `Number("2,789")` is `NaN` and hydration overwrites a correct figure.
+11. **Never type a count or a teaser title into `content/home.md`** — all
+    derived in `page.js`. The GovOSS figure is now **3,054**.
+12. **Scope any rule styling `a`, `button`, `ul`, `ol` with `.unnyc-page`.**
+13. **One owner per class, imported by every route that needs it.**
+14. **On `/campaign/sign` below 899px the form stays above the letter.**
+15. **Never sum the GovOSS country counts** — use `countryAttributedEntries`
+    (2,893) or `totalEntries` (3,054), never arithmetic on the fills.
 
 ---
 
 ## 4. Waiting on the human
 
-Short, because almost everything was decided on 2026-09-14. **Do not re-open
-the settled items as bugs** — they are listed in §5 so you recognise them.
-
-1. **Hub `168a959d` — the CTFG link question.** The original premise is void
-   (the map's CTFG dots stopped linking out on 2026-09-10; nothing on the site
-   points at that directory). The owner then asked to repoint them at
-   `app.civictech.guide`, and that is **blocked, not skipped** — see §6 for the
-   evidence. The one clean path is **asking CTFG for a stable public profile
-   URL**, then one line in `scripts/fetch-ctfg-projects.mjs`. That ask is the
-   owner's to make.
-2. **`endorsers.lede` in `content/principles.md` is dead copy.** Rendering it
-   would *add* a sentence `/principles` does not currently show, and "More than
-   150" reads odd against a directory whose chips total exactly 150. A
-   decision, not a bug.
-3. **The Databook Mapbox token** — Hub `7d5fdeef`. Different workspace,
-   owner-only first step. Not this repo.
-4. ⚠ **The host's git is broken** (§6). Fixing it needs the user's password.
+1. ⚠ **Nobody has watched the storyscrollers scroll since the reveal backstop
+   landed.** Load `/`, `/start`, `/success` and confirm sections still fade in
+   on scroll rather than being visible up front. If they're all visible
+   immediately, the backstop is firing when it shouldn't — revert #103. The
+   logic is verified from both sides (Chromium 98 with a live observer kept 61
+   of 64 hidden; a stubbed dead observer revealed all 64), but a headless engine
+   is not a reader.
+2. **Hub `168a959d` — the CTFG link question.** Blocked on *you asking CTFG for
+   a stable public profile URL*; `app.civictech.guide` addresses records in a
+   different id space with no public slug lookup. Commented 2026-09-24 with the
+   three stale facts in its own `more_info` corrected.
+3. **`endorsers.lede` in `content/principles.md` is dead copy.** Rendering it
+   would *add* a sentence `/principles` does not show today. A decision.
+4. **Real Safari 13.1 is untested.** Chromium 83 has the same missing feature
+   and is the closest thing runnable here, but it is Blink, not WebKit. Settling
+   it needs BrowserStack or an old Mac — both need your account or hardware.
+5. ⚠ **The host's `git` is broken** (§6). The permanent fix needs your password.
+6. **`CLAUDE.md` is 733 lines against a 300 budget.** Down from 1,012 today (the
+   map sections moved to `docs/MAP-LAYERS.md`), but still 2.4x over. Cutting
+   further means deleting trap documentation, which is an owner's call.
 
 ---
 
-## 5. Settled — recognise these, don't re-litigate them
+## 5. Candidates, ranked
 
-All owner decisions, 2026-09-14, recorded in `CLAUDE.md` with reasoning:
-
-- **No text lists under the maps** — a legend and the credit line, nothing
-  else. ⚠ This area has been rebuilt on a *decision* twice in five days.
-- **Map pin WCAG 2.5.8 is an ACCEPTED GAP.** Pins are 19–21px desktop, ~7px
-  phone; the exception that covered them went with the lists. ⚠ Do **not**
-  "fix" it by inflating the hit circles — 24px at phone scale overlaps
-  neighbouring European pins, trading a size failure for pins that activate
-  each other. The live options were a text equivalent or a bigger/zoomable map.
-- **`old-unnyc.wegov.nyc` is KEPT.** Nothing depends on it; retiring was
-  offered and declined.
-- **The printable declaration keeps its two-section structure**, not the UN's
-  three.
-- **The endorser lede is "More than 150"** (unrendered — §4.2).
-- **The storyscrollers have been seen by a human** and look right. That closed
-  a four-session unknown. ⚠ Still true for any *new* scroll work: only a human
-  can check it — `document.visibilityState` is `"hidden"` in these tools, so
-  IntersectionObserver never fires and every `[data-reveal]` sits at
-  `opacity: 0`.
+1. **Nothing is broken; the next move is yours.** Six PRs merged and verified in
+   this stretch and there is no known defect outstanding.
+2. **Flatten the remaining above-floor CSS** if Safari 13.1 matters: `:has()`
+   (8 files, scrollbar tint only) and `text-wrap: pretty` (7 files). Both
+   degrade invisibly, so this is polish, not a fix.
+3. **Refresh the CTFG snapshot.** GovOSS was refreshed 2026-09-24; CTFG is still
+   the 62-project curated one from August, and its licence is now read rather
+   than hardcoded, so a refresh is safe. Read the diff.
+4. **Prune `CLAUDE.md` properly** (§4.6) — the same move that just worked:
+   lift conditional detail into `docs/` and leave a pointer, rather than delete.
 
 ---
 
@@ -141,102 +149,98 @@ All owner decisions, 2026-09-14, recorded in `CLAUDE.md` with reasoning:
 
 ### ⚠ The host's `git` is broken — read this first
 
-`/usr/bin/git` is Xcode's shim and the Xcode licence has not been accepted, so
-**every git command fails** with "You have not agreed to the Xcode license
-agreements". `xcode-select -p` points at `/Applications/Xcode.app/...`. There is
-no Homebrew git on this machine.
-
-**Workaround that needs no password** (used throughout this session):
+`/usr/bin/git` is Xcode's shim and the licence is unaccepted, so git **and
+`gh`** fail. No-password workaround, needed in every shell:
 
 ```bash
 export DEVELOPER_DIR=/Library/Developer/CommandLineTools
 ```
 
-**Permanent fix, needs the user's password** — an agent cannot run either:
+Permanent fix needs the user: `sudo xcodebuild -license accept`.
 
-```bash
-sudo xcodebuild -license accept          # or
-sudo xcode-select -s /Library/Developer/CommandLineTools
-```
+### Looks broken, is fine
 
-`gh` shells out to git, so it fails the same way and is fixed the same way.
+- **`grep '@layer' src/**/*.css` returns 6 hits.** All are explanatory comments;
+  `lint:css` blanks comments and is authoritative. Trust the lint, not the grep.
+- **`"World map — coming soon"`** still exists in `UnnycHomeStoryscroller.js` —
+  the fallback branch if `worldMap` isn't passed.
+- Comments naming `UnnycEndorserDirectory`, `PrimerMapInner` and `@layer` survive
+  on purpose, recording what was removed and why.
 
-### Looks fine, isn't
+### Looks fine, is not
 
-- ⚠ **A `curl | grep` HIT IS NOT PROOF A STRING RENDERS.** An unused key on a
-  prop object is serialised into the **RSC flight payload** and ships in the
-  HTML. `endorsers.lede` greps as a hit on `/principles` from inside an escaped
-  JSON string in a `<script>`; `document.body.innerText` does not contain it.
-  **The exact mirror of the hydration trap** — that one is a defect the HTML
-  cannot show you, this one is a string the HTML shows you that no reader sees.
-- **A closed disclosure hides its own defect.** The catalogue rows sat at
-  1.35:1 on the dark homepage for four days *after* #88 fixed everything around
-  them, because nobody opens a `<details>` on the page where it is broken.
-  **Contrast-check what a control reveals, not only what it shows.**
-- **Small grey type looks deliberate when it is unreadable.** The map credit —
-  the **CC BY attribution** — sat at 1.84:1 on production until 2026-09-14.
-- **A green `curl` proves nothing about the map.** `UnnycWorldMap` is
-  `ssr: false`; none of it is in the HTML.
-- **A selector returning 0 is not evidence of absence.** Cost a false a11y
-  claim in CLAUDE.md once (`li` children that were `div`s).
+- **Computed styles FREEZE in this repo's preview pane.** The tab is hidden, so
+  CSS transitions never advance and rAF is throttled: an element whose inline
+  style says `opacity: 1` still computes `0`, and the homepage count-ups read
+  `0` forever. **Inline style and the SSR HTML are ground truth here.** This
+  cost a wrong conclusion mid-session.
+- **IntersectionObserver fires here sometimes and not others.** That
+  inconsistency is exactly what made #102 look verified locally while doing
+  nothing in production. If a fix concerns IO, stub it explicitly rather than
+  relying on the pane's behaviour.
+- **A `curl | grep` hit is not proof a string renders** — unused prop keys ship
+  in the RSC flight payload. Check `document.body.innerText`.
+- **A rendered-HTML check cannot see a hydration defect.** The mirror of the above.
+- **A selector returning 0 is not evidence of absence.** Check the component.
+- **Screenshots come back blank at deep scroll offsets**, and `innerWidth` is
+  `0` in a fresh tab — set an explicit viewport before measuring anything.
 
-### Method traps found chasing app.civictech.guide
+### Testing on a genuinely old browser — the recipe that worked
 
-- ⚠ **A bogus `recordId` on `app.civictech.guide` returns HTTP 200** — it is a
-  client-rendered shell, so **status codes prove nothing there**. A real
-  `airtable_id` from CTFG's own API renders "Record details can no longer be
-  found". Only rendered text distinguishes them.
-- The app addresses profiles as `/p/<slug>/r/<recordId>` using an Airtable
-  record id in a **different id space** from the `airtable_id` CTFG's public
-  API exposes; `/p/<slug>` alone is "Page not found"; there is no public
-  slug→recordId lookup; and CTFG's own `rel="canonical"` still names
-  `civictech.guide/projects/<slug>`. That is why §4.1 is blocked.
+Chromium runs here under Rosetta; snapshots live at
+`https://storage.googleapis.com/chromium-browser-snapshots/Mac/<rev>/chrome-mac.zip`
+(not every revision exists — `Mac/756071` = Chrome 83, `puppeteer@13.1.3` pulls
+Chrome 98). Modern puppeteer **cannot** drive Chrome 83's CDP; use its own
+headless CLI (`--headless --dump-dom`, `--screenshot`, `--virtual-time-budget`)
+instead. ⚠ `timeout` does not exist on macOS. Screenshots are 2× DPI viewport
+captures; GeoPeeker's tiles are full-page captures squished to 340px wide and
+**judging them at that scale is misleading** — it cost two wrong conclusions.
 
-### Tooling limits
+### Method traps from the CTFG work
 
-- ⚠ **Set an explicit viewport before measuring anything.** `innerWidth` is `0`
-  in a fresh tab and after the `desktop` preset; numbers taken then are
-  *plausibly* wrong, not obviously wrong.
-- **Screenshots are blank at deep scroll offsets** (~990px+ on desktop). A
-  375px capture at 2.6k worked. Verify by DOM measurement instead.
-- ⚠ **Nothing with `data-reveal` appears in a screenshot.** Inject
-  `[data-reveal]{opacity:1 !important;transform:none !important}` — debug only.
-- **The hidden pane throttles timers**, so a click and its result must be split
-  across two `javascript_tool` calls.
-- **A synthetic `KeyboardEvent` does not run default activation.** Use
-  `element.click()` and say plainly that the hardware keypress is unverified.
-
-### Looks broken, is deliberate
-
-- `"World map — coming soon"` still exists in `UnnycHomeStoryscroller.js` — the
-  fallback branch if `worldMap` isn't passed.
-- Comments naming `UnnycEndorserDirectory`, `unnyc-endorsers__` and
-  `unnyc-start-story__map-*` survive **on purpose**, recording what was removed
-  and why. They are not live code — checked: the component is gone, and
-  `primer.css` has **0** `unnyc-endorsers__` rules.
-- `unnyc-start-story__*` still exists (97 occurrences) and belongs to that
-  storyscroller. **Don't sweep the prefix** — only the 55 `unnyc-world-map__*`
-  were renamed.
-- `ssr: false` on the map is a **bytes** decision now, not a technical one.
-- `localhost` cannot submit any form — not in Payload's CORS allowlist.
+- **A bogus `recordId` on `app.civictech.guide` returns HTTP 200** — it is a
+  client-rendered shell, so status codes prove nothing there. Only rendered text
+  distinguishes a real record from a dead one.
 
 ---
 
 ## Coverage — what these sessions did NOT do
 
-- **Did not close Hub `168a959d`**, deliberately: its premise is void but a
-  real unanswered question replaced it (§4.1).
-- **Could not repoint the CTFG links** as asked. Blocked with evidence, not
-  skipped — and I nearly wrote 62 broken links before checking, which is what
-  the §6 method traps are.
-- **Never watched a storyscroller scroll myself** — a human did, and confirmed
-  it. Structurally impossible here.
-- **Never dispatched a trusted keypress** at a map pin.
+- **Never watched a storyscroller scroll** (§4.1). Structurally impossible here.
+- **Never tested real Safari** — only Chromium 83/98, which is Blink.
+- **Did not re-run the Chromium 83 visual test against production** after #104
+  merged; it was verified against the identical local build, and production was
+  confirmed to ship both halves (probe + 210 fallback rules).
+- **Did not refresh the CTFG snapshot** — only GovOSS.
 - **Did not fix the host's git** — needs the user's password.
-- **Did verify `/resources` in a browser after the rename** (this was the one
-  gap left, so it was closed rather than handed over): the source line reads
-  **"SOURCE FLOSS-PSO Network (CC0 1.0)"** — with the load-bearing space —
-  linking to `floss-pso.network`; the open-data note carries the corrected
-  "some…others" wording; and the foot renders the **shared** band ("Let's keep
-  going", 5 links including `/principles`), not the old "Looking for something
-  else?" one.
+- **Did not close Hub `168a959d`** — still the human's call; commented, not moved.
+
+---
+
+## Starting prompt for the next session
+
+Paste this:
+
+> I'm continuing work on the UNNYC campaign site (`~/Antigravity/unnyc`, live at
+> https://un.opensource.nyc).
+>
+> ⚠ First: git on this machine is broken — run
+> `export DEVELOPER_DIR=/Library/Developer/CommandLineTools` in every shell, or
+> git and gh both fail.
+>
+> Read `/Users/devin/Antigravity/unnyc/docs/CONTINUE.md` — verified state,
+> invariants, what's waiting on me, and the traps. That is the only file you
+> need up front. Read `/Users/devin/Antigravity/unnyc/docs/MAP-LAYERS.md` ONLY
+> if you touch the map, a `content/*` snapshot or a fetch script.
+>
+> Then query the Hub: `get_workspace_detail("unnyc")` and
+> `list_tasks(workspace="unnyc")`. One task is open (`168a959d`) and its latest
+> comment explains why it is blocked on me rather than forgotten.
+>
+> Three things before you touch anything: pushing `main` deploys to production
+> with no gate; the map is `ssr: false` so curl cannot see it; and computed
+> styles freeze in the preview pane, so inline style and SSR HTML are ground
+> truth, not `getComputedStyle`.
+>
+> Do not write a handoff, continuation prompt, or session record unless I ask for
+> `/handoff`. End your turn with what you did and what you recommend next.

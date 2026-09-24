@@ -3,7 +3,7 @@
 Paste the block below into a new session. Everything above the line is context for
 whoever is maintaining this file.
 
-**Last updated 2026-09-15.** This file is the standing onboarding brief: where the
+**Last updated 2026-09-24.** This file is the standing onboarding brief: where the
 site lives, how to verify things here, what the pages are. It is the one doc
 guaranteed to be read first, so it is the one most damaging to leave stale — it
 spent 2026-08-19 describing a homepage, a principles grid and a hostname that had
@@ -249,11 +249,14 @@ page, from `content/un-endorsers.json` (a 2026-08-06 snapshot of the UN's page).
 
 ## CSS: the one rule that would have saved five bugs
 
-**In `@layer unnyc`, scope any component rule that sets `color` on an `<a>` or
-`<button>` with `.unnyc-page`.** The resets are TWO-part selectors —
-`.unnyc-page a { color: inherit }` and `.unnyc-page button { border: none;
-background: none }` are both (0,1,1) — so a single-class component rule (0,1,0)
-LOSES to them in the same layer. Five collisions in two days, all this shape:
+**Scope any component rule that sets `color` on an `<a>` or `<button>` with
+`.unnyc-page`.** The resets are TWO-part selectors — `.unnyc-page a { color:
+inherit }` and `.unnyc-page button { border: none; background: none }` are both
+(0,1,1) — so a single-class component rule (0,1,0) LOSES to them on specificity.
+⚠ This used to say "in `@layer unnyc` … in the same layer". **The cascade layers
+were removed 2026-09-19** (they made every pre-2022 browser render the site
+unstyled — see CLAUDE.md); nothing is layered now, so plain specificity and
+source order decide everything. Five collisions in two days, all this shape:
 
 1. navy-on-navy sign-form tabs (the button reset)
 2. endorser chips rendering as bare text (the button reset)
@@ -351,9 +354,12 @@ licence, URL — is derived from `datasetIndex()` rather than authored.
 Phase 6 shipped 2026-08-21: the Google Fonts `@import` is gone — both faces are
 self-hosted by `next/font` (`src/app/fonts.js`), which removed two cold
 third-party connections from the critical path and dropped a weight and an italic
-the site never used. AVIF enabled. ⚠ The token override in `unnyc.css` is
-UNLAYERED and must stay so: the design system declares those tokens at `:root`
-unlayered, and unlayered beats every layer.
+the site never used. AVIF enabled. ⚠ The token override in `unnyc.css` is still
+load-bearing but its MECHANISM CHANGED on 2026-09-19: it used to win by being
+the file's only unlayered rule, and with the layers gone it is `:root` vs the
+design system's `:root`, so SOURCE ORDER decides. It wins only because
+`layout.js` imports `base.css` before `unnyc.css` — that import order is now
+what keeps the fonts loading.
 Phase 5 is the only one left, and it is mostly NOT code. Done 2026-08-21: the
 GitHub repo's About URL pointed at `unnyc-campaign.vercel.app` and now points at
 `https://un.opensource.nyc`, with 8 topics added.
