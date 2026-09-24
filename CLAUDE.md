@@ -350,9 +350,10 @@ fields. What is ours is the geocoding. ⚠ Their entry for Échirolles is named
 
 `/start#going-open-source` now has a THIRD layer, painted beneath the other two: a
 choropleth of how many open source projects each country's own public catalogues
-list, from **GovOSS** (`govoss-catalog.vercel.app`). 13 countries, 17 catalogues,
-2,619 country-attributed projects. Click or tab a country for its count and a link
-to each catalogue.
+list, from **GovOSS** (`govoss.cat` — it moved off `govoss-catalog.vercel.app`,
+which still 301s there, on 2026-09-24). **14 countries, 19 catalogues, 2,893
+country-attributed projects** as of the 2026-09-24 refresh. Click or tab a country
+for its count and a link to each catalogue.
 
 **The stacking order is the argument, not a style choice.** Running a public code
 catalogue and endorsing the UN Principles are different claims and they disagree:
@@ -374,8 +375,8 @@ ask. Invert it and the page argues something else.
   domain.
 - ⚠ **Never render the sum of the country counts.** It matches neither total, in
   both directions at once: 256 entries sit under `GLOBAL`/`EU` and get no polygon,
-  while an entry listed by catalogues in two countries counts under each. 2,619
-  summed against GovOSS's actual 2,772. Use `countryAttributedEntries` (what the
+  while an entry listed by catalogues in two countries counts under each. 2,893
+  summed against GovOSS's actual 3,054. Use `countryAttributedEntries` (what the
   polygons cover) or `totalEntries` (GovOSS's headline), never arithmetic on the
   fills.
 - ⚠ **Natural Earth's `ISO_A2` is `-99` for several countries, France among them.**
@@ -442,7 +443,7 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   (`PrimerHeroFullBleed`; the gradient `PrimerHero` survives, swappable back in
   `page.js`) and copy still lives in `content/home.md` under `journey:` — ⚠ NOT
   `sections`, which the parsed body silently overwrites.
-  ⚠ **Every proof row is DERIVED in `page.js`** — the 18/2,789/150 figures from
+  ⚠ **Every proof row is DERIVED in `page.js`** — the 18/3,054/150 figures from
   the OSPO directory, the GovOSS snapshot and the endorser snapshot; the six
   reason titles read out of `content/crosswalk.md`'s own blocks; the case titles
   from `content/success.md`. They were authored literals for ONE commit and the

@@ -1,17 +1,17 @@
 {
   "source": "GovOSS",
-  "sourceUrl": "https://govoss-catalog.vercel.app",
-  "sourceApi": "https://govoss-catalog.vercel.app/meta.json",
+  "sourceUrl": "https://govoss.cat",
+  "sourceApi": "https://govoss.cat/meta.json",
   "licence": "CC BY 4.0",
   "boundaries": "Natural Earth 1:110m (public domain)",
   "boundariesShort": "Natural Earth",
   "generatedBy": "scripts/fetch-govoss-catalogues.mjs",
-  "generated": "2026-08-28",
-  "govossGenerated": "2026-08-24",
-  "totalEntries": 2789,
-  "countryAttributedEntries": 2636,
-  "countryCount": 13,
-  "catalogueCount": 17,
+  "generated": "2026-09-24",
+  "govossGenerated": "2026-09-23",
+  "totalEntries": 3054,
+  "countryAttributedEntries": 2893,
+  "countryCount": 14,
+  "catalogueCount": 19,
   "trimmed": [
     {
       "code": "FR",
@@ -25,12 +25,12 @@
     {
       "code": "GLOBAL",
       "reason": "Digital Public Goods Registry — global, not a national catalogue",
-      "entries": 248
+      "entries": 254
     },
     {
       "code": "EU",
       "reason": "code.europa.eu — EU institutions, not a member state",
-      "entries": 7
+      "entries": 11
     }
   ],
   "countries": [
@@ -54,18 +54,18 @@
     },
     {
       "code": "DE",
-      "entries": 560,
+      "entries": 602,
       "catalogues": [
         {
           "label": "openCode",
           "site": "https://opencode.de/en/software",
-          "entries": 423,
+          "entries": 464,
           "route": "GitLab API"
         },
         {
           "label": "Munich Open Source",
           "site": "https://opensource.muenchen.de/software/",
-          "entries": 141,
+          "entries": 142,
           "route": "markdown files in git"
         }
       ]
@@ -96,24 +96,36 @@
     },
     {
       "code": "BG",
-      "entries": 177,
+      "entries": 180,
       "catalogues": [
         {
           "label": "e-Government Ministry",
           "site": "https://github.com/governmentbg",
-          "entries": 177,
+          "entries": 180,
           "route": "GitHub org"
         }
       ]
     },
     {
+      "code": "CH",
+      "entries": 164,
+      "catalogues": [
+        {
+          "label": "Swiss Confederation",
+          "site": "https://github.com/swiss/index",
+          "entries": 164,
+          "route": "GitHub index + orgs"
+        }
+      ]
+    },
+    {
       "code": "NL",
-      "entries": 103,
+      "entries": 120,
       "catalogues": [
         {
           "label": "code.overheid.nl",
           "site": "https://code.overheid.nl/",
-          "entries": 103,
+          "entries": 120,
           "route": "Forgejo API"
         }
       ]
@@ -126,6 +138,24 @@
           "label": "iMio",
           "site": "https://www.imio.be/",
           "entries": 101,
+          "route": "GitHub org"
+        }
+      ]
+    },
+    {
+      "code": "SE",
+      "entries": 79,
+      "catalogues": [
+        {
+          "label": "Offentligkod",
+          "site": "https://offentligkod.se/",
+          "entries": 48,
+          "route": "GNU recutils in git"
+        },
+        {
+          "label": "DIGG",
+          "site": "https://github.com/diggsweden",
+          "entries": 32,
           "route": "GitHub org"
         }
       ]
@@ -163,18 +193,6 @@
           "site": "https://avoinkoodi.fi/",
           "entries": 54,
           "route": "static JSON"
-        }
-      ]
-    },
-    {
-      "code": "SE",
-      "entries": 48,
-      "catalogues": [
-        {
-          "label": "Offentligkod",
-          "site": "https://offentligkod.se/",
-          "entries": 48,
-          "route": "GNU recutils in git"
         }
       ]
     },
