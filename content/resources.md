@@ -79,6 +79,9 @@ resourceGroups:
       desc: "The member-state framework naming DPGs and DPI as shared priorities."
   - title: "Directories & Registries"
     links:
+    - text: "GovOSS (Sarapis)"
+      url: "https://govoss.cat/"
+      desc: "Government open source registers from around the world, harvested first-hand onto one schema, with a free JSON API."
     - text: "DPI Map (UCL IIPP)"
       url: "https://dpimap.org/"
       desc: "Interactive world map of the digital ID, payment, and data-exchange systems in use across 210 countries."
