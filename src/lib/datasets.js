@@ -110,6 +110,8 @@ function ospos() {
     // pass published `"group": null` on all 18 rows). Flattened with the country
     // carried onto each office, because a consumer wanting one office should not
     // have to reconstruct which bucket it came from.
+    const ospoLicence = dir.licence ?? 'an unrecorded licence';
+    const ospoCC0 = /^CC0\b/.test(dir.licence ?? '');
     const offices = dir.groups.flatMap((g) =>
         (g.items ?? []).map((o) => ({ country: g.country ?? null, ...o })),
     );
@@ -129,12 +131,14 @@ function ospos() {
              * that error to sit, which is why it is corrected here rather than
              * only on the map. Read from the markdown, never asserted. */
             licence: { licence: dir.licence ?? null, licenceUrl: dir.licenceUrl ?? null },
-            attribution: `${dir.source ?? 'FLOSS-PSO Network'} (${dir.sourceUrl ?? 'https://floss-pso.network/'}) — the list is CC0, so no credit is required; credit them anyway, not this site. Coordinates and locationBasis added by UNNYC (${SITE_URL}).`,
+            // The licence and what it implies are read from dir.licence, never
+            // typed: "no credit is required" is only true while it IS CC0.
+            attribution: `${dir.source ?? 'FLOSS-PSO Network'} (${dir.sourceUrl ?? 'https://floss-pso.network/'}) — the list is ${ospoLicence}, ${ospoCC0 ? 'so no credit is required; credit them anyway' : 'so credit them'}, not this site. Coordinates and locationBasis added by UNNYC (${SITE_URL}).`,
             source: dir.source ?? null,
             sourceUrl: dir.sourceUrl ?? null,
             generated: null,
             notes: [
-                'The list of offices is the FLOSS-PSO Network’s, released CC0 — no attribution required. What this site adds is the geocoding: `lat`/`lng` and `locationBasis` on each office.',
+                `The list of offices is the FLOSS-PSO Network’s, released ${ospoLicence}${ospoCC0 ? ' — no attribution required' : ''}. What this site adds is the geocoding: \`lat\`/\`lng\` and \`locationBasis\` on each office.`,
                 'Coordinates are hand-placed. `locationBasis: "seat"` means the body’s own city; `"hq"` means it sits at its parent organisation’s headquarters, so the point is approximate — the two are different claims and are not interchangeable.',
                 'The map at /start groups these by city and merges cities within 25 km, which changes what is DRAWN and never what is claimed. This dataset is ungrouped.',
             ],
@@ -182,7 +186,10 @@ function govossCatalogues() {
                 'How many open source projects each country’s own public code catalogues list, with a link to every catalogue.',
             count: d.countries.length,
             licence: { licence: d.licence, licenceUrl: null },
-            attribution: `GovOSS (${d.sourceUrl}) — catalogue data CC BY 4.0; credit GovOSS, not this site`,
+            // The licence is interpolated, never typed: the `licence` field
+            // beside this is read from the snapshot, and a literal here would
+            // contradict it the day GovOSS relicenses (CTFG's did exactly that).
+            attribution: `GovOSS (${d.sourceUrl}) — catalogue data ${d.licence}; credit GovOSS, not this site`,
             source: d.source,
             sourceUrl: d.sourceUrl,
             generated: d.generated,

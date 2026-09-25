@@ -73,7 +73,14 @@ export default function UnnycHomeStoryscroller({
             if (el.hasAttribute('data-count')) {
                 const target = Number(el.dataset.count);
                 const fmt = (n) => n.toLocaleString('en-US');
-                if (reduce) {
+                /* ⚠ A HIDDEN DOCUMENT GETS THE FINAL FIGURE, NOT AN ANIMATION.
+                   The backstop below calls play() precisely when the page is
+                   not visible, and rAF is paused there — so starting a
+                   count-up would set "0" over the correct server-rendered
+                   figure and never tick, which is exactly what a capture of
+                   a never-shown page records. Nobody is watching the count
+                   in that state anyway. */
+                if (reduce || document.visibilityState !== 'visible') {
                     el.textContent = fmt(target);
                     return;
                 }
