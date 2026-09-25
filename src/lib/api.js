@@ -99,6 +99,15 @@ export function getStrapiMedia(url) {
  */
 export async function createSubmission(collection, data) {
   const siteId = await getSiteId();
+  // ⚠ An endorsement saved WITHOUT a site is invisible forever: the wall reads
+  // `where[site.key][equals]=<SITE_KEY>`, so it could be published in the
+  // admin and still never appear, with no error anywhere. Refuse instead, so
+  // the form shows its "try again" state. Other collections are only read in
+  // the admin, where a missing site is harmless, so losing a signup over a
+  // failed lookup would be the worse trade.
+  if (!siteId && SITE_SCOPED_READS.has(collection)) {
+    throw new Error(`Submission failed (no site id for '${SITE_KEY}')`);
+  }
   const res = await fetch(`${PAYLOAD_URL}/api/${collection}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -122,7 +131,13 @@ async function payloadGET(collection, params, cache = 'force-cache') {
   return res.json();
 }
 
-// Cache the brand's site id for the request lifetime (submissions need the id).
+/** Collections whose PUBLIC read filters on `site.key` — see createSubmission. */
+const SITE_SCOPED_READS = new Set(['campaign-endorsements']);
+
+// Cache the brand's site id for the page's lifetime (submissions need the id).
+// ⚠ Only a SUCCESSFUL lookup is cached. This used to cache the `null` from a
+// failed one too, so a single network blip left every later submission from
+// that tab without a site — see createSubmission for why that is silent.
 let _siteIdPromise;
 function getSiteId() {
   if (!_siteIdPromise) {
@@ -132,7 +147,11 @@ function getSiteId() {
       depth: '0',
     })
       .then((r) => r.docs?.[0]?.id ?? null)
-      .catch(() => null);
+      .catch(() => null)
+      .then((id) => {
+        if (id == null) _siteIdPromise = undefined; // retry on the next call
+        return id;
+      });
   }
   return _siteIdPromise;
 }

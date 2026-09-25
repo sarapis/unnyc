@@ -35,6 +35,13 @@
  *     4. a repeated `### Label` inside one section — they are used as React
  *        keys
  *
+ *     7. a `content/*.json` snapshot that does not parse, or has lost the
+ *        list its loader requires. Those loaders in src/lib/content.js are
+ *        fail-soft ON PURPOSE and return null, so without this a broken hand
+ *        edit builds green and production silently loses the homepage stat,
+ *        the map fill or the endorser directory — failure that looks exactly
+ *        like "nothing to show". The runtime stays fail-soft; the build doesn't.
+ *
  *   warnings (reported, do not fail)
  *     5. a `[text](gloss:slug)` link with no matching term in start.md
  *     6. a `meta:` field outside the length search engines and social cards
@@ -294,6 +301,37 @@ for (const file of files) {
     checkMetaLengths(file, parsed.data, fmLines);
 }
 
+/* ---------------------------------------------------------------------------
+   Check 7 — the JSON snapshots. Keyed by the array each loader in
+   src/lib/content.js treats as "present"; a file not listed only has to parse.
+--------------------------------------------------------------------------- */
+const JSON_REQUIRED = {
+    'ctfg-gov-open-source.json': 'projects',
+    'govoss-catalogues.json': 'countries',
+    'un-endorsers.json': 'organizations',
+};
+const jsonFiles = fs.readdirSync(CONTENT_DIR).filter((f) => f.endsWith('.json')).sort();
+for (const file of jsonFiles) {
+    const src = fs.readFileSync(path.join(CONTENT_DIR, file), 'utf8');
+    let data;
+    try {
+        data = JSON.parse(src);
+    } catch (e) {
+        // V8 reports either "line L column C" or "at position N".
+        const m = /line (\d+)/.exec(e.message) || null;
+        const pos = /position (\d+)/.exec(e.message);
+        const line = m ? Number(m[1]) : pos ? src.slice(0, Number(pos[1])).split('\n').length : null;
+        err(file, line, `not valid JSON — ${e.message.split('\n')[0]}`,
+            'the page that reads this file would silently render without it.');
+        continue;
+    }
+    const key = JSON_REQUIRED[file];
+    if (key && !(Array.isArray(data?.[key]) && data[key].length)) {
+        err(file, null, `\`${key}\` is missing or empty`,
+            'src/lib/content.js treats that as "no data" and the page silently drops it.');
+    }
+}
+
 const show = (list, label) => {
     for (const { file, line, msg, hint } of list) {
         console.error(`\n  ${label} content/${file}${line ? `:${line}` : ''}`);
@@ -305,7 +343,7 @@ const show = (list, label) => {
 if (errors.length) show(errors, '✗');
 if (warnings.length) show(warnings, '!');
 
-const n = files.length;
+const n = files.length + jsonFiles.length;
 if (errors.length) {
     console.error(
         `\n✗ validate-content: ${errors.length} error(s) in ${n} content file(s). The build would fail.\n`,
