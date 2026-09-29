@@ -23,9 +23,15 @@ import worldAtlas from '../../../../content/world-atlas.json';
  *      section's argument, drawn largest and labelled.
  *
  * Real Natural Earth geometry rather than a drawn outline. Country names from
- * the atlas are matched against govoss.geo's 13 catalogue countries by NAME
- * (govoss.countries itself only carries ISO codes; govoss.geo's features are
- * the code→name bridge).
+ * the atlas are matched against GovOSS's catalogue countries by NAME
+ * (`govoss.shapes`, read from GovOSS's own published map file, is the
+ * code→name bridge). ⚠ GovOSS's SHAPES ARE NOT DRAWN — every country on this
+ * map is the atlas's 1:110m polygon, so borders line up. GovOSS's parts only
+ * decide WHICH PARTS of an atlas country are shaded: an atlas part is shaded
+ * when its bounding box meets one of GovOSS's parts for that country. That is
+ * what leaves French Guiana unshaded — GovOSS publishes France as metropolitan
+ * + Corsica. Drawing their 1:50m shapes on top was tried on 2026-09-28 and
+ * doubled every shaded border at this scale.
  *
  * ⚠ THE BOUNDARIES ARE A SNAPSHOT IN THE REPO, NOT A RUNTIME FETCH — changed
  * 2026-09-10, and the reason is the whole point of this file's existence. The
@@ -173,8 +179,38 @@ function ospoOffices(point) {
     }));
 }
 
+/**
+ * Split an atlas country into the parts GovOSS shades and the parts it doesn't.
+ * `boxes` are GovOSS's own per-part bounding boxes ([minLon, minLat, maxLon,
+ * maxLat], from getGovossCatalogues). An atlas part counts as shaded if its box
+ * meets any of them — a coarse test, and deliberately so: the two datasets are
+ * different resolutions of the same Natural Earth country, so a part is either
+ * obviously in GovOSS's shape or obviously elsewhere (Guiana is 45° from Paris).
+ * If nothing matches, the whole country stays shaded rather than vanishing: an
+ * unshaded catalogue country is the silent failure, a stray shaded island is not.
+ */
+function splitByShape(f, boxes) {
+    const g = f.geometry;
+    const parts = g.type === 'MultiPolygon' ? g.coordinates : [g.coordinates];
+    const meets = (ring) => {
+        let [x0, y0, x1, y1] = [Infinity, Infinity, -Infinity, -Infinity];
+        for (const [x, y] of ring) {
+            if (x < x0) x0 = x;
+            if (y < y0) y0 = y;
+            if (x > x1) x1 = x;
+            if (y > y1) y1 = y;
+        }
+        return boxes.some((b) => x0 <= b[2] && x1 >= b[0] && y0 <= b[3] && y1 >= b[1]);
+    };
+    const inside = parts.filter((p) => meets(p[0]));
+    const outside = parts.filter((p) => !meets(p[0]));
+    const feat = (ps) => ({ type: 'Feature', properties: f.properties, geometry: { type: 'MultiPolygon', coordinates: ps } });
+    if (!inside.length || !outside.length) return { shaded: f, rest: null };
+    return { shaded: feat(inside), rest: feat(outside) };
+}
+
 export default function UnnycWorldMap({ markers = [], legend = [], mapSource, govoss, ospos, ctfg }) {
-    const hasFill = Boolean(govoss?.countries?.length && govoss?.geo?.features?.length);
+    const hasFill = Boolean(govoss?.countries?.length && govoss?.shapes?.length);
     const hasOspos = Boolean(ospos?.points?.length);
     const hasCtfg = Boolean(ctfg?.projects?.length);
 
@@ -250,23 +286,27 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
         );
         const path = geoPath(projection);
 
-        const codeToName = hasFill
-            ? new Map(govoss.geo.features.map((f) => [f.properties.code, f.properties.name]))
-            : new Map();
-        const catalogueByName = hasFill
-            ? new Map(govoss.countries.map((c) => [codeToName.get(c.code), c]).filter(([name]) => name))
-            : new Map();
+        const shapeByName = hasFill ? new Map(govoss.shapes.map((sh) => [sh.name, sh])) : new Map();
+        const catalogueByCode = hasFill ? new Map(govoss.countries.map((c) => [c.code, c])) : new Map();
 
         countries = all.map((f) => {
-            const catalogue = catalogueByName.get(f.properties.name) || null;
+            const shape = shapeByName.get(f.properties.name);
+            const catalogue = (shape && catalogueByCode.get(shape.code)) || null;
+            const base = { key: f.id ?? f.properties.name, name: f.properties.name, catalogue };
+            if (!catalogue) return { ...base, d: path(f), restD: null, centroid: null };
+            const { shaded, rest } = splitByShape(f, shape.boxes);
             return {
-                key: f.id ?? f.properties.name,
-                name: f.properties.name,
-                d: path(f),
-                catalogue,
-                /* Only the 13 shaded countries are interactive, so only they pay
-                 * for a centroid — it positions the popup, nothing else. */
-                centroid: catalogue ? path.centroid(f) : null,
+                ...base,
+                d: path(shaded),
+                /* The parts GovOSS leaves out (French Guiana) are still land,
+                 * so they are drawn — just as unshaded ground, not as part of
+                 * the pin. */
+                restD: rest ? path(rest) : null,
+                /* Only the shaded countries are interactive, so only they pay
+                 * for a centroid — it positions the popup, nothing else. Taken
+                 * from the SHADED parts, so France's card opens over France
+                 * rather than being pulled toward the Atlantic by Guiana. */
+                centroid: path.centroid(shaded),
             };
         });
 
@@ -377,6 +417,22 @@ export default function UnnycWorldMap({ markers = [], legend = [], mapSource, go
                     role="group"
                     aria-label="World map: countries with public code catalogues, and cities with public-sector open source program offices"
                 >
+                    {countries
+                        .filter((c) => c.restD)
+                        .map((c) => (
+                            <path
+                                key={`rest-${c.key}`}
+                                d={c.restD}
+                                aria-hidden="true"
+                                style={{
+                                    fill: 'var(--wg-surface)',
+                                    fillOpacity: 0.05,
+                                    stroke: 'var(--wg-surface)',
+                                    strokeOpacity: 0.22,
+                                }}
+                                strokeWidth={0.6}
+                            />
+                        ))}
                     {countries.map((c) =>
                         c.catalogue ? (
                             <path

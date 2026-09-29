@@ -120,9 +120,10 @@ Two consequences of the swap, both real:
     than a reader's page. Louder and cheaper.
   - The fetch script **throws** rather than writing something plausible, and the check
     that matters is the **name join**: the fill matches Natural Earth's
-    `properties.name` against GovOSS's 13 catalogue countries, so an upstream rename
-    would silently unshade a country. Same shape as the `ISO_A2 = -99` trap the GovOSS
-    script guards. It also checks the country count is in band, that every geometry has a
+    `properties.name` against the names in GovOSS's own map file (14 countries as of
+    2026-09-28), so a rename on either side would silently unshade a country. Same
+    shape as the `ISO_A2 = -99` trap that once dropped France. `fetch-govoss-catalogues.mjs`
+    runs the same join from its side, so it fails whichever snapshot is refreshed. It also checks the country count is in band, that every geometry has a
     name, and that Antarctica is still called Antarctica (the render filters it BY NAME).
   - ⚠ `ssr: false` stays on both call sites, but the REASON CHANGED: there is no async
     work left, so it is purely about bytes. 176 country paths belong in a content-hashed
@@ -254,9 +255,77 @@ fields. What is ours is the geocoding. ⚠ Their entry for Échirolles is named
 `/start#going-open-source` now has a THIRD layer, painted beneath the other two: a
 choropleth of how many open source projects each country's own public catalogues
 list, from **GovOSS** (`govoss.cat` — it moved off `govoss-catalog.vercel.app`,
-which still 301s there, on 2026-09-24). **14 countries, 19 catalogues, 2,893
-country-attributed projects** as of the 2026-09-24 refresh. Click or tab a country
-for its count and a link to each catalogue.
+which still 301s there, on 2026-09-24). **14 countries, 20 catalogues, 2,988
+country-attributed projects, 3,141 in total** as of the 2026-09-28 refresh (was 19 /
+2,893 / 3,054 on 09-24; Helsingborg was added). Click or tab a country for its count
+and a link to each catalogue.
+
+### ⚠ Since 2026-09-28 GovOSS publishes the map data, and this repo reads it
+
+`scripts/fetch-govoss-catalogues.mjs` reads **`https://govoss.cat/catalogues.geo.json`**,
+GovOSS's own map file, instead of rebuilding the layer from Natural Earth itself. The
+join logic used to exist twice, once here and once in GovOSS: the ISO_A2 `-99`
+fallback, the French Guiana trim, the list of codes that aren't countries. Now it
+lives only there.
+
+**What comes from GovOSS:**
+- which countries are shaded;
+- which catalogues belong to each (`properties.catalogues`);
+- the shapes (Natural Earth 1:50m Admin 0, simplified; its `source.geometry_sha256`
+  is recorded in `shapesFrom`);
+- the editorial trims (`trimmed[]`: France is metropolitan + Corsica);
+- what has no shape (`not_drawn[]`: the Digital Public Goods Registry);
+- **both licences** (`licence.geometry`, `licence.properties`).
+
+**What still lives here:**
+- **Counts come from `/meta.json`.** That covers the headline totals and the per-country
+  counts in the popups. The map file deliberately has no per-country total, and summing
+  its `catalogues[].entries` is wrong: Sweden's three catalogues sum to 178, GovOSS's
+  Sweden is 177; France's sum to 675, GovOSS's France is 665.
+- **Each catalogue's own site and route come from `/sources.json`.** The popups link to
+  the government's catalogue, not to a GovOSS filter page.
+- **`NOT_DRAWN_HERE` is our call.** GovOSS draws an **EU27 outline** (`kind: "union"`) and
+  two **city points**, Munich and Helsingborg (`kind: "city"`); this map draws none of
+  them. The inventory is the ground and the policy markers are the figure. An EU27
+  outline round most of the map's subject would read as a claim about the member states,
+  for a catalogue of EU *institutions'* software. Both city catalogues are already in
+  their country's popup, and Munich already carries a policy marker, so a GovOSS dot
+  there would sit underneath the figure it supports. Any other `kind` throws.
+- **How the shapes are used.** See the next section.
+
+**⚠ THE MAP DRAWS THE ATLAS'S 1:110m POLYGONS, NOT GOVOSS'S SHAPES.** GovOSS's parts
+decide only *which parts* of an atlas country are shaded. An atlas part is shaded when
+its bounding box meets one of GovOSS's parts for that country (`splitByShape()` in
+`UnnycWorldMap`); anything else is drawn as ordinary unshaded land.
+- Today that leaves exactly one part unshaded: **French Guiana**. The fetch script prints
+  this every run ("atlas parts left unshaded") and throws if a country would end up with
+  no shaded part at all.
+- Drawing GovOSS's 1:50m shapes over the 1:110m base was tried and rejected
+  (2026-09-28). It **doubled every shaded border** at this scale. It would also have put
+  107 KB of polygons into the HTML of `/` and `/start` (Canada alone is 78 KB).
+  `getGovossCatalogues()` now reduces the file to per-part boxes server-side, **7 KB**
+  where the old 19 KB geometry used to ship.
+- ⚠ **French Guiana WAS SHADED ON PRODUCTION from 2026-09-10 to 2026-09-28.** The old
+  script's `TRIM` edited `govoss-countries.geo.json`, but after the SVG renderer
+  landed that file was only a code→name bridge. The map drew the atlas's own France,
+  Guiana included, so the trim had done nothing since the renderer swap, and this doc
+  went on saying it worked. Found by drawing the map, not by reading the script.
+  **A trim applied to data the renderer doesn't draw isn't a trim.**
+
+**The script throws, before writing either file,** on any of these:
+- a missing field;
+- zero country features;
+- a feature of unknown kind;
+- a `meta.json` country with no feature;
+- a harvested catalogue with nowhere on the map;
+- a map file and `meta.json` from different harvests (`generated_at` must match);
+- a GovOSS name with no atlas polygon;
+- **any licence string not in `LICENCES`**.
+
+Each of those was tested against a doctored response, and neither snapshot file was
+touched. The licence is read from the file and matched against an exact allowlist. A new
+licence is a fact to read and decide on, never something to parse: a literal licence is
+how this repo once published a stale CC BY-NC-SA claim for CTFG.
 
 **The stacking order is the argument, not a style choice.** Running a public code
 catalogue and endorsing the UN Principles are different claims and they disagree:
@@ -266,32 +335,35 @@ endorsement as the figure is what makes that gap legible — which is the case f
 ask. Invert it and the page argues something else.
 
 - **Snapshot, not a live fetch** — `node scripts/fetch-govoss-catalogues.mjs`, same
-  three reasons as the CTFG layer. It writes **two** files on purpose:
-  `content/govoss-catalogues.json` (counts — meant to be read in a diff) and
-  `content/govoss-countries.geo.json` (19 KB of Natural Earth polygons — never
-  readable in a diff, and burying the counts inside it would hide the reviewable
+  three reasons as the CTFG layer. **Nothing on the site requests govoss.cat** (verified
+  2026-09-28 on `/` and `/start`: zero third-party requests). It writes **two** files on
+  purpose: `content/govoss-catalogues.json` (counts — meant to be read in a diff) and
+  `content/govoss-countries.geo.json` (GovOSS's 14 country shapes verbatim, 107 KB —
+  never readable in a diff, and burying the counts inside it would hide the reviewable
   half). `getGovossCatalogues()` loads them independently and fails soft on each.
-- **Each layer's licence is its own fact.** GovOSS is **CC BY 4.0** (its footer:
-  "Catalogue data CC BY 4.0; code MIT"); CTFG is **CC BY 4.0** too since it relicensed
+- **Each layer's licence is its own fact.** GovOSS is **CC BY 4.0**, read from its map
+  file's `licence.properties` since 2026-09-28 (it was a literal in the script before,
+  because GovOSS then published no machine-readable licence); CTFG is **CC BY 4.0** too since it relicensed
   off CC BY-NC-SA in July 2026. Same string today, still two independent facts — the
   credit line keeps them separate and per-source. Boundaries are Natural Earth, public
   domain.
 - ⚠ **Never render the sum of the country counts.** It matches neither total, in
-  both directions at once: 256 entries sit under `GLOBAL`/`EU` and get no polygon,
-  while an entry listed by catalogues in two countries counts under each. 2,893
-  summed against GovOSS's actual 3,054. Use `countryAttributedEntries` (what the
+  both directions at once: 261 entries sit under `GLOBAL`/`EU` and get no polygon,
+  while an entry listed by catalogues in two countries counts under each. 2,988
+  summed against GovOSS's actual 3,141. Use `countryAttributedEntries` (what the
   polygons cover) or `totalEntries` (GovOSS's headline), never arithmetic on the
   fills.
 - ⚠ **Natural Earth's `ISO_A2` is `-99` for several countries, France among them.**
-  Matching on it alone silently drops the LARGEST catalogue here (676) and looks
-  like a rendering bug. The fetch script falls through `ISO_A2_EH → ISO_A2 → WB_A2 →
-  ADM0_A3` and **throws** if any country ends up without a polygon.
-- **France is trimmed to metropolitan + Corsica** (`TRIM` in the fetch script).
-  Natural Earth includes French Guiana and is correct to — Guiana is France — but a
+  Matching on it alone silently drops the LARGEST catalogue here (665) and looks
+  like a rendering bug. **That fallback now lives in GovOSS**, which publishes the
+  ISO code on each feature; this repo's guard is the throw on "a `meta.json` country
+  with no feature", which is what the `-99` trap produces.
+- **France is trimmed to metropolitan + Corsica — BY GOVOSS**, recorded in their
+  `trimmed[]` and copied into the counts file beside the numbers, so the decision is
+  reviewed with them. Natural Earth includes French Guiana and is correct to, but a
   shaded patch in South America reads as an error on a map about European
-  catalogues. An editorial call, so it is named per-country with its reason and the
-  dropped part is recorded in the snapshot's `trimmed[]`, beside the counts, rather
-  than hidden in the polygon file.
+  catalogues. This repo no longer carries a `TRIM` of its own. Its effect here is the
+  part test above.
   ⚠ **Never generalise this into a "drop distant parts" rule.** It would gut the
   map: Canada is 30 parts and 27 sit >15° from the mainland — the Arctic
   archipelago, Newfoundland, Nova Scotia, Vancouver Island — and Italy's outliers

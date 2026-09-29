@@ -145,7 +145,7 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   (`PrimerHeroFullBleed`; the gradient `PrimerHero` survives, swappable back in
   `page.js`) and copy still lives in `content/home.md` under `journey:` — ⚠ NOT
   `sections`, which the parsed body silently overwrites.
-  ⚠ **Every proof row is DERIVED in `page.js`** — the 18/3,054/150 figures from
+  ⚠ **Every proof row is DERIVED in `page.js`** — the 18/3,141/150 figures from
   the OSPO directory, the GovOSS snapshot and the endorser snapshot; the six
   reason titles read out of `content/crosswalk.md`'s own blocks; the case titles
   from `content/success.md`. They were authored literals for ONE commit and the
