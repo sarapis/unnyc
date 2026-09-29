@@ -29,8 +29,10 @@
  * it; nothing of his is redistributed here beyond the topology itself.
  * ⚠ Deliberately, NO licence string in the output is read by the page. The credit
  * under the map says "boundaries: Natural Earth", and it reads that from the
- * GovOSS snapshot's `boundariesShort` — the same Natural Earth 1:110m data, so the
- * rendered credit is already correct and this file adds no claim to it. That is on
+ * GovOSS snapshot's `boundariesShort`, which fetch-govoss-catalogues.mjs READS from
+ * GovOSS's own map file ("Natural Earth, public domain") — the same source as this
+ * atlas, so the rendered credit is already correct and this file adds no claim to
+ * it. That is on
  * purpose: a hardcoded licence literal in a fetch script is precisely how this repo
  * published a stale CC BY-NC-SA claim for CTFG on a live page for two weeks. The
  * fields below record where the bytes came from, not what a reader is told.
@@ -85,12 +87,14 @@ if (unnamed.length) die(`${unnamed.length} geometries have no properties.name �
 if (!geometries.some((g) => g.properties.name === 'Antarctica'))
     die('no country named "Antarctica" — UnnycWorldMap filters it out BY NAME, so a rename means it starts being drawn');
 
-/* THE CHECK THAT MATTERS MOST. The country fill is a name join: govoss.geo gives
- * code→name, and that name is looked up in this atlas. If Natural Earth renames a
- * country, that country's catalogue silently stops being shaded — the same class of
- * bug as the ISO_A2 `-99` trap in fetch-govoss-catalogues.mjs, where matching on
- * the wrong field dropped the LARGEST catalogue on the map and looked like a
- * rendering fault. France is 676 projects; losing it should fail here, loudly. */
+/* THE CHECK THAT MATTERS MOST. The country fill is a name join: GovOSS's own map
+ * file (snapshotted as content/govoss-countries.geo.json) gives code→name, and that
+ * name is looked up in this atlas. If either side renames a country, that
+ * country's catalogue silently stops being shaded — the same class of bug as the
+ * ISO_A2 `-99` trap that once dropped France, the LARGEST catalogue on the map, and
+ * looked like a rendering fault. fetch-govoss-catalogues.mjs runs the same check
+ * from its side; this one catches an atlas refresh. Losing a country should fail
+ * here, loudly. */
 const names = new Set(geometries.map((g) => g.properties.name));
 const govoss = JSON.parse(readFileSync(GOVOSS_GEO, 'utf8'));
 const unmatched = govoss.features

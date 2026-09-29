@@ -233,7 +233,7 @@ export function getOspoMapPoints() {
 
 /**
  * The GovOSS country-fill layer: how many public-sector open source entries each
- * country's catalogues list, plus the boundaries to paint them on.
+ * country's catalogues list, plus GovOSS's own shapes for which parts to shade.
  *
  * TWO files on purpose (see scripts/fetch-govoss-catalogues.mjs): the counts are
  * meant to be read in a diff, the polygons never are. Both fail soft, for the same
@@ -254,14 +254,47 @@ export function getGovossCatalogues() {
         const d = JSON.parse(fs.readFileSync(file, 'utf8'));
         if (!Array.isArray(d?.countries) || !d.countries.length) return null;
         try {
-            d.geo = JSON.parse(fs.readFileSync(path.join(CONTENT_DIR, 'govoss-countries.geo.json'), 'utf8'));
+            d.shapes = govossShapes(
+                JSON.parse(fs.readFileSync(path.join(CONTENT_DIR, 'govoss-countries.geo.json'), 'utf8')),
+            );
         } catch {
-            d.geo = null;
+            d.shapes = null;
         }
         return d;
     } catch {
         return null;
     }
+}
+
+/**
+ * GovOSS's country shapes, reduced to what the map needs: the name that bridges to
+ * the world atlas, and one [minLon, minLat, maxLon, maxLat] box per polygon part.
+ *
+ * ⚠ THE POLYGONS NEVER LEAVE THE SERVER. The file is ~107 KB of Natural Earth 1:50m
+ * (Canada alone is 78 KB), and this result is a prop to a client component, so it
+ * is serialised into the HTML of / and /start. UnnycWorldMap draws the atlas's own
+ * 1:110m polygons and uses these boxes only to decide WHICH PARTS of an atlas
+ * country are shaded — which is how GovOSS's France (metropolitan + Corsica) keeps
+ * French Guiana unshaded without this repo carrying a trim list of its own.
+ */
+function govossShapes(geo) {
+    const box = (ring) => {
+        let [x0, y0, x1, y1] = [Infinity, Infinity, -Infinity, -Infinity];
+        for (const [x, y] of ring) {
+            if (x < x0) x0 = x;
+            if (y < y0) y0 = y;
+            if (x > x1) x1 = x;
+            if (y > y1) y1 = y;
+        }
+        return [x0, y0, x1, y1];
+    };
+    const shapes = (geo?.features ?? []).map((f) => {
+        const g = f.geometry;
+        const parts = g?.type === 'MultiPolygon' ? g.coordinates : g?.type === 'Polygon' ? [g.coordinates] : [];
+        // A part's outer ring (index 0) bounds it; holes cannot extend it.
+        return { code: f.properties?.code, name: f.properties?.name, boxes: parts.map((p) => box(p[0])) };
+    });
+    return shapes.length && shapes.every((s) => s.code && s.name && s.boxes.length) ? shapes : null;
 }
 
 export function getCtfgProjects() {

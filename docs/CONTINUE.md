@@ -85,10 +85,10 @@ Tested ones are one line naming the check; `npm run lint:css` runs all four.
    before `unnyc.css`, or the fonts silently stop loading.
 7. **Provenance is read, never written.** `source`, `licence`, `licenceUrl`,
    `licenceCheckedFrom/On` live in `content/`; the map credit, `/resources` and
-   `/data/*.json` all read the same fields. ⚠ Two literals remain by necessity:
-   GovOSS's licence and its domain, both in `scripts/fetch-govoss-catalogues.mjs`,
-   whose header tells you to re-read the footer and move the date on every
-   refresh. Do that.
+   `/data/*.json` all read the same fields. GovOSS's licence has been READ from
+   its map file since 2026-09-28 (`LICENCES` in `scripts/fetch-govoss-catalogues.mjs`
+   is an exact allowlist that throws on anything new). Only GovOSS's API base
+   remains a literal there.
 8. **Never collapse the four datasets' licences into one constant.** One is ours
    (endorser transcription, CC BY 4.0); CTFG and GovOSS are CC BY 4.0 *today*;
    the OSPO list is **CC0**. They have already disagreed twice.
@@ -96,12 +96,12 @@ Tested ones are one line naming the check; `npm run lint:css` runs all four.
 10. **`data-count` takes a RAW number; the element's CHILDREN take the formatted
     one.** `Number("2,789")` is `NaN` and hydration overwrites a correct figure.
 11. **Never type a count or a teaser title into `content/home.md`** — all
-    derived in `page.js`. The GovOSS figure is now **3,054**.
+    derived in `page.js`. The GovOSS figure is now **3,141** (2026-09-28 refresh).
 12. **Scope any rule styling `a`, `button`, `ul`, `ol` with `.unnyc-page`.**
 13. **One owner per class, imported by every route that needs it.**
 14. **On `/campaign/sign` below 899px the form stays above the letter.**
 15. **Never sum the GovOSS country counts** — use `countryAttributedEntries`
-    (2,893) or `totalEntries` (3,054), never arithmetic on the fills.
+    (2,988) or `totalEntries` (3,141), never arithmetic on the fills.
 
 ---
 
