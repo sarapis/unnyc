@@ -224,6 +224,84 @@
     padding-top: var(--wg-sp-4);
   }
 
+  /* --- Memo header, rendered prose, numbered recommendations ---
+     Added for /ospo-strategy/document, the third printable: an executive
+     summary addressed To / From / Re / Date, whose body is markdown rendered
+     by content.js (so it arrives as <p>, <ul>, <strong>) rather than the
+     hand-structured lists the two older printables use. */
+  .unnyc-doc-page__memo {
+    margin: 0 0 var(--wg-sp-8);
+    padding: var(--wg-sp-4) 0;
+    border-top: 1.5px solid #1a1a1a;
+    border-bottom: 1.5px solid #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    gap: var(--wg-sp-2);
+  }
+
+  .unnyc-doc-page__memo-row {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    gap: var(--wg-sp-4);
+    font-size: 0.94rem;
+  }
+
+  .unnyc-doc-page__memo-row dt {
+    font-family: var(--wg-font-body);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #777;
+    padding-top: 3px;
+  }
+
+  .unnyc-doc-page__memo-row dd {
+    margin: 0;
+  }
+
+  .unnyc-doc-page__prose p {
+    font-size: 0.98rem;
+    text-align: justify;
+    margin: 0 0 var(--wg-sp-4);
+  }
+
+  .unnyc-doc-page__prose--lead p {
+    font-size: 1.02rem;
+  }
+
+  .unnyc-doc-page__prose ul,
+  .unnyc-doc-page__prose ol {
+    margin: 0 0 var(--wg-sp-4);
+    padding-left: 1.4em;
+    font-size: 0.94rem;
+  }
+
+  /* Links print as plain text; on screen they keep the site's inline cue. */
+  .unnyc-doc-page__prose a {
+    color: inherit;
+  }
+
+  .unnyc-doc-page__numbered {
+    margin: 0;
+    padding-left: 1.6em;
+    display: flex;
+    flex-direction: column;
+    gap: var(--wg-sp-3);
+    font-size: 0.94rem;
+  }
+
+  .unnyc-doc-page__numbered li::marker {
+    font-weight: 700;
+  }
+
+  @media (max-width: 640px) {
+    .unnyc-doc-page__memo-row {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+  }
+
   @media (max-width: 640px) {
     .unnyc-doc-page {
       padding: var(--wg-sp-8) var(--wg-sp-5);

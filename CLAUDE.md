@@ -502,6 +502,25 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
 `/resources/guide` is the long-form UN-system briefing, ported from the retired
 `old-unnyc.wegov.nyc` hub. **That host is no longer load-bearing.**
 
+### `/ospo-strategy` and `/ospo-strategy/document` (added 2026-10-02)
+
+The self-contained case for an Open Source Program Office inside NYC
+government — the thing to put in front of the CTO and the Mayor's office. An
+eighth storyscroller (`UnnycOspoStoryscroller`, prefix `unnyc-ospo-story__`,
+nav label "OSPO Strategy", between Case Studies and Resources) with three rail
+sections: the **executive summary as an official memo** (To / From / Re / Date,
+numbered recommendations), the longer **policy brief** with its own in-page
+contents, and **supporting resources**. `/ospo-strategy/document` is the
+**third printable**: the same `## summary` section, `memo` header and
+`summary.recommendations` from `content/ospo-strategy.md`, on
+`printable-doc.css` paper — nothing is duplicated, so web and paper cannot
+disagree. It reads `metaDocument:` via `metaKey`, exactly like
+`/principles/document`, and is in `UpdatesBar`'s `SUPPRESSED` set like the
+other printables. ⚠ The copy is a **first draft** (marked in the file's own
+comments): the structure is settled, the prose wants the owner's pass, and the
+`# VERIFY` lines name claims to check before it is sent. No counts in its prose,
+on purpose — it points at the directories that derive them.
+
 ## Non-obvious things that will bite you
 
 - **⚠ A FORMATTED NUMBER IN `data-count` RENDERS "NaN" AFTER HYDRATION.** The

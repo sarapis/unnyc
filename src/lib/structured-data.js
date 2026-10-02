@@ -295,9 +295,14 @@ function crumbLabel(path) {
         const doc = getContent(route.content);
         // A route with its own meta block is labelled from that, not from the
         // page-level `title` it may share with a sibling.
+        // ⚠ `doc.title` is HTML on several pages — it carries the <span> that
+        // underlines a word in the hero (content/resources.md, start.md,
+        // ospo-strategy.md…). A crumb is plain text, so the tags come off:
+        // /resources/guide shipped `"Related <span>Resources</span>"` as its
+        // parent crumb until 2026-10-02 because this didn't.
         const label = route.metaKey
             ? ogHeadline(routeMeta(doc, route)?.ogTitle)
-            : doc?.title || ogHeadline(doc?.meta?.ogTitle);
+            : (doc?.title || ogHeadline(doc?.meta?.ogTitle))?.replace(/<[^>]+>/g, '');
         if (label) return label;
     }
     return path.split('/').filter(Boolean).pop() ?? 'Home';

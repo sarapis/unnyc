@@ -49,12 +49,13 @@ import { createSubmission } from '@/lib/api';
  * and confirm Payload answers 400 "invalid: Email" rather than a network error.
  */
 
-/** Routes that already ask for an email, and the two printables. */
+/** Routes that already ask for an email, and the three printables. */
 const SUPPRESSED = new Set([
     '/campaign/sign',
     '/campaign/endorse',
     '/campaign/endorse/document',
     '/principles/document',
+    '/ospo-strategy/document',
     '/contact',
 ]);
 

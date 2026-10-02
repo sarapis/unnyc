@@ -51,6 +51,8 @@ funnel *or* as a pick-your-entry-point:
 | `/principles/document` | The principles, standalone + printable |
 | `/crosswalk` | "Why it matters to NYC" — six reasons the city should adopt open source |
 | `/success` | "What success looks like" |
+| `/ospo-strategy` | The case for an NYC Open Source Program Office — executive summary, policy brief, resources |
+| `/ospo-strategy/document` | The executive summary as a printable memo for the CTO and the Mayor's office |
 | `/campaign` | Chooser: sign the public letter, or formally endorse |
 | `/campaign/sign` | The open letter + signature form + published endorser wall |
 | `/campaign/endorse` | Formal organizational endorsement form |
@@ -74,6 +76,8 @@ no CMS, no sync step.
 | `/principles/document` | `content/principles.md` (shared with `/principles`) |
 | `/crosswalk` | `content/crosswalk.md` |
 | `/success` | `content/success.md` |
+| `/ospo-strategy` | `content/ospo-strategy.md` |
+| `/ospo-strategy/document` | `content/ospo-strategy.md` (shared with `/ospo-strategy`) |
 | `/campaign` | `content/campaign.md` |
 | `/campaign/sign` | `content/sign.md` |
 | `/campaign/endorse` | `content/endorse.md` |

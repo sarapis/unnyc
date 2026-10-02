@@ -18,6 +18,7 @@ const LINKS = [
     { href: '/principles', label: 'UN Principles' },
     { href: '/crosswalk', label: 'Open Source for NYC' },
     { href: '/success', label: 'Case Studies' },
+    { href: '/ospo-strategy', label: 'OSPO Strategy' },
     { href: '/resources', label: 'Resources' },
 ];
 

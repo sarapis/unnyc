@@ -32,6 +32,9 @@ links:
   - href: /success
     label: "What success looks like"
     style: outline
+  - href: /ospo-strategy
+    label: "The case for an NYC OSPO"
+    style: outline
   - href: /resources
     label: "Where to read further"
     style: outline

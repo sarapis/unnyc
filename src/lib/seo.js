@@ -83,6 +83,11 @@ export const ROUTES = [
     { path: '/principles/document', content: 'principles', metaKey: 'metaDocument', crumb: 'One-Pager', priority: 0.6, changeFrequency: 'yearly' },
     { path: '/crosswalk', content: 'crosswalk', priority: 0.9, changeFrequency: 'monthly' },
     { path: '/success', content: 'success', priority: 0.8, changeFrequency: 'monthly' },
+    // The OSPO case: the page, and its executive summary as a printable memo.
+    // Same `metaKey` arrangement as /principles + /principles/document, for
+    // the same reason — one content file, two routes, two preview cards.
+    { path: '/ospo-strategy', content: 'ospo-strategy', priority: 0.9, changeFrequency: 'monthly' },
+    { path: '/ospo-strategy/document', content: 'ospo-strategy', metaKey: 'metaDocument', crumb: 'Executive Summary', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/campaign', content: 'campaign', priority: 0.8, changeFrequency: 'monthly' },
     // The two conversion pages. `/campaign/sign` carries the endorser wall, so
     // it genuinely changes whenever a signature is published.

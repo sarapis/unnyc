@@ -13,6 +13,8 @@ commit. That's the live page.
 | `/principles/document` | [`content/principles.md`](../content/principles.md) (shared) |
 | `/crosswalk` | [`content/crosswalk.md`](../content/crosswalk.md) |
 | `/success` | [`content/success.md`](../content/success.md) |
+| `/ospo-strategy` | [`content/ospo-strategy.md`](../content/ospo-strategy.md) |
+| `/ospo-strategy/document` | [`content/ospo-strategy.md`](../content/ospo-strategy.md) (shared — the `## summary` section, `memo` and `summary.recommendations`) |
 | `/campaign` | [`content/campaign.md`](../content/campaign.md) |
 | `/campaign/sign` | [`content/sign.md`](../content/sign.md) |
 | `/campaign/endorse` | [`content/endorse.md`](../content/endorse.md) |

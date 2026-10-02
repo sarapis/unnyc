@@ -296,7 +296,32 @@
     transform: translateY(-7px) rotate(-45deg);
   }
 
-  @media (max-width: 820px) {
+  /* Six links + the CTA since /ospo-strategy joined the nav (2026-10-02). At
+     the original sizes the row needs ~1180px; below that it tightens, and below
+     1100px it folds into the drawer (was 820px — the five-link row fit there,
+     the six-link row ran the CTA off-screen between 820 and ~1170). Measured,
+     not guessed: at 1024px the row wanted 1171px against 1014 available. */
+  @media (max-width: 1300px) {
+    .unnyc-nav__menu {
+      gap: 1.25rem;
+    }
+
+    .unnyc-nav__links {
+      gap: 1rem;
+    }
+
+    .unnyc-nav__link {
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+    }
+
+    .unnyc-nav__cta {
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+    }
+  }
+
+  @media (max-width: 1100px) {
     .unnyc-nav__toggle {
       display: flex;
     }
