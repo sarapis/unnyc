@@ -76,6 +76,9 @@ playbooks:
     analysis: "Analysis"
     voice: "Interview or talk"
     code: "Code"
+    doc: "Document"
+    policy: "Policy or law"
+    tool: "Tool"
   facts:
     founded: "Founded"
     placement: "Where it sits"

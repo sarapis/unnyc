@@ -363,18 +363,27 @@ function PlaybookCase({ entry, labels }) {
     const id = `playbooks-${c.id}`;
     const f = labels.facts;
 
+    /* Whatever the record has: Munich planned 4 at launch and 2 permanent and
+       publishes no current figure; Paris has one named officer and no plan.
+       Only when NOTHING is known does it say "Not published". */
     const headcount = (() => {
         const parts = [];
         if (c.headcount?.planned_at_launch != null) parts.push(`${c.headcount.planned_at_launch} at launch`);
         if (c.headcount?.planned_permanent != null) parts.push(`${c.headcount.planned_permanent} permanent`);
-        const now = c.headcount?.current != null ? `${c.headcount.current} today` : `today: ${labels.notPublishedLabel.toLowerCase()}`;
-        return parts.length ? `${parts.join(' · ')} · ${now}` : labels.notPublishedLabel;
+        if (c.headcount?.current != null) parts.push(`${c.headcount.current} today`);
+        else if (parts.length) parts.push(`today: ${labels.notPublishedLabel.toLowerCase()}`);
+        return parts.length ? parts.join(' · ') : labels.notPublishedLabel;
     })();
 
+    /* The handoff keys budgets by currency (startup_eur / sponsorship_eur_per_year
+       for the European cities, startup_usd / annual_usd for CMS). */
     const budget = (() => {
+        const b = c.budget || {};
         const parts = [];
-        if (c.budget?.startup_eur != null) parts.push(`${fmtEur(c.budget.startup_eur)} start-up`);
-        if (c.budget?.sponsorship_eur_per_year != null) parts.push(`${fmtEur(c.budget.sponsorship_eur_per_year)} a year for sponsorship`);
+        if (b.startup_eur != null) parts.push(`${fmtMoney(b.startup_eur, 'EUR')} start-up`);
+        if (b.startup_usd != null) parts.push(`${fmtMoney(b.startup_usd, 'USD')} start-up`);
+        if (b.sponsorship_eur_per_year != null) parts.push(`${fmtMoney(b.sponsorship_eur_per_year, 'EUR')} a year for sponsorship`);
+        if (b.annual_usd != null) parts.push(`${fmtMoney(b.annual_usd, 'USD')} a year`);
         return parts.length ? parts.join(' · ') : labels.notPublishedLabel;
     })();
 
@@ -560,11 +569,35 @@ function DocGlyph({ type, image }) {
                         <path d="M24 22l-4 18" style={accent} />
                     </>
                 )}
+                {kind === 'doc' && (
+                    <>
+                        <path d="M12 22h20" style={accent} />
+                        <path d="M12 28h20M12 34h20M12 40h13" />
+                    </>
+                )}
+                {kind === 'policy' && (
+                    <>
+                        <path d="M12 22h20M12 28h20M12 34h12" />
+                        <circle cx="30" cy="40" r="4.5" style={accent} />
+                        <path d="M27.5 44l-1.5 6 4-2.5 4 2.5-1.5-6" style={accent} />
+                    </>
+                )}
+                {kind === 'tool' && (
+                    <>
+                        <circle cx="22" cy="33" r="5" style={accent} />
+                        <path d="M22 24v3M22 39v3M13 33h3M28 33h3M15.6 26.6l2.2 2.2M26.2 37.2l2.2 2.2M15.6 39.4l2.2-2.2M26.2 28.8l2.2-2.2" style={accent} />
+                    </>
+                )}
             </svg>
         </span>
     );
 }
 
+/** JSON `type` → glyph kind. Coarse on purpose; the kinds are the words a
+ * reader needs ("is this a law, a website, an article?"), not a taxonomy.
+ * Munich's types first, then the ones Paris's file added, then CMS's (the
+ * federal case brought laws, charters, process guides and tools). Anything
+ * unlisted falls back to 'page'. */
 const GLYPH_KIND = {
     founding_decision: 'council',
     policy_decision: 'council',
@@ -572,14 +605,35 @@ const GLYPH_KIND = {
     council_paper: 'council',
     council_answer: 'council',
     political_motion: 'council',
+    statute: 'policy',
+    federal_policy: 'policy',
+    policy: 'policy',
+    policy_pointer: 'policy',
+    framework: 'policy',
+    charter: 'policy',
+    charter_text: 'policy',
     official_page: 'page',
     reference: 'page',
+    directory: 'page',
     press: 'press',
     advocacy: 'press',
+    announcement: 'press',
+    official_release: 'press',
+    commentary: 'press',
+    recap: 'press',
     analysis: 'analysis',
+    case_study: 'analysis',
+    academic: 'analysis',
+    profile: 'analysis',
     interview: 'voice',
     talk: 'voice',
+    presentation: 'voice',
     code: 'code',
+    tool: 'tool',
+    dashboard: 'tool',
+    document: 'doc',
+    guide: 'doc',
+    process: 'doc',
 };
 
 const PROCUREMENT_ROLE = {
@@ -603,8 +657,11 @@ function fmtDate(d) {
     return day ? `${month} ${Number(day)}, ${y}` : `${month} ${y}`;
 }
 
-function fmtEur(n) {
-    return '€' + Number(n).toLocaleString('en-US');
+/** A whole-unit amount with its currency sign — en-US grouping on purpose so
+ * server and client render the same string regardless of the viewer's locale. */
+function fmtMoney(n, currency) {
+    const sign = currency === 'USD' ? '$' : '€';
+    return sign + Number(n).toLocaleString('en-US');
 }
 
 function humanize(s) {

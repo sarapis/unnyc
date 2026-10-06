@@ -1,0 +1,475 @@
+{
+  "$schema_note": "One case per file. Fields are stable across cases so Claude Code can merge files into one catalogue. Dates are ISO (YYYY-MM-DD) or 'n.d.'; partial dates use YYYY or YYYY-MM. verification_status is 'opened' (the page was read during research) or 'listed' (found in a directory or link list, not read). Each resource may carry an optional \"image\" (a path under /public) for the catalogue card; when absent the site draws a typed document glyph from \"type\". case.order fixes the display order across files.",
+  "catalogue_version": "2026-10-06",
+  "case": {
+    "id": "paris",
+    "name": "City of Paris Open Source Program Office",
+    "local_name": "OSPO de la Ville de Paris (Direction des Systèmes d'Information et du Numérique)",
+    "jurisdiction": "City of Paris, France",
+    "level_of_government": "municipal",
+    "status": "operating",
+    "founded": "2022-06",
+    "authorizing_act": {
+      "title": "None found. Self-reported creation date 2022-06-01 (FLOSS-PSO directory); the office was 'being defined' in July 2023.",
+      "body": null,
+      "date": null,
+      "url": "https://floss-pso.network/public-sector-ospos/"
+    },
+    "placement": "Project officer inside the city's IT department (DSIN), software engineering bureau, working alongside the Lutece engineering team",
+    "headcount": {
+      "planned_at_launch": null,
+      "planned_permanent": null,
+      "current": 1,
+      "note": "One named open source program officer. The 15-person figure is the Lutece engineering team, with 60-plus contractors; not the OSPO."
+    },
+    "budget": {
+      "startup_eur": null,
+      "sponsorship_eur_per_year": null,
+      "note": "No OSPO budget published. Lutece funding 'stems exclusively from the city budget' (OSOR 2020)."
+    },
+    "role_in_procurement": "none",
+    "role_in_procurement_detail": "No source describes a procurement review, an options analysis for proprietary purchases, or an exceptions register. The office's remit is the Lutece platform, its community, CiteLibre packaging and support to other authorities. Paris studied and shelved a desktop migration in 2003-04 and signed a Microsoft partnership in 2008.",
+    "functions": [
+      "running the opensource.paris.fr portal",
+      "CiteLibre: packaging Lutece into deployable packs for other authorities",
+      "community events, webinars and contributor guides for the Lutece community",
+      "support for local authorities that want to deploy Lutece",
+      "faster handling of internal pull requests; review committee for outside contributions",
+      "inventory of open source components and their dependencies",
+      "definition of shared governance rules",
+      "memberships: April (2015), EU OSPO Network co-founder (2022), OW2, OSPO++, OSPO Alliance (2024)"
+    ],
+    "key_people": [
+      {
+        "name": "Philippe Bareille",
+        "role": "Open Source Program Officer, City of Paris CIO office; co-maintainer of the FLOSS-PSO registry"
+      },
+      {
+        "name": "Magali Lemaire",
+        "role": "Head of the software engineering bureau (apparent manager of the officer)"
+      }
+    ],
+    "contact": {
+      "email": "opensource@paris.fr",
+      "website": "https://opensource.paris.fr",
+      "code": "https://github.com/lutece-platform"
+    },
+    "outcomes_reported": [
+      {
+        "metric": "city services running on Lutece",
+        "value": "200+",
+        "as_of": "2026",
+        "source_id": "par-01",
+        "note": "City claimed 300+ in 2021-22; use the current portal figure and date it."
+      },
+      {
+        "metric": "Lutece modules",
+        "value": "500+",
+        "as_of": "2026",
+        "source_id": "par-11"
+      },
+      {
+        "metric": "Lutece contributors",
+        "value": "200+",
+        "as_of": "2026",
+        "source_id": "par-11"
+      },
+      {
+        "metric": "French organisations using Lutece",
+        "value": "50+",
+        "as_of": "2020-08",
+        "source_id": "par-09"
+      },
+      {
+        "metric": "repositories in lutece-platform GitHub organization",
+        "value": 497,
+        "as_of": "2026-10",
+        "source_id": "par-14"
+      },
+      {
+        "metric": "share of city servers on GNU/Linux",
+        "value": "60%",
+        "as_of": "2015-03",
+        "source_id": "par-18"
+      },
+      {
+        "metric": "CiteLibre deployments outside Paris",
+        "value": 2,
+        "as_of": "2023-07",
+        "source_id": "par-07",
+        "note": "A hospital group and one municipality; about ten authorities interested."
+      }
+    ],
+    "stated_reasons_for_open_source": [
+      "reuse of a city-owned platform for every new service instead of procuring again",
+      "mutualisation: software paid for once by Paris, maintained by a community, deployed by others at no license cost",
+      "permissive BSD licence chosen 'to make it easy to reuse and hack, not to protect our codebase'",
+      "support for other public bodies and cities (CiteLibre)"
+    ],
+    "un_principles_mapping": {
+      "open_by_default": "2002 council vote to publish Lutece; practice since, but no policy text and no exception mechanism",
+      "contribute_back": "memberships of April, OW2, OSPO Alliance; community contributions reviewed by a committee",
+      "secure_by_design": "component inventory with versions and dependencies maintained with OSPO support",
+      "foster_inclusive_participation": "Lutece community events, webinars, contributor guides; co-founded EU OSPO Network",
+      "design_for_reusability": "CiteLibre packs; BSD 3-Clause; deployments in Lyon, Marseille, Budapest, Accra, Baltimore",
+      "provide_documentation": "opensource.paris.fr and lutece.paris.fr; self-reported weakness in merging contributions",
+      "rise": "officer helps maintain the global FLOSS-PSO registry; support to adopting authorities",
+      "sustain_and_scale": "twenty years of one platform; no charter, no published budget or savings figure"
+    },
+    "lessons_for_nyc": [
+      "Package every PIT Crew product the way CiteLibre packages Lutece: deployable by the next agency or city without the original team, under a license chosen for reuse.",
+      "Charter the office in legislation; Paris's office has no founding document, so its remit is whatever its officer and bureau decide.",
+      "Add the three jobs Paris's office was never given: required review of technology contracts above a threshold, ownership of the options analysis, a public register of exceptions.",
+      "Use the Paris officer and the FLOSS-PSO registry as the entry point to the European network; Paris and New York already sit together in the Cities Coalition for Digital Rights."
+    ],
+    "analysis_brief": {
+      "title": "Paris OSPO Brief",
+      "url": "/success#paris",
+      "note": "The brief renders under the Paris case on /success (content/briefs/paris.md); this path is site-relative on purpose."
+    },
+    "gaps": [
+      "No founding deliberation, charter or strategy for the OSPO was found; ask opensource@paris.fr before describing it as 'created in 2022'.",
+      "OSPO headcount beyond the one officer is unverified; the 15-person figure is the Lutece engineering team.",
+      "Service counts conflict (300+, 200+, about 100, 80%); use '200-plus' with the city portal as source and date it.",
+      "Current Microsoft or other proprietary spend by the city was not found.",
+      "The 'more than 40 cities' figure is the EC's; the 'over 50 organisations' figure is from 2020; neither is from the city.",
+      "2003-04 migration study figures are from contemporaneous French press and a 2008 political document; confirm the 57.4% discount in a second source."
+    ],
+    "order": 2
+  },
+  "resources": [
+    {
+      "id": "par-01",
+      "title": "Paris Open Source portal",
+      "publisher": "Ville de Paris",
+      "date": "n.d.",
+      "type": "official_page",
+      "category": "office_description",
+      "language": "en",
+      "what_it_is_for": "The OSPO's public face; \"200+ city services\" figure; contact form",
+      "use_for_ospo_construction": "The public face an office should have: a portal that states the policy, counts the services and takes contact.",
+      "verification_status": "opened",
+      "url": "https://opensource.paris.fr",
+      "citation": "Paris. n.d. Paris Open Source portal. Ville de Paris. https://opensource.paris.fr"
+    },
+    {
+      "id": "par-02",
+      "title": "Paris has a commitment to Open Source (English page)",
+      "publisher": "Ville de Paris",
+      "date": "n.d.",
+      "type": "official_page",
+      "category": "policy_commitment",
+      "language": "en",
+      "what_it_is_for": "English statement of the policy",
+      "use_for_ospo_construction": "A one-page English statement of a city's open source commitment; model for a NYC policy page.",
+      "verification_status": "opened",
+      "url": "https://opensource.paris.fr/ossparis/english.html",
+      "citation": "Ville de Paris. n.d.. \"Paris has a commitment to Open Source (English page).\" https://opensource.paris.fr/ossparis/english.html",
+      "notes": "Not in the brief's bibliography; citation generated from the catalogue row."
+    },
+    {
+      "id": "par-03",
+      "title": "The City's commitment to Open Source through its OSPO (slides)",
+      "publisher": "Philippe Bareille, OSOR webinar",
+      "date": "2023-09",
+      "type": "presentation",
+      "category": "office_description",
+      "language": "en",
+      "what_it_is_for": "The office's own account of needs, activities and weaknesses; team sizes",
+      "use_for_ospo_construction": "Primary source for the office's mission, activities, team sizes and self-reported weaknesses; the closest thing Paris has to a charter.",
+      "verification_status": "opened",
+      "url": "https://interoperable-europe.ec.europa.eu/sites/default/files/news/2023-10/OSOR%20Webinar%20Philippe%20Bareille%20presentation.pdf",
+      "citation": "Bareille, Philippe. 2023. \"The City's Commitment to Open Source through Its OSPO.\" OSOR webinar slides, September 2023. https://interoperable-europe.ec.europa.eu/sites/default/files/news/2023-10/OSOR%20Webinar%20Philippe%20Bareille%20presentation.pdf"
+    },
+    {
+      "id": "par-04",
+      "title": "How the City of Paris committed to Open Source (slides)",
+      "publisher": "Ville de Paris, OSOR webinar",
+      "date": "2021-06",
+      "type": "presentation",
+      "category": "leadership_perspective",
+      "language": "en",
+      "what_it_is_for": "300+ services figure; BSD licence rationale",
+      "use_for_ospo_construction": "The city's own rationale for a permissive license and for building on one platform (UN principle: Design for Reusability).",
+      "verification_status": "opened",
+      "url": "https://interoperable-europe.ec.europa.eu/sites/default/files/news/2021-07/PB_OSOR%20Webinar%20-%20OSS%20dev%20Culture_Final.pdf",
+      "citation": "Paris. 2021. \"How the City of Paris Committed to Open Source.\" OSOR webinar slides, June 2021. https://interoperable-europe.ec.europa.eu/sites/default/files/news/2021-07/PB_OSOR%20Webinar%20-%20OSS%20dev%20Culture_Final.pdf"
+    },
+    {
+      "id": "par-05",
+      "title": "From Lutece to CiteLibre: the City of Paris' journey in OS",
+      "publisher": "FOSS Backstage 2025",
+      "date": "2025-03-11",
+      "type": "talk",
+      "category": "office_description",
+      "language": "en",
+      "what_it_is_for": "Self-reported founding year 2022; officer's title",
+      "use_for_ospo_construction": "Self-reported founding year and the officer's title; shows how an uncharted office describes itself.",
+      "verification_status": "opened",
+      "url": "https://25.foss-backstage.de/session/from-lutece-to-citelibre-the-city-of-paris-journey-in-os/index.html",
+      "citation": "FOSS Backstage. 2025. \"From Lutece to CiteLibre: The City of Paris' Journey in OS.\" March 11, 2025. https://25.foss-backstage.de/session/from-lutece-to-citelibre-the-city-of-paris-journey-in-os/index.html"
+    },
+    {
+      "id": "par-06",
+      "title": "De Lutece à CiteLibre (talk page)",
+      "publisher": "AlpOSS 2025",
+      "date": "2025-02-20",
+      "type": "talk",
+      "category": "office_description",
+      "language": "fr",
+      "what_it_is_for": "Officer's role description in French",
+      "use_for_ospo_construction": "French-language description of the officer's role inside the IT department.",
+      "verification_status": "opened",
+      "url": "https://pretalx.com/alposs-2025/talk/PKZXCZ/",
+      "citation": "AlpOSS. 2025. \"De Lutece à CiteLibre, retour sur la politique open source de la Ville de Paris.\" February 20, 2025. https://pretalx.com/alposs-2025/talk/PKZXCZ/"
+    },
+    {
+      "id": "par-07",
+      "title": "Logiciels libres et mutualisation : quand Paris montre l'exemple",
+      "publisher": "Acteurs publics (Émile Marzolf)",
+      "date": "2023-07-17",
+      "type": "press",
+      "category": "third_party_account",
+      "language": "fr",
+      "what_it_is_for": "OSPO still being defined in 2023; team of fifteen; CiteLibre uptake",
+      "use_for_ospo_construction": "Independent account of the office still being defined in 2023, the Lutece team size and CiteLibre uptake; the mutualisation argument in the city's words.",
+      "verification_status": "opened",
+      "url": "https://acteurspublics.fr/articles/logiciels-libres-et-mutualisation-quand-paris-montre-lexemple",
+      "citation": "Acteurs publics. 2023. Émile Marzolf, \"Logiciels libres et mutualisation : quand Paris montre l'exemple.\" July 17, 2023. https://acteurspublics.fr/articles/logiciels-libres-et-mutualisation-quand-paris-montre-lexemple"
+    },
+    {
+      "id": "par-08",
+      "title": "City of Paris confirms support to the OSPO Alliance",
+      "publisher": "OSPO Alliance",
+      "date": "2024-11-20",
+      "type": "announcement",
+      "category": "context",
+      "language": "en",
+      "what_it_is_for": "Membership",
+      "use_for_ospo_construction": "Shows the memberships a city OSPO takes on; OSPO Alliance is the umbrella for the FLOSS-PSO registry New York would join.",
+      "verification_status": "opened",
+      "url": "https://ospo-alliance.org/news/20241120_member_city_of_paris/",
+      "citation": "OSPO Alliance. 2024. \"City of Paris Confirms Support to the OSPO Alliance.\" November 20, 2024. https://ospo-alliance.org/news/20241120_member_city_of_paris/"
+    },
+    {
+      "id": "par-09",
+      "title": "Lutece: case studies on sustainability of public sector open source communities",
+      "publisher": "EC Open Source Observatory",
+      "date": "2020-08-05",
+      "type": "case_study",
+      "category": "outcomes",
+      "language": "en",
+      "what_it_is_for": "Funding, licence, other French users",
+      "use_for_ospo_construction": "EC case study of Lutece's funding model, license and reuse; evidence for the sustainability argument.",
+      "verification_status": "opened",
+      "url": "https://interoperable-europe.ec.europa.eu/node/702996",
+      "citation": "OSOR. 2020. \"Lutece: Case Studies on Sustainability of Public Sector Open Source Communities.\" European Commission, August 5, 2020. https://interoperable-europe.ec.europa.eu/node/702996"
+    },
+    {
+      "id": "par-10",
+      "title": "CiteLibre",
+      "publisher": "Interoperable Europe",
+      "date": "n.d.",
+      "type": "official_page",
+      "category": "program",
+      "language": "en",
+      "what_it_is_for": "80% and \"40 cities\" claims",
+      "use_for_ospo_construction": "EC description of CiteLibre; source of the '40 cities' and '80%' claims (treat as the EC's figures).",
+      "verification_status": "opened",
+      "url": "https://interoperable-europe.ec.europa.eu/node/707046",
+      "citation": "EC. n.d. \"CiteLibre.\" Interoperable Europe. https://interoperable-europe.ec.europa.eu/node/707046"
+    },
+    {
+      "id": "par-11",
+      "title": "Lutece project site",
+      "publisher": "Ville de Paris",
+      "date": "n.d.",
+      "type": "official_page",
+      "category": "code",
+      "language": "en",
+      "what_it_is_for": "Modules, contributors, community, press",
+      "use_for_ospo_construction": "The platform itself: modules, contributors, community and press; model for how a city publishes a reusable platform.",
+      "verification_status": "opened",
+      "url": "https://lutece.paris.fr/",
+      "citation": "Lutece. n.d. Project site, community and press pages. Ville de Paris. https://lutece.paris.fr/"
+    },
+    {
+      "id": "par-12",
+      "title": "Introducing CiteLibre",
+      "publisher": "Ville de Paris",
+      "date": "n.d.",
+      "type": "official_page",
+      "category": "program",
+      "language": "en",
+      "what_it_is_for": "What CiteLibre packages",
+      "use_for_ospo_construction": "What CiteLibre packages and why; the model for packaging PIT Crew products.",
+      "verification_status": "opened",
+      "url": "https://lutece.paris.fr/en/citelibre.html",
+      "citation": "Ville de Paris. n.d.. \"Introducing CiteLibre.\" https://lutece.paris.fr/en/citelibre.html",
+      "notes": "Not in the brief's bibliography; citation generated from the catalogue row."
+    },
+    {
+      "id": "par-13",
+      "title": "CiteLibre site",
+      "publisher": "Ville de Paris",
+      "date": "n.d.",
+      "type": "official_page",
+      "category": "program",
+      "language": "fr",
+      "what_it_is_for": "Packs; metadata naming the OSPO",
+      "use_for_ospo_construction": "The CiteLibre packs; site metadata is the only city artifact naming the OSPO.",
+      "verification_status": "opened",
+      "url": "https://citelibre.paris.fr/fr/",
+      "citation": "Ville de Paris. n.d.. \"CiteLibre site.\" https://citelibre.paris.fr/fr/",
+      "notes": "Not in the brief's bibliography; citation generated from the catalogue row."
+    },
+    {
+      "id": "par-14",
+      "title": "lutece-platform GitHub organization",
+      "publisher": "Ville de Paris",
+      "date": "n.d.",
+      "type": "code",
+      "category": "code",
+      "language": "en",
+      "what_it_is_for": "497 repositories",
+      "use_for_ospo_construction": "The code organization; repository count and activity for the catalogue.",
+      "verification_status": "opened",
+      "url": "https://github.com/lutece-platform",
+      "citation": "Ville de Paris. n.d.. \"lutece-platform GitHub organization.\" https://github.com/lutece-platform",
+      "notes": "Not in the brief's bibliography; citation generated from the catalogue row."
+    },
+    {
+      "id": "par-15",
+      "title": "How Open-Source Software Makes Cities More Livable",
+      "publisher": "Worth (Steve Hamm)",
+      "date": "2022-02-15",
+      "type": "press",
+      "category": "third_party_account",
+      "language": "en",
+      "what_it_is_for": "Baltimore story; \"first city OSPO in Europe\" claim",
+      "use_for_ospo_construction": "The Baltimore deployment story and the 'first city OSPO in Europe' claim; useful for a U.S. audience.",
+      "verification_status": "opened",
+      "url": "https://worth.com/how-open-source-software-makes-cities-more-livable/",
+      "citation": "Worth. 2022. Steve Hamm, \"How Open-Source Software Makes Cities More Livable.\" February 15, 2022. https://worth.com/how-open-source-software-makes-cities-more-livable/"
+    },
+    {
+      "id": "par-16",
+      "title": "Paris' open source platform is being introduced at a West Baltimore community center",
+      "publisher": "Technical.ly (Stephen Babcock)",
+      "date": "2019-04-19",
+      "type": "press",
+      "category": "third_party_account",
+      "language": "en",
+      "what_it_is_for": "St. Francis Neighborhood Center deployment",
+      "use_for_ospo_construction": "Documents a Paris platform deployed in a U.S. community center with a university OSPO's help; precedent for cross-Atlantic reuse.",
+      "verification_status": "opened",
+      "url": "https://technical.ly/civic-news/paris-lutece-open-source-platform-city-services-west-baltimore-community-center-st-francis.md",
+      "citation": "Technical.ly. 2019. Stephen Babcock, \"Paris' Open Source Platform for City Services Is Being Introduced at a West Baltimore Community Center.\" April 19, 2019. https://technical.ly/civic-news/paris-lutece-open-source-platform-city-services-west-baltimore-community-center-st-francis.md"
+    },
+    {
+      "id": "par-17",
+      "title": "Public Sector Open Source Program Offices",
+      "publisher": "Linåker, Nummelin Carlberg, O'Riordan (arXiv 2603.04891)",
+      "date": "2026-06",
+      "type": "academic",
+      "category": "third_party_account",
+      "language": "en",
+      "what_it_is_for": "Finds the Paris OSPO focused on Lutece; licensing preference",
+      "use_for_ospo_construction": "Peer-reviewed comparison of public-sector OSPOs; finds the Paris office focused on Lutece and documents its licensing preference.",
+      "verification_status": "opened",
+      "url": "https://arxiv.org/abs/2603.04891",
+      "citation": "Linåker, Johan, Astor Nummelin Carlberg, and Ciarán O'Riordan. 2026. \"Public Sector Open Source Program Offices.\" arXiv 2603.04891, June 2026. https://arxiv.org/abs/2603.04891"
+    },
+    {
+      "id": "par-18",
+      "title": "Paris renforce son engagement pour le logiciel libre (press release)",
+      "publisher": "Ville de Paris",
+      "date": "2015-03-13",
+      "type": "official_release",
+      "category": "policy_commitment",
+      "language": "fr",
+      "what_it_is_for": "April membership; 60% Linux servers",
+      "use_for_ospo_construction": "Official 2015 statement of the city's commitment: April membership and the 60% Linux server figure.",
+      "verification_status": "opened",
+      "url": "https://cdn.paris.fr/presse/2020/03/23/d541e951e6f0a72dedfd4fb864bbc60b.pdf",
+      "citation": "Ville de Paris. 2015. \"Paris renforce son engagement pour le logiciel libre.\" Press release, March 13, 2015. https://cdn.paris.fr/presse/2020/03/23/d541e951e6f0a72dedfd4fb864bbc60b.pdf"
+    },
+    {
+      "id": "par-19",
+      "title": "Libre à vous ! #228, Paris et logiciels libres",
+      "publisher": "April",
+      "date": "2024-12-03",
+      "type": "interview",
+      "category": "leadership_perspective",
+      "language": "fr",
+      "what_it_is_for": "Officer's manager and bureau",
+      "use_for_ospo_construction": "Interview placing the officer inside the IT department's org chart; who the office reports to.",
+      "verification_status": "opened",
+      "url": "https://libreavous.org/228",
+      "citation": "Libre à vous. 2024. \"Paris et logiciels libres,\" episode 228, April, December 3, 2024. https://libreavous.org/228"
+    },
+    {
+      "id": "par-20",
+      "title": "Linux à Paris mais à petite dose pour le moment",
+      "publisher": "LinuxFr",
+      "date": "2004-10-19",
+      "type": "press",
+      "category": "history",
+      "language": "fr",
+      "what_it_is_for": "The shelved 2004 desktop migration",
+      "use_for_ospo_construction": "The shelved 2004 desktop migration; context for why Paris put its effort into services rather than desktops.",
+      "verification_status": "opened",
+      "url": "https://linuxfr.org/news/linux-a-paris-mais-a-petite-dose-pour-le-moment",
+      "citation": "LinuxFr. 2004. \"Linux à Paris mais à petite dose pour le moment.\" October 19, 2004. https://linuxfr.org/news/linux-a-paris-mais-a-petite-dose-pour-le-moment"
+    },
+    {
+      "id": "par-21",
+      "title": "Microsoft partnership argumentaire",
+      "publisher": "April list archive",
+      "date": "2008-01-30",
+      "type": "document",
+      "category": "history",
+      "language": "fr",
+      "what_it_is_for": "The 2008 Microsoft partnership",
+      "use_for_ospo_construction": "The 2008 Microsoft partnership as described in a political document; the counter-example that an OSPO with a procurement role would have reviewed.",
+      "verification_status": "opened",
+      "url": "https://listes.april.org/wws/arc/candidatsfr-locaux/2008-02/msg00121/argumentaire.doc",
+      "citation": "April. 2008. \"Les Parisiens sont les premiers bénéficiaires du partenariat Microsoft\" [argumentaire], list archive, January 30, 2008. https://listes.april.org/wws/arc/candidatsfr-locaux/2008-02/msg00121/argumentaire.doc"
+    },
+    {
+      "id": "par-22",
+      "title": "List of Public Sector OSPOs",
+      "publisher": "FLOSS-PSO Network",
+      "date": "n.d.",
+      "type": "directory",
+      "category": "context",
+      "language": "en",
+      "what_it_is_for": "Self-reported founding date 2022-06-01",
+      "use_for_ospo_construction": "The global public-sector OSPO registry where a NYC office would register; self-reported founding dates for peers.",
+      "verification_status": "opened",
+      "url": "https://floss-pso.network/public-sector-ospos/",
+      "citation": "FLOSS-PSO Network. n.d. \"List of Public Sector OSPOs.\" https://floss-pso.network/public-sector-ospos/"
+    }
+  ],
+  "bibliography": [
+    "Acteurs publics. 2023. Émile Marzolf, \"Logiciels libres et mutualisation : quand Paris montre l'exemple.\" July 17, 2023. https://acteurspublics.fr/articles/logiciels-libres-et-mutualisation-quand-paris-montre-lexemple",
+    "AlpOSS. 2025. \"De Lutece à CiteLibre, retour sur la politique open source de la Ville de Paris.\" February 20, 2025. https://pretalx.com/alposs-2025/talk/PKZXCZ/",
+    "April. 2008. \"Les Parisiens sont les premiers bénéficiaires du partenariat Microsoft\" [argumentaire], list archive, January 30, 2008. https://listes.april.org/wws/arc/candidatsfr-locaux/2008-02/msg00121/argumentaire.doc",
+    "Bareille, Philippe. 2023. \"The City's Commitment to Open Source through Its OSPO.\" OSOR webinar slides, September 2023. https://interoperable-europe.ec.europa.eu/sites/default/files/news/2023-10/OSOR%20Webinar%20Philippe%20Bareille%20presentation.pdf",
+    "EC. n.d. \"CiteLibre.\" Interoperable Europe. https://interoperable-europe.ec.europa.eu/node/707046",
+    "FLOSS-PSO Network. n.d. \"List of Public Sector OSPOs.\" https://floss-pso.network/public-sector-ospos/",
+    "FOSS Backstage. 2025. \"From Lutece to CiteLibre: The City of Paris' Journey in OS.\" March 11, 2025. https://25.foss-backstage.de/session/from-lutece-to-citelibre-the-city-of-paris-journey-in-os/index.html",
+    "Libre à vous. 2024. \"Paris et logiciels libres,\" episode 228, April, December 3, 2024. https://libreavous.org/228",
+    "Linåker, Johan, Astor Nummelin Carlberg, and Ciarán O'Riordan. 2026. \"Public Sector Open Source Program Offices.\" arXiv 2603.04891, June 2026. https://arxiv.org/abs/2603.04891",
+    "LinuxFr. 2004. \"Linux à Paris mais à petite dose pour le moment.\" October 19, 2004. https://linuxfr.org/news/linux-a-paris-mais-a-petite-dose-pour-le-moment",
+    "Lutece. n.d. Project site, community and press pages. Ville de Paris. https://lutece.paris.fr/",
+    "OSOR. 2020. \"Lutece: Case Studies on Sustainability of Public Sector Open Source Communities.\" European Commission, August 5, 2020. https://interoperable-europe.ec.europa.eu/node/702996",
+    "OSOR. 2023. \"Presentations from the OSOR Webinar on Solutions for Public Sector.\" European Commission, September 27, 2023. https://interoperable-europe.ec.europa.eu/collection/open-source-observatory-osor/news/presentations-osor-webinar-solutions-public-sector",
+    "OSPO Alliance. 2024. \"City of Paris Confirms Support to the OSPO Alliance.\" November 20, 2024. https://ospo-alliance.org/news/20241120_member_city_of_paris/",
+    "Paris. 2021. \"How the City of Paris Committed to Open Source.\" OSOR webinar slides, June 2021. https://interoperable-europe.ec.europa.eu/sites/default/files/news/2021-07/PB_OSOR%20Webinar%20-%20OSS%20dev%20Culture_Final.pdf",
+    "Paris. n.d. Paris Open Source portal. Ville de Paris. https://opensource.paris.fr",
+    "Technical.ly. 2019. Stephen Babcock, \"Paris' Open Source Platform for City Services Is Being Introduced at a West Baltimore Community Center.\" April 19, 2019. https://technical.ly/civic-news/paris-lutece-open-source-platform-city-services-west-baltimore-community-center-st-francis.md",
+    "Ville de Paris. 2015. \"Paris renforce son engagement pour le logiciel libre.\" Press release, March 13, 2015. https://cdn.paris.fr/presse/2020/03/23/d541e951e6f0a72dedfd4fb864bbc60b.pdf",
+    "Worth. 2022. Steve Hamm, \"How Open-Source Software Makes Cities More Livable.\" February 15, 2022. https://worth.com/how-open-source-software-makes-cities-more-livable/"
+  ]
+}

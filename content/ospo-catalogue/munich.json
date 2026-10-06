@@ -1,5 +1,5 @@
 {
-  "$schema_note": "One case per file. Fields are stable across cases so Claude Code can merge files into one catalogue. Dates are ISO (YYYY-MM-DD) or 'n.d.'; partial dates use YYYY or YYYY-MM. verification_status is 'opened' (the page was read during research) or 'listed' (found in a directory or link list, not read). Each resource may carry an optional \"image\" (a path under /public) for the catalogue card; when absent the site draws a typed document glyph from \"type\".",
+  "$schema_note": "One case per file. Fields are stable across cases so Claude Code can merge files into one catalogue. Dates are ISO (YYYY-MM-DD) or 'n.d.'; partial dates use YYYY or YYYY-MM. verification_status is 'opened' (the page was read during research) or 'listed' (found in a directory or link list, not read). Each resource may carry an optional \"image\" (a path under /public) for the catalogue card; when absent the site draws a typed document glyph from \"type\". case.order fixes the display order across files.",
   "catalogue_version": "2026-10-06",
   "case": {
     "id": "munich",
@@ -135,7 +135,8 @@
       "May 2026 coalition agreement quoted from press; open the agreement text.",
       "heise article dates not visible in fetched text.",
       "Repository count (110) is from April 2024; the city page may now differ."
-    ]
+    ],
+    "order": 1
   },
   "resources": [
     {

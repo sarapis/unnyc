@@ -92,6 +92,17 @@ cases:
       - "[Technical.ly](https://technical.ly/civic-news/paris-lutece-open-source-platform-city-services-west-baltimore-community-center-st-francis/)"
       - "[unite.un.org](https://unite.un.org/en/news/france-becomes-first-government-endorse-un-open-source-principles)"
       - "[code.gouv.fr](https://code.gouv.fr/en/expenditure-staff-impact/)"
+  # The first federal case (2026-10-06): the U.S. Centers for Medicare &
+  # Medicaid Services. Its whole body is the research brief in
+  # content/briefs/cms.md, so it carries no narrative, stats or sources here.
+  # ⚠ NO BANNER YET — none came with the research handoff. Add
+  #   banner: { src: "/images/success/cms.jpeg", alt: "…" }
+  # (and the credit in public/images/CREDITS.md) when there is a licensed
+  # photo; the brief card and the Playbooks card both render without one
+  # until then. Cases without a banner also stay OFF the homepage's case
+  # strip, which has nothing to show for them.
+  - id: cms
+    title: "CMS: The First Federal OSPO"
 foot:
   text: "Ready to add New York to this list?"
   ctas:

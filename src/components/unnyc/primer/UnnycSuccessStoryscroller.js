@@ -246,7 +246,7 @@ export default function UnnycSuccessStoryscroller({ hero, railItems, cases, case
                                             /* Just the city's name on the image — the part of
                                                the case title before the colon, the same cut the
                                                rail label makes. */
-                                            banner={{ src: c.bannerSrc, alt: c.bannerAlt, title: c.title.split(':')[0].trim(), priority: c.priority }}
+                                            banner={c.bannerSrc ? { src: c.bannerSrc, alt: c.bannerAlt, title: c.title.split(':')[0].trim(), priority: c.priority } : null}
                                         />
                                     ) : (
                                         <>

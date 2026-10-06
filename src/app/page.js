@@ -100,10 +100,16 @@ export default function UnnycPage() {
         items: g.items.map((p) => ({ n: p.n, title: p.titleCanonical || p.title })),
     }));
 
-    const cases = (success.cases ?? []).map((c) => {
-        const [name, subtitle] = c.title.split(/:\s*/);
-        return { id: c.id, name, subtitle: subtitle || '', image: c.banner?.src, alt: c.banner?.alt };
-    });
+    // Only cases WITH a banner photo: this strip is images with captions, so a
+    // case that has none yet (CMS, since 2026-10-06) would render a broken
+    // image. It still has its full card on /success; it joins this strip the
+    // day a photo is added to its `banner` in content/success.md.
+    const cases = (success.cases ?? [])
+        .filter((c) => c.banner?.src)
+        .map((c) => {
+            const [name, subtitle] = c.title.split(/:\s*/);
+            return { id: c.id, name, subtitle: subtitle || '', image: c.banner?.src, alt: c.banner?.alt };
+        });
 
     const letterAsk = sign.sections?.letter?.blocks?.find((b) => b.label === 'Take Action');
     // The block's own lead sentence ("We respectfully call on...") is now the
