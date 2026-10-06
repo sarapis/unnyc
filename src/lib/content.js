@@ -407,6 +407,54 @@ export function principlesDeclaration(principlesDoc) {
   };
 }
 
+/**
+ * A per-city research brief, content/briefs/<case id>.md — the paper that
+ * renders UNDER that city's case on /success (abstract visible, the rest
+ * behind a disclosure). Same frontmatter + `## section` shape as a page file,
+ * read with the same renderer, so citations and bare URLs come out as the
+ * site's inline links.
+ *
+ * Fail-soft ON PURPOSE: not every case has a brief yet (Munich first; Paris,
+ * CMS, the European Commission and the UN to follow), and a case without one
+ * should simply render without the block, not take /success down.
+ */
+export function getBrief(caseId) {
+    const file = path.join(CONTENT_DIR, 'briefs', `${caseId}.md`);
+    if (!fs.existsSync(file)) return null;
+    const { data, content } = matter(fs.readFileSync(file, 'utf8'));
+    return { ...data, sections: splitSections(content) };
+}
+
+/**
+ * The OSPO catalogue — one JSON file per case in content/ospo-catalogue/,
+ * each `{ case, resources[], bibliography[] }` in the handoff's shape (see the
+ * `$schema_note` inside any of them). Merged here into one list, in file
+ * order unless a case sets `case.order`, so /ospo-strategy's Playbooks section
+ * can render every city from a single call. The JSON is canonical for the
+ * CATALOGUE; the matching content/briefs/<id>.md is canonical for the PROSE.
+ *
+ * Fail-soft like getUnEndorsers(): a missing or unparsable file costs that
+ * one city's catalogue, not the page.
+ */
+export function getOspoCatalogue() {
+    const dir = path.join(CONTENT_DIR, 'ospo-catalogue');
+    if (!fs.existsSync(dir)) return [];
+    return fs
+        .readdirSync(dir)
+        .filter((f) => f.endsWith('.json'))
+        .sort()
+        .map((f) => {
+            try {
+                const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+                return d?.case?.id && Array.isArray(d.resources) ? d : null;
+            } catch {
+                return null;
+            }
+        })
+        .filter(Boolean)
+        .sort((a, b) => (a.case.order ?? 0) - (b.case.order ?? 0));
+}
+
 /** Inline markdown (bold/links) with no wrapping <p> — for ledes and labels. */
 export function inlineMd(src) {
     if (!src?.trim()) return '';

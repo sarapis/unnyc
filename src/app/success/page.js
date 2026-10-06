@@ -7,7 +7,7 @@ import './success.css';
 import '../keep-going.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import UnnycKeepGoing from '@/components/unnyc/primer/UnnycKeepGoing';
-import { getContent, inlineMd } from '@/lib/content';
+import { getBrief, getContent, inlineMd } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
 
 /** Marker an editor writes on its own line to place the stats row mid-prose
@@ -22,6 +22,30 @@ export async function generateMetadata() {
 }
 
 /**
+ * A case's research brief (content/briefs/<id>.md), reshaped for
+ * UnnycCaseBrief: the `## Abstract` and `## Bibliography` sections are pulled
+ * out to render on their own (always visible / nested disclosure); every
+ * other `## ` section is a numbered part of the paper, in file order, with its
+ * `### ` blocks (Munich's "Open questions" list) kept inside it.
+ * Returns null when the case has no brief yet.
+ */
+function briefFor(caseId, labels) {
+    const b = getBrief(caseId);
+    if (!b) return null;
+    const { Abstract, Bibliography, ...rest } = b.sections;
+    return {
+        title: b.title,
+        subtitle: b.subtitle,
+        date: b.date,
+        abstractHtml: Abstract?.html ?? '',
+        sections: Object.entries(rest).map(([label, s]) => ({ label, html: s.html, blocks: s.blocks })),
+        bibliographyHtml: Bibliography?.html ?? null,
+        catalogHref: b.catalogHref ?? null,
+        labels,
+    };
+}
+
+/**
  * /success — "what success looks like", storyscroller layout (2026-09).
  * Reimplements a Claude Design handoff: a hero (with a dashed "New York
  * City — Next" card standing in for a case study NYC hasn't written yet),
@@ -29,7 +53,13 @@ export async function generateMetadata() {
  * icon-swapping sidebar, and a "Recent Successes" focus carousel. Sibling
  * of the other storyscrollers — same palette and sidebar shape.
  *
- * ALL COPY LIVES IN content/success.md. See docs/EDITING-CONTENT.md.
+ * Since 2026-10-06 a case can also carry a research brief (content/briefs/),
+ * rendered under its narrative — abstract visible, full paper and
+ * bibliography behind disclosures, ending at that city's catalogue on
+ * /ospo-strategy. Munich has one; the others render as before.
+ *
+ * ALL COPY LIVES IN content/success.md (and content/briefs/). See
+ * docs/EDITING-CONTENT.md.
  */
 export default function SuccessPage() {
     const doc = getContent('success');
@@ -48,6 +78,7 @@ export default function SuccessPage() {
             sourcesHtml: c.sources?.length
                 ? c.sources.map((s) => inlineMd(s)).join(' · ')
                 : null,
+            brief: briefFor(c.id, doc.brief),
             priority: i === 0,
         };
     });

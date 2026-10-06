@@ -254,7 +254,21 @@ if (!fs.existsSync(CONTENT_DIR)) {
     process.exit(1);
 }
 
-const files = fs.readdirSync(CONTENT_DIR).filter((f) => f.endsWith('.md')).sort();
+/** Every .md under content/, RECURSIVELY, as a path relative to content/ —
+ *  content/briefs/<case>.md (the per-city research briefs, 2026-10-06) live one
+ *  level down and need the same checks as the page files. */
+function markdownFiles(dir, prefix = '') {
+    return fs
+        .readdirSync(dir, { withFileTypes: true })
+        .flatMap((d) =>
+            d.isDirectory()
+                ? markdownFiles(path.join(dir, d.name), `${prefix}${d.name}/`)
+                : d.name.endsWith('.md') ? [`${prefix}${d.name}`] : [],
+        )
+        .sort();
+}
+
+const files = markdownFiles(CONTENT_DIR);
 const terms = glossaryTerms();
 
 for (const file of files) {

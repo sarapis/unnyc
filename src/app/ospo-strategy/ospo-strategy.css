@@ -623,6 +623,322 @@
     color: var(--wg-text-secondary);
   }
 
+  /* ---------------------------------------------------------------------
+     Playbooks — one city OSPO per block: a fact card, then its catalogue of
+     sources behind a native <details>, each entry led by a "document image"
+     (a typed glyph, or a real image when the JSON supplies one).
+     --------------------------------------------------------------------- */
+
+  .unnyc-ospo-story__pb-stack {
+    display: grid;
+    gap: var(--wg-sp-12);
+  }
+
+  .unnyc-ospo-story__pb {
+    background: var(--wg-surface);
+    border: 1px solid var(--wg-warm-gray);
+    border-radius: var(--wg-radius-lg);
+    box-shadow: var(--wg-shadow-md);
+    overflow: hidden;
+    scroll-margin-top: calc(var(--pr-header-h, 68px) + var(--wg-sp-5));
+  }
+
+  /* The city's photo as the card's header — same image its case study on
+     /success uses, no title on it. next/image `fill` needs a positioned,
+     sized box, hence the aspect ratio here. */
+  .unnyc-ospo-story__pb-banner {
+    position: relative;
+    aspect-ratio: 16 / 7;
+    max-width: 100%;
+    background: var(--wg-surface-warm);
+  }
+
+  .unnyc-ospo-story__pb-banner-img {
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  /* The middle section: the office's name (linking to its own site), the
+     facts, and the one text link to the case study. */
+  .unnyc-ospo-story__pb-main {
+    padding: var(--wg-sp-8);
+  }
+
+  .unnyc-ospo-story__pb-title {
+    margin: 0 0 var(--wg-sp-6);
+    font-family: var(--wg-font-display);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 2.6vw, 2.125rem);
+    line-height: 1.15;
+    color: var(--wg-brand);
+    text-wrap: pretty;
+  }
+
+  .unnyc-page .unnyc-ospo-story__pb-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .unnyc-page .unnyc-ospo-story__pb-title a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--wg-accent-warm);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
+
+  .unnyc-ospo-story__pb-title-arrow {
+    font-size: 0.7em;
+    color: var(--wg-accent-warm);
+    vertical-align: 0.15em;
+  }
+
+  .unnyc-ospo-story__pb-facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--wg-sp-5) var(--wg-sp-8);
+    margin: 0;
+    padding: var(--wg-sp-6) 0 0;
+    border-top: 1px solid var(--wg-warm-gray);
+  }
+
+  .unnyc-ospo-story__pb-facts > div {
+    min-width: 0;
+  }
+
+  .unnyc-ospo-story__pb-fact--wide {
+    grid-column: 1 / -1;
+  }
+
+  .unnyc-ospo-story__pb-facts dt {
+    margin: 0 0 var(--wg-sp-1);
+    font-size: var(--wg-fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--wg-text-secondary);
+  }
+
+  .unnyc-ospo-story__pb-facts dd {
+    margin: 0;
+    font-size: var(--wg-fs-sm);
+    line-height: 1.55;
+    color: var(--wg-brand);
+    text-wrap: pretty;
+  }
+
+  .unnyc-page .unnyc-ospo-story__pb-facts dd a {
+    color: var(--wg-accent-strong);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+
+  .unnyc-page .unnyc-ospo-story__pb-facts dd a:hover {
+    color: var(--wg-accent);
+    text-decoration: underline;
+  }
+
+  .unnyc-ospo-story__pb-fact-note {
+    display: block;
+    margin-top: 2px;
+    font-size: var(--wg-fs-xs);
+    color: var(--wg-text-secondary);
+  }
+
+  /* The one text link under the facts — to the city's case study. */
+  .unnyc-ospo-story__pb-read {
+    margin: var(--wg-sp-6) 0 0;
+  }
+
+  .unnyc-page .unnyc-ospo-story__pb-link {
+    font-size: var(--wg-fs-sm);
+    font-weight: 600;
+    color: var(--wg-brand);
+    text-decoration: underline;
+    text-decoration-color: var(--wg-warm-gray);
+    text-underline-offset: 4px;
+  }
+
+  .unnyc-page .unnyc-ospo-story__pb-link:hover {
+    text-decoration-color: var(--wg-accent-warm);
+  }
+
+  .unnyc-ospo-story__pb-catalogue {
+    border-top: 1px solid var(--wg-warm-gray);
+  }
+
+  /* ⚠ `display` deliberately not set — see UnnycWorldMap's catalogue note:
+     changing a <summary> off `display: list-item` removes its native
+     disclosure triangle, the one affordance saying this opens. */
+  .unnyc-page .unnyc-ospo-story__pb-catalogue > summary {
+    padding: var(--wg-sp-5) var(--wg-sp-8);
+    cursor: pointer;
+    color: var(--wg-accent-strong);
+  }
+
+  .unnyc-page .unnyc-ospo-story__pb-catalogue > summary:hover {
+    color: var(--wg-accent);
+  }
+
+  .unnyc-page .unnyc-ospo-story__pb-catalogue > summary:focus-visible {
+    outline: 2px solid var(--wg-accent);
+    outline-offset: -2px;
+  }
+
+  .unnyc-ospo-story__pb-catalogue[open] > summary {
+    border-bottom: 1px solid var(--wg-warm-gray);
+  }
+
+  .unnyc-ospo-story__pb-catalogue-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--wg-sp-3);
+    font-size: var(--wg-fs-sm);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .unnyc-ospo-story__pb-count {
+    padding: 2px var(--wg-sp-3);
+    border-radius: 999px;
+    background: var(--wg-surface-warm);
+    border: 1px solid var(--wg-warm-gray);
+    font-size: var(--wg-fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: var(--wg-text-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .unnyc-ospo-story__pb-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+  }
+
+  .unnyc-ospo-story__entry {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: var(--wg-sp-5);
+    padding: var(--wg-sp-6) var(--wg-sp-8);
+    border-bottom: 1px solid var(--wg-warm-gray);
+  }
+
+  /* The glyph with its kind named beneath it. */
+  .unnyc-ospo-story__entry-doc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--wg-sp-2);
+  }
+
+  .unnyc-ospo-story__entry-kind {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--wg-text-secondary);
+    text-wrap: balance;
+  }
+
+  .unnyc-ospo-story__entry:last-child {
+    border-bottom: none;
+  }
+
+  .unnyc-ospo-story__entry-body {
+    display: grid;
+    gap: var(--wg-sp-2);
+    min-width: 0;
+  }
+
+  .unnyc-page .unnyc-ospo-story__entry-title {
+    font-size: var(--wg-fs-base);
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--wg-brand);
+    text-decoration: none;
+    text-wrap: pretty;
+    overflow-wrap: anywhere;
+  }
+
+  .unnyc-page .unnyc-ospo-story__entry-title:hover {
+    color: var(--wg-accent-strong);
+    text-decoration: underline;
+  }
+
+  .unnyc-ospo-story__entry-meta {
+    margin: 0;
+    font-size: var(--wg-fs-xs);
+    letter-spacing: 0.02em;
+    color: var(--wg-text-secondary);
+  }
+
+  .unnyc-ospo-story__entry-what,
+  .unnyc-ospo-story__entry-use {
+    margin: 0;
+    font-size: var(--wg-fs-sm);
+    line-height: 1.6;
+    color: var(--wg-text-secondary);
+    max-width: 68ch;
+  }
+
+  .unnyc-ospo-story__entry-use strong {
+    color: var(--wg-brand);
+    font-weight: 600;
+  }
+
+  /* The document image. The glyph is a sheet drawn in the rail's blue with
+     one orange mark; a supplied image sits in the same frame. */
+  .unnyc-ospo-story__glyph {
+    display: block;
+    width: 44px;
+    height: 56px;
+    color: var(--wg-accent);
+  }
+
+  .unnyc-ospo-story__glyph svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .unnyc-ospo-story__glyph--image {
+    border: 1px solid var(--wg-warm-gray);
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--wg-surface-warm);
+  }
+
+  .unnyc-ospo-story__glyph--image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 560px) {
+    .unnyc-ospo-story__pb-main,
+    .unnyc-page .unnyc-ospo-story__pb-catalogue > summary,
+    .unnyc-ospo-story__entry {
+      padding-left: var(--wg-sp-5);
+      padding-right: var(--wg-sp-5);
+    }
+
+    .unnyc-ospo-story__entry {
+      grid-template-columns: 64px minmax(0, 1fr);
+      gap: var(--wg-sp-4);
+    }
+
+    .unnyc-ospo-story__glyph {
+      width: 36px;
+      height: 46px;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .unnyc-ospo-story__rail-icon,
     .unnyc-page .unnyc-ospo-story__card,

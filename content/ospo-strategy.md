@@ -36,14 +36,53 @@ metaDocument:
   ogDescription: "The one-page case for an Open Source Program Office in New York City government — prepared for the CTO, the Mayor, and the administration."
 
 # Sticky rail (the storyscroller sidebar). `id` must match an <article id>
-# rendered by the component.
+# rendered by the component. Playbooks is first (owner call, 2026-10-06): the
+# page opens on the per-city catalogues, and the memo follows.
 sectionNav:
+  - id: playbooks
+    label: "Playbooks"
   - id: summary
     label: "Executive Summary"
   - id: brief
     label: "Policy Brief"
   - id: resources
     label: "Supporting Resources"
+
+# The Playbooks section: one sub-section per city OSPO, each a fact card plus
+# an expandable catalogue of sources. ⚠ ONLY THE UI WORDS ARE HERE. Every
+# city — its facts, its sources, their descriptions — comes from
+# content/ospo-catalogue/<city>.json (getOspoCatalogue in src/lib/content.js),
+# one file per case in the research handoff's shape; the matching prose is
+# content/briefs/<city>.md, rendered under that city's case on /success.
+# Munich first; Paris, CMS, the European Commission and the UN to follow by
+# dropping in their JSON. Counts (sources per city) are derived, never typed.
+playbooks:
+  title: "Playbooks"
+  lede: "How the cities that already have an OSPO built theirs: the founding act, the office, what it does all day, and every source we read to find out — catalogued so a working group can start from the documents, not from a summary of them."
+  # The office's name is itself the link to its site (with an arrow); this is
+  # the one text link under the facts, to the city's case study on /success.
+  caseStudyLabel: "Read case study"
+  catalogueLabel: "Catalogue"
+  countLabel: "sources"
+  useLabel: "For an NYC OSPO"
+  notPublishedLabel: "Not published"
+  # The kind of source, named under each entry's document glyph. Keys are the
+  # six glyph kinds the component collapses the JSON `type` values into
+  # (GLYPH_KIND in UnnycOspoStoryscroller.js); an unknown type shows as "page".
+  kinds:
+    council: "Council paper"
+    page: "Official page"
+    press: "Press"
+    analysis: "Analysis"
+    voice: "Interview or talk"
+    code: "Code"
+  facts:
+    founded: "Founded"
+    placement: "Where it sits"
+    headcount: "Headcount"
+    budget: "Budget"
+    procurement: "Role in procurement"
+    authorizingAct: "Authorizing act"
 
 # The memo header shared by the on-page executive summary card and the
 # printable. `addressed` has the same shape as content/sign.md's — label/value
@@ -98,7 +137,10 @@ resources:
   title: "Supporting Resources"
   lede: "Playbooks for standing up an office, the peer offices to study, and this campaign's own materials — everything a working group would need in one place."
   groups:
-    - title: "Playbooks for standing up an OSPO"
+    # Was "Playbooks for standing up an OSPO" until 2026-10-06, when the
+    # per-city Playbooks section arrived at the top of the page and the name
+    # would have meant two different things on one page.
+    - title: "Guides and handbooks"
       links:
         - text: "TODO Group — OSPO guides"
           url: "https://todogroup.org/"

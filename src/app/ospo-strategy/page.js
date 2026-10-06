@@ -7,7 +7,7 @@ import './ospo-strategy.css';
 import '../keep-going.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import UnnycKeepGoing from '@/components/unnyc/primer/UnnycKeepGoing';
-import { getContent, inlineMd } from '@/lib/content';
+import { getContent, getOspoCatalogue, inlineMd } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
 import StructuredData from '@/components/unnyc/StructuredData';
 import { articleLd } from '@/lib/structured-data';
@@ -18,14 +18,30 @@ export async function generateMetadata() {
 }
 
 /**
+ * Each city's Playbooks card opens on the same photo its case study uses on
+ * /success — read from content/success.md's `cases[].banner`, keyed by the
+ * shared id (`munich` in both files), so the two pages can't show different
+ * images for one city. A city with no case study simply has no banner.
+ */
+function withBanners(catalogue) {
+    const banners = Object.fromEntries(
+        (getContent('success').cases ?? []).map((c) => [c.id, c.banner]).filter(([, b]) => b?.src),
+    );
+    return catalogue.map((entry) => ({ ...entry, banner: banners[entry.case.id] ?? null }));
+}
+
+/**
  * /ospo-strategy — the self-contained case for an Open Source Program Office
- * inside New York City government: an executive summary presented as an
- * official memo (also printable at /ospo-strategy/document), a longer policy
- * brief, and the supporting links a working group would need. Sibling of the
- * other storyscrollers — same hero, sticky rail, reveal system and foot band.
+ * inside New York City government: the per-city Playbooks (fact card + an
+ * expandable catalogue of every source, one JSON file per city), an executive
+ * summary presented as an official memo (also printable at
+ * /ospo-strategy/document), a longer policy brief, and the supporting links a
+ * working group would need. Sibling of the other storyscrollers — same hero,
+ * sticky rail, reveal system and foot band.
  *
- * ALL COPY LIVES IN content/ospo-strategy.md. See docs/EDITING-CONTENT.md.
- * The memo header and the recommendations are read by BOTH this page and the
+ * ALL COPY LIVES IN content/ospo-strategy.md; every city's facts and sources
+ * in content/ospo-catalogue/<city>.json. See docs/EDITING-CONTENT.md. The
+ * memo header and the recommendations are read by BOTH this page and the
  * printable, so they stay one text.
  */
 export default function OspoStrategyPage() {
@@ -50,6 +66,11 @@ export default function OspoStrategyPage() {
                     documentCta: doc.summary.documentCta,
                 }}
                 railItems={doc.sectionNav}
+                playbooks={{
+                    ...doc.playbooks,
+                    ledeHtml: inlineMd(doc.playbooks.lede),
+                    cases: withBanners(getOspoCatalogue()),
+                }}
                 memo={doc.memo}
                 summary={{
                     title: doc.summary.title,

@@ -454,6 +454,237 @@
     margin-right: var(--wg-sp-3);
   }
 
+  /* ---------------------------------------------------------------------
+     Research brief (UnnycCaseBrief) — under a case, when the city has one.
+     Abstract visible; the paper and, inside it, the bibliography open from
+     native <details>. A paper-coloured card, one step off the page, so it
+     reads as a document attached to the case rather than more narrative.
+     --------------------------------------------------------------------- */
+
+  /* The brief IS the case body: full column width, the banner image built
+     in as the card's header (so the case title on the image is the card's
+     title), the words below it. */
+  .unnyc-success-story__brief {
+    margin-top: 0;
+    max-width: none;
+    background: var(--wg-surface);
+    border: 1px solid var(--wg-warm-gray);
+    border-radius: var(--wg-radius-lg);
+    box-shadow: var(--wg-shadow-xl);
+    overflow: hidden;
+  }
+
+  /* The banner inside the card: squared off and flush, no gap below — it
+     overrides the standalone banner's own radius, shadow and margin. */
+  .unnyc-success-story__brief-banner {
+    margin-bottom: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .unnyc-success-story__brief-body {
+    padding: var(--wg-sp-8);
+  }
+
+  /* One meta line: the orange kicker and the date, each in its own style. */
+  .unnyc-success-story__brief-meta {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--wg-sp-4);
+    margin: 0 0 var(--wg-sp-3);
+  }
+
+  .unnyc-success-story__brief-kicker {
+    font-size: var(--wg-fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--wg-accent-warm-dark);
+  }
+
+  .unnyc-success-story__brief-date {
+    font-size: var(--wg-fs-xs);
+    color: var(--wg-text-secondary);
+  }
+
+  .unnyc-success-story__brief-heading {
+    margin: 0 0 var(--wg-sp-6);
+    font-family: var(--wg-font-display);
+    font-weight: 400;
+    font-size: clamp(1.375rem, 2.2vw, 1.75rem);
+    line-height: 1.25;
+    color: var(--wg-brand);
+    text-wrap: pretty;
+  }
+
+  .unnyc-success-story__brief-abstract h4 {
+    margin: 0 0 var(--wg-sp-3);
+    font-size: var(--wg-fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--wg-text-secondary);
+  }
+
+  /* The paper's section headings — the display serif at the page's h2-ish
+     scale, with the short orange rule the site's kickers carry, so each
+     numbered part reads as a real heading rather than a label. */
+  .unnyc-success-story__brief-section h4 {
+    display: flex;
+    align-items: center;
+    gap: var(--wg-sp-4);
+    margin: 0 0 var(--wg-sp-4);
+    font-family: var(--wg-font-display);
+    font-weight: 400;
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    line-height: 1.25;
+    color: var(--wg-brand);
+    text-wrap: pretty;
+  }
+
+  .unnyc-success-story__brief-section h4::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 2px;
+    background: var(--wg-accent-warm);
+    flex-shrink: 0;
+  }
+
+  .unnyc-success-story__brief-prose {
+    font-size: var(--wg-fs-base);
+    line-height: 1.7;
+    color: var(--wg-brand);
+  }
+
+  .unnyc-success-story__brief-prose p {
+    margin: 0 0 var(--wg-sp-4);
+  }
+
+  .unnyc-success-story__brief-prose p:last-child {
+    margin-bottom: 0;
+  }
+
+  .unnyc-success-story__brief-prose ul {
+    margin: 0 0 var(--wg-sp-4);
+    padding-left: 1.2em;
+    list-style: disc;
+    display: grid;
+    gap: var(--wg-sp-2);
+  }
+
+  /* Same specificity note as __case-prose: .unnyc-page is needed to beat the
+     site-wide .unnyc-inline-link rule (0-2-0). Bare URLs in the bibliography
+     are long, so they wrap anywhere rather than widen the card. */
+  .unnyc-page .unnyc-success-story__brief-prose a,
+  .unnyc-page .unnyc-success-story__brief-prose .unnyc-inline-link {
+    color: var(--wg-accent-strong);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+
+  .unnyc-page .unnyc-success-story__brief-prose .unnyc-inline-link:hover,
+  .unnyc-page .unnyc-success-story__brief-prose .unnyc-inline-link:focus {
+    color: var(--wg-accent);
+    text-decoration: underline;
+  }
+
+  .unnyc-success-story__brief-details {
+    margin-top: var(--wg-sp-6);
+    border-top: 1px solid var(--wg-warm-gray);
+  }
+
+  /* ⚠ `display` deliberately not set on the summary — see UnnycWorldMap's
+     catalogue note: changing a <summary> off `display: list-item` removes its
+     native disclosure triangle, the one affordance saying this opens. */
+  .unnyc-page .unnyc-success-story__brief-details > summary {
+    padding: var(--wg-sp-4) 0;
+    cursor: pointer;
+    font-size: var(--wg-fs-sm);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--wg-accent-strong);
+  }
+
+  .unnyc-page .unnyc-success-story__brief-details > summary:hover {
+    color: var(--wg-accent);
+  }
+
+  .unnyc-page .unnyc-success-story__brief-details > summary:focus-visible {
+    outline: 2px solid var(--wg-accent);
+    outline-offset: 3px;
+  }
+
+  /* The opened paper (and, nested, the opened bibliography). */
+  .unnyc-success-story__brief-paper {
+    display: grid;
+    gap: var(--wg-sp-8);
+    padding: var(--wg-sp-2) 0 var(--wg-sp-4);
+  }
+
+  /* A section's `### ` block (Munich's "Open questions" under §8): a plain
+     sub-heading and its list, in the flow of the section — no box. */
+  .unnyc-success-story__brief-block {
+    margin-top: var(--wg-sp-5);
+  }
+
+  .unnyc-success-story__brief-block h5 {
+    margin: 0 0 var(--wg-sp-3);
+    font-size: var(--wg-fs-base);
+    font-weight: 600;
+    color: var(--wg-brand);
+  }
+
+  .unnyc-success-story__brief-details--nested {
+    margin-top: 0;
+  }
+
+  .unnyc-success-story__brief-bib {
+    font-size: var(--wg-fs-sm);
+  }
+
+  /* In the flow of the paper after its last section — no rule above it, so it
+     reads as the paper's own closing link rather than a section of its own. */
+  .unnyc-success-story__brief-catalog {
+    display: grid;
+    gap: var(--wg-sp-1);
+    margin: 0;
+  }
+
+  .unnyc-page .unnyc-success-story__brief-catalog-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--wg-sp-2);
+    justify-self: start;
+    min-height: 44px;
+    padding: 0 var(--wg-sp-5);
+    border: 1.5px solid var(--wg-brand);
+    border-radius: 999px;
+    font-size: var(--wg-fs-sm);
+    font-weight: 700;
+    color: var(--wg-brand);
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .unnyc-page .unnyc-success-story__brief-catalog-link:hover {
+    background: var(--wg-brand);
+    color: var(--wg-text-inverse);
+  }
+
+  .unnyc-success-story__brief-catalog-hint {
+    font-size: var(--wg-fs-xs);
+    color: var(--wg-text-secondary);
+  }
+
+  @media (max-width: 560px) {
+    .unnyc-success-story__brief {
+      padding: var(--wg-sp-5);
+    }
+  }
+
   .unnyc-page .unnyc-success-story__sources .unnyc-inline-link {
     color: var(--wg-accent-strong);
     text-decoration: none;

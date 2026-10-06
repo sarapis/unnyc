@@ -521,6 +521,32 @@ comments): the structure is settled, the prose wants the owner's pass, and the
 `# VERIFY` lines name claims to check before it is sent. No counts in its prose,
 on purpose — it points at the directories that derive them.
 
+**The OSPO catalogue (2026-10-06)** — a research handoff, one folder per city
+(Munich first; Paris, CMS, the European Commission and the UN to follow in the
+same shape), lands in TWO places that split the source of truth on purpose:
+- `content/ospo-catalogue/<city>.json` — `{ case, resources[], bibliography[] }`
+  in the handoff's own schema (see its `$schema_note`). **Canonical for the
+  catalogue.** Read by `getOspoCatalogue()` (fail-soft, merged across files)
+  and rendered as the **Playbooks** section at the TOP of `/ospo-strategy`:
+  a fact card per city (founded, placement, headcount, budget, procurement
+  role, authorizing act) and its sources behind a `<details>`, each led by a
+  "document image" — a typed glyph drawn from `type`, or an `image` path when
+  the JSON supplies one (it supplies none yet). The per-city source count is
+  derived; nulls render as "Not published", because the gaps are part of the
+  record. Anchors are `#playbooks-<city>`.
+- `content/briefs/<city>.md` — the research brief. **Canonical for the
+  prose.** Read by `getBrief(id)` (null when a case has none) and rendered by
+  `UnnycCaseBrief` UNDER that city's case on `/success`: abstract always
+  visible, the paper behind "Read the full brief", the Bibliography a second
+  `<details>` nested inside, ending in a **"See catalog"** link to
+  `/ospo-strategy#playbooks-<city>`. The handoff's Catalogue table is NOT
+  reproduced there (the JSON has it). §8's "Gaps to close" render as an
+  "Open questions" block **flagged Unverified** — the README says not to
+  present them as settled. `validate-content.mjs` now recurses into
+  `content/` subfolders so these files get the same checks.
+  ⚠ No `data-reveal` inside either `<details>`: a node that starts inside a
+  closed disclosure never intersects and would stay at opacity 0 when opened.
+
 ## Non-obvious things that will bite you
 
 - **⚠ A FORMATTED NUMBER IN `data-count` RENDERS "NaN" AFTER HYDRATION.** The

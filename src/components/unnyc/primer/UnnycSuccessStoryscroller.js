@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import UnnycCaseBrief from './UnnycCaseBrief';
 
 /**
  * UnnycSuccessStoryscroller — the storyscroller redesign of /success ("A
@@ -233,6 +234,22 @@ export default function UnnycSuccessStoryscroller({ hero, railItems, cases, case
                         <div className="unnyc-success-story__articles">
                             {cases.map((c) => (
                                 <article key={c.id} id={c.id} data-spy="1" className="unnyc-success-story__case">
+                                    {/* A case WITH a research brief (Munich, since 2026-10-06)
+                                        IS the brief card: the banner becomes the card's header
+                                        and the paper replaces the narrative, stats and sources.
+                                        The narrative stays in content/success.md for cases
+                                        without one, and so the owner can bring it back by
+                                        deleting the brief file. */}
+                                    {c.brief ? (
+                                        <UnnycCaseBrief
+                                            brief={c.brief}
+                                            /* Just the city's name on the image — the part of
+                                               the case title before the colon, the same cut the
+                                               rail label makes. */
+                                            banner={{ src: c.bannerSrc, alt: c.bannerAlt, title: c.title.split(':')[0].trim(), priority: c.priority }}
+                                        />
+                                    ) : (
+                                        <>
                                     <div className="unnyc-success-story__case-banner" data-reveal="1">
                                         {c.bannerSrc && (
                                             <Image
@@ -290,6 +307,8 @@ export default function UnnycSuccessStoryscroller({ hero, railItems, cases, case
                                             <span className="unnyc-success-story__sources-label">Sources</span>
                                             <span dangerouslySetInnerHTML={{ __html: c.sourcesHtml }} />
                                         </p>
+                                    )}
+                                        </>
                                     )}
                                 </article>
                             ))}

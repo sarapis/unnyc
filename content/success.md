@@ -28,6 +28,17 @@ sectionNav:
   - id: cases
     label: "Recent Successes"
 lede: "Cities around the world have already seen success endorsing the principles and adopting open source infrastructure. New York should join them."
+# Labels for the research-brief block that renders under a case when
+# content/briefs/<case id>.md exists (UnnycCaseBrief). The prose itself is in
+# that file; only the UI words are here. `unverified` marks the brief's "Open
+# questions" list, which the handoff flags as not yet confirmed.
+brief:
+  kicker: "Research brief"
+  abstract: "Abstract"
+  read: "Read the full brief"
+  bibliography: "Bibliography"
+  catalog: "See catalog"
+  catalogHint: "Every source, with what each one is for, on the OSPO Strategy page."
 cases:
   - id: barcelona
     title: "Barcelona: The First City to Sign"
