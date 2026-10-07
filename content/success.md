@@ -103,6 +103,10 @@ cases:
   # strip, which has nothing to show for them.
   - id: cms
     title: "CMS: The First Federal OSPO"
+  # The European Commission (2026-10-06) — supranational; same arrangement as
+  # CMS: body is content/briefs/ec.md, no banner yet (see the CMS note).
+  - id: ec
+    title: "European Commission: A Public Code Commons and an OSPO Network"
 foot:
   text: "Ready to add New York to this list?"
   ctas:

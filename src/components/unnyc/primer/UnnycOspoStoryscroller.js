@@ -383,6 +383,7 @@ function PlaybookCase({ entry, labels }) {
         if (b.startup_eur != null) parts.push(`${fmtMoney(b.startup_eur, 'EUR')} start-up`);
         if (b.startup_usd != null) parts.push(`${fmtMoney(b.startup_usd, 'USD')} start-up`);
         if (b.sponsorship_eur_per_year != null) parts.push(`${fmtMoney(b.sponsorship_eur_per_year, 'EUR')} a year for sponsorship`);
+        if (b.annual_eur != null) parts.push(`${fmtMoney(b.annual_eur, 'EUR')} a year`);
         if (b.annual_usd != null) parts.push(`${fmtMoney(b.annual_usd, 'USD')} a year`);
         return parts.length ? parts.join(' · ') : labels.notPublishedLabel;
     })();
@@ -612,6 +613,9 @@ const GLYPH_KIND = {
     framework: 'policy',
     charter: 'policy',
     charter_text: 'policy',
+    founding_strategy: 'policy',
+    legal_act: 'policy',
+    regulatory_finding: 'policy',
     official_page: 'page',
     reference: 'page',
     directory: 'page',
@@ -621,10 +625,13 @@ const GLYPH_KIND = {
     official_release: 'press',
     commentary: 'press',
     recap: 'press',
+    article: 'press',
+    critique: 'press',
     analysis: 'analysis',
     case_study: 'analysis',
     academic: 'analysis',
     profile: 'analysis',
+    report: 'analysis',
     interview: 'voice',
     talk: 'voice',
     presentation: 'voice',

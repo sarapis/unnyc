@@ -522,13 +522,13 @@ comments): the structure is settled, the prose wants the owner's pass, and the
 on purpose — it points at the directories that derive them.
 
 **The OSPO catalogue (2026-10-06)** — a research handoff, one folder per city
-(Munich, Paris and CMS so far; the European Commission and the UN to follow in
+(Munich, Paris, CMS and the European Commission so far; the UN to follow in
 the same shape — each is two files dropped in plus a `cases` entry in
 success.md, no code), lands in TWO places that split the source of truth on
-purpose. ⚠ CMS is the first case that is NOT one of /success's original three
-cities: it has no banner photo yet, so its brief card and Playbooks card render
-without one and the homepage's case strip (images with captions) skips it until
-a `banner` is added. New JSON `type` values need a row in `GLYPH_KIND` or they
+purpose. ⚠ CMS and the EC are NOT among /success's original three cities: they
+have no banner photo yet, so their brief cards and Playbooks cards render
+without one and the homepage's case strip (images with captions) skips them
+until a `banner` is added. New JSON `type` values need a row in `GLYPH_KIND` or they
 fall back to the "Official page" glyph:
 - `content/ospo-catalogue/<city>.json` — `{ case, resources[], bibliography[] }`
   in the handoff's own schema (see its `$schema_note`). **Canonical for the
