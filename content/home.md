@@ -53,7 +53,7 @@ journey:
     # that class of drift is what this buys out of. Labels stay editable here.
     stats:
       - source: ospos
-        label: "Governments with Open Source Program Offices"
+        label: "Public Sector Open Source Program Offices"
       - source: govoss-entries
         label: "Open Source Applications in Public Government Catalogs"
   - href: /principles
