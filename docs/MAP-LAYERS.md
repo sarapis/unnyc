@@ -219,31 +219,52 @@ the whole credit — the same fail-soft posture as the loaders.
 
 ### The OSPO layer
 
-18 OSPOs → **12 map points**, built from `ospoDirectory` in `content/resources.md` —
-the SAME list `/resources` renders, never a copy, because a second list drifts the
+18 OSPOs → **12 map points**, built from `getOspoDirectory()` in `src/lib/content.js`
+— the SAME list `/resources` renders, never a copy, because a second list drifts the
 first time somebody adds an OSPO to one of them.
 
-⚠ **THE LIST IS NOT OURS.** All 18 entries come from the **FLOSS-PSO Network**
-(`floss-pso.network`, OSPO Alliance), which aggregates each body's own YAML; the
-list is **CC0 1.0** and the licence is read from their footer and recorded in
-`ospoDirectory` (`source`, `sourceUrl`, `licence`, `licenceUrl`,
-`licenceCheckedFrom`, `licenceCheckedOn`), never written into JSX. The map credit,
-`/resources`' source line and `/data/public-sector-ospos.json` all read those
-fields. What is ours is the geocoding. ⚠ Their entry for Échirolles is named
-"Direction de la stratégie et de la culture numériques (DSCN)"; ours appends
-", Échirolles" — a local edit, and the one that produced the "Échirolles
-Échirolles" popup bug. Check upstream before "fixing" a name here.
+⚠ **SINCE 2026-10 THE LIST IS A SNAPSHOT, NOT HAND-KEPT.** `content/govoss-ospos.json`,
+refreshed by `node scripts/fetch-govoss-ospos.mjs`, holds the FLOSS-PSO rows of
+**`https://govoss.cat/ospos.json`**, which govoss publishes under a consumer contract
+written for us (`ospo_contract.py` in `sarapis/govoss-catalog`, enforced by their
+tests). `ospoDirectory.groups` in `content/resources.md` is gone, and only the prose
+stays there. The script throws on anything outside the contract, and **refuses to
+refresh while `sources["floss-pso"].ok` is false**, because govoss then serves its last
+good copy and holds back any office it hasn't placed yet. Re-stamping that as today's
+data is the stale-claim shape this repo keeps meeting.
 
-- **Coordinates are hand-placed on each item**, with `locationBasis`: `seat` where the
-  body's own city is unambiguous, `hq` where it sits at the parent organisation's
-  headquarters. The popup marks `(HQ)`, because "approximately here" and "here" are
-  different claims. ⚠ Two were nearly placed wrong and the **domain** settled both:
+**Whose is what.** The **list** is the **FLOSS-PSO Network**'s (`floss-pso.network`,
+OSPO Alliance), aggregated from each body's own YAML, **CC0 1.0**. The **placements**
+(lat/lng, city, `seat`/`hq`) are **GovOSS**'s, also **CC0 1.0**. Most were copied from
+this site's own earlier hand placements, so a placement correction now goes to GovOSS,
+and an office correction to FLOSS-PSO. Both licence strings are read from govoss's
+file and matched verbatim against `LICENCES` in the script, never written into JSX.
+The map credit, `/resources`' source line and `/data/public-sector-ospos.json` all read
+them through the loader. **Credit FLOSS-PSO for the list, never GovOSS or this site.**
+
+**Upstream text is shown verbatim**, names included, which ended our local
+", Échirolles" suffix. The one exception is `ospoDirectory.descriptionOverrides` in
+`content/resources.md`. Each override quotes the exact upstream text it replaces, and
+the build **fails** when upstream stops matching, so an upstream fix announces that the
+override is obsolete instead of being masked. It is for data defects only. Today it
+holds one: Thessaloniki's description begins with Greek "Το" for "To". The fetch
+script reports each override's status on every refresh. A policy link identical to the
+office's own URL (ANSSI, Strasbourg upstream) is hidden by the loader. The snapshot
+keeps the value verbatim.
+
+- **Coordinates are GovOSS's placements**, with `locationBasis`: `seat` for the body's
+  own city, `hq` for its parent organisation's headquarters. The popup marks `(HQ)`,
+  because "approximately here" and "here" are different claims. ⚠ Two were nearly
+  placed wrong when they were still ours, and the **domain** settled both:
   `pcll.ac-dijon.fr` is Dijon, not Paris; `echirolles.fr` is Échirolles, not Grenoble.
 - **Grouped by city, then cities within 25 km merged** (`OSPO_MERGE_KM`). Four French
   OSPOs are in Paris and the IGN's is in Saint-Mandé 5 km away — at world zoom that is
   one pixel, so separate markers would have silently hidden four of five. Each entry
   keeps its real city in the popup: **merging changes what is drawn, never what is
-  claimed.**
+  claimed.** ⚠ **A merged point is named by rule:** the place holding most of its
+  offices, and on a tie every tied place, as in "Échirolles / Grenoble". It used to be
+  whichever office came first in the hand-kept list, so re-sorting the list silently
+  renamed the Grenoble pin "Échirolles".
 - **OSPO markers are squares**; every other layer is round. One city can hold five
   OSPOs and a policy marker at the same pixel, and shape separates them where colour
   alone would not — including for a red-green reader.

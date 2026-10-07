@@ -183,191 +183,29 @@ ospoDirectory:
     alt: "Diagram of public-sector OSPO archetypes. Structure (RQ1) is fed by five choices — sponsor, supporting entities, budget, organization, and staffing. Responsibilities (RQ2) branch into ten activities: develop and execute OSS strategy, oversee OSS compliance, establish and improve OSS policies and processes, prioritize and drive OSS upstream development, collaborate with OSS organizations, track performance metrics, implement inner source practices, grow and retain OSS talent inside the organization, provide advice and support on OSS, and manage open source IT infrastructure"
     creditText: "Diagram: Linåker, Nummelin Carlberg & O’Riordan, “Public sector open source program offices — Archetypes for how to grow (common) institutional capabilities”, Journal of Systems and Software 241 (2026) 112998 — CC BY 4.0"
     creditHref: "https://doi.org/10.1016/j.jss.2026.112998"
-  # ⚠ PROVENANCE — this directory is NOT our compilation. All 18 entries come from
-  # the FLOSS-PSO Network's list of public sector OSPOs (run by the OSPO Alliance,
-  # maintained by Boris Baldassari / Philippe Bareille / Bastien Guerry), which is
-  # itself aggregated from each body's own YAML. Checked 2026-09-14: their list and
-  # ours are the same 18 offices, name for name.
-  # ⚠ LICENCE READ FROM THE SOURCE, NOT RECALLED. floss-pso.network's footer states
-  # TWO licences and only one of them applies here: "Website content CC-BY-SA" and
-  # "OSPO list CC0". We use the LIST, so it is CC0 1.0 — no attribution required,
-  # which is exactly why crediting them is a decision worth writing down rather
-  # than a term we are complying with. Verified on the home page and on
-  # /public-sector-ospos/, from the `rel="license"` anchors, same discipline as
-  # scripts/fetch-ctfg-projects.mjs — CTFG's licence was a hardcoded literal here
-  # once and this repo published a stale claim on a live page for two weeks.
-  # What IS ours: the lat/lng and `locationBasis` on each item, hand-placed.
-  source: "FLOSS-PSO Network"
-  sourceUrl: "https://floss-pso.network/"
-  licence: "CC0 1.0"
-  licenceUrl: "https://creativecommons.org/publicdomain/zero/1.0/"
-  licenceCheckedFrom: "https://floss-pso.network/"
-  licenceCheckedOn: "2026-09-14"
-  groups:
-  - country: "United States"
-    items:
-    - name: "OSPO at Digital Service at the Centers for Medicare and Medicaid Services"
-      city: "Woodlawn, Maryland"
-      lat: 39.3043
-      lng: -76.7519
-      locationBasis: "hq"
-      url: "https://cms.gov/digital-service/open-source-program-office"
-      description: "Guidance, policies, practices, and talent pipelines for working openly across CMS, HHS, and federal open source ecosystems."
-      email: "opensource@cms.hhs.gov"
-      flossPolicy: "https://github.com/CMSgov/cms-open-source-policy"
-  - country: "International"
-    items:
-    - name: "United Nations Development Programme (UNDP)"
-      city: "New York"
-      lat: 40.75
-      lng: -73.9686
-      locationBasis: "hq"
-      url: "https://undp.org/digital"
-      description: "UNDP Open Source Ecosystem Enablement."
-      email: "opensource@undp.org"
-  - country: "Germany"
-    items:
-    - name: "Open Source Program Office City of Munich"
-      city: "Munich"
-      lat: 48.1351
-      lng: 11.582
-      locationBasis: "seat"
-      url: "https://opensource.muenchen.de/ospo.html"
-      description: "Use – Improve – Publish: FOSS at the City of Munich."
-      email: "opensource@muenchen.de"
-      flossPolicy: "https://opensource.muenchen.de/principles.html"
-    - name: "Open Source Program Office of the State of Schleswig-Holstein"
-      city: "Kiel"
-      lat: 54.3233
-      lng: 10.1228
-      locationBasis: "seat"
-      url: "https://schleswig-holstein.de/open-source"
-      description: "The state government’s coordination office for the strategic use of open source, aimed at digital sovereignty."
-      email: "ospo-sh@stk.landsh.de"
-      flossPolicy: "https://gdi-sh.de/DE/landesregierung/themen/digitalisierung/linux-plus1/Projekt/open-source-strategie"
-  - country: "Denmark"
-    items:
-    - name: "OS2 – Public Digitalization Network"
-      city: "Copenhagen"
-      lat: 55.6761
-      lng: 12.5683
-      locationBasis: "hq"
-      url: "https://os2.eu"
-      description: "An organisation of public bodies in Denmark that together develop, mature, and maintain public code."
-      email: "os2@os2.eu"
-      flossPolicy: "https://github.com/OS2offdig/about"
-  - country: "Greece"
-    items:
-    - name: "Open Technologies Centre at the Aristotle University of Thessaloniki"
-      city: "Thessaloniki"
-      lat: 40.6318
-      lng: 22.956
-      locationBasis: "seat"
-      url: "https://opentech.auth.gr/"
-      description: "Promotes open technologies — free for any user to use, analyze, modify, and redistribute."
-      email: "opentech@auth.gr"
-  - country: "France"
-    items:
-    - name: "Pôle open source et communs numériques de la DINUM"
-      city: "Paris"
-      lat: 48.8566
-      lng: 2.3522
-      locationBasis: "seat"
-      url: "https://code.gouv.fr"
-      description: "A mission dedicated to the use, development, and promotion of Free Software and digital commons in public administration."
-      email: "floss@numerique.gouv.fr"
-      flossPolicy: "https://code.gouv.fr/fr/mission/#politique-logiciels-libres"
-    - name: "ANSSI"
-      city: "Paris"
-      lat: 48.8566
-      lng: 2.3522
-      locationBasis: "seat"
-      url: "https://cyber.gouv.fr/enjeux-technologiques/open-source/"
-      description: "The team handling open source topics at the French Cybersecurity Agency (ANSSI)."
-      email: "opensource@ssi.gouv.fr"
-    - name: "OSPO de France Travail"
-      city: "Paris"
-      lat: 48.873
-      lng: 2.404
-      locationBasis: "hq"
-      url: "https://francetravail.io/opportunites-innovation/participer-initiatives-open-source"
-      description: "France Travail’s (the French employment agency) Open Source Programme Office."
-      email: "oss.00619@francetravail.fr"
-    - name: "OSPO de la Ville de Paris"
-      city: "Paris"
-      lat: 48.8566
-      lng: 2.3522
-      locationBasis: "seat"
-      url: "https://opensource.paris.fr"
-      description: "Open Source Program Office for the City of Paris."
-      email: "opensource@paris.fr"
-    - name: "Pôle de compétences Logiciels Libres de l’Éducation nationale"
-      city: "Dijon"
-      lat: 47.322
-      lng: 5.0415
-      locationBasis: "seat"
-      url: "https://pcll.ac-dijon.fr"
-      description: "Develops open source software for the French national education system."
-      email: "eole@ac-dijon.fr"
-    - name: "Cellule Codes Données Grenoble Alpes"
-      city: "Grenoble"
-      lat: 45.1885
-      lng: 5.7245
-      locationBasis: "seat"
-      url: "https://scienceouverte.univ-grenoble-alpes.fr/a-propos/cellule-data-grenoble-alpes"
-      description: "Supports the Grenoble area’s scientific communities on matters relating to research data and code."
-      email: "sos-codes-recherche@univ-grenoble-alpes.fr"
-    - name: "Direction de la stratégie et de la culture numériques (DSCN), Échirolles"
-      city: "Échirolles"
-      lat: 45.1436
-      lng: 5.7139
-      locationBasis: "seat"
-      url: "https://www.echirolles.fr/territoire-numerique"
-      description: "Responsible for digital technology and strategy for the city of Échirolles."
-      email: "nicolas.vivant@echirolles.fr"
-      flossPolicy: "https://www.echirolles.fr/sites/default/files/2022-09/Schema_directeur_numerique.pdf"
-    - name: "OSPO de l’IGN"
-      city: "Saint-Mandé"
-      lat: 48.845
-      lng: 2.418
-      locationBasis: "seat"
-      url: "https://www.ign.fr/institut/des-donnees-et-logiciels-ouverts-au-service-de-la-nation"
-      description: "The Open Source Programme Office of the French National Institute for Geographic and Forestry Information."
-      email: "opensource@ign.fr"
-    - name: "RECIA"
-      city: "Orléans"
-      lat: 47.9029
-      lng: 1.9093
-      locationBasis: "seat"
-      url: "https://www.recia.fr"
-      description: "A Public Interest Group providing shared IT services to French schools."
-      email: "contact@recia.fr"
-      flossPolicy: "https://www.recia.fr/innovation-logiciels-libres"
-    - name: "OSPO de la Ville et l’Eurométropole de Strasbourg"
-      city: "Strasbourg"
-      lat: 48.5734
-      lng: 7.7521
-      locationBasis: "seat"
-      url: "https://www.strasbourg.eu/strategie-logiciels-libres"
-      description: "The \"Free Software Strategy\" unit of the city and Eurometropole of Strasbourg, promoting the use and development of Free Software within the territory."
-      email: "opensource@strasbourg.eu"
-  - country: "Netherlands"
-    items:
-    - name: "OSPO National Government The Netherlands"
-      city: "The Hague"
-      lat: 52.0705
-      lng: 4.3007
-      locationBasis: "hq"
-      url: "https://opensourcewerken.nl/"
-      description: "The national OSPO of the Netherlands, currently housed at the Ministry of the Interior and Kingdom Relations (BZK)."
-      email: "ospo@minbzk.nl"
-      flossPolicy: "https://github.com/MinBZK/Open-Source-Program-Office"
-    - name: "Developer.overheid.nl"
-      city: "The Hague"
-      lat: 52.0705
-      lng: 4.3007
-      locationBasis: "hq"
-      url: "https://developer.overheid.nl"
-      description: "The developer portal of the Dutch government."
-      email: "developer.overheid@geonovum.nl"
+  # ⚠ PROVENANCE — the offices are NOT our compilation, and since 2026-10 they are
+  # not kept here at all. They come from content/govoss-ospos.json, a snapshot of
+  # the FLOSS-PSO Network's public-sector OSPO list (run by the OSPO Alliance) as
+  # GovOSS republishes it at https://govoss.cat/ospos.json — refreshed by
+  # `node scripts/fetch-govoss-ospos.mjs`, read by getOspoDirectory() in
+  # src/lib/content.js. Only the prose above stays in this file.
+  # ⚠ LICENCES ARE READ, NOT RECALLED. The list is CC0 1.0 (FLOSS-PSO's own
+  # footer distinguishes "OSPO list CC0" from "Website content CC-BY-SA"; we use
+  # the LIST). The placements — lat/lng, city, seat/hq — are GovOSS's, also CC0,
+  # and most were copied from this site's own earlier hand placements. Both
+  # strings are read from GovOSS's file and matched verbatim by the fetch script,
+  # which throws on anything new. CC0 requires no attribution, so crediting
+  # FLOSS-PSO is a decision worth writing down rather than a term we comply with.
+  # A correction to an office goes to FLOSS-PSO; a placement correction to GovOSS.
+  # ⚠ OVERRIDES ARE PINNED, NOT FREE EDITS. Each one names the office by its
+  # GovOSS id and quotes the EXACT upstream text it replaces; getOspoDirectory()
+  # fails the build the moment upstream's text stops matching, so a fix upstream
+  # announces that the override is obsolete instead of being silently masked.
+  # Keep this list for data DEFECTS only — upstream's wording is the claim the
+  # page makes. Report each one to FLOSS-PSO so it can be deleted.
+  descriptionOverrides:
+    - id: "floss-opentech-auth-gr"
+      upstream: "Το promote and harness the transformative potential of open technologies — technologies defined by their openness to free use, analysis, modification, and redistribution by any user"
+      text: "To promote and harness the transformative potential of open technologies — technologies defined by their openness to free use, analysis, modification, and redistribution by any user"
+      reason: "Upstream begins with Greek Tau-Omicron (Το) where the Latin \"To\" is meant. Only those two letters change."
 ---

@@ -150,39 +150,129 @@ export function getContent(name) {
  * argument. Returns null and the map just renders the curated policy markers.
  */
 /**
- * The public-sector OSPO map layer, built from the SAME directory that renders on
- * /resources — `ospoDirectory` in content/resources.md — rather than a second list.
- * A copy would drift the moment someone adds an OSPO to one and not the other, which
- * is the failure `sources.py` exists to prevent in the sibling repo.
+ * The public-sector OSPO directory: the PROSE from content/resources.md
+ * (`ospoDirectory` — title, lede, intro, diagram) joined to the OFFICES from
+ * content/govoss-ospos.json, the FLOSS-PSO Network's list as GovOSS republishes
+ * it (see scripts/fetch-govoss-ospos.mjs). One loader, so /resources, the map,
+ * the homepage stat, /data/public-sector-ospos.json and the ItemList JSON-LD all
+ * read the same 18 offices and cannot drift apart.
  *
- * Coordinates are hand-placed on each item, with `locationBasis`:
- *   'seat' — the body's own city is unambiguous from its name or its domain
- *            (pcll.ac-dijon.fr is Dijon, not Paris; echirolles.fr is Échirolles)
- *   'hq'   — placed at the parent organisation's headquarters city
- * The popup says which, because "approximately here" and "here" are different claims
- * and this map should not present the second when it means the first.
+ * ⚠ THE OFFICES ARE NO LONGER HAND-KEPT (2026-10). `ospoDirectory.groups` in the
+ * markdown was replaced by the snapshot; a correction to an office or its
+ * placement now goes upstream — the list to FLOSS-PSO, a placement to GovOSS —
+ * and arrives on the next refresh. Don't reintroduce a hand-kept copy.
+ *
+ * Grouped by country in the order the page always used: United States first,
+ * then International, then by country code. Within a country, governments before
+ * universities, then by name.
+ *
+ * Fail-soft like the other snapshots: a missing or unreadable snapshot returns the
+ * prose with `groups: []`, so /resources loses its cards rather than the page.
+ * `lint:content` fails the BUILD on a broken snapshot, so that state should never
+ * reach production.
+ */
+/**
+ * Apply a pinned description override from `ospoDirectory.descriptionOverrides`.
+ *
+ * ⚠ THROWS — deliberately, unlike the fail-soft loader around it — when an
+ * override's `upstream` no longer matches the snapshot. That is the signal that
+ * FLOSS-PSO changed or fixed the text, and the override must be re-read or
+ * deleted; masking a newer upstream description with an old local one is exactly
+ * the drift the switch to a snapshot removed. An override for an id the snapshot
+ * no longer has throws for the same reason.
+ */
+function withOverride(o, overrides) {
+    const ov = (overrides ?? []).find((x) => x.id === o.id);
+    if (!ov) return o;
+    if (ov.upstream !== o.description)
+        throw new Error(
+            `content/resources.md: descriptionOverrides "${o.id}" is pinned to upstream text that has changed — ` +
+                `re-read the new text in content/govoss-ospos.json and update or delete the override.`,
+        );
+    return { ...o, description: ov.text };
+}
+
+export function getOspoDirectory() {
+    const dir = getContent('resources').ospoDirectory ?? {};
+    let snap = null;
+    try {
+        snap = JSON.parse(fs.readFileSync(path.join(CONTENT_DIR, 'govoss-ospos.json'), 'utf8'));
+    } catch {
+        snap = null;
+    }
+    const offices = (Array.isArray(snap?.ospos) ? snap.ospos : []).map((o) => withOverride(o, dir.descriptionOverrides));
+    const coll = new Intl.Collator('fr');
+    const rank = (code) => (code === 'US' ? 0 : code === 'INT' ? 1 : 2);
+    const groups = [];
+    const ids = new Set(offices.map((o) => o.id));
+    for (const ov of dir.descriptionOverrides ?? [])
+        if (offices.length && !ids.has(ov.id))
+            throw new Error(`content/resources.md: descriptionOverrides "${ov.id}" names an office the snapshot no longer has — delete it.`);
+    for (const o of [...offices].sort(
+        (a, b) =>
+            rank(a.countryCode) - rank(b.countryCode) ||
+            a.countryCode.localeCompare(b.countryCode) ||
+            (a.type === b.type ? 0 : a.type === 'government' ? -1 : 1) ||
+            coll.compare(a.name, b.name),
+    )) {
+        let g = groups[groups.length - 1];
+        if (g?.code !== o.countryCode) groups.push((g = { code: o.countryCode, country: o.country, items: [] }));
+        g.items.push({
+            ...o,
+            /* A policy link identical to the office's own URL says nothing the
+             * name link doesn't (ANSSI and Strasbourg upstream), so it is
+             * dropped here rather than rendered twice. The snapshot keeps the
+             * upstream value verbatim. */
+            flossPolicy:
+                o.policy && o.policy.replace(/\/$/, '') !== o.url.replace(/\/$/, '') ? o.policy : null,
+        });
+    }
+    // The override list is an editorial input, not output: drop it rather than
+    // setting it undefined, which React would still serialise as "$undefined".
+    const { descriptionOverrides: _overrides, ...prose } = dir;
+    return {
+        ...prose,
+        // Provenance READ from the snapshot, never written in the markdown or JSX.
+        source: snap?.source ?? null,
+        sourceUrl: snap?.sourceUrl ?? null,
+        licence: snap?.licence ?? null,
+        licenceUrl: snap?.licenceUrl ?? null,
+        locations: snap?.locations ?? null,
+        generated: snap?.generated ?? null,
+        listFetchedAt: snap?.listFetchedAt ?? null,
+        groups,
+    };
+}
+
+/**
+ * The public-sector OSPO map layer, built from getOspoDirectory() — the SAME
+ * offices /resources renders — rather than a second list.
+ *
+ * Coordinates are GovOSS's placements (CC0), most of them copied from this site's
+ * own earlier hand placements, each with `locationBasis`:
+ *   'seat' — the office's own city
+ *   'hq'   — its parent organisation's headquarters, so the point is approximate
+ * The popup marks `(HQ)`, because "approximately here" and "here" are different
+ * claims and this map should not present the second when it means the first.
  *
  * GROUPED BY CITY, then near-adjacent cities merged. Four French OSPOs sit in Paris
  * and the IGN's is in Saint-Mandé 5 km away: at world zoom those are the same pixel,
  * so separate markers would silently hide four of five. Each entry keeps its REAL
  * city in the popup, so merging changes what is drawn, never what is claimed.
+ *
+ * ⚠ A MERGED POINT IS NAMED BY RULE, NOT BY LIST ORDER. It takes the name of the
+ * place holding most of its offices (Paris 4, Saint-Mandé 1 → "Paris"); a tie
+ * names every tied place ("Échirolles / Grenoble"). Until 2026-10 the label was
+ * whichever office happened to come first in the hand-kept markdown, so re-sorting
+ * the list silently renamed the Grenoble pin "Échirolles".
  */
 const OSPO_MERGE_KM = 25;
 
 export function getOspoMapPoints() {
-    let dir;
-    try {
-        dir = matter(fs.readFileSync(path.join(CONTENT_DIR, 'resources.md'), 'utf8')).data
-            ?.ospoDirectory;
-    } catch {
-        return null;
-    }
-    const groups = dir?.groups;
-    if (!Array.isArray(groups)) return null;
-
+    const dir = getOspoDirectory();
     const items = [];
-    for (const g of groups) {
-        for (const it of g.items || []) {
+    for (const g of dir.groups) {
+        for (const it of g.items) {
             if (typeof it.lat !== 'number' || typeof it.lng !== 'number') continue;
             items.push({ ...it, country: g.country });
         }
@@ -197,8 +287,14 @@ export function getOspoMapPoints() {
         return Math.hypot(dLat, dLng);
     };
 
+    // Seed from the busiest places first, so a cluster grows around its biggest city
+    // whatever order the list arrives in.
+    const coll = new Intl.Collator('fr');
+    const atPlace = (it) => items.filter((x) => x.city === it.city).length;
+    const ordered = [...items].sort((a, b) => atPlace(b) - atPlace(a) || coll.compare(a.city, b.city) || coll.compare(a.name, b.name));
+
     const points = [];
-    for (const it of items) {
+    for (const it of ordered) {
         // Merge into the nearest existing point within the threshold, largest first, so
         // Saint-Mandé joins Paris rather than Paris joining Saint-Mandé.
         const near = points
@@ -210,24 +306,29 @@ export function getOspoMapPoints() {
         }
         points.push({ city: it.city, country: it.country, lat: it.lat, lng: it.lng, ospos: [it] });
     }
+    for (const p of points) {
+        const tally = new Map();
+        for (const o of p.ospos) tally.set(o.city, (tally.get(o.city) ?? 0) + 1);
+        const top = Math.max(...tally.values());
+        p.city = [...tally].filter(([, n]) => n === top).map(([c]) => c).sort(coll.compare).join(' / ');
+    }
 
     /* ⚠ THE PROVENANCE TRAVELS WITH THE DATA, like govoss's and ctfg's. This
-     * directory is the FLOSS-PSO Network's CC0 list, not our compilation — the
-     * map credit line reads these fields rather than naming a source in JSX, so
-     * the credit cannot drift from what content/resources.md records. CC0 needs
-     * no attribution; crediting them anyway is the owner's call (2026-09-14).
-     * ⚠ Do NOT hardcode the licence anywhere. It is read from their footer and
-     * recorded in the markdown with the date and page it was read from; CTFG's
-     * was a hardcoded literal once and this repo shipped a stale claim for two
-     * weeks on a live page. */
+     * directory is the FLOSS-PSO Network's CC0 list, not our compilation and not
+     * GovOSS's — the map credit line reads these fields rather than naming a
+     * source in JSX. CC0 needs no attribution; crediting them anyway is the
+     * owner's call (2026-09-14). ⚠ The licence is READ by the fetch script from
+     * GovOSS's file and matched verbatim against a known list; CTFG's was a
+     * hardcoded literal once and this repo shipped a stale claim for two weeks
+     * on a live page. */
     return {
         count: items.length,
         cities: points.length,
         points,
-        source: dir.source ?? null,
-        sourceUrl: dir.sourceUrl ?? null,
-        licence: dir.licence ?? null,
-        licenceUrl: dir.licenceUrl ?? null,
+        source: dir.source,
+        sourceUrl: dir.sourceUrl,
+        licence: dir.licence,
+        licenceUrl: dir.licenceUrl,
     };
 }
 

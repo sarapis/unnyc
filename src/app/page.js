@@ -9,6 +9,7 @@ import {
     getContent,
     getCtfgProjects,
     getGovossCatalogues,
+    getOspoDirectory,
     getOspoMapPoints,
     getUnEndorsers,
     principlesResolve,
@@ -58,8 +59,7 @@ export default function UnnycPage() {
     // whose map this is — read, not copied, so /start and / cannot disagree.
     const startDoc = getContent('start');
     const endorsers = getUnEndorsers();
-    const ospoCount = (getContent('resources').ospoDirectory?.groups ?? [])
-        .reduce((n, g) => n + (g.items?.length ?? 0), 0);
+    const ospoCount = getOspoDirectory().groups.reduce((n, g) => n + g.items.length, 0);
     const statValues = {
         ospos: ospoCount || null,
         'govoss-entries': govoss?.totalEntries ?? null,
