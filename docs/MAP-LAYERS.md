@@ -13,8 +13,8 @@
 
 ## The CTFG map layer (MERGED and live as of `7faaf97`, 2026-08-07)
 
-`/start#going-open-source` has a second, deliberately quieter map layer: **62 government-built
-open source programs across 24 countries**, sourced from the Civic Tech Field Guide, each dot linking
+`/start#going-open-source` has a second, deliberately quieter map layer: **73 government-built
+open source programs across 25 countries** (refreshed 2026-10-07; 62 / 24 in August), sourced from the Civic Tech Field Guide, each dot linking
 to its CTFG profile. ⚠ This section said "Toggleable, default on" long after the toggles were
 removed (owner decision 2026-08-17 — see "The four map layers"). **There are no toggles;
 every layer is simply on.**
@@ -31,8 +31,10 @@ every layer is simply on.**
   switchable.)
 - **`content/ctfg-gov-open-source.json` is a curated SNAPSHOT, not a live fetch** — refresh with
   `node scripts/fetch-ctfg-projects.mjs` and read the diff. Reasons: the map can't go half-empty if
-  the CTFG API is slow, and CTFG's `orgType` tagging has noise (6 entries are excluded there with
-  reasons — nonprofits, an advocacy coalition, a private LLC, a dead Wayback URL).
+  the CTFG API is slow, and CTFG's `orgType` tagging has noise (10 entries are excluded there with
+  reasons — civil-society and nonprofit builds, an advocacy coalition, a network of cities, a private
+  LLC, a private individual's project). The script reports any `EXCLUDE` entry CTFG no longer returns, which is how
+  the dead `code-for-australia-foresight` entry was found and removed on 2026-10-07.
 - `getCtfgProjects()` in `src/lib/content.js` is **fail-soft on purpose**, unlike `getContent()`: a
   missing snapshot costs the dots, never the page.
 - **CTFG data no longer reaches any markup, so there is nothing to escape** (changed

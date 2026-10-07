@@ -171,7 +171,7 @@ function ospos() {
     };
 }
 
-/** 62 government-built open source programmes. Theirs (Civic Tech Field Guide). */
+/** Government-built open source programmes. Theirs (Civic Tech Field Guide). */
 function ctfgPrograms() {
     const d = getCtfgProjects();
     if (!d) return null;
@@ -188,7 +188,7 @@ function ctfgPrograms() {
             sourceUrl: d.sourceUrl,
             generated: d.generated,
             notes: [
-                'A curated snapshot, not a live mirror: six entries tagged Government / public sector upstream are excluded here with reasons, because they are not government-built.',
+                `A curated snapshot, not a live mirror: ${d.excluded.length} entries tagged Government / public sector upstream are excluded here with reasons, because they are not government-built.`,
                 'The licence is read off civictech.guide at fetch time rather than asserted — CTFG relicensed from CC BY-NC-SA to CC BY 4.0 in July 2026.',
             ],
         }),

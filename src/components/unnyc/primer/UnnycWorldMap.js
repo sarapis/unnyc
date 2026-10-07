@@ -57,7 +57,7 @@ import worldAtlas from '../../../../content/world-atlas.json';
  * THE PINS ARE INTERACTIVE (2026-09-11). Three of the four layers open a popup
  * on click, Enter or Space: the policy markers, the OSPO points, and the 13
  * shaded catalogue countries. ⚠ The CTFG dots are DELIBERATELY NOT
- * interactive — 62 dots at r=3 are the densest layer and the one where
+ * interactive — 73 dots at r=3 (2026-10) are the densest layer and the one where
  * overlapping 22px hit areas would fight each other at world zoom. Owner's
  * call; if they ever become clickable, solve the density first.
  *

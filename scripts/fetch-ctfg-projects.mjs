@@ -31,12 +31,22 @@ const ORG_TYPE = 'Government / public sector';
  * re-check these if CTFG's tagging is corrected upstream.
  */
 const EXCLUDE = {
-    'code-for-australia-foresight': 'Code for Australia is a nonprofit; URL is a dead Wayback capture',
+    // ⚠ `code-for-australia-foresight` was here until 2026-10 ("Code for Australia is
+    // a nonprofit; URL is a dead Wayback capture"). CTFG no longer returns it for this
+    // query, so the entry did nothing — the script now reports any such entry.
     govtrackus: 'run by Civic Impulse LLC, a private company',
     civicspacetech: 'a collection of primers, not a government program',
     civis: 'civis.vote — an Indian nonprofit platform, works with government but is not one',
     'civic-switchboard': 'IMLS-funded academic/public library capacity project',
     'congressional-data-coalition': 'an advocacy coalition lobbying Congress, not a government body',
+    // Added 2026-10-07, each checked against the project's own site or repository:
+    'open-courts-slovakia':
+        'Otvorené Súdy, a transparency initiative republishing what the Ministry of Justice posts — not built by the Ministry',
+    pormibarrio: 'built by Data Uruguay, a civil-society organization (github.com/datauy), not by Montevideo',
+    'tainan-city-council-watchbot': 'built by Tainan Sprout (台南新芽), a local youth organization, not by the city or its council',
+    'open-data-atlas': "a private individual's project (imprint: Thomas Tursics, Berlin), not a government's",
+    'cities-coalition-for-digital-rights':
+        'a network of city governments and a declaration, not a government-built program — and CTFG places it at UN-Habitat in Nairobi, so its dot would land in Kenya (owner decision 2026-10-07)',
 };
 
 const j = async (path, params) => {
@@ -167,6 +177,11 @@ for (const pt of points) {
     });
 }
 
+// An exclusion for a slug CTFG no longer returns does nothing and reads as if it
+// did — say so, so a dead entry is deleted instead of lingering as a claim.
+const seen = new Set(points.map((pt) => pt.slug));
+const unseen = Object.keys(EXCLUDE).filter((slug) => !seen.has(slug));
+
 projects.sort((a, b) => (a.country || 'zz').localeCompare(b.country || 'zz') || a.name.localeCompare(b.name));
 // Sort the exclusions too. They come out in whatever order /map returned the
 // points, which is NOT stable — the 2026-08-21 refresh reshuffled all six with no
@@ -202,3 +217,4 @@ console.log(
 );
 console.log(`  licence read from civictech.guide: ${out.licence}`);
 for (const d of dropped) console.log(`  excluded ${d.slug} — ${d.reason}`);
+for (const slug of unseen) console.log(`  ⚠ EXCLUDE entry "${slug}" matched nothing — CTFG no longer returns it; delete the entry`);
