@@ -540,6 +540,19 @@ fall back to the "Official page" glyph:
   the JSON supplies one (it supplies none yet). The per-city source count is
   derived; nulls render as "Not published", because the gaps are part of the
   record. Anchors are `#playbooks-<city>`.
+- `content/ospo-playbooks.json` — the research handoff's RANKED SHORTLIST of
+  the catalogue entries that are how-to material (a founding act, a legal
+  text, a process guide, tooling), rendered by `PlaybookDirectory` as **"Best
+  available playbooks"** at the top of the Playbooks section, above the city
+  cards. Read by `getOspoPlaybooks()` (null when absent → no directory). Each
+  entry's `resource_ids` point at ids in the per-case JSON; it only ranks and
+  annotates, it adds no sources. Rendered per entry: primary link, publisher ·
+  license · case (linking to `#playbooks-<case>` only when that case has a
+  card — the UN has none yet), what it gives, caveat, and the other bundled
+  documents. Closes with `missing_from_every_case`. NOT rendered:
+  `transfers_to_nyc` (R1–R12 refer to a cross-case themes doc that isn't on
+  the site) and `source_doc` (a claude.ai artifact URL). UI words live under
+  `playbooks.directory` in ospo-strategy.md.
 - `content/briefs/<city>.md` — the research brief. **Canonical for the
   prose.** Read by `getBrief(id)` (null when a case has none) and rendered by
   `UnnycCaseBrief` UNDER that city's case on `/success`: abstract always

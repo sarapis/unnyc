@@ -13,7 +13,7 @@ commit. That's the live page.
 | `/principles/document` | [`content/principles.md`](../content/principles.md) (shared) |
 | `/crosswalk` | [`content/crosswalk.md`](../content/crosswalk.md) |
 | `/success` | [`content/success.md`](../content/success.md) |
-| `/ospo-strategy` | [`content/ospo-strategy.md`](../content/ospo-strategy.md) — plus one [`content/ospo-catalogue/<city>.json`](../content/ospo-catalogue/) per city OSPO for the Playbooks section (facts + catalogue of sources; the JSON is canonical for the catalogue) |
+| `/ospo-strategy` | [`content/ospo-strategy.md`](../content/ospo-strategy.md) — plus one [`content/ospo-catalogue/<city>.json`](../content/ospo-catalogue/) per city OSPO for the Playbooks section (facts + catalogue of sources; the JSON is canonical for the catalogue), and [`content/ospo-playbooks.json`](../content/ospo-playbooks.json) — the ranked "Best available playbooks" directory at the top of that section |
 | `/success` (a city's research brief) | [`content/briefs/<city>.md`](../content/briefs/) — renders under that city's case when the file exists (abstract visible, paper and bibliography behind disclosures); canonical for the prose |
 | `/ospo-strategy/document` | [`content/ospo-strategy.md`](../content/ospo-strategy.md) (shared — the `## summary` section, `memo` and `summary.recommendations`) |
 | `/campaign` | [`content/campaign.md`](../content/campaign.md) |

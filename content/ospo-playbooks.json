@@ -1,0 +1,449 @@
+{
+  "$schema_note": "Ranked list of the catalogue sources that are how-to material rather than evidence. Render at the top of the Playbooks section. resource_ids resolve to resources[].id in the per-case catalogue JSON files; transfers_to_nyc refers to recommendation ids in the cross-case themes doc.",
+  "catalogue_version": "2026-10-07",
+  "selection_rule": "Included only if a city could start building from it this month: a founding act, a policy or legal text, a process guide, or reusable tooling. Evidence, press and announcements are excluded even when important.",
+  "missing_from_every_case": [
+    "A procurement review procedure owned by the office",
+    "An options-analysis template for a proprietary purchase",
+    "An exceptions register format"
+  ],
+  "source_doc": {
+    "title": "OSPO Cross-Case Themes and Playbooks",
+    "url": "https://claude.ai/code/artifact/0f3e10be-bf54-4dd9-84ad-1bc962b94058",
+    "note": "Replace with the un.opensource.nyc URL when published."
+  },
+  "playbooks": [
+    {
+      "rank": 1,
+      "title": "CMS OSPO Guide",
+      "case": "cms",
+      "resource_ids": [
+        "cms-02",
+        "cms-04",
+        "cms-05",
+        "cms-06",
+        "cms-07",
+        "cms-08"
+      ],
+      "publisher": "CMS Open Source Program Office (Digital Service at CMS)",
+      "url": "https://dsacms.github.io/ospo-guide/",
+      "license": "CC0 / public domain",
+      "what_it_gives": "The most complete public OSPO handbook in U.S. government: inbound review checklist, outbound tiered release checklists, risk acceptance and exemption criteria, five-tier maturity model, release guidelines, and a 'Want to Start an OSPO' page. A city office can adopt it and change the names.",
+      "caveat": "Written for a federal agency under OMB M-16-21. The inbound checklist is the one CMS's own office does not sign; it is the form of an options analysis, not a procurement role.",
+      "transfers_to_nyc": [
+        "R6 process kit",
+        "R2 contract review form",
+        "R4 exemption categories"
+      ],
+      "resources": [
+        {
+          "id": "cms-02",
+          "title": "OSPO Guide",
+          "url": "https://dsacms.github.io/ospo-guide/",
+          "catalogue": "cms/cms-ospo-catalogue.json"
+        },
+        {
+          "id": "cms-04",
+          "title": "Inbound Review Checklist",
+          "url": "https://dsacms.github.io/ospo-guide/inbound/inbound-review-checklist/",
+          "catalogue": "cms/cms-ospo-catalogue.json"
+        },
+        {
+          "id": "cms-05",
+          "title": "Outbound Checklists",
+          "url": "https://dsacms.github.io/ospo-guide/outbound/outbound-checklists/",
+          "catalogue": "cms/cms-ospo-catalogue.json"
+        },
+        {
+          "id": "cms-06",
+          "title": "Risk Acceptance and Exemption Criteria",
+          "url": "https://dsacms.github.io/ospo-guide/outbound/exemption-criteria/",
+          "catalogue": "cms/cms-ospo-catalogue.json"
+        },
+        {
+          "id": "cms-07",
+          "title": "Maturity Models",
+          "url": "https://dsacms.github.io/ospo-guide/outbound/maturity-models/",
+          "catalogue": "cms/cms-ospo-catalogue.json"
+        },
+        {
+          "id": "cms-08",
+          "title": "Release Guidelines",
+          "url": "https://dsacms.github.io/ospo-guide/outbound/release-guidelines/",
+          "catalogue": "cms/cms-ospo-catalogue.json"
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "title": "Sitzungsvorlage 20-26 / V 08681, Open Source Hub und Open Source Sabbatical",
+      "case": "munich",
+      "resource_ids": [
+        "mun-02",
+        "mun-06",
+        "mun-03"
+      ],
+      "publisher": "Munich City Council / it@M",
+      "url": "https://risi.muenchen.de/risi/dokument/v/7546873",
+      "license": "Public council record",
+      "what_it_gives": "The founding act to copy: a permanent team inside the IT provider, four staff at launch and two permanent, EUR 500,000 start-up funding, four named functions, a start date. Paired with V 11273 (mun-06) for the EUR 85,000-a-year sponsorship line and the 2020 council motions (mun-03) that asked for it.",
+      "caveat": "German-language council paper, not a guide. Munich's office is advisory on procurement; the act does not contain the review role New York should add.",
+      "transfers_to_nyc": [
+        "R1 founding legislation",
+        "R8 sponsorship and sabbatical"
+      ],
+      "resources": [
+        {
+          "id": "mun-02",
+          "title": "Sitzungsvorlage 20-26 / V 08681, Open Source Hub und Open Source Sabbatical",
+          "url": "https://risi.muenchen.de/risi/dokument/v/7546873",
+          "catalogue": "munich/munich-ospo-catalogue.json"
+        },
+        {
+          "id": "mun-06",
+          "title": "Sitzungsvorlage 20-26 / V 11273, Strategie zur Finanzierung von Open-Source-Bibliotheken",
+          "url": "https://muenchen-transparent.de/dokumente/8063319/datei",
+          "catalogue": "munich/munich-ospo-catalogue.json"
+        },
+        {
+          "id": "mun-03",
+          "title": "Council motions: Open-Source-Hub and Munich Open Source Sabbatical",
+          "url": "https://muenchen-transparent.de/dokumente/7546869/datei",
+          "catalogue": "munich/munich-ospo-catalogue.json"
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "title": "CMS tooling: repo-scaffolder, metrics, SHARE IT Act stack",
+      "case": "cms",
+      "resource_ids": [
+        "cms-17",
+        "cms-18",
+        "cms-15",
+        "cms-20",
+        "cms-19",
+        "cms-16"
+      ],
+      "publisher": "CMS OSPO / DSACMS",
+      "url": "https://github.com/DSACMS/repo-scaffolder",
+      "license": "CC0 / public domain",
+      "what_it_gives": "Day-one tooling: cookiecutter repository templates, a tier-determiner script, repolinter rulesets, a metrics dashboard integrating CHAOSS Augur (COCOMO cost estimates, 'libyears' dependency age), a web-form code.json generator, a GitHub Action, a command-line index generator and a savings calculator.",
+      "caveat": "Assumes GitHub. The savings calculator produces projections, not audited figures.",
+      "transfers_to_nyc": [
+        "R6 process kit",
+        "R9 annual metrics (outbound half)"
+      ],
+      "resources": [
+        {
+          "id": "cms-17",
+          "title": "repo-scaffolder",
+          "url": "https://github.com/DSACMS/repo-scaffolder",
+          "catalogue": "cms/cms-ospo-catalogue.json"
+        },
+        {
+          "id": "cms-18",
+          "title": "metrics",
+          "url": "https://github.com/DSACMS/metrics",
+          "catalogue": "cms/cms-ospo-catalogue.json"
+        },
+        {
+          "id": "cms-15",
+          "title": "SHARE IT Act landing page",
+          "url": "https://dsacms.github.io/share-it-act-lp/",
+          "catalogue": "cms/cms-ospo-catalogue.json"
+        },
+        {
+          "id": "cms-20",
+          "title": "codejson-index-generator",
+          "url": "https://github.com/DSACMS/codejson-index-generator",
+          "catalogue": "cms/cms-ospo-catalogue.json"
+        },
+        {
+          "id": "cms-19",
+          "title": "CMS Open Source Repository Metrics",
+          "url": "https://dsacms.github.io/metrics/",
+          "catalogue": "cms/cms-ospo-catalogue.json"
+        },
+        {
+          "id": "cms-16",
+          "title": "share-it-savings calculator",
+          "url": "https://dsacms.github.io/share-it-savings/",
+          "catalogue": "cms/cms-ospo-catalogue.json"
+        }
+      ]
+    },
+    {
+      "rank": 4,
+      "title": "Open Source Software Strategy 2020-2023, 'Think Open' (C(2020) 7149)",
+      "case": "ec",
+      "resource_ids": [
+        "ec-02",
+        "ec-03"
+      ],
+      "publisher": "European Commission",
+      "url": "https://interoperable-europe.ec.europa.eu/sites/default/files/inline-files/The-Commission-Open-Source-Strategy.pdf",
+      "license": "EU public document",
+      "what_it_gives": "A full strategy document that names the office as 'the pivotal point', assigns DG DIGIT to run and budget it, lists functions and an action plan, and states the reasons (digital autonomy, sharing and reuse, security). The structure for a city open source strategy.",
+      "caveat": "Its procurement rule is the conditional preference clause ('preferred when equivalent') that this project argues against; no budget figure was ever published.",
+      "transfers_to_nyc": [
+        "R3 define 'equivalent' and name the judge",
+        "R1 strategy structure"
+      ],
+      "resources": [
+        {
+          "id": "ec-02",
+          "title": "Open Source Software Strategy 2020-2023, \"Think Open\" (C(2020) 7149)",
+          "url": "https://interoperable-europe.ec.europa.eu/sites/default/files/inline-files/The-Commission-Open-Source-Strategy.pdf",
+          "catalogue": "ec/ec-ospo-catalogue.json"
+        },
+        {
+          "id": "ec-03",
+          "title": "Commission adopts new Open Source Software Strategy",
+          "url": "https://commission.europa.eu/news/european-commission-adopts-its-new-open-source-software-strategy-2020-2023-2020-10-21_en",
+          "catalogue": "ec/ec-ospo-catalogue.json"
+        }
+      ]
+    },
+    {
+      "rank": 5,
+      "title": "Commission Decision of 8 December 2021 on the open source licensing and reuse of Commission software (C(2021) 8759; OJ 2021/C 495 I/01)",
+      "case": "ec",
+      "resource_ids": [
+        "ec-04",
+        "ec-05"
+      ],
+      "publisher": "European Commission",
+      "url": "https://lexaris.de/book/version/documentflat/head/2121049",
+      "license": "EU legal act",
+      "what_it_gives": "A legal text for publishing public code: default license (EUPL), a single repository as point of access, grounds for not publishing, proprietary licensing by exception, an inter-service group. Template for a city publishing rule once 'may choose' becomes 'shall, unless'.",
+      "caveat": "Read from a mirror of the Official Journal; confirm against EUR-Lex (CELEX 32021D1209(01)). Outbound only; says nothing about what the Commission buys.",
+      "transfers_to_nyc": [
+        "R4 exceptions routed through the office",
+        "R7 publishing rule for PIT Crew products"
+      ],
+      "resources": [
+        {
+          "id": "ec-04",
+          "title": "Commission Decision of 8 December 2021 on the open source licensing and reuse of Commission software (2021/C 495 I/01)",
+          "url": "https://lexaris.de/book/version/documentflat/head/2121049",
+          "catalogue": "ec/ec-ospo-catalogue.json"
+        },
+        {
+          "id": "ec-05",
+          "title": "Commission adopts new rules on Open Source Software distribution",
+          "url": "https://commission.europa.eu/news-and-media/news/commission-adopts-new-rules-open-source-software-distribution-2021-12-08_en",
+          "catalogue": "ec/ec-ospo-catalogue.json"
+        }
+      ]
+    },
+    {
+      "rank": 6,
+      "title": "Open Source United Common Policy Framework (RC1) and executive summary",
+      "case": "un",
+      "resource_ids": [
+        "un-03",
+        "un-04",
+        "un-01"
+      ],
+      "publisher": "Open Source United (UN OICT)",
+      "url": "https://opensource.un.org/sites/default/files/2025-07/common_policy_framework.pdf",
+      "license": "UN document",
+      "what_it_gives": "The policy skeleton UN endorsers are expected to follow: a staged maturity model in which an OSPO is required at stages 3 and 4, governance, mandatory project registration and committee review before public release, and the eight principles themselves.",
+      "caveat": "States a procurement preference with no owner; the only exception clause concerns two-factor authentication. The words COTS, justify, vendor lock-in and total cost of ownership do not appear.",
+      "transfers_to_nyc": [
+        "R11 endorsement",
+        "R3 the gap the office fills"
+      ],
+      "resources": [
+        {
+          "id": "un-03",
+          "title": "Open Source United Common Policy Framework (RC1)",
+          "url": "https://opensource.un.org/sites/default/files/2025-07/common_policy_framework.pdf",
+          "catalogue": "un/un-ospo-catalogue.json"
+        },
+        {
+          "id": "un-04",
+          "title": "Common Policy Framework executive summary",
+          "url": "https://opensource.un.org/sites/default/files/2026-01/cpf_executive_summary.pdf",
+          "catalogue": "un/un-ospo-catalogue.json"
+        },
+        {
+          "id": "un-01",
+          "title": "United Nations Open Source Principles",
+          "url": "https://opensource.un.org/en/news/united-nations-open-source-principles",
+          "catalogue": "un/un-ospo-catalogue.json"
+        }
+      ]
+    },
+    {
+      "rank": 7,
+      "title": "OSOR webinar on OSPOs, consolidated presentation",
+      "case": "ec",
+      "resource_ids": [
+        "ec-09",
+        "ec-10"
+      ],
+      "publisher": "OSOR / European Commission",
+      "url": "https://interoperable-europe.ec.europa.eu/sites/default/files/news/2025-06/OSOR_Webinar%20on%20OSPOs_Consolidated_Presentation.pdf",
+      "license": "EU public document",
+      "what_it_gives": "Six public-sector OSPO archetypes and the EC OSPO mission; the typology for stating in the founding act which kind of office New York is creating.",
+      "caveat": "Slides, not a guide.",
+      "transfers_to_nyc": [
+        "R1 positioning the office"
+      ],
+      "resources": [
+        {
+          "id": "ec-09",
+          "title": "OSOR webinar on OSPOs, consolidated presentation",
+          "url": "https://interoperable-europe.ec.europa.eu/sites/default/files/news/2025-06/OSOR_Webinar%20on%20OSPOs_Consolidated_Presentation.pdf",
+          "catalogue": "ec/ec-ospo-catalogue.json"
+        },
+        {
+          "id": "ec-10",
+          "title": "The role of OSPOs in transforming public services with open source",
+          "url": "https://interoperable-europe.ec.europa.eu/node/731054",
+          "catalogue": "ec/ec-ospo-catalogue.json"
+        }
+      ]
+    },
+    {
+      "rank": 8,
+      "title": "Munich OSPO public pages: OSPO, Principles, Licenses, Sponsoring, Sabbatical",
+      "case": "munich",
+      "resource_ids": [
+        "mun-01",
+        "mun-09",
+        "mun-10",
+        "mun-11",
+        "mun-12"
+      ],
+      "publisher": "Stadt Muenchen (it@M)",
+      "url": "https://opensource.muenchen.de/ospo.html",
+      "license": "City web pages",
+      "what_it_gives": "Model public pages for an office: a function list that states its procurement limits in one line, seven stated reasons for open source, a default license (MIT), a sponsorship program for upstream libraries, a paid sabbatical for outside developers.",
+      "caveat": "Pages, not a document; English and German.",
+      "transfers_to_nyc": [
+        "R8 sponsorship and sabbatical",
+        "R9 what to publish"
+      ],
+      "resources": [
+        {
+          "id": "mun-01",
+          "title": "OSPO",
+          "url": "https://opensource.muenchen.de/ospo.html",
+          "catalogue": "munich/munich-ospo-catalogue.json"
+        },
+        {
+          "id": "mun-09",
+          "title": "Principles",
+          "url": "https://opensource.muenchen.de/principles.html",
+          "catalogue": "munich/munich-ospo-catalogue.json"
+        },
+        {
+          "id": "mun-10",
+          "title": "Licenses",
+          "url": "https://opensource.muenchen.de/licenses.html",
+          "catalogue": "munich/munich-ospo-catalogue.json"
+        },
+        {
+          "id": "mun-11",
+          "title": "Sponsoring",
+          "url": "https://opensource.muenchen.de/sponsoring.html",
+          "catalogue": "munich/munich-ospo-catalogue.json"
+        },
+        {
+          "id": "mun-12",
+          "title": "Sabbatical",
+          "url": "https://opensource.muenchen.de/sabbatical.html",
+          "catalogue": "munich/munich-ospo-catalogue.json"
+        }
+      ]
+    },
+    {
+      "rank": 9,
+      "title": "CiteLibre and the Lutece platform",
+      "case": "paris",
+      "resource_ids": [
+        "par-12",
+        "par-13",
+        "par-11",
+        "par-10"
+      ],
+      "publisher": "Ville de Paris",
+      "url": "https://lutece.paris.fr/en/citelibre.html",
+      "license": "BSD 3-Clause (Lutece)",
+      "what_it_gives": "The model for packaging a city product so another city can deploy it: Lutece 'pre-assembled and containerized' into packs for appointment booking, forms, identity and contact. The pattern for every PIT Crew product.",
+      "caveat": "A product, not a process document; Paris's office has no founding act and no procurement role.",
+      "transfers_to_nyc": [
+        "R7 package PIT Crew products"
+      ],
+      "resources": [
+        {
+          "id": "par-12",
+          "title": "Introducing CiteLibre",
+          "url": "https://lutece.paris.fr/en/citelibre.html",
+          "catalogue": "paris/paris-ospo-catalogue.json"
+        },
+        {
+          "id": "par-13",
+          "title": "CiteLibre site",
+          "url": "https://citelibre.paris.fr/fr/",
+          "catalogue": "paris/paris-ospo-catalogue.json"
+        },
+        {
+          "id": "par-11",
+          "title": "Lutece project site",
+          "url": "https://lutece.paris.fr/",
+          "catalogue": "paris/paris-ospo-catalogue.json"
+        },
+        {
+          "id": "par-10",
+          "title": "CiteLibre",
+          "url": "https://interoperable-europe.ec.europa.eu/node/707046",
+          "catalogue": "paris/paris-ospo-catalogue.json"
+        }
+      ]
+    },
+    {
+      "rank": 10,
+      "title": "OMB M-16-21 Federal Source Code Policy and the SHARE IT Act (H.R. 9566)",
+      "case": "cms",
+      "resource_ids": [
+        "cms-13",
+        "cms-14",
+        "cms-23"
+      ],
+      "publisher": "Office of Management and Budget; U.S. Congress",
+      "url": "https://obamawhitehouse.archives.gov/sites/default/files/omb/memoranda/2016/m_16_21.pdf",
+      "license": "U.S. government document",
+      "what_it_gives": "The domestic legal language: a three-step analysis before buying custom software, a 20% open source release floor, a custom code inventory and annual exemption reporting. The structure translates directly into a city rule.",
+      "caveat": "Federal; needs translation to a city rule, and the exemption reports go to OMB and Congress rather than a public register.",
+      "transfers_to_nyc": [
+        "R3 options analysis",
+        "R5 justification duty",
+        "R4 register"
+      ],
+      "resources": [
+        {
+          "id": "cms-13",
+          "title": "M-16-21 Federal Source Code Policy",
+          "url": "https://obamawhitehouse.archives.gov/sites/default/files/omb/memoranda/2016/m_16_21.pdf",
+          "catalogue": "cms/cms-ospo-catalogue.json"
+        },
+        {
+          "id": "cms-14",
+          "title": "H.R. 9566, SHARE IT Act",
+          "url": "https://www.govinfo.gov/content/pkg/BILLS-118hr9566eh/pdf/BILLS-118hr9566eh.pdf",
+          "catalogue": "cms/cms-ospo-catalogue.json"
+        },
+        {
+          "id": "cms-23",
+          "title": "SHARE IT Act Web Guide",
+          "url": "https://digitalgovernmenthub.org/library/share-it-act-web-guide/",
+          "catalogue": "cms/cms-ospo-catalogue.json"
+        }
+      ]
+    }
+  ]
+}

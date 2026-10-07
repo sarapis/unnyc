@@ -7,7 +7,7 @@ import './ospo-strategy.css';
 import '../keep-going.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import UnnycKeepGoing from '@/components/unnyc/primer/UnnycKeepGoing';
-import { getContent, getOspoCatalogue, inlineMd } from '@/lib/content';
+import { getContent, getOspoCatalogue, getOspoPlaybooks, inlineMd } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
 import StructuredData from '@/components/unnyc/StructuredData';
 import { articleLd } from '@/lib/structured-data';
@@ -47,6 +47,8 @@ function withBanners(catalogue) {
 export default function OspoStrategyPage() {
     const doc = getContent('ospo-strategy');
     const { summary, brief } = doc.sections;
+    const catalogue = withBanners(getOspoCatalogue());
+    const ranked = getOspoPlaybooks();
 
     return (
         <>
@@ -69,7 +71,19 @@ export default function OspoStrategyPage() {
                 playbooks={{
                     ...doc.playbooks,
                     ledeHtml: inlineMd(doc.playbooks.lede),
-                    cases: withBanners(getOspoCatalogue()),
+                    cases: catalogue,
+                    /* The ranked directory above the cards; null when the JSON
+                       is absent. An entry's case links to its card only when
+                       that case has one. */
+                    directory: ranked
+                        ? {
+                              ...doc.playbooks.directory,
+                              ledeHtml: inlineMd(doc.playbooks.directory?.lede),
+                              items: ranked.items,
+                              missing: ranked.missing,
+                              caseIds: catalogue.map((e) => e.case.id),
+                          }
+                        : null,
                 }}
                 memo={doc.memo}
                 summary={{

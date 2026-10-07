@@ -455,6 +455,30 @@ export function getOspoCatalogue() {
         .sort((a, b) => (a.case.order ?? 0) - (b.case.order ?? 0));
 }
 
+/**
+ * The ranked playbooks — content/ospo-playbooks.json, the research handoff's
+ * shortlist of the catalogue entries that are how-to material rather than
+ * evidence. `{ playbooks[], missing_from_every_case[] }`; each playbook's
+ * `resource_ids` resolve to `resources[].id` in a per-case catalogue file, and
+ * each carries the resolved `resources[]` for convenience. Rendered at the top
+ * of /ospo-strategy's Playbooks section, above the per-case cards. Fail-soft:
+ * no file, no directory, and the cards render as before.
+ */
+export function getOspoPlaybooks() {
+    const file = path.join(CONTENT_DIR, 'ospo-playbooks.json');
+    if (!fs.existsSync(file)) return null;
+    try {
+        const d = JSON.parse(fs.readFileSync(file, 'utf8'));
+        if (!Array.isArray(d?.playbooks)) return null;
+        return {
+            items: [...d.playbooks].sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0)),
+            missing: Array.isArray(d.missing_from_every_case) ? d.missing_from_every_case : [],
+        };
+    } catch {
+        return null;
+    }
+}
+
 /** Inline markdown (bold/links) with no wrapping <p> — for ledes and labels. */
 export function inlineMd(src) {
     if (!src?.trim()) return '';

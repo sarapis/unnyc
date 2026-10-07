@@ -629,6 +629,176 @@
      (a typed glyph, or a real image when the JSON supplies one).
      --------------------------------------------------------------------- */
 
+  /* The ranked directory above the city cards: a numbered list on the page
+     itself, not a card — the cards below are the cities; this is the index
+     into them. Rank numerals in the display serif, one orange rule under
+     the title like the resource-group labels. */
+  .unnyc-ospo-story__dir {
+    margin: 0 0 var(--wg-sp-16);
+  }
+
+  .unnyc-ospo-story__dir-title {
+    margin: 0 0 var(--wg-sp-3);
+    font-family: var(--wg-font-display);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 2.6vw, 2.125rem);
+    line-height: 1.15;
+    color: var(--wg-brand);
+    text-wrap: pretty;
+  }
+
+  .unnyc-ospo-story__dir-lede {
+    margin: 0 0 var(--wg-sp-8);
+    font-size: var(--wg-fs-base);
+    line-height: 1.65;
+    color: var(--wg-text-secondary);
+    max-width: 68ch;
+    text-wrap: pretty;
+  }
+
+  .unnyc-ospo-story__dir-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    border-top: 1px solid var(--wg-warm-gray);
+  }
+
+  .unnyc-ospo-story__dir-item {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: var(--wg-sp-5);
+    padding: var(--wg-sp-6) 0;
+    border-bottom: 1px solid var(--wg-warm-gray);
+  }
+
+  .unnyc-ospo-story__dir-rank {
+    font-family: var(--wg-font-display);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    line-height: 1;
+    color: var(--wg-accent-warm);
+    font-variant-numeric: tabular-nums;
+    padding-top: 2px;
+  }
+
+  .unnyc-ospo-story__dir-body {
+    display: grid;
+    gap: var(--wg-sp-2);
+    min-width: 0;
+  }
+
+  .unnyc-page .unnyc-ospo-story__dir-link {
+    font-size: var(--wg-fs-lg);
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--wg-brand);
+    text-decoration: none;
+    text-wrap: pretty;
+    overflow-wrap: anywhere;
+  }
+
+  .unnyc-page .unnyc-ospo-story__dir-link:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--wg-accent-warm);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 5px;
+  }
+
+  .unnyc-ospo-story__dir-arrow {
+    font-size: 0.75em;
+    color: var(--wg-accent-warm);
+    vertical-align: 0.1em;
+  }
+
+  .unnyc-ospo-story__dir-meta {
+    margin: 0;
+    font-size: var(--wg-fs-xs);
+    letter-spacing: 0.02em;
+    color: var(--wg-text-secondary);
+  }
+
+  .unnyc-page .unnyc-ospo-story__dir-case {
+    color: var(--wg-accent-strong);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .unnyc-page a.unnyc-ospo-story__dir-case:hover {
+    color: var(--wg-accent);
+    text-decoration: underline;
+  }
+
+  .unnyc-ospo-story__dir-what,
+  .unnyc-ospo-story__dir-caveat,
+  .unnyc-ospo-story__dir-includes {
+    margin: 0;
+    font-size: var(--wg-fs-sm);
+    line-height: 1.6;
+    max-width: 72ch;
+    text-wrap: pretty;
+  }
+
+  .unnyc-ospo-story__dir-what {
+    color: var(--wg-brand);
+  }
+
+  .unnyc-ospo-story__dir-caveat {
+    color: var(--wg-text-secondary);
+  }
+
+  .unnyc-ospo-story__dir-includes {
+    margin-top: var(--wg-sp-1);
+    color: var(--wg-text-secondary);
+  }
+
+  .unnyc-ospo-story__dir-includes strong {
+    color: var(--wg-brand);
+    font-weight: 600;
+  }
+
+  .unnyc-page .unnyc-ospo-story__dir-includes a {
+    color: var(--wg-accent-strong);
+    text-decoration: underline;
+    text-decoration-color: var(--wg-warm-gray);
+    text-underline-offset: 3px;
+  }
+
+  .unnyc-page .unnyc-ospo-story__dir-includes a:hover {
+    text-decoration-color: var(--wg-accent-warm);
+  }
+
+  /* The closing line: the three documents no case supplies. */
+  .unnyc-ospo-story__dir-missing {
+    margin-top: var(--wg-sp-8);
+    padding-left: var(--wg-sp-5);
+    border-left: 2px solid var(--wg-accent-warm);
+    max-width: 68ch;
+  }
+
+  .unnyc-ospo-story__dir-missing h4 {
+    margin: 0 0 var(--wg-sp-2);
+    font-size: var(--wg-fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--wg-accent-warm-dark);
+  }
+
+  .unnyc-ospo-story__dir-missing ul {
+    margin: 0;
+    padding-left: 1.2em;
+    font-size: var(--wg-fs-sm);
+    line-height: 1.6;
+    color: var(--wg-brand);
+  }
+
+  .unnyc-ospo-story__dir-missing p {
+    margin: var(--wg-sp-2) 0 0;
+    font-size: var(--wg-fs-sm);
+    line-height: 1.6;
+    color: var(--wg-text-secondary);
+  }
+
   .unnyc-ospo-story__pb-stack {
     display: grid;
     gap: var(--wg-sp-12);
@@ -930,6 +1100,11 @@
 
     .unnyc-ospo-story__entry {
       grid-template-columns: 64px minmax(0, 1fr);
+      gap: var(--wg-sp-4);
+    }
+
+    .unnyc-ospo-story__dir-item {
+      grid-template-columns: 40px minmax(0, 1fr);
       gap: var(--wg-sp-4);
     }
 

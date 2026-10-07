@@ -211,6 +211,7 @@ export default function UnnycOspoStoryscroller({ hero, railItems, playbooks, mem
                             {/* Playbooks — one sub-section per city OSPO */}
                             <article id="playbooks" data-spy="playbooks" className="unnyc-ospo-story__article">
                                 <ArticleHead title={playbooks.title} ledeHtml={playbooks.ledeHtml} />
+                                {playbooks.directory && <PlaybookDirectory dir={playbooks.directory} />}
                                 <div className="unnyc-ospo-story__pb-stack">
                                     {playbooks.cases.map((entry) => (
                                         <PlaybookCase key={entry.case.id} entry={entry} labels={playbooks} />
@@ -346,6 +347,87 @@ export default function UnnycOspoStoryscroller({ hero, railItems, playbooks, mem
                 </div>
             </section>
         </div>
+    );
+}
+
+/* ---------------------------------------------------------------------------
+   Playbooks — the ranked directory from content/ospo-playbooks.json
+   --------------------------------------------------------------------------- */
+
+/** The shortlist above the city cards: the catalogue entries a city could
+ * start building from, in the handoff's rank order. Each entry is its primary
+ * link, one meta line (publisher · license · case), what it gives, its caveat,
+ * and the other documents it bundles. Closes with the three documents no case
+ * supplies — shown because the gap is the point. The handoff's
+ * `transfers_to_nyc` recommendation ids are NOT rendered: the cross-case
+ * themes doc they refer to isn't on the site. */
+function PlaybookDirectory({ dir }) {
+    const cardFor = (caseId) => (dir.caseIds?.includes(caseId) ? `#playbooks-${caseId}` : null);
+    return (
+        <section className="unnyc-ospo-story__dir" aria-labelledby="playbooks-directory">
+            <h3 id="playbooks-directory" className="unnyc-ospo-story__dir-title" data-reveal="1">
+                {dir.title}
+            </h3>
+            {dir.ledeHtml && (
+                <p className="unnyc-ospo-story__dir-lede" data-reveal="1" data-delay="60" dangerouslySetInnerHTML={{ __html: dir.ledeHtml }} />
+            )}
+            <ol className="unnyc-ospo-story__dir-list">
+                {dir.items.map((p, i) => {
+                    const caseLabel = dir.caseLabels?.[p.case] || humanize(p.case);
+                    const card = cardFor(p.case);
+                    const bundled = (p.resources || []).filter((r) => r.url !== p.url);
+                    return (
+                        <li key={p.rank ?? p.title} className="unnyc-ospo-story__dir-item" data-reveal="1" data-delay={Math.min(i, 3) * 40}>
+                            <span className="unnyc-ospo-story__dir-rank" aria-hidden="true">
+                                {p.rank}
+                            </span>
+                            <div className="unnyc-ospo-story__dir-body">
+                                <a href={p.url} target="_blank" rel="noopener noreferrer" className="unnyc-ospo-story__dir-link">
+                                    {p.title} <span aria-hidden="true" className="unnyc-ospo-story__dir-arrow">↗</span>
+                                </a>
+                                <p className="unnyc-ospo-story__dir-meta">
+                                    {[p.publisher, p.license].filter(Boolean).join(' · ')}
+                                    {' · '}
+                                    {card ? (
+                                        <a href={card} className="unnyc-ospo-story__dir-case">
+                                            {caseLabel} <span aria-hidden="true">→</span>
+                                        </a>
+                                    ) : (
+                                        <span className="unnyc-ospo-story__dir-case">{caseLabel}</span>
+                                    )}
+                                </p>
+                                {p.what_it_gives && <p className="unnyc-ospo-story__dir-what">{p.what_it_gives}</p>}
+                                {p.caveat && <p className="unnyc-ospo-story__dir-caveat">{p.caveat}</p>}
+                                {bundled.length > 0 && (
+                                    <p className="unnyc-ospo-story__dir-includes">
+                                        <strong>{dir.includesLabel}:</strong>{' '}
+                                        {bundled.map((r, j) => (
+                                            <span key={r.id || r.url}>
+                                                {j > 0 && ', '}
+                                                <a href={r.url} target="_blank" rel="noopener noreferrer">
+                                                    {r.title}
+                                                </a>
+                                            </span>
+                                        ))}
+                                    </p>
+                                )}
+                            </div>
+                        </li>
+                    );
+                })}
+            </ol>
+            {dir.missing?.length > 0 && (
+                <div className="unnyc-ospo-story__dir-missing" data-reveal="1">
+                    <h4>{dir.missingLabel}</h4>
+                    <ul>
+                        {dir.missing.map((m) => (
+                            <li key={m}>{m}</li>
+                        ))}
+                    </ul>
+                    {dir.missingNote && <p>{dir.missingNote}</p>}
+                </div>
+            )}
+        </section>
     );
 }
 

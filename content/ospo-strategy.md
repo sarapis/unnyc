@@ -59,6 +59,23 @@ sectionNav:
 playbooks:
   title: "Playbooks"
   lede: "How the cities that already have an OSPO built theirs: the founding act, the office, what it does all day, and every source we read to find out — catalogued so a working group can start from the documents, not from a summary of them."
+  # The ranked directory at the top of the section — the catalogue entries a
+  # city could start building from. The list itself is
+  # content/ospo-playbooks.json; only the UI words are here. `caseLabels`
+  # names each case in an entry's meta line (the UN has no card yet, so its
+  # label renders without a link).
+  directory:
+    title: "Best available playbooks"
+    lede: "The catalogue entries that are how-to material rather than evidence: a founding act, a legal text, a process guide, or reusable tooling. Ranked by how directly they transfer to New York."
+    includesLabel: "Includes"
+    missingLabel: "What none of them contains"
+    missingNote: "Those three documents would be New York's contribution to the set."
+    caseLabels:
+      munich: "Munich"
+      paris: "Paris"
+      cms: "CMS"
+      ec: "European Commission"
+      un: "United Nations"
   # The office's name is itself the link to its site (with an arrow); this is
   # the one text link under the facts, to the city's case study on /success.
   caseStudyLabel: "Read case study"
