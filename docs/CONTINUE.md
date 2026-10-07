@@ -137,9 +137,10 @@ Tested ones are one line naming the check; `npm run lint:css` runs all four.
 2. **Flatten the remaining above-floor CSS** if Safari 13.1 matters: `:has()`
    (8 files, scrollbar tint only) and `text-wrap: pretty` (7 files). Both
    degrade invisibly, so this is polish, not a fix.
-3. **Refresh the CTFG snapshot.** GovOSS was refreshed 2026-09-24; CTFG is still
-   the 62-project curated one from August, and its licence is now read rather
-   than hardcoded, so a refresh is safe. Read the diff.
+3. ~~Refresh the CTFG snapshot~~ — done 2026-10-07: 62 → 73 projects, 24 → 25
+   countries, five new exclusions (each checked against the project's own site
+   or repository) and one dead one removed. Next refresh: read the diff the same
+   way — CTFG's `orgType` tag still admits civil-society builds.
 4. **Prune `CLAUDE.md` properly** (§4.6) — the same move that just worked:
    lift conditional detail into `docs/` and leave a pointer, rather than delete.
 

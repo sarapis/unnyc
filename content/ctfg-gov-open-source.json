@@ -9,10 +9,14 @@
     "https://civictech.guide/guiding-principles/"
   ],
   "generatedBy": "scripts/fetch-ctfg-projects.mjs",
-  "generated": "2026-08-21",
-  "count": 62,
-  "countries": 24,
+  "generated": "2026-10-07",
+  "count": 73,
+  "countries": 25,
   "excluded": [
+    {
+      "slug": "cities-coalition-for-digital-rights",
+      "reason": "a network of city governments and a declaration, not a government-built program — and CTFG places it at UN-Habitat in Nairobi, so its dot would land in Kenya (owner decision 2026-10-07)"
+    },
     {
       "slug": "civic-switchboard",
       "reason": "IMLS-funded academic/public library capacity project"
@@ -26,16 +30,28 @@
       "reason": "civis.vote — an Indian nonprofit platform, works with government but is not one"
     },
     {
-      "slug": "code-for-australia-foresight",
-      "reason": "Code for Australia is a nonprofit; URL is a dead Wayback capture"
-    },
-    {
       "slug": "congressional-data-coalition",
       "reason": "an advocacy coalition lobbying Congress, not a government body"
     },
     {
       "slug": "govtrackus",
       "reason": "run by Civic Impulse LLC, a private company"
+    },
+    {
+      "slug": "open-courts-slovakia",
+      "reason": "Otvorené Súdy, a transparency initiative republishing what the Ministry of Justice posts — not built by the Ministry"
+    },
+    {
+      "slug": "open-data-atlas",
+      "reason": "a private individual's project (imprint: Thomas Tursics, Berlin), not a government's"
+    },
+    {
+      "slug": "pormibarrio",
+      "reason": "built by Data Uruguay, a civil-society organization (github.com/datauy), not by Montevideo"
+    },
+    {
+      "slug": "tainan-city-council-watchbot",
+      "reason": "built by Tainan Sprout (台南新芽), a local youth organization, not by the city or its council"
     }
   ],
   "projects": [
@@ -180,7 +196,7 @@
       "country": "Europe",
       "lat": 49.8431,
       "lng": 9.9019,
-      "desc": "",
+      "desc": "This section showcases a collection of cases from across Europe on the adoption of artificial intelligence, blockchain and other emerging technologies in the public sector .",
       "profile": "https://civictech.guide/projects/public-sector-tech-watch"
     },
     {
@@ -211,6 +227,15 @@
       "profile": "https://civictech.guide/projects/free-software-unit-france"
     },
     {
+      "slug": "inventaire-des-algorithmes-utilises-par-la-ville-dantibes-inventory-of-algorithms-used-by-the-city-of-antibes",
+      "name": "Inventaire des algorithmes utilisés par la Ville d'Antibes | Inventory of Algorithms Used by the City of Antibes",
+      "country": "France",
+      "lat": 43.5815,
+      "lng": 7.1264,
+      "desc": "",
+      "profile": "https://civictech.guide/projects/inventaire-des-algorithmes-utilises-par-la-ville-dantibes-inventory-of-algorithms-used-by-the-city-of-antibes"
+    },
+    {
       "slug": "lutece",
       "name": "Lutece",
       "country": "France",
@@ -238,6 +263,24 @@
       "profile": "https://civictech.guide/projects/pole-open-source-et-communs-numeriques"
     },
     {
+      "slug": "rudi",
+      "name": "Rudi",
+      "country": "France",
+      "lat": 46.2276,
+      "lng": 2.2137,
+      "desc": "Rudi est une plateforme de partage de données à l’échelle locale qui vise à permettre aux acteurs du territoire de partager facilement leurs données tout en en gardant la maîtri…",
+      "profile": "https://civictech.guide/projects/rudi"
+    },
+    {
+      "slug": "site-openpb",
+      "name": "Site OpenPB",
+      "country": "France",
+      "lat": 48.8535,
+      "lng": 2.3484,
+      "desc": "This site is an effort of City of Paris to provide a budgetparticipatif.paris-like website to help other cities to get their own participatory budgeting process.",
+      "profile": "https://civictech.guide/projects/site-openpb"
+    },
+    {
       "slug": "udata",
       "name": "udata",
       "country": "France",
@@ -245,6 +288,24 @@
       "lng": 2.2137,
       "desc": "Customizable and skinnable social platform dedicated to (open)data.",
       "profile": "https://civictech.guide/projects/udata"
+    },
+    {
+      "slug": "dipas",
+      "name": "DIPAS",
+      "country": "Germany",
+      "lat": 53.5503,
+      "lng": 10.0007,
+      "desc": "Das erste medienbruchfreie digitale System zur Bürgerbeteiligung online und vor Ort. DIPAS entdecken DIPAS Repository",
+      "profile": "https://civictech.guide/projects/dipas"
+    },
+    {
+      "slug": "fellowship-for-maintainers",
+      "name": "Fellowship for Maintainers",
+      "country": "Germany",
+      "lat": 51.1657,
+      "lng": 10.4515,
+      "desc": "A pilot program to pay maintainers of critical open source technologies.",
+      "profile": "https://civictech.guide/projects/fellowship-for-maintainers"
     },
     {
       "slug": "datisenatoit",
@@ -292,6 +353,24 @@
       "profile": "https://civictech.guide/projects/lietuvos-finansai"
     },
     {
+      "slug": "algoritmeregister-gemeente-groningen-algorithm-register-of-the-municipality-of-groningen",
+      "name": "Algoritmeregister gemeente Groningen | Algorithm Register of the Municipality of Groningen",
+      "country": "Netherlands",
+      "lat": 53.2184,
+      "lng": 6.5695,
+      "desc": "Deze dataset bevat het algoritmeregister van de gemeente Groningen.",
+      "profile": "https://civictech.guide/projects/algoritmeregister-gemeente-groningen-algorithm-register-of-the-municipality-of-groningen"
+    },
+    {
+      "slug": "algoritmeregister-utrecht-algorithm-register-of-utrecht",
+      "name": "Algoritmeregister Utrecht | Algorithm Register of Utrecht",
+      "country": "Netherlands",
+      "lat": 52.0919,
+      "lng": 5.1189,
+      "desc": "Dit is het Utrechtse algoritmeregister.",
+      "profile": "https://civictech.guide/projects/algoritmeregister-utrecht-algorithm-register-of-utrecht"
+    },
+    {
       "slug": "circulaw",
       "name": "CircuLaw",
       "country": "Netherlands",
@@ -299,6 +378,15 @@
       "lng": 4.9,
       "desc": "Unlocking regulatory innovation for the circular economy transition.",
       "profile": "https://civictech.guide/projects/circulaw"
+    },
+    {
+      "slug": "het-algoritmeregister-van-de-nederlandse-overheid-the-algorithm-register-of-the-dutch-government",
+      "name": "Het Algoritmeregister van de Nederlandse overheid | The Algorithm Register of the Dutch Government",
+      "country": "Netherlands",
+      "lat": 52.1326,
+      "lng": 5.2913,
+      "desc": "In het Algoritmeregister van de overheid publiceren Nederlandse overheidsorganisaties informatie over algoritmes die zij gebruiken in hun werk.",
+      "profile": "https://civictech.guide/projects/het-algoritmeregister-van-de-nederlandse-overheid-the-algorithm-register-of-the-dutch-government"
     },
     {
       "slug": "otwarte-dane",
@@ -337,6 +425,24 @@
       "profile": "https://civictech.guide/projects/mymzansi"
     },
     {
+      "slug": "barcelona-digital-city",
+      "name": "Barcelona Digital City",
+      "country": "Spain",
+      "lat": 41.3872,
+      "lng": 2.1654,
+      "desc": "The priority of Barcelona is to go beyond the concept of smart city or smart city and take full advantage of the opportunities offered by data-based technologies and their great…",
+      "profile": "https://civictech.guide/projects/barcelona-digital-city"
+    },
+    {
+      "slug": "eines-per-a-una-transformacio-digital-oberta-i-agil",
+      "name": "Eines per a una transformació digital oberta i àgil",
+      "country": "Spain",
+      "lat": 41.3872,
+      "lng": 2.1654,
+      "desc": "El programa per a la Digitalització Oberta: Programari Lliure i Desenvolupament Àgil de Serveis de l’Ajuntament de Barcelona defineix el procés de canvi profund i progressiu de…",
+      "profile": "https://civictech.guide/projects/eines-per-a-una-transformacio-digital-oberta-i-agil"
+    },
+    {
       "slug": "el-centro-de-transferencia-de-tecnologia",
       "name": "El Centro de Transferencia de Tecnología",
       "country": "Spain",
@@ -344,6 +450,15 @@
       "lng": -3.7492,
       "desc": "El Centro de Transferencia de Tecnología publica un directorio general de aplicaciones o/y soluciones cuyo objetivo es favorecer la reutilización de soluciones por todas las Adm…",
       "profile": "https://civictech.guide/projects/el-centro-de-transferencia-de-tecnologia"
+    },
+    {
+      "slug": "la-infrastructura-publica-de-ia-abierta-y-multilingue-alia",
+      "name": "La Infrastructura Pública de IA Abierta y Multilingüe (ALIA)",
+      "country": "Spain",
+      "lat": 41.3872,
+      "lng": 2.1654,
+      "desc": "Europe's first public, open and multilingual AI infrastructure",
+      "profile": "https://civictech.guide/projects/la-infrastructura-publica-de-ia-abierta-y-multilingue-alia"
     },
     {
       "slug": "jobtech-development",
@@ -454,6 +569,15 @@
       "profile": "https://civictech.guide/projects/incubator-for-artificial-intelligence-iai"
     },
     {
+      "slug": "localgov-drupal",
+      "name": "LocalGov Drupal",
+      "country": "United Kingdom of Great Britain and Northern Ireland",
+      "lat": 55.3781,
+      "lng": -3.436,
+      "desc": "LocalGov Drupal is a publicly owned asset that delivers a better digital experience for citizens, improves service outcomes, and saves money.",
+      "profile": "https://civictech.guide/projects/localgov-drupal"
+    },
+    {
       "slug": "rapid",
       "name": "rAPId",
       "country": "United Kingdom of Great Britain and Northern Ireland",
@@ -490,31 +614,22 @@
       "profile": "https://civictech.guide/projects/uk-parliament-members-api"
     },
     {
-      "slug": "boston-smart-cities-playbook",
-      "name": "Boston Smart Cities Playbook",
+      "slug": "18f-posters",
+      "name": "18F Posters",
       "country": "United States of America",
-      "lat": 42.3589,
-      "lng": -71.0568,
-      "desc": "",
-      "profile": "https://civictech.guide/projects/boston-smart-cities-playbook"
+      "lat": 38.8973,
+      "lng": -77.021,
+      "desc": "Well designed posters to hang in your gov office",
+      "profile": "https://civictech.guide/projects/18f-posters"
     },
     {
-      "slug": "census-accelerate-video-challenge",
-      "name": "Census Accelerate Video Challenge",
+      "slug": "diux-xview-detection-challenge",
+      "name": "DIUx xView Detection Challenge",
       "country": "United States of America",
-      "lat": 37.0902,
-      "lng": -95.7129,
-      "desc": "Census Accelerate, an initiative within the innovation arm of the U.S. Census Bureau, has launched its first-ever video prize competition to reward the most engaging, impactful…",
-      "profile": "https://civictech.guide/projects/census-accelerate-video-challenge"
-    },
-    {
-      "slug": "code-california",
-      "name": "Code California",
-      "country": "United States of America",
-      "lat": 37.0744,
-      "lng": -119.6994,
-      "desc": "Code California is an open collaboration between agencies, industry technology partners and civic technologists working to code a more innovative, collaborative and effective go…",
-      "profile": "https://civictech.guide/projects/code-california"
+      "lat": 38.8905,
+      "lng": -77.009,
+      "desc": "Pentagon's humanitarian satellite imagery competition for object detection in overhead imagery",
+      "profile": "https://civictech.guide/projects/diux-xview-detection-challenge"
     },
     {
       "slug": "new-jersey-state-office-of-innovation",
