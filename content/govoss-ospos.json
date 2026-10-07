@@ -1,0 +1,383 @@
+{
+  "source": "FLOSS-PSO Network",
+  "sourceUrl": "https://floss-pso.network/public-sector-ospos/",
+  "licence": "CC0 1.0",
+  "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "locations": {
+    "source": "GovOSS",
+    "sourceUrl": "https://govoss.cat",
+    "licence": "CC0 1.0",
+    "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "note": "Hand-placed by UNNYC until 2026-10; GovOSS copied those placements and maintains them now."
+  },
+  "licenceRaw": {
+    "list": "CC0 1.0 (the FLOSS-PSO Network's OSPO list)",
+    "govossFields": "CC0 1.0, govoss (https://govoss.cat)"
+  },
+  "via": "https://govoss.cat/ospos.json",
+  "generatedBy": "scripts/fetch-govoss-ospos.mjs",
+  "generated": "2026-10-07",
+  "govossGenerated": "2026-10-07T22:11:56Z",
+  "listFetchedAt": "2026-10-07T20:10:41Z",
+  "count": 18,
+  "ospos": [
+    {
+      "id": "floss-cyber-gouv-fr-enjeux-technologiques-open-source",
+      "name": "ANSSI",
+      "type": "government",
+      "countryCode": "FR",
+      "country": "France",
+      "city": "Paris",
+      "lat": 48.8566,
+      "lng": 2.3522,
+      "locationBasis": "seat",
+      "url": "https://cyber.gouv.fr/enjeux-technologiques/open-source/",
+      "description": "People handling open source topic at French Cybersecurity Agency (ANSSI)",
+      "email": "opensource@ssi.gouv.fr",
+      "policy": "https://cyber.gouv.fr/enjeux-technologiques/open-source/",
+      "code": [
+        "https://github.com/ANSSI-FR",
+        "https://github.com/DFIR-ORC",
+        "https://github.com/betagouv/mon-service-securise",
+        "https://github.com/betagouv/anssi-portail",
+        "https://github.com/betagouv/mon-aide-cyber",
+        "https://github.com/betagouv/anssi-nis2",
+        "https://github.com/betagouv/anssi-recommandations-cyber/",
+        "https://github.com/betagouv/anssi-demain-specialiste-cyber",
+        "https://github.com/clipos",
+        "https://github.com/clipos-archive",
+        "https://github.com/wookey-project",
+        "https://github.com/cw-leia"
+      ]
+    },
+    {
+      "id": "floss-developer-overheid-nl",
+      "name": "Developer.overheid.nl",
+      "type": "government",
+      "countryCode": "NL",
+      "country": "Netherlands",
+      "city": "The Hague",
+      "lat": 52.0705,
+      "lng": 4.3007,
+      "locationBasis": "hq",
+      "url": "https://developer.overheid.nl",
+      "description": "Developer portal of the Dutch government",
+      "email": "developer.overheid@geonovum.nl",
+      "policy": null,
+      "code": [
+        "https://github.com/developer-overheid-nl"
+      ]
+    },
+    {
+      "id": "floss-echirolles-fr-territoire-numerique",
+      "name": "Direction de la stratégie et de la culture numériques (DSCN)",
+      "type": "government",
+      "countryCode": "FR",
+      "country": "France",
+      "city": "Échirolles",
+      "lat": 45.1436,
+      "lng": 5.7139,
+      "locationBasis": "seat",
+      "url": "https://www.echirolles.fr/territoire-numerique",
+      "description": "The DSCN is responsible for digital technology in the city of Échirolles.",
+      "email": "nicolas.vivant@echirolles.fr",
+      "policy": "https://www.echirolles.fr/sites/default/files/2022-09/Schema_directeur_numerique.pdf",
+      "code": [
+        "https://documentation.echirolles.fr"
+      ]
+    },
+    {
+      "id": "floss-opensource-muenchen-de-ospo-html",
+      "name": "Open Source Program Office City of Munich",
+      "type": "government",
+      "countryCode": "DE",
+      "country": "Germany",
+      "city": "Munich",
+      "lat": 48.1351,
+      "lng": 11.582,
+      "locationBasis": "seat",
+      "url": "https://opensource.muenchen.de/ospo.html",
+      "description": "Use - Improve - Publish - FOSS at the City of Munich",
+      "email": "opensource@muenchen.de",
+      "policy": "https://opensource.muenchen.de/principles.html",
+      "code": [
+        "https://github.com/it-at-m/",
+        "https://gitlab.opencode.de/groups/landeshauptstadt-muenchen"
+      ]
+    },
+    {
+      "id": "floss-schleswig-holstein-de-open-source",
+      "name": "Open Source Program Office of the State of Schleswig-Holstein",
+      "type": "government",
+      "countryCode": "DE",
+      "country": "Germany",
+      "city": "Kiel",
+      "lat": 54.3233,
+      "lng": 10.1228,
+      "locationBasis": "seat",
+      "url": "https://schleswig-holstein.de/open-source",
+      "description": "The Open Source Program Office Schleswig-Holstein (OSPO SH) is the state government's central coordination office for the strategic use of open source software - with the aim of ensuring digital sovereignty",
+      "email": "ospo-sh@stk.landsh.de",
+      "policy": "https://gdi-sh.de/DE/landesregierung/themen/digitalisierung/linux-plus1/Projekt/open-source-strategie",
+      "code": [
+        "https://gitlab.opencode.de/sh",
+        "https://code.schleswig-holstein.de"
+      ]
+    },
+    {
+      "id": "floss-os2-eu",
+      "name": "OS2 – Public Digitalization Network",
+      "type": "government",
+      "countryCode": "DK",
+      "country": "Denmark",
+      "city": "Copenhagen",
+      "lat": 55.6761,
+      "lng": 12.5683,
+      "locationBasis": "hq",
+      "url": "https://os2.eu",
+      "description": "OS2 is an organisation of public bodies in Denmark where we - together - develop, mature, and maintain public code.",
+      "email": "os2@os2.eu",
+      "policy": "https://github.com/OS2offdig/about",
+      "code": [
+        "https://github.com/OS2agora",
+        "https://github.com/OS2autoproces",
+        "https://github.com/OS2borgerPC",
+        "https://github.com/OS2compliance",
+        "https://github.com/os2display",
+        "https://github.com/OS2faktor",
+        "https://github.com/OS2fleetoptimiser",
+        "https://github.com/OS2Forms",
+        "https://github.com/OS2iot",
+        "https://github.com/OS2korrespondance",
+        "https://github.com/OS2kravmotor",
+        "https://github.com/OS2mo",
+        "https://github.com/OS2nectar",
+        "https://github.com/OS2rollekatalog",
+        "https://github.com/OS2skoledata",
+        "https://github.com/OS2sofd",
+        "https://github.com/os2ulf",
+        "https://github.com/OS2Valghalla",
+        "https://github.com/Skadesokonomi"
+      ]
+    },
+    {
+      "id": "floss-cms-gov-digital-service-open-source-program-office",
+      "name": "OSPO at Digital Service at the Centers for Medicare and Medicaid Services",
+      "type": "government",
+      "countryCode": "US",
+      "country": "United States",
+      "city": "Woodlawn, Maryland",
+      "lat": 39.3043,
+      "lng": -76.7519,
+      "locationBasis": "hq",
+      "url": "https://cms.gov/digital-service/open-source-program-office",
+      "description": "Establish and maintain guidance, policies, practices, and talent pipelines that advance equity, build trust, and amplify impact across CMS, HHS, and Federal Open Source Ecosystems by working and sharing openly.",
+      "email": "opensource@cms.hhs.gov",
+      "policy": "https://github.com/CMSgov/cms-open-source-policy",
+      "code": [
+        "https://github.com/DSACMS",
+        "https://dsacms.github.io/ospo-guide",
+        "https://dsacms.github.io/repo-scaffolder"
+      ]
+    },
+    {
+      "id": "floss-francetravail-io-opportunites-innovation-participer-initiatives-open-source",
+      "name": "OSPO de France Travail",
+      "type": "government",
+      "countryCode": "FR",
+      "country": "France",
+      "city": "Paris",
+      "lat": 48.873,
+      "lng": 2.404,
+      "locationBasis": "hq",
+      "url": "https://francetravail.io/opportunites-innovation/participer-initiatives-open-source",
+      "description": "France Travail's Open Source Programme Office",
+      "email": "oss.00619@francetravail.fr",
+      "policy": null,
+      "code": []
+    },
+    {
+      "id": "floss-ign-fr-institut-des-donnees-et-logiciels-ouverts-au-service-de-la-nation",
+      "name": "OSPO de l'IGN",
+      "type": "government",
+      "countryCode": "FR",
+      "country": "France",
+      "city": "Saint-Mandé",
+      "lat": 48.845,
+      "lng": 2.418,
+      "locationBasis": "seat",
+      "url": "https://www.ign.fr/institut/des-donnees-et-logiciels-ouverts-au-service-de-la-nation",
+      "description": "The Open Source Programme Office of the French National Institute for Geographic and Forestry Information",
+      "email": "opensource@ign.fr",
+      "policy": null,
+      "code": [
+        "https://github.com/IGNF"
+      ]
+    },
+    {
+      "id": "floss-opensource-paris-fr",
+      "name": "OSPO de la Ville de Paris",
+      "type": "government",
+      "countryCode": "FR",
+      "country": "France",
+      "city": "Paris",
+      "lat": 48.8566,
+      "lng": 2.3522,
+      "locationBasis": "seat",
+      "url": "https://opensource.paris.fr",
+      "description": "Open Source Program Office for the City of Paris",
+      "email": "opensource@paris.fr",
+      "policy": null,
+      "code": []
+    },
+    {
+      "id": "floss-strasbourg-eu-strategie-logiciels-libres",
+      "name": "OSPO de la Ville et l'Eurométropole de Strasbourg",
+      "type": "government",
+      "countryCode": "FR",
+      "country": "France",
+      "city": "Strasbourg",
+      "lat": 48.5734,
+      "lng": 7.7521,
+      "locationBasis": "seat",
+      "url": "https://www.strasbourg.eu/strategie-logiciels-libres",
+      "description": "The \"Free Software Strategy\" unit of the city and Eurometropole of Strasbourg aims to promote the use and development of Free Software within our territory.",
+      "email": "opensource@strasbourg.eu",
+      "policy": "https://www.strasbourg.eu/strategie-logiciels-libres",
+      "code": [
+        "https://github.com/Ville-Eurometropole-Strasbourg"
+      ]
+    },
+    {
+      "id": "floss-opensourcewerken-nl",
+      "name": "OSPO National Government The Netherlands",
+      "type": "government",
+      "countryCode": "NL",
+      "country": "Netherlands",
+      "city": "The Hague",
+      "lat": 52.0705,
+      "lng": 4.3007,
+      "locationBasis": "hq",
+      "url": "https://opensourcewerken.nl/",
+      "description": "This is the national OSPO of the Netherlands, currently housed at the Ministry of the Interior and Kingdom Relations (BZK)",
+      "email": "ospo@minbzk.nl",
+      "policy": "https://github.com/MinBZK/Open-Source-Program-Office",
+      "code": []
+    },
+    {
+      "id": "floss-pcll-ac-dijon-fr",
+      "name": "Pôle de compétences Logiciels Libres de l'Éducation nationale",
+      "type": "government",
+      "countryCode": "FR",
+      "country": "France",
+      "city": "Dijon",
+      "lat": 47.322,
+      "lng": 5.0415,
+      "locationBasis": "seat",
+      "url": "https://pcll.ac-dijon.fr",
+      "description": "The Logiciels Libres center develops open source software for the French education system",
+      "email": "eole@ac-dijon.fr",
+      "policy": null,
+      "code": [
+        "https://gitlab.mim-libre.fr/PCLL",
+        "https://gitlab.mim-libre.fr/EOLE",
+        "https://gitlab.mim-libre.fr/MIM",
+        "https://gitlab.mim-libre.fr/alphabet",
+        "https://gitlab.mim-libre.fr/men"
+      ]
+    },
+    {
+      "id": "floss-code-gouv-fr",
+      "name": "Pôle Open Source et Communs Numériques de la DINUM",
+      "type": "government",
+      "countryCode": "FR",
+      "country": "France",
+      "city": "Paris",
+      "lat": 48.8566,
+      "lng": 2.3522,
+      "locationBasis": "seat",
+      "url": "https://code.gouv.fr",
+      "description": "A mission dedicated to the use, development and promotion of Free Software and digital commons in public administration",
+      "email": "floss@numerique.gouv.fr",
+      "policy": "https://code.gouv.fr/fr/mission/#politique-logiciels-libres",
+      "code": [
+        "https://github.com/codegouvfr/",
+        "https://github.com/suitenumerique/",
+        "https://github.com/numerique-gouv/"
+      ]
+    },
+    {
+      "id": "floss-recia-fr",
+      "name": "RECIA",
+      "type": "government",
+      "countryCode": "FR",
+      "country": "France",
+      "city": "Orléans",
+      "lat": 47.9029,
+      "lng": 1.9093,
+      "locationBasis": "seat",
+      "url": "https://www.recia.fr",
+      "description": "RECIA Public Interest Group",
+      "email": "contact@recia.fr",
+      "policy": "https://www.recia.fr/innovation-logiciels-libres",
+      "code": [
+        "https://github.com/orgs/GIP-RECIA/repositories"
+      ]
+    },
+    {
+      "id": "floss-undp-org-digital",
+      "name": "United Nations Development Programme (UNDP)",
+      "type": "government",
+      "countryCode": "INT",
+      "country": "International",
+      "city": "New York",
+      "lat": 40.75,
+      "lng": -73.9686,
+      "locationBasis": "hq",
+      "url": "https://undp.org/digital",
+      "description": "UNDP Open Source Ecosystem Enablement",
+      "email": "opensource@undp.org",
+      "policy": null,
+      "code": [
+        "https://github.com/undp",
+        "https://opensource.unicc.org/un/undp"
+      ]
+    },
+    {
+      "id": "floss-scienceouverte-univ-grenoble-alpes-fr-a-propos-cellule-data-grenoble-alpes",
+      "name": "Cellule Codes Données Grenoble Alpes",
+      "type": "academic",
+      "countryCode": "FR",
+      "country": "France",
+      "city": "Grenoble",
+      "lat": 45.1885,
+      "lng": 5.7245,
+      "locationBasis": "seat",
+      "url": "https://scienceouverte.univ-grenoble-alpes.fr/a-propos/cellule-data-grenoble-alpes",
+      "description": "The Grenoble Alpes Data Codes Unit (CDGA) is an operational structure designed to support the Grenoble area's scientific communities in all matters relating to research data and codes.",
+      "email": "sos-codes-recherche@univ-grenoble-alpes.fr",
+      "policy": null,
+      "code": [
+        "https://gricad-gitlab.univ-grenoble-alpes.fr"
+      ]
+    },
+    {
+      "id": "floss-opentech-auth-gr",
+      "name": "Open Technologies Centre at the Aristotle University of Thessaloniki",
+      "type": "academic",
+      "countryCode": "EL",
+      "country": "Greece",
+      "city": "Thessaloniki",
+      "lat": 40.6318,
+      "lng": 22.956,
+      "locationBasis": "seat",
+      "url": "https://opentech.auth.gr/",
+      "description": "Το promote and harness the transformative potential of open technologies — technologies defined by their openness to free use, analysis, modification, and redistribution by any user",
+      "email": "opentech@auth.gr",
+      "policy": null,
+      "code": [
+        "https://github.com/CentreForOpenTechnologiesAUTH"
+      ]
+    }
+  ]
+}

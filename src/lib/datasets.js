@@ -1,4 +1,4 @@
-import { getContent, getCtfgProjects, getGovossCatalogues, getUnEndorsers } from '@/lib/content';
+import { getCtfgProjects, getGovossCatalogues, getOspoDirectory, getUnEndorsers } from '@/lib/content';
 import { SITE_URL } from '@/lib/seo';
 
 /**
@@ -102,44 +102,68 @@ function endorsers() {
     };
 }
 
-/** 18 public sector open source programme offices. Ours. */
+/** The public sector open source programme offices. The FLOSS-PSO Network's list
+ *  (CC0), with GovOSS's placements (CC0) — neither of them ours. */
 function ospos() {
-    const dir = getContent('resources')?.ospoDirectory;
-    if (!dir?.groups) return null;
-    // The groups are BY COUNTRY (`country`, not `title` — checked, after a first
-    // pass published `"group": null` on all 18 rows). Flattened with the country
-    // carried onto each office, because a consumer wanting one office should not
-    // have to reconstruct which bucket it came from.
+    const dir = getOspoDirectory();
+    if (!dir.groups.length) return null;
+    // Flattened with the country carried onto each office, because a consumer
+    // wanting one office should not have to reconstruct which bucket it came from.
+    // ⚠ FIELD NAMES ARE PUBLISHED: every field this file carried before the switch
+    // to GovOSS (country, name, city, lat, lng, locationBasis, url, description,
+    // email, flossPolicy) keeps its name and meaning. New fields are additions.
+    const offices = dir.groups.flatMap((g) =>
+        g.items.map((o) => ({
+            country: g.country,
+            countryCode: o.countryCode,
+            id: o.id,
+            type: o.type,
+            name: o.name,
+            city: o.city,
+            lat: o.lat,
+            lng: o.lng,
+            locationBasis: o.locationBasis,
+            url: o.url,
+            description: o.description,
+            email: o.email,
+            flossPolicy: o.flossPolicy,
+            code: o.code,
+        })),
+    );
     const ospoLicence = dir.licence ?? 'an unrecorded licence';
     const ospoCC0 = /^CC0\b/.test(dir.licence ?? '');
-    const offices = dir.groups.flatMap((g) =>
-        (g.items ?? []).map((o) => ({ country: g.country ?? null, ...o })),
-    );
+    const loc = dir.locations;
     return {
         ...envelope({
             slug: 'public-sector-ospos',
             name: 'Public sector open source programme offices',
             description:
-                'Government and public-sector OSPOs with their own websites, contact addresses and open source policies, from the FLOSS-PSO Network’s list, with coordinates added.',
+                'Government and public-sector OSPOs with their own websites, contact addresses and open source policies, from the FLOSS-PSO Network’s list, with coordinates from GovOSS.',
             count: offices.length,
             /* ⚠ THIS PAYLOAD CLAIMED TO BE OURS UNTIL 2026-09-14 — `licence: OURS`,
              * `source: 'UNNYC — compiled from each office's own website'`,
              * `sourceUrl: /resources`. It is not: all 18 entries are the FLOSS-PSO
-             * Network's CC0 list, and content/resources.md had recorded their URL
-             * the whole time. A machine-readable file telling reusers to credit
+             * Network's CC0 list. A machine-readable file telling reusers to credit
              * this campaign for someone else's compilation is the worst place for
-             * that error to sit, which is why it is corrected here rather than
-             * only on the map. Read from the markdown, never asserted. */
+             * that error to sit. Since 2026-10 the coordinates are not ours alone
+             * either: GovOSS maintains them (CC0), from placements this site made.
+             * Every licence and source below is READ from the snapshot, which read
+             * it from GovOSS's file — never asserted here. */
             licence: { licence: dir.licence ?? null, licenceUrl: dir.licenceUrl ?? null },
-            // The licence and what it implies are read from dir.licence, never
-            // typed: "no credit is required" is only true while it IS CC0.
-            attribution: `${dir.source ?? 'FLOSS-PSO Network'} (${dir.sourceUrl ?? 'https://floss-pso.network/'}) — the list is ${ospoLicence}, ${ospoCC0 ? 'so no credit is required; credit them anyway' : 'so credit them'}, not this site. Coordinates and locationBasis added by UNNYC (${SITE_URL}).`,
+            attribution:
+                `${dir.source ?? 'FLOSS-PSO Network'} (${dir.sourceUrl ?? 'https://floss-pso.network/'}) — the list is ${ospoLicence}, ` +
+                `${ospoCC0 ? 'so no credit is required; credit them anyway' : 'so credit them'}, not this site.` +
+                (loc ? ` Coordinates and locationBasis: ${loc.source} (${loc.sourceUrl}), ${loc.licence}, from placements originally made by UNNYC (${SITE_URL}).` : ''),
             source: dir.source ?? null,
             sourceUrl: dir.sourceUrl ?? null,
-            generated: null,
+            generated: dir.generated ?? null,
             notes: [
-                `The list of offices is the FLOSS-PSO Network’s, released ${ospoLicence}${ospoCC0 ? ' — no attribution required' : ''}. What this site adds is the geocoding: \`lat\`/\`lng\` and \`locationBasis\` on each office.`,
-                'Coordinates are hand-placed. `locationBasis: "seat"` means the body’s own city; `"hq"` means it sits at its parent organisation’s headquarters, so the point is approximate — the two are different claims and are not interchangeable.',
+                `The list of offices is the FLOSS-PSO Network’s, as republished by GovOSS, and released ${ospoLicence}${ospoCC0 ? ' — no attribution required' : ''}. GovOSS fetched it from FLOSS-PSO at ${dir.listFetchedAt ?? 'an unrecorded time'}.`,
+                loc
+                    ? `The coordinates (\`lat\`/\`lng\`, \`locationBasis\`) are ${loc.source}’s, ${loc.licence}. Most were copied from this site’s own earlier hand placements; corrections now go to ${loc.source}.`
+                    : 'The coordinates have no recorded provenance in this snapshot.',
+                '`locationBasis: "seat"` means the office’s own city; `"hq"` means its parent organisation’s headquarters, so the point is approximate — the two are different claims and are not interchangeable.',
+                '`flossPolicy` is omitted (null) where upstream’s policy link is the office’s own URL. `code` lists the office’s code forges, possibly empty.',
                 'The map at /start groups these by city and merges cities within 25 km, which changes what is DRAWN and never what is claimed. This dataset is ungrouped.',
             ],
         }),

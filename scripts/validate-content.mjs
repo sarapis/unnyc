@@ -309,6 +309,7 @@ const JSON_REQUIRED = {
     'ctfg-gov-open-source.json': 'projects',
     'govoss-catalogues.json': 'countries',
     'un-endorsers.json': 'organizations',
+    'govoss-ospos.json': 'ospos',
 };
 const jsonFiles = fs.readdirSync(CONTENT_DIR).filter((f) => f.endsWith('.json')).sort();
 for (const file of jsonFiles) {

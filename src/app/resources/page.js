@@ -7,7 +7,7 @@ import './resources.css';
 import '../keep-going.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import UnnycKeepGoing from '@/components/unnyc/primer/UnnycKeepGoing';
-import { getContent, inlineMd } from '@/lib/content';
+import { getContent, getOspoDirectory, inlineMd } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
 import { datasetIndex } from '@/lib/datasets';
 import StructuredData from '@/components/unnyc/StructuredData';
@@ -31,23 +31,45 @@ export async function generateMetadata() {
  */
 export default function ResourcesPage() {
     const doc = getContent('resources');
+    const ospoDirectory = getOspoDirectory();
+    /* Only what the cards render goes to the client component: anything else on
+     * the prop (forge lists, ids, coordinates, provenance) would be serialised into
+     * the HTML of every visit and read by nobody. The full records are published at
+     * /data/public-sector-ospos.json. */
+    const { locations: _locations, ...ospoProse } = ospoDirectory;
+    const ospoCards = {
+        ...ospoProse,
+        groups: ospoDirectory.groups.map((g) => ({
+            country: g.country,
+            items: g.items.map(({ name, url, city, description, email, flossPolicy }) => ({
+                name,
+                url,
+                city,
+                description,
+                email,
+                flossPolicy,
+            })),
+        })),
+    };
 
     return (
         <>
-            {/* The 18 public sector OSPOs. No coordinates — see the note in
-                src/lib/structured-data.js about locationBasis. */}
+            {/* The public sector OSPOs, from the same loader the cards use. No
+                coordinates — see the note in src/lib/structured-data.js about
+                locationBasis. */}
             <StructuredData
                 data={ospoListLd({
-                    groups: doc.ospoDirectory?.groups ?? [],
+                    groups: ospoDirectory.groups,
                     path: '/resources',
-                    name: doc.ospoDirectory?.title ?? 'Public sector open source programme offices',
+                    name: ospoDirectory.title ?? 'Public sector open source programme offices',
                 })}
             />
             {/* ⚠ NO `Dataset` MARKUP HERE — removed 2026-09-14, and deliberately
                 not replaced. datasetLd is for data THIS SITE MADE, because it
                 emits `creator: this site`. The OSPO directory turned out to be
-                the FLOSS-PSO Network's CC0 list, not our compilation (only the
-                coordinates are ours), so marking it up would nominate us as the
+                the FLOSS-PSO Network's CC0 list, not our compilation (and since
+                2026-10 not even the coordinates are ours alone — they are GovOSS's,
+                copied from our original placements), so marking it up would nominate us as the
                 thing to cite for someone else's data — which the payload's own
                 attribution string now explicitly tells reusers not to do.
                 The ItemList above stays: it describes what this PAGE shows,
@@ -64,7 +86,7 @@ export default function ResourcesPage() {
                 railItems={doc.sectionNav}
                 resourceGroups={doc.resourceGroups}
                 contacts={doc.contacts}
-                ospoDirectory={doc.ospoDirectory}
+                ospoDirectory={ospoCards}
                 openData={doc.openData}
                 datasets={datasetIndex().datasets}
             />

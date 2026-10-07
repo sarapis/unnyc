@@ -514,8 +514,10 @@ Thirteen routes. The reader path is `/` → `/start` → `/principles` → `/cro
   (`floss-pso.network`, run by the OSPO Alliance), released **CC0 1.0** —
   verified name-for-name against their page. `content/resources.md` had recorded
   their `sourceUrl` the whole time and only `/resources` surfaced it, so the map
-  credited "this site" while the page below it credited them. **Only the
-  `lat`/`lng` and `locationBasis` are ours.** ⚠ CC0 requires NO attribution, so
+  credited "this site" while the page below it credited them. ⚠ **Since 2026-10
+  not even the coordinates are ours alone.** The list is a snapshot of govoss's
+  `/ospos.json` (`scripts/fetch-govoss-ospos.mjs`, see docs/MAP-LAYERS.md), and its
+  placements are GovOSS's, CC0, copied from our original ones. ⚠ CC0 requires NO attribution, so
   nothing enforces this credit — it is a decision, which makes it the easiest of
   the four to lose in a future edit.
   ⚠ **`Dataset` JSON-LD is only for data THIS SITE MADE — now just `/principles`'
