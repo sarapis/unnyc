@@ -17,7 +17,9 @@
  * (ospo_contract.py in sarapis/govoss-catalog, enforced by their tests). Everything
  * this script reads is in that contract, and anything outside it THROWS rather than
  * being guessed at:
- *   - top level: generated_at, sources, ospos, licence, country_codes;
+ *   - top level: generated_at, sources, ospos, licence, country_codes,
+ *     country_names (our group headings — read, since 2026-10, instead of a table
+ *     of our own; a FLOSS-PSO row whose code has no name throws);
  *   - licence.govoss_fields / licence.lists, and sources["floss-pso"].licence —
  *     READ and matched VERBATIM against LICENCES, never typed into the output;
  *   - sources["floss-pso"]: url (the credit link), fetched_at, count, ok;
@@ -33,6 +35,13 @@
  *     GovOSS's, CC0 1.0 — and most of the 18 were copied from this site's own
  *     hand placements in content/resources.md, before this script replaced them.
  *     From now on a placement correction goes to GovOSS, not into our markdown.
+ *
+ * DRY RUN: `node scripts/fetch-govoss-ospos.mjs --from <url>` runs every check
+ * against another file and WRITES NOTHING. Its purpose is
+ * https://govoss.cat/ospos.example-failed.json — govoss's failed-state example,
+ * written by the same code as a real failure — which must be refused below. A
+ * file carrying govoss's top-level `example` key ("NOT LIVE DATA…") is never
+ * written, whatever the flags, so a test file cannot become our data.
  *
  * ⚠ ok:false MEANS "STALE", so this refuses. GovOSS keeps serving the last good list
  * when FLOSS-PSO's fetch fails — and holds back a new office until it has placed it —
@@ -76,26 +85,6 @@ const LICENCES = {
     lists: { "each list's own: sources[*].licence": true },
 };
 
-/**
- * Our group heading per country code. Only the codes the FLOSS-PSO rows use need an
- * entry; a FLOSS-PSO row with any other code throws, so a new country is a decision
- * about a heading, not a silent "undefined" group. (GovOSS's own `country_codes`
- * values are descriptions — "Greece (the EU's code; ISO is GR)" — not headings.)
- */
-const COUNTRY_NAMES = {
-    US: 'United States',
-    INT: 'International',
-    DE: 'Germany',
-    DK: 'Denmark',
-    EL: 'Greece',
-    FR: 'France',
-    NL: 'Netherlands',
-    ES: 'Spain',
-    GB: 'United Kingdom',
-    IE: 'Ireland',
-    LU: 'Luxembourg',
-};
-
 const die = (msg) => {
     throw new Error(`fetch-govoss-ospos: ${msg}`);
 };
@@ -103,16 +92,25 @@ const ISO = /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$/;
 const str = (v) => typeof v === 'string' && v.trim().length > 0;
 const strOrNull = (v) => v === null || typeof v === 'string';
 
-const r = await fetch(`${GOVOSS}/ospos.json`, { signal: AbortSignal.timeout(60000) });
-if (!r.ok) die(`${GOVOSS}/ospos.json → ${r.status}`);
+const fromAt = process.argv.indexOf('--from');
+const FROM = fromAt > -1 ? process.argv[fromAt + 1] : `${GOVOSS}/ospos.json`;
+const DRY = fromAt > -1;
+if (DRY && !/^https:\/\//.test(FROM ?? '')) die('--from needs an https:// URL');
+
+const r = await fetch(FROM, { signal: AbortSignal.timeout(60000) });
+if (!r.ok) die(`${FROM} → ${r.status}`);
 const file = await r.json();
+if (DRY) console.log(`dry run against ${FROM} — nothing will be written`);
+// govoss's example files say so at the top level; the live file never does.
+if (file?.example != null && !DRY) die(`${FROM} is an example file ("${String(file.example).slice(0, 40)}…"), not live data`);
 
 // ---------------------------------------------------------------- top level
-for (const k of ['generated_at', 'sources', 'ospos', 'licence', 'country_codes'])
+for (const k of ['generated_at', 'sources', 'ospos', 'licence', 'country_codes', 'country_names'])
     if (file?.[k] == null) die(`no \`${k}\``);
 if (!ISO.test(file.generated_at)) die(`generated_at "${file.generated_at}" is not ISO 8601 UTC`);
 if (!Array.isArray(file.ospos)) die('`ospos` is not an array');
 if (typeof file.country_codes !== 'object') die('`country_codes` is not an object');
+if (typeof file.country_names !== 'object') die('`country_names` is not an object');
 
 // ---------------------------------------------------------------- licences
 const govossFields = LICENCES.govossFields[file.licence.govoss_fields];
@@ -162,7 +160,7 @@ const ospos = rows.map((o) => {
     if (!Array.isArray(o.code) || !o.code.every((u) => str(u))) die(`${at}: code is not an array of URLs`);
     if (!['government', 'academic'].includes(o.type)) die(`${at}: type "${o.type}"`);
     if (!(o.country in file.country_codes)) die(`${at}: country "${o.country}" is not a key of country_codes`);
-    if (!COUNTRY_NAMES[o.country]) die(`${at}: country "${o.country}" has no heading in COUNTRY_NAMES — add one deliberately`);
+    if (!str(file.country_names[o.country])) die(`${at}: country "${o.country}" has no name in country_names`);
     const L = o.location ?? die(`${at}: no location`);
     if (typeof L.lat !== 'number' || L.lat < -90 || L.lat > 90) die(`${at}: location.lat ${L.lat}`);
     if (typeof L.lon !== 'number' || L.lon < -180 || L.lon > 180) die(`${at}: location.lon ${L.lon}`);
@@ -177,7 +175,7 @@ const ospos = rows.map((o) => {
         name: o.name,
         type: o.type,
         countryCode: o.country,
-        country: COUNTRY_NAMES[o.country],
+        country: file.country_names[o.country],
         city: L.place,
         lat: L.lat,
         lng: L.lon,
@@ -219,6 +217,10 @@ const data = {
     ospos,
 };
 
+if (DRY) {
+    console.log(`dry run passed: ${ospos.length} offices would be written — nothing was`);
+    process.exit(0);
+}
 writeFileSync(OUT, JSON.stringify(data, null, 2) + '\n');
 
 const byType = ospos.reduce((m, o) => ((m[o.type] = (m[o.type] ?? 0) + 1), m), {});
