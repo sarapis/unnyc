@@ -137,7 +137,20 @@ for (const o of file.ospos) {
     if (ids.has(o.id)) die(`duplicate id "${o.id}"`);
     ids.add(o.id);
 }
+/* ⚠ FILTER BY SOURCE, NEVER BY TYPE. Since 2026-10-09 /ospos.json also carries
+ * the academic map (31 rows) and the TODO Group's OSPO landscape (120 rows, 118
+ * `corporate`) — and TWO of the TODO rows are typed `government` (CAICT, China;
+ * IPA, Japan). `type === 'government'` would pull them in under an Apache-2.0
+ * licence this script does not handle, onto a page that credits FLOSS-PSO.
+ * Other sources' rows are deliberately NOT validated. The contract scopes
+ * placement BY SOURCE (govoss `about`, PLACEMENT, 2026-10-09): every FLOSS-PSO
+ * row has a location and a country, while academic-map and todo-landscape rows
+ * MAY have both null together. Asserting "every row is placed" here would fail a
+ * refresh of OUR 18 over an unplaced company we never read. Only id uniqueness
+ * spans every row, because the contract promises it file-wide and our
+ * overrides key on ids. */
 const rows = file.ospos.filter((o) => o.source === SOURCE);
+const ignored = file.ospos.reduce((m, o) => (o.source === SOURCE ? m : ((m[o.source] = (m[o.source] ?? 0) + 1), m)), {});
 if (!Number.isInteger(src.count) || src.count !== rows.length)
     die(`sources["${SOURCE}"].count is ${src.count} but there are ${rows.length} "${SOURCE}" rows`);
 if (!rows.length) die(`zero "${SOURCE}" rows`);
@@ -212,6 +225,7 @@ const byType = ospos.reduce((m, o) => ((m[o.type] = (m[o.type] ?? 0) + 1), m), {
 console.log(`wrote ${ospos.length} offices (${Object.entries(byType).map(([k, v]) => `${v} ${k}`).join(', ')}) → content/govoss-ospos.json`);
 console.log(`  list: ${data.source} (${data.licence}), fetched ${src.fetched_at}`);
 console.log(`  placements: ${data.locations.source} (${data.locations.licence})`);
+console.log(`  ignored, by design: ${Object.entries(ignored).map(([k, v]) => `${v} ${k}`).join(', ') || 'nothing'}`);
 /* The pinned description overrides in content/resources.md. A refresh that changes
  * an overridden office's text will FAIL THE BUILD (getOspoDirectory throws) — say so
  * here, where whoever ran the refresh is looking, rather than at deploy time. */
