@@ -235,6 +235,15 @@ refresh while `sources["floss-pso"].ok` is false**, because govoss then serves i
 good copy and holds back any office it hasn't placed yet. Re-stamping that as today's
 data is the stale-claim shape this repo keeps meeting.
 
+Since 2026-10-09 the file also carries the academic map and the TODO Group's
+corporate OSPO landscape. The script **filters by source, never by type**, because two
+TODO rows are typed `government` (CAICT, IPA). It leaves other sources' rows
+unvalidated; govoss's contract lets them be unplaced. Country headings are read from
+govoss's `country_names`. To exercise the refusal path without writing anything, run
+`node scripts/fetch-govoss-ospos.mjs --from https://govoss.cat/ospos.example-failed.json`.
+It must refuse. A file carrying govoss's `example` key is never written, whatever the
+flags.
+
 **Whose is what.** The **list** is the **FLOSS-PSO Network**'s (`floss-pso.network`,
 OSPO Alliance), aggregated from each body's own YAML, **CC0 1.0**. The **placements**
 (lat/lng, city, `seat`/`hq`) are **GovOSS**'s, also **CC0 1.0**. Most were copied from
