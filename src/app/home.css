@@ -864,7 +864,13 @@ html:has(.unnyc-home-story)::-webkit-scrollbar-thumb:hover {
   padding: 0 var(--wg-sp-2);
 }
 
+/* ⚠ `margin: 0 auto` is what centres the photo, NOT the parent's text-align.
+   unnyc.css's `.unnyc-page img { display: block }` makes every image a block,
+   and text-align does not move a block — so the three photos sat at the left
+   of their columns while the New York "?" (a div with auto margins) sat
+   centred, off-axis from its own label by ~70px at 1440. */
 .unnyc-home-story__case img {
+  margin: 0 auto;
   width: 116px;
   height: 116px;
   border-radius: 999px;
