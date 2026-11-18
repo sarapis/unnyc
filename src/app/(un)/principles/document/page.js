@@ -1,4 +1,4 @@
-import '../../printable-doc.css';
+import '../../../printable-doc.css';
 import UnnycIcon from '@/components/unnyc/UnnycIcon';
 import PrintButton from '@/components/unnyc/PrintButton';
 import { getContent } from '@/lib/content';

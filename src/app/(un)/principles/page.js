@@ -1,11 +1,11 @@
 import UnnycPrinciplesStoryscroller from '@/components/unnyc/primer/UnnycPrinciplesStoryscroller';
-import '../primer.css';
+import '../../primer.css';
 import './principles.css';
 /* The "Let's keep going" band's look. ⚠ Shared with the other three
  * storyscroller routes — page CSS is per-route, so every route that renders
  * UnnycKeepGoing must import it or the band is unstyled on a fresh load.
  * See src/app/keep-going.css. */
-import '../keep-going.css';
+import '../../keep-going.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import UnnycKeepGoing from '@/components/unnyc/primer/UnnycKeepGoing';
 import { getContent, getUnEndorsers, inlineMd, principlesResolve } from '@/lib/content';

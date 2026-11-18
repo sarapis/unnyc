@@ -1,5 +1,5 @@
 import './campaign.css';
-import '../primer.css';
+import '../../primer.css';
 import UnnycPathCards from '@/components/unnyc/primer/UnnycPathCards';
 import { getContent } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
