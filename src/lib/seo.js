@@ -61,6 +61,23 @@
  */
 export const SITE_URL = 'https://un.opensource.nyc';
 
+/**
+ * ⚠ THE COUNCIL SITE (2026-11): the same deployment on a second host, arguing for
+ * an open-source-by-default local law. Its pages live at src/app/(council)/council/*
+ * and are served at council.opensource.nyc/* by the host rewrite in
+ * next.config.mjs, so its ROUTES use PUBLIC paths ("/bill") with `site: 'council'`.
+ *
+ * ⚠ COUNCIL_LIVE gates everything outward-facing. Until the domain answers and the
+ * model bill has been reviewed, every Council page is `noindex`, has NO canonical
+ * (a canonical on a noindex page is a contradiction — see /campaign/endorse/document)
+ * and is left out of every sitemap and llms.txt. Flip it in the same PR that adds
+ * the domain.
+ */
+export const COUNCIL_URL = 'https://council.opensource.nyc';
+export const COUNCIL_LIVE = false;
+export const SITE_URLS = { un: SITE_URL, council: COUNCIL_URL };
+const SITE_NAMES = { un: 'UNNYC', council: 'Open by Default NYC' };
+
 /** Open Graph's expected image size, restated here so metadata doesn't have to
  *  import the renderer (src/lib/og-image.js reads the filesystem and pulls in
  *  next/og — not something every page's metadata should drag along). Keep the
@@ -92,9 +109,16 @@ export const ROUTES = [
     { path: '/resources', content: 'resources', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/resources/guide', content: 'guide', priority: 0.7, changeFrequency: 'yearly' },
     { path: '/contact', content: 'contact', priority: 0.5, changeFrequency: 'yearly' },
+    // The Council site — PUBLIC paths on council.opensource.nyc.
+    { site: 'council', path: '/', content: 'council-home', priority: 1.0, changeFrequency: 'weekly' },
+    { site: 'council', path: '/bill', content: 'council-bill', priority: 0.9, changeFrequency: 'monthly' },
 ];
 
-const BY_PATH = new Map(ROUTES.map((r) => [r.path, r]));
+/** Which site a route belongs to; the UN site is the default. */
+const siteOf = (r) => r.site ?? 'un';
+const isLive = (r) => siteOf(r) !== 'council' || COUNCIL_LIVE;
+
+const BY_PATH = new Map(ROUTES.map((r) => [`${siteOf(r)}:${r.path}`, r]));
 
 /**
  * The meta block a route reads out of its content file — `meta` for almost
@@ -119,19 +143,22 @@ export function routeMeta(doc, route) {
 
 /** One route entry by path. Returns undefined for an unknown path — callers
  *  that must not silently accept one (`pageMetadata`) check for themselves. */
-export function routeForPath(path) {
-    return BY_PATH.get(path);
+export function routeForPath(path, site = 'un') {
+    return BY_PATH.get(`${site}:${path}`);
 }
 
-/** The routes that belong in the sitemap — everything except `indexable: false`. */
-export function indexableRoutes() {
-    return ROUTES.filter((r) => r.indexable !== false);
+/** One site's routes that belong in its sitemap — everything except
+ *  `indexable: false`, and nothing from a site that is not live yet. */
+export function indexableRoutes(site = 'un') {
+    return ROUTES.filter((r) => siteOf(r) === site && r.indexable !== false && isLive(r));
 }
 
 /** The routes that get a generated link-preview image: the indexable ones that
  *  name a content file. `/campaign/endorse/document` has neither — it is a
  *  noindex printable with hand-written metadata. */
 export function imageRoutes() {
+    // Council routes get their images before launch on purpose: a preview card
+    // is checkable now, and nothing links to it until the pages are indexable.
     return ROUTES.filter((r) => r.indexable !== false && r.content);
 }
 
@@ -145,8 +172,10 @@ export function imageRoutes() {
  * the image route's own tests-by-construction (generateStaticParams would
  * produce a duplicate param and Next would fail the build).
  */
-export function ogSlug(path) {
-    return path === '/' ? 'home' : path.slice(1).replace(/\//g, '-');
+export function ogSlug(path, site = 'un') {
+    const base = path === '/' ? 'home' : path.slice(1).replace(/\//g, '-');
+    // Council slugs are prefixed so '/' on both sites cannot share one image.
+    return site === 'un' ? base : `${site}-${base}`;
 }
 
 /**
@@ -165,8 +194,13 @@ export function ogHeadline(ogTitle) {
 
 /** Where a route's generated preview image lives. Relative on purpose — Next
  *  resolves it against `metadataBase`, same as the canonical. */
-export function ogImagePath(path) {
-    return `/og/${ogSlug(path)}.png`;
+export function ogImagePath(path, site = 'un') {
+    return `/og/${ogSlug(path, site)}.png`;
+}
+
+/** Which site a route entry belongs to — for callers holding a route object. */
+export function routeSite(route) {
+    return siteOf(route);
 }
 
 /**
@@ -181,8 +215,8 @@ export function ogImagePath(path) {
  * route. It is written once and drives both the canonical and og:url — typing
  * those separately is a wrong canonical waiting to happen.
  */
-export function pageMetadata(meta, path, ogType = 'article') {
-    const route = BY_PATH.get(path);
+export function pageMetadata(meta, path, ogType = 'article', site = 'un') {
+    const route = BY_PATH.get(`${site}:${path}`);
     if (!route) {
         // Loud on purpose. The alternative is a page that renders fine, states
         // a canonical for a URL the sitemap never mentions, and looks correct.
@@ -198,7 +232,9 @@ export function pageMetadata(meta, path, ogType = 'article') {
         // `indexable: false` routes set their own metadata by hand and never
         // reach this branch, but guard anyway — a canonical is the one field
         // that must not appear on a noindex page.
-        ...(route.indexable === false ? {} : { alternates: { canonical: path } }),
+        ...(route.indexable === false || !isLive(route) ? {} : { alternates: { canonical: path } }),
+        // A site that is not live yet asks not to be indexed at all — see COUNCIL_LIVE.
+        ...(isLive(route) ? {} : { robots: { index: false, follow: false } }),
         openGraph: {
             title: meta.ogTitle,
             description: meta.ogDescription,
@@ -211,13 +247,13 @@ export function pageMetadata(meta, path, ogType = 'article') {
             // thirteen routes — og:type survived only because each page
             // happened to re-declare it. Verified against production: no
             // og:site_name, no og:locale, anywhere.
-            siteName: 'UNNYC',
+            siteName: SITE_NAMES[site],
             locale: 'en_US',
             ...(route.content
                 ? {
                       images: [
                           {
-                              url: ogImagePath(path),
+                              url: ogImagePath(path, site),
                               width: OG_WIDTH,
                               height: OG_HEIGHT,
                               // Describes the image's own words, because that
@@ -227,7 +263,7 @@ export function pageMetadata(meta, path, ogType = 'article') {
                               // ogTitles already end in "— UNNYC", so
                               // appending it produced "Contact — UNNYC —
                               // UNNYC" on eight of the twelve routes.
-                              alt: `${ogHeadline(meta.ogTitle)} — UNNYC`,
+                              alt: `${ogHeadline(meta.ogTitle)} — ${SITE_NAMES[site]}`,
                           },
                       ],
                   }

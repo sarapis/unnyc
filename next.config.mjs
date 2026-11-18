@@ -1,3 +1,5 @@
+import { COUNCIL_LIVE, COUNCIL_URL } from './src/lib/seo.js';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
@@ -25,8 +27,64 @@ const nextConfig = {
             },
         ],
     },
+    /* ⚠ THE COUNCIL SITE IS THE SAME DEPLOYMENT ON ANOTHER HOST (2026-11).
+     * council.opensource.nyc/<path> is served from src/app/(council)/council/<path>,
+     * which has its own root layout (nav, footer, metadataBase). `beforeFiles` so
+     * the host wins over this app's own `/` page; the exclusions are what both
+     * sites share and must keep serving from one place: Next's assets, the
+     * public image folders, the generated OG images and the /data payloads.
+     * The host test is a pattern, not a literal, so `council.localhost:<port>`
+     * exercises exactly this rule in development.
+     * Links inside the Council pages use PUBLIC paths ("/bill"), never
+     * "/council/bill" — that path only exists behind this rewrite. */
+    async rewrites() {
+        return {
+            beforeFiles: [
+                {
+                    source: '/:path((?!_next/|council(?:/|$)|images/|case-images/|og/|data/|favicon\\.svg$).*)',
+                    has: [{ type: 'host', value: 'council\\..+' }],
+                    destination: '/council/:path',
+                },
+            ],
+        };
+    },
     async redirects() {
         return [
+            /* The Council pages' INTERNAL path, /council/*, is not an address
+             * anyone should use. On the Council host it folds into the public
+             * path. On every other host it folds into the Council site — but only
+             * once COUNCIL_LIVE (src/lib/seo.js): until the domain answers,
+             * /council/* on a preview deployment is the only way to see it. */
+            // ⚠ The bare path needs its own rule: `/council/:path*` matches
+            // "/council" with an EMPTY path and sends an empty Location header.
+            {
+                source: '/council',
+                has: [{ type: 'host', value: 'council\\..+' }],
+                destination: '/',
+                permanent: false,
+            },
+            {
+                source: '/council/:path+',
+                has: [{ type: 'host', value: 'council\\..+' }],
+                destination: '/:path+',
+                permanent: false,
+            },
+            ...(COUNCIL_LIVE
+                ? [
+                      {
+                          source: '/council',
+                          missing: [{ type: 'host', value: 'council\\..+' }],
+                          destination: COUNCIL_URL,
+                          permanent: true,
+                      },
+                      {
+                          source: '/council/:path+',
+                          missing: [{ type: 'host', value: 'council\\..+' }],
+                          destination: `${COUNCIL_URL}/:path+`,
+                          permanent: true,
+                      },
+                  ]
+                : []),
             // The campaign moved to the un.opensource.nyc SUBDOMAIN on
             // 2026-08-20, so the apex is free for a future opensource.nyc
             // homepage. Every other hostname folds into the subdomain.

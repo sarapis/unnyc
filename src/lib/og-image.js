@@ -64,7 +64,15 @@ function headlineSize(text) {
 
 export { ogHeadline };
 
-export function renderOgImage(headline) {
+/* Per-site wordmark and host. The Council site splits its name the same way the
+ * UN site splits "UN" / "NYC": blue, then orange. */
+const SITE_MARKS = {
+    un: { first: 'UN', second: 'NYC', host: 'un.opensource.nyc' },
+    council: { first: 'OPEN BY DEFAULT', second: ' NYC', host: 'council.opensource.nyc' },
+};
+
+export function renderOgImage(headline, site = 'un') {
+    const mark = SITE_MARKS[site] ?? SITE_MARKS.un;
     return new ImageResponse(
         (
             <div
@@ -81,8 +89,8 @@ export function renderOgImage(headline) {
             >
                 {/* Wordmark — the same UN/NYC colour split as the site nav. */}
                 <div style={{ display: 'flex', alignItems: 'baseline', fontSize: 54, letterSpacing: 1 }}>
-                    <span style={{ color: UN_BLUE }}>UN</span>
-                    <span style={{ color: NYC_ORANGE }}>NYC</span>
+                    <span style={{ color: UN_BLUE }}>{mark.first}</span>
+                    <span style={{ color: NYC_ORANGE, whiteSpace: 'pre' }}>{mark.second}</span>
                 </div>
 
                 <div
@@ -100,7 +108,7 @@ export function renderOgImage(headline) {
                 </div>
 
                 <div style={{ display: 'flex', fontSize: 28, color: MUTED, letterSpacing: 0.5 }}>
-                    un.opensource.nyc
+                    {mark.host}
                 </div>
 
                 {/* The orange rule under the site header, repeated here so the

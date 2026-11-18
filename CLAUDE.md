@@ -87,6 +87,28 @@ Commits and branches ARE shared instantly (one object store), so the other
 worktree's work shows up in `git log` with no fetching. Remove a worktree when
 its branch merges; stale ones accumulate 350 MB apiece.
 
+## ⚠ TWO SITES, ONE APP (since 2026-11)
+
+`un.opensource.nyc` (the UN Principles campaign) and **`council.opensource.nyc`**
+("Open by Default NYC", the case for an open-source-by-default local law) are one
+deployment with two root layouts: routes live in `src/app/(un)/` and
+`src/app/(council)/council/`. A host rewrite in `next.config.mjs` serves
+`council.<anything>/<path>` from `/council/<path>`, so it also works on
+`council.localhost:3100` in development.
+
+- **Council pages link with PUBLIC paths** (`/bill`, never `/council/bill`), and
+  link to anything on the UN site ABSOLUTELY (`SITE_URL + '/contact'`), because a
+  bare `/contact` on the Council host resolves to a Council page.
+- **`COUNCIL_LIVE` in `src/lib/seo.js` gates launch:** until it flips, Council pages
+  are `noindex` with no canonical, stay out of the sitemap and `llms.txt`, and
+  `/council/*` still answers on other hosts so previews work. Flip it in the PR that
+  adds the domain, after the model bill (`content/council-bill.md`, whose `checks`
+  list what counsel must confirm) has been reviewed.
+- **Each group has a `[...missing]` catch-all** that calls `notFound()`. With no
+  `app/layout.js`, that is what gives an unknown URL its own site's nav on the 404.
+- `SiteDocument` holds the shared `<html>` shell (fonts, flex-gap probe); the nav
+  and footer take props for the Council wordmark and links.
+
 ## All copy is in `content/*.md`
 
 One file per page, frontmatter for structure + markdown body for prose, rendered at

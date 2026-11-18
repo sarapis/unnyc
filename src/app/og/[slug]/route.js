@@ -1,5 +1,5 @@
 import { getContent } from '@/lib/content';
-import { imageRoutes, ogSlug, routeMeta } from '@/lib/seo';
+import { imageRoutes, ogSlug, routeMeta, routeSite } from '@/lib/seo';
 import { ogHeadline, renderOgImage, OG_CONTENT_TYPE } from '@/lib/og-image';
 
 /**
@@ -29,12 +29,12 @@ export const contentType = OG_CONTENT_TYPE;
 export function generateStaticParams() {
     // `.png` is part of the slug rather than a real extension: crawlers key on
     // Content-Type, but a bare /og/start looks like a page in a log or a paste.
-    return imageRoutes().map((r) => ({ slug: `${ogSlug(r.path)}.png` }));
+    return imageRoutes().map((r) => ({ slug: `${ogSlug(r.path, routeSite(r))}.png` }));
 }
 
 export async function GET(request, { params }) {
     const { slug } = await params;
-    const route = imageRoutes().find((r) => `${ogSlug(r.path)}.png` === slug);
+    const route = imageRoutes().find((r) => `${ogSlug(r.path, routeSite(r))}.png` === slug);
 
     // Only reachable if someone requests a slug by hand; every real caller comes
     // from generateStaticParams. 404 rather than a blank image, so a mistyped
@@ -46,5 +46,5 @@ export async function GET(request, { params }) {
     // document page names its own block, so this is what keeps their previews
     // from being the same image.
     const meta = routeMeta(getContent(route.content), route);
-    return renderOgImage(ogHeadline(meta.ogTitle));
+    return renderOgImage(ogHeadline(meta.ogTitle), routeSite(route));
 }
