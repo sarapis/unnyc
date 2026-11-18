@@ -1,0 +1,458 @@
+/* The Council site (council.opensource.nyc). Imported by src/app/(council)/layout.js.
+   One owner for every `council*` class — nothing else styles them.
+
+   ⚠ Every rule touching an element the `.unnyc-page` resets reach (a, ul, ol,
+   button) is scoped with `.unnyc-page`, or the (0,1,1) resets win. Layouts are
+   GRID, not flex+gap, so none of this needs the generated flex-gap fallback. */
+
+.council-site .unnyc-nav__logo-nyc {
+  white-space: pre;
+}
+
+/* --- hero --------------------------------------------------------------- */
+.council__hero {
+  background: linear-gradient(160deg, var(--wg-brand-deep) 0%, var(--wg-brand) 100%);
+  color: var(--wg-text-on-brand);
+  padding: var(--wg-sp-24) 0 var(--wg-sp-20);
+}
+
+.council__hero--short {
+  padding: var(--wg-sp-16) 0 var(--wg-sp-12);
+}
+
+.council__kicker {
+  margin: 0 0 var(--wg-sp-3);
+  font-size: var(--wg-fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--wg-accent-warm-light);
+}
+
+.council__kicker--dark {
+  color: var(--wg-accent-strong);
+}
+
+.council__title {
+  margin: 0 0 var(--wg-sp-6);
+  max-width: 18ch;
+  font-family: var(--wg-font-display);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1.05;
+  color: var(--wg-text-on-brand);
+}
+
+.council__title span {
+  color: var(--wg-accent-warm-light);
+}
+
+.council__lede {
+  margin: 0 0 var(--wg-sp-8);
+  max-width: 62ch;
+  font-size: var(--wg-fs-lg);
+  line-height: 1.6;
+  color: var(--wg-text-on-brand);
+}
+
+.council__status {
+  margin: 0 0 var(--wg-sp-6);
+  max-width: 70ch;
+  padding: var(--wg-sp-3) var(--wg-sp-4);
+  border-left: 3px solid var(--wg-accent-warm);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: var(--wg-fs-sm);
+  line-height: 1.5;
+}
+
+.council__actions {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: start;
+  align-items: center;
+  gap: var(--wg-sp-6);
+}
+
+/* --- sections ----------------------------------------------------------- */
+.council__section {
+  padding: var(--wg-sp-20) 0;
+  background: var(--wg-surface);
+}
+
+.council__section--warm {
+  background: var(--wg-surface-warm);
+}
+
+.council__section--band {
+  background: var(--wg-brand);
+  color: var(--wg-text-on-brand);
+}
+
+.council__split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--wg-sp-12);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .council__split {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--wg-sp-16);
+  }
+}
+
+.council__h2 {
+  margin: 0 0 var(--wg-sp-4);
+  font-family: var(--wg-font-display);
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  line-height: 1.15;
+  color: var(--wg-brand);
+}
+
+.council__h2--inverse {
+  color: var(--wg-text-on-brand);
+}
+
+.council__h3 {
+  margin: var(--wg-sp-16) 0 var(--wg-sp-6);
+  font-family: var(--wg-font-display);
+  font-size: var(--wg-fs-2xl);
+  color: var(--wg-brand);
+}
+
+.council__body {
+  margin: 0 0 var(--wg-sp-6);
+  max-width: 62ch;
+  font-size: var(--wg-fs-base);
+  line-height: 1.7;
+  color: var(--wg-text-secondary);
+}
+
+.council__body--inverse {
+  color: var(--wg-text-on-brand);
+}
+
+.unnyc-page .council__link {
+  display: inline-block;
+  padding: 4px 0;
+  font-weight: 600;
+  color: var(--wg-accent-strong);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.unnyc-page .council__link--inverse {
+  color: var(--wg-text-on-brand);
+}
+
+/* --- the rent card ------------------------------------------------------ */
+.council__rent {
+  padding: var(--wg-sp-8);
+  border-radius: var(--wg-radius-lg);
+  background: var(--wg-brand-deep);
+  color: var(--wg-text-on-brand);
+  box-shadow: var(--wg-shadow-lg);
+}
+
+.council__rent-title {
+  margin: 0 0 var(--wg-sp-4);
+  font-size: var(--wg-fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--wg-accent-warm-light);
+}
+
+.unnyc-page .council__rent-list {
+  margin: 0 0 var(--wg-sp-4);
+  padding: 0;
+  list-style: none;
+}
+
+.council__rent-list li,
+.council__rent-total {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: var(--wg-sp-3) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: var(--wg-fs-lg);
+}
+
+.council__rent-total {
+  margin: 0 0 var(--wg-sp-4);
+  border-bottom: none;
+  font-family: var(--wg-font-display);
+  font-size: var(--wg-fs-2xl);
+  color: var(--wg-accent-warm-light);
+}
+
+.unnyc-page .council__rent-source {
+  display: inline-block;
+  padding: 4px 0;
+  font-size: var(--wg-fs-sm);
+  color: var(--wg-text-on-brand);
+  text-decoration: underline;
+}
+
+/* --- the six provisions ------------------------------------------------- */
+.unnyc-page .council__provisions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--wg-sp-6);
+  margin: var(--wg-sp-10) 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 720px) {
+  .unnyc-page .council__provisions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1080px) {
+  .unnyc-page .council__provisions {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.council__provisions li {
+  padding: var(--wg-sp-6);
+  border-radius: var(--wg-radius-lg);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.council__provision-n {
+  font-family: var(--wg-font-display);
+  font-size: var(--wg-fs-2xl);
+  color: var(--wg-accent-warm-light);
+}
+
+.council__provisions h3 {
+  margin: var(--wg-sp-2) 0 var(--wg-sp-3);
+  font-family: var(--wg-font-display);
+  font-size: var(--wg-fs-xl);
+  color: var(--wg-text-on-brand);
+}
+
+.council__provisions p {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--wg-text-on-brand);
+}
+
+/* --- earlier bills ------------------------------------------------------ */
+.unnyc-page .council__bills {
+  display: grid;
+  gap: var(--wg-sp-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.council__bills li {
+  display: grid;
+  gap: var(--wg-sp-1);
+  padding: var(--wg-sp-4) var(--wg-sp-5);
+  border-left: 3px solid var(--wg-accent-warm);
+  background: var(--wg-surface-alt);
+}
+
+.unnyc-page .council__bills a {
+  display: inline-block;
+  padding: 4px 0;
+  font-weight: 700;
+  color: var(--wg-accent-strong);
+  text-decoration: underline;
+}
+
+.council__bill-sponsors {
+  font-size: var(--wg-fs-sm);
+  font-weight: 600;
+  color: var(--wg-text);
+}
+
+.council__bill-outcome {
+  font-size: var(--wg-fs-sm);
+  line-height: 1.5;
+  color: var(--wg-text-secondary);
+}
+
+/* --- case studies ------------------------------------------------------- */
+.unnyc-page .council__cases {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--wg-sp-6);
+  margin: 0 0 var(--wg-sp-6);
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 720px) {
+  .unnyc-page .council__cases {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.council__cases img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--wg-radius-md);
+}
+
+.council__case-name {
+  margin: var(--wg-sp-3) 0 var(--wg-sp-1);
+  font-family: var(--wg-font-display);
+  font-size: var(--wg-fs-xl);
+  color: var(--wg-brand);
+}
+
+.council__case-sub {
+  margin: 0;
+  font-size: var(--wg-fs-sm);
+  color: var(--wg-text-secondary);
+}
+
+/* --- principle quote ---------------------------------------------------- */
+.council__principle {
+  max-width: 820px;
+}
+
+.council__quote {
+  margin: 0 0 var(--wg-sp-6);
+  padding: var(--wg-sp-6) var(--wg-sp-8);
+  border-left: 4px solid var(--wg-accent);
+  background: var(--wg-surface-alt);
+  border-radius: 0 var(--wg-radius-md) var(--wg-radius-md) 0;
+}
+
+.council__quote-title {
+  margin: 0 0 var(--wg-sp-2);
+  font-family: var(--wg-font-display);
+  font-size: var(--wg-fs-2xl);
+  color: var(--wg-brand);
+}
+
+.council__quote p:last-child {
+  margin: 0;
+  line-height: 1.7;
+  color: var(--wg-text);
+}
+
+.council__ask {
+  text-align: center;
+}
+
+.council__ask .council__body {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- the bill page ------------------------------------------------------ */
+.council-bill__layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--wg-sp-10);
+}
+
+@media (min-width: 960px) {
+  .council-bill__layout {
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: var(--wg-sp-16);
+  }
+
+  .council-bill__toc {
+    position: sticky;
+    top: calc(var(--pr-header-h, 72px) + var(--wg-sp-6));
+    align-self: start;
+  }
+}
+
+.council-bill__toc-title {
+  margin: 0 0 var(--wg-sp-3);
+  font-size: var(--wg-fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--wg-text-muted);
+}
+
+.unnyc-page .council-bill__toc ol {
+  display: grid;
+  gap: var(--wg-sp-1);
+  margin: 0;
+  padding-left: var(--wg-sp-5);
+}
+
+.unnyc-page .council-bill__toc a {
+  display: inline-block;
+  padding: 4px 0;
+  color: var(--wg-accent-strong);
+}
+
+.council-bill__text {
+  max-width: 72ch;
+  font-family: var(--wg-font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--wg-text);
+}
+
+.council-bill__long-title {
+  margin: 0 0 var(--wg-sp-6);
+  font-family: var(--wg-font-display);
+  font-size: var(--wg-fs-xl);
+  line-height: 1.35;
+  color: var(--wg-brand);
+}
+
+.council-bill__section {
+  scroll-margin-top: calc(var(--pr-header-h, 72px) + var(--wg-sp-6));
+  padding-top: var(--wg-sp-6);
+  margin-top: var(--wg-sp-6);
+  border-top: 1px solid var(--wg-border);
+}
+
+.council-bill__plain {
+  margin: 0 0 var(--wg-sp-4);
+  padding: var(--wg-sp-3) var(--wg-sp-4);
+  border-radius: var(--wg-radius-sm);
+  background: var(--wg-surface-warm);
+  font-family: var(--wg-font-body);
+  font-size: var(--wg-fs-sm);
+  line-height: 1.55;
+  color: var(--wg-text-secondary);
+}
+
+.unnyc-page .council-bill__text ol {
+  padding-left: var(--wg-sp-6);
+}
+
+@media print {
+  .council-site .unnyc-nav,
+  .council-site .unnyc-footer,
+  .council__actions,
+  .council-bill__toc,
+  .council-bill__plain {
+    display: none;
+  }
+
+  .council__hero {
+    background: none;
+    color: #000; /* wg-lint-ok: print is ink on paper, not a brand surface */
+    padding: 0 0 12pt;
+  }
+
+  .council__title,
+  .council__kicker,
+  .council__status {
+    color: #000; /* wg-lint-ok: print is ink on paper, not a brand surface */
+  }
+
+  .council-bill__layout {
+    display: block;
+  }
+}

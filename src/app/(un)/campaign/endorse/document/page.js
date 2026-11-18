@@ -1,4 +1,4 @@
-import '../../../printable-doc.css';
+import '../../../../printable-doc.css';
 import PrintButton from '@/components/unnyc/PrintButton';
 import { getContent, principlesDeclaration } from '@/lib/content';
 

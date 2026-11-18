@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import '../primer.css';
+import '../../primer.css';
 import '../campaign/campaign.css';
 import ContactForm from '@/components/unnyc/ContactForm';
 import { getContent } from '@/lib/content';

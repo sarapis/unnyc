@@ -25,8 +25,14 @@ const LINKS = [
 // header CTA is the one place a reader has already decided to act, so it skips
 // the landing page. /campaign is still linked from the page bodies.
 const CTA = { href: '/campaign/sign', label: 'Take Action' };
+const BRAND = { first: 'UN', mid: '+', second: 'NYC', label: 'UN+NYC home' };
 
-export default function UnnycNav() {
+/**
+ * Props exist for the Council site (src/app/(council)/layout.js), which draws the
+ * same nav with its own wordmark, links and call to action. With no props this is
+ * the UN site's nav exactly as before. `cta: null` draws no button.
+ */
+export default function UnnycNav({ links = LINKS, cta = CTA, brand = BRAND } = {}) {
     const pathname = usePathname();
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -46,12 +52,12 @@ export default function UnnycNav() {
     return (
         <header className="unnyc-nav">
             <div className="unnyc-nav__inner">
-                <Link href="/" className="unnyc-nav__logo" aria-label="UN+NYC home">
+                <Link href="/" className="unnyc-nav__logo" aria-label={brand.label}>
                     {/* Six characters, so no word spaces to lose and nothing
                         that needs to shrink to clear the hamburger. */}
-                    <span className="unnyc-nav__logo-un">UN</span>
-                    <span className="unnyc-nav__logo-mid">+</span>
-                    <span className="unnyc-nav__logo-nyc">NYC</span>
+                    <span className="unnyc-nav__logo-un">{brand.first}</span>
+                    {brand.mid && <span className="unnyc-nav__logo-mid">{brand.mid}</span>}
+                    <span className="unnyc-nav__logo-nyc">{brand.second}</span>
                 </Link>
 
                 <button
@@ -72,7 +78,7 @@ export default function UnnycNav() {
                     className={`unnyc-nav__menu${menuOpen ? ' unnyc-nav__menu--open' : ''}`}
                 >
                     <ul className="unnyc-nav__links">
-                        {LINKS.map((l) => (
+                        {links.map((l) => (
                             <li key={l.href}>
                                 <Link
                                     href={l.href}
@@ -86,13 +92,15 @@ export default function UnnycNav() {
                         ))}
                     </ul>
 
-                    <Link
-                        href={CTA.href}
-                        className="unnyc-btn unnyc-btn--primary unnyc-nav__cta"
-                        onClick={() => setMenuOpen(false)}
-                    >
-                        {CTA.label}
-                    </Link>
+                    {cta && (
+                        <Link
+                            href={cta.href}
+                            className="unnyc-btn unnyc-btn--primary unnyc-nav__cta"
+                            onClick={() => setMenuOpen(false)}
+                        >
+                            {cta.label}
+                        </Link>
+                    )}
                 </div>
             </div>
         </header>

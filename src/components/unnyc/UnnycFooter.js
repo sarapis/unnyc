@@ -16,7 +16,17 @@ const ORGS = [
     { href: 'https://sarapis.org', label: 'Sarapis' },
 ];
 
-export default function UnnycFooter() {
+/**
+ * `brand` and `contactHref` exist for the Council site. Its pages are served on
+ * council.opensource.nyc, where a bare "/contact" would resolve to a Council page
+ * that does not exist — so it links to the UN site's contact page absolutely.
+ * `name` is the site name in the copyright line.
+ */
+export default function UnnycFooter({
+    brand = { first: 'UN', mid: '+', second: 'NYC' },
+    contactHref = '/contact',
+    name = 'UNNYC',
+} = {}) {
     const currentYear = new Date().getFullYear();
 
     return (
@@ -25,9 +35,9 @@ export default function UnnycFooter() {
                 <div className="unnyc-footer__grid">
                     <div className="unnyc-footer__logo">
                         {/* See the note in UnnycNav.js. */}
-                        <span className="unnyc-footer__logo-un">UN</span>
-                        <span className="unnyc-footer__logo-mid">+</span>
-                        <span className="unnyc-footer__logo-nyc">NYC</span>
+                        <span className="unnyc-footer__logo-un">{brand.first}</span>
+                        {brand.mid && <span className="unnyc-footer__logo-mid">{brand.mid}</span>}
+                        <span className="unnyc-footer__logo-nyc">{brand.second}</span>
                     </div>
 
                     <nav className="unnyc-footer__nav" aria-label="Footer navigation">
@@ -39,14 +49,20 @@ export default function UnnycFooter() {
                                     </a>
                                 </li>
                             ))}
-                            <li><Link href="/contact">Contact</Link></li>
+                            <li>
+                                {contactHref.startsWith('/') ? (
+                                    <Link href={contactHref}>Contact</Link>
+                                ) : (
+                                    <a href={contactHref}>Contact</a>
+                                )}
+                            </li>
                         </ul>
                     </nav>
                 </div>
 
                 <div className="unnyc-footer__bottom">
                     <p>
-                        © {currentYear} UNNYC — Built by{' '}
+                        © {currentYear} {name} — Built by{' '}
                         <a href="https://wegov.nyc" target="_blank" rel="noopener noreferrer">
                             WeGov.NYC
                         </a>{' '}

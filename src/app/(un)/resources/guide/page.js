@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import '../../primer.css';
+import '../../../primer.css';
 import './guide.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import UnnycSectionNav from '@/components/unnyc/UnnycSectionNav';

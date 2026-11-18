@@ -4,9 +4,9 @@ import './start.css';
  * storyscroller routes — page CSS is per-route, so every route that renders
  * UnnycKeepGoing must import it or the band is unstyled on a fresh load.
  * See src/app/keep-going.css. */
-import '../keep-going.css';
+import '../../keep-going.css';
 /* Shared with the homepage, which draws the same component. See world-map.css. */
-import '../world-map.css';
+import '../../world-map.css';
 import HeaderHeightVar from '@/components/unnyc/primer/HeaderHeightVar';
 import UnnycKeepGoing from '@/components/unnyc/primer/UnnycKeepGoing';
 import { getContent, getCtfgProjects, getGovossCatalogues, getOspoMapPoints, inlineMd } from '@/lib/content';
